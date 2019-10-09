@@ -31,7 +31,6 @@ void j1Map::Draw()
 	if(map_loaded == false)
 		return;
 
-	// TODO 5: Prepare the loop to iterate all the tiles in a layer
 
 	for (p2List_item<MapLayer*>* layer = data.layers.start; layer != NULL; layer = layer->next) {
 
@@ -59,8 +58,6 @@ void j1Map::Draw()
 	}
 }
 
-	// TODO 9: Complete the draw function
-
 // Called before quitting
 bool j1Map::CleanUp()
 {
@@ -77,9 +74,7 @@ bool j1Map::CleanUp()
 	}
 	data.tilesets.clear();
 
-	// TODO 2: clean up all layer data
 	// Remove all layers
-
 	data.layers.clear();
 
 	// Clean up the pugui tree
@@ -110,6 +105,7 @@ bool j1Map::Load(const char* file_name)
 
 	// Load all tilesets info ----------------------------------------------
 	pugi::xml_node tileset;
+
 	for(tileset = map_file.child("map").child("tileset"); tileset && ret; tileset = tileset.next_sibling("tileset"))
 	{
 		TileSet* set = new TileSet();
@@ -127,7 +123,6 @@ bool j1Map::Load(const char* file_name)
 		data.tilesets.add(set);
 	}
 
-	// TODO 4: Iterate all layers and load each of them
 	// Load layer info ----------------------------------------------
 
 	pugi::xml_node layernode;
@@ -140,7 +135,6 @@ bool j1Map::Load(const char* file_name)
 		{
 			ret = LoadLayer(layernode, set_layer);
 		}
-
 
 		data.layers.add(set_layer);
 	}
@@ -162,7 +156,6 @@ bool j1Map::Load(const char* file_name)
 			item = item->next;
 		}
 
-		// TODO 4: Add info here about your loaded layers
 		// Adapt this code with your own variables
 		
 		p2List_item<MapLayer*>* item_layer = data.layers.start;
@@ -310,7 +303,6 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	return ret;
 }
 
-// TODO 3: Create the definition for a function that loads a single layer
 bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 {
 	bool ret = true;
