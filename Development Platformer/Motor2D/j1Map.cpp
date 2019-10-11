@@ -31,31 +31,40 @@ void j1Map::Draw()
 	if(map_loaded == false)
 		return;
 
+	for (p2List_item<TileSet*> *tile = data.tilesets.start; tile != NULL; tile = tile->next)
+	{
 
-	for (p2List_item<MapLayer*>* layer = data.layers.start; layer != NULL; layer = layer->next) {
-
-		for (int x = 0; x < data.width; x++)
+		for (p2List_item<MapLayer*> *layer = data.layers.start; layer != NULL; layer = layer->next)
 		{
-			for (int y = 0; y < data.height; y++)
+
+			for (int x = 0; x < data.width; x++)
 			{
-				int gid = layer->data->Get(x, y); //We get the gid from each tile
+				for (int y = 0; y < data.height; y++)
+				{
+					int gid = layer->data->Get(x, y);
 
-				if (gid != 0) {
-
-					TileSet* tileset = GetTileset(gid);
-
-					if (tileset != nullptr) {
-
-						SDL_Rect rect = tileset->GetRect(gid);
+					if (gid != 0)
+					{
 						iPoint vec = WorldPos(x, y);
-
-						App->render->Blit(tileset->texture, vec.x, vec.y, &rect, layer->data->speed_x);
-
+						
+						App->render->Blit(tile->data->texture, vec.x, vec.y, &tile->data->GetRect(gid));
+						
 					}
 				}
 			}
 		}
 	}
+}
+
+
+iPoint j1Map::WorldPos(int x, int y) {
+
+	iPoint vec;
+
+	vec.x = x * data.tile_width;
+	vec.y = y * data.tile_height;
+
+	return vec;
 }
 
 // Called before quitting
@@ -368,12 +377,3 @@ SDL_Rect TileSet::GetRect(int id) {
 
 }
 
-iPoint j1Map::WorldPos(int x, int y) {
-
-	iPoint vec;
-
-	vec.x = x * data.tile_width;
-	vec.y = y * data.tile_height;
-
-	return vec;
-}
