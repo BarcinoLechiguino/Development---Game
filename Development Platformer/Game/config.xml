@@ -7,7 +7,7 @@
   </app>
 	
   <renderer>
-    <vsync value="false"/>
+    <vsync value="true"/>
   </renderer>
 
   <window>
@@ -17,6 +17,24 @@
     <resizable value="false"/>
     <fullscreen_window value="false"/>
   </window>
+
+  <player>
+    <player_1>
+      <speed_x value="0"/>
+      <speed_y value="0"/>
+      <max_speed value="10"/>
+      <acceleration value="1"/>
+      <gravity value="0.81"/>
+    </player_1>
+    
+    <player_2>
+      <speed_x value="0"/>
+      <speed_y value="0"/>
+      <max_speed value="0"/>
+      <acceleration value="1"/>
+      <gravity value="0.81"/>
+    </player_2>
+  </player>
 
   <file_system>
     <path>data.zip</path>

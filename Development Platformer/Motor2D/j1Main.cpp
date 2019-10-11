@@ -27,7 +27,7 @@ int main(int argc, char* args[])
 {
 	LOG("Engine starting ... %d");
 
-	MainState state = MainState::CREATE;
+	MainState state = MainState::CREATE; 
 	int result = EXIT_FAILURE;
 
 	while(state != EXIT)

@@ -74,6 +74,8 @@ public:
 	p2SString	name;
 	bool		active;
 
+	//virtual void OnCollision(Collider*, Collider*) {}
+
 };
 
 #endif // __j1MODULE_H__
