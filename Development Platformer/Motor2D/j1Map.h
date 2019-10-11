@@ -8,14 +8,15 @@
 
 struct MapLayer
 {
-	p2SString name;
-	uint width;
-	uint height;
-	uint *gid = nullptr;
-	float speed_x;
-	inline uint Get(int x, int y) const {
+	p2SString name = nullptr;
+	uint width = 0;
+	uint height = 0;
+	uint* gid = nullptr;
+	float speed_x = 0.0f;
 
-		return gid[x + (y*width)];
+	uint Get(int x, int y) const
+	{
+		return gid[width*y + x];;
 	}
 };
 
@@ -83,6 +84,8 @@ public:
 	// Load new map
 	bool Load(const char* path);
 
+	inline uint ArrayPos(int x, int y);
+	iPoint MapToWorld(int x, int y);
 private:
 
 	bool LoadMap();
@@ -90,7 +93,7 @@ private:
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	TileSet* GetTileset(int id);
-	iPoint WorldPos(int x, int y);
+	
 
 
 public:

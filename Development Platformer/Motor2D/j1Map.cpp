@@ -41,14 +41,12 @@ void j1Map::Draw()
 			{
 				for (int y = 0; y < data.height; y++)
 				{
-					int gid = layer->data->Get(x, y);
+					int gid = layer->data->gid[ArrayPos(x, y)];
 
 					if (gid != 0)
 					{
-						iPoint vec = WorldPos(x, y);
-						
+						iPoint vec = MapToWorld(x, y);
 						App->render->Blit(tile->data->texture, vec.x, vec.y, &tile->data->GetRect(gid));
-						
 					}
 				}
 			}
@@ -56,9 +54,32 @@ void j1Map::Draw()
 	}
 }
 
+SDL_Rect TileSet::GetRect(int id) {
 
-iPoint j1Map::WorldPos(int x, int y) {
+	int id_ = id - firstgid;
 
+	SDL_Rect Rect = { 0, 0, 0, 0 };
+
+	Rect.w = tile_width;
+	Rect.h = tile_height;
+
+	int columns = id_ % num_tiles_width;
+	int rows = id_ / num_tiles_width;
+
+	Rect.x = margin + (columns*Rect.w) + (columns*spacing);
+	Rect.y = margin + (rows * Rect.h) + (rows * spacing);
+
+	return Rect;
+
+}
+
+inline uint j1Map::ArrayPos(int x, int y)
+{
+	return uint(y*data.width + x);
+}
+
+iPoint j1Map::MapToWorld(int x, int y)
+{
 	iPoint vec;
 
 	vec.x = x * data.tile_width;
@@ -364,25 +385,6 @@ TileSet* j1Map::GetTileset(int id) {
 	}
 
 	return nullptr;
-
-}
-
-SDL_Rect TileSet::GetRect(int id) {
-
-	int id_ = id - firstgid;
-
-	SDL_Rect Rect = { 0, 0, 0, 0 };
-
-	Rect.w = tile_width;
-	Rect.h = tile_height;
-
-	int columns = id_ % num_tiles_width;
-	int rows = id_ / num_tiles_width;
-
-	Rect.x = margin + (columns*Rect.w) + (columns*spacing);
-	Rect.y = margin + (rows * Rect.h) + (rows * spacing);
-
-	return Rect;
 
 }
 
