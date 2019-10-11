@@ -20,7 +20,7 @@
 
   <player>
     <player_1>
-      <speed_x value="0"/>
+      <speed_x value="5"/>
       <speed_y value="0"/>
       <max_speed value="10"/>
       <acceleration value="1"/>

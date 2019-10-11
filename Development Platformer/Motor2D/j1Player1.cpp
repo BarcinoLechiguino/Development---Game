@@ -22,10 +22,10 @@ bool j1Player1::Init()
 
 bool j1Player1::Awake(pugi::xml_node& config) 
 {	
-	p1.speed_x = config.child("speed_x").attribute("value").as_float();
+	p1.speed_x = config.child("player_1").child("speed_x").attribute("value").as_float();
 	p1.speed_y = config.child("speed_y").attribute("value").as_float();
-	p1.max_speed = config.child("max_speed").attribute("value").as_float();
-	p1.acceleration = config.child("acceleration").attribute("value").as_float();
+	p1.max_speed = config.child("player_1").child("max_speed").attribute("value").as_float();
+	p1.acceleration = config.child("player_1").child("acceleration").attribute("value").as_float();
 	p1.p1_gravity = config.child("gravity").attribute("value").as_float();
 
 	return true;
@@ -79,9 +79,10 @@ bool j1Player1::Update(float dt)
 
 	case goingRight_P1:
 
-		p1.p1_position.x += 10;
+		//p1.p1_position.x += 10;
+	
 
-		/*while (p1.speed_x != p1.max_speed)
+		while (p1.speed_x != p1.max_speed)
 		{
 			p1.speed_x += p1.acceleration;
 
@@ -89,7 +90,7 @@ bool j1Player1::Update(float dt)
 			{
 				p1.speed_x = p1.max_speed;
 			}
-		}*/
+		}
 		
 		p1.p1_position.x += p1.speed_x; //p1.speed_x is positive here.
 
@@ -121,7 +122,7 @@ bool j1Player1::Update(float dt)
 		break;
 	}
 
-	p1.p1_HitBox.x= p1.p1_position.x;
+	p1.p1_HitBox.x = p1.p1_position.x;
 	//p1.p1_HitBox.y = p1.p1_position.y;
 
 	if (p1.p1_position.y <= p1.floor)
