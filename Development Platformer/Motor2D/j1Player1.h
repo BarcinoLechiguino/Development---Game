@@ -83,8 +83,13 @@ public: //P1 Variables
 	bool start_jump = false;
 	bool top_jump = true;
 	bool stay_in_platform = false;
-	iPoint speed;
-	iPoint position;*/
+	iPoint speed;*/
+	
+	iPoint position;
+
+	void OnCollision(Collider* collider);
+	bool Load(pugi::xml_node &node);
+	bool Save(pugi::xml_node &node) const;
 
 private:
 
