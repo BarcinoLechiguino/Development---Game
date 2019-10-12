@@ -13,6 +13,7 @@ class j1Textures;
 class j1Audio;
 class j1Scene;
 class j1Map;
+class j1FadetoBlack;
 class j1Collisions;
 class j1Player1;
 class j1Player2;
@@ -48,8 +49,8 @@ public:
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
 
-	void LoadGame();
-	void SaveGame() const;
+	void LoadGame(const char* file);
+	void SaveGame(const char* file) const;
 	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
 
 private:
@@ -84,6 +85,7 @@ public:
 	j1Render*			render;
 	j1Textures*			tex;
 	j1Audio*			audio;
+	j1FadetoBlack*		fade;
 	j1Scene*			scene;
 	j1Map*				map;
 	j1Collisions*		collisions;

@@ -33,6 +33,11 @@ public:
 	bool CleanUp();
 
 private:
+
+public:
+	bool load = false;
+	bool tutorial_map = true;
+	bool map_saved = true;
 };
 
 #endif // __j1SCENE_H__

@@ -150,11 +150,14 @@ bool j1Player1::cleanUp()
 	return true;
 };
 
+<<<<<<< HEAD
 //void j1Player1::Draw(SDL_Texture* sprites, float dt) 
 //{
 //
 //}
 
+=======
+>>>>>>> 909525b319ed1caed168786cd622cae21737c207
 /*
 	p1_frames++;
 
@@ -344,4 +347,24 @@ bool j1Player1::cleanUp()
 };
 
 */
+
+bool j1Player1::Load(pugi::xml_node& data)
+{
+	position.x = data.child("position").attribute("x").as_int();
+	position.y = data.child("position").attribute("y").as_int();
+
+
+	return true;
+}
+
+// Save Game State
+bool j1Player1::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node pos = data.append_child("position");
+
+	pos.append_attribute("x") = position.x;
+	pos.append_attribute("y") = position.y;
+
+	return true;
+}
 
