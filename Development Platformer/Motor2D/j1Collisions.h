@@ -3,6 +3,36 @@
 
 #include "j1Module.h"
 
+enum class Collider_Type;
+
+struct Collider
+{
+
+	SDL_Rect rect;
+	bool to_delete = false;
+	Collider_Type type;
+	j1Module* callback = nullptr;
+
+	Collider(SDL_Rect rectangle, Collider_Type type, j1Module* calback = nullptr) :
+		rect(rectangle),
+		type(type),
+		callback(callback)
+	{};
+
+	void SetPos(int x, int y)
+	{
+		rect.x = x;
+		rect.y = y;
+	}
+	void SetSize(int w, int h)
+	{
+		rect.w = w;
+		rect.h = h;
+	}
+	bool CheckCollision(const SDL_Rect& r) const;
+
+};
+
 class j1Collisions : public j1Module {
 	//Methods
 public:

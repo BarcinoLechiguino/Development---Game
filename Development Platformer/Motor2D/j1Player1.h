@@ -71,11 +71,6 @@ public://methods
 
 	bool cleanUp();
 
-	void Draw(SDL_Texture* sprites, float dt);
-
-	private:
-
-
 public: //P1 Variables
 	
 	Player1 p1;

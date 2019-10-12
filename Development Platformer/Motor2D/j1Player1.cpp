@@ -326,4 +326,20 @@ animation = &idle;
 
 	position.y += gravity * dt;
 	stay_in_platform = false;
+
+
+	return true;
+};
+
+bool j1Player1::PostUpdate() 
+{
+	return true;
+};
+
+bool j1Player1::cleanUp() 
+{
+	return true;
+};
+
 */
+
