@@ -346,21 +346,28 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 {
 	bool ret = true;
 
-	layer->name.create(node.attribute("name").as_string());
-	layer->width = node.attribute("width").as_uint();
-	layer->height = node.attribute("height").as_uint();
-	layer->gid = new uint[layer->width * layer->height];
+	layer->name = node.attribute("name").as_string();
+	layer->width = node.attribute("width").as_int();
+	layer->height = node.attribute("height").as_int();
 	layer->speed_x = node.child("properties").child("property").attribute("value").as_float();
+	pugi::xml_node layer_data = node.child("data");
 
-	memset(layer->gid, 0, (layer->width * layer->height) * sizeof(uint)); //Fill with zeros
-
-	pugi::xml_node *iterate_gid = &node.child("data").child("tile");
-
-	for (uint i = 0; i < (layer->width * layer->height); i++)
+	if (layer_data == NULL)
 	{
-		layer->gid[i] = iterate_gid->attribute("gid").as_uint();
-		iterate_gid = &iterate_gid->next_sibling("tile");
+		LOG("Error parsing map xml file: Cannot find 'layer/data' tag.");
+		ret = false;
+		RELEASE(layer);
+	}
+	else
+	{
+		layer->gid = new uint[layer->width*layer->height];
+		memset(layer->gid, 0, layer->width*layer->height);
 
+		int i = 0;
+		for (pugi::xml_node tile = layer_data.child("tile"); tile; tile = tile.next_sibling("tile"))
+		{
+			layer->gid[i++] = tile.attribute("gid").as_int(0);
+		}
 	}
 
 	return ret;

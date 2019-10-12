@@ -2,7 +2,7 @@
 
 <config>
   <app>
-    <title>Game Development Testbed</title>
+    <title>Mutual Cooperation</title>
     <organization>UPC</organization>
   </app>
 	
@@ -20,19 +20,43 @@
 
   <player>
     <player_1>
-      <speed_x value="5"/>
-      <speed_y value="0"/>
-      <max_speed value="10"/>
-      <acceleration value="1"/>
-      <gravity value="0.81"/>
+      <speed x = "2" y = "3" gravity = "2"/>
+      <idle_anim
+        x1="0" y1="0" w1="55" h1="37"
+         x2="55" y2="0" w2="55" h2="37"
+         x3="110" y3="0" w3="55" h3="37"
+         x4="165" y4="0" w4="55" h4="37"
+         />
+      <crouch_anim
+        x1="220" y1="0" w1="55" h1="37"
+         x2="275" y2="0" w2="55" h2="37"
+        x3="330" y3="0" w3="55" h3="37"
+         x4="0" y4="37" w4="55" h4="37"
+        />
+      <run_anim
+         x1="55" y1="37" w1="55" h1="37"
+         x2="110" y2="37" w2="55" h2="37"
+        x3="165" y3="37" w3="55" h3="37"
+         x4="220" y4="37" w4="55" h4="37"
+         x5="275" y5="37" w5="55" h5="37"
+         x6="320" y6="37" w6="55" h6="37"
+        />
+      <jump_anim
+        x1="0" y1="74" w1="55" h1="37"
+         x2="55" y2="74" w2="55" h2="37"
+        x3="110" y3="74" w3="55" h3="37"
+         x4="165" y4="74" w4="55" h4="37"
+         x5="220" y5="74" w5="55" h5="37"
+         x6="275" y6="74" w6="55" h6="37"
+        x7="330" y7="74" w7="55" h7="37"
+         x8="0" y8="111" w8="55" h8="37"
+        x9="55" y9="111" w9="55" h9="37"
+         x10="110" y10="111" w10="55" h10="37"
+        />
     </player_1>
-    
+    />
     <player_2>
-      <speed_x value="0"/>
-      <speed_y value="0"/>
-      <max_speed value="0"/>
-      <acceleration value="1"/>
-      <gravity value="0.81"/>
+      <speed x = "2" y = "3" gravity = "2"/>
     </player_2>
   </player>
 
@@ -42,6 +66,7 @@
 
   <map>
     <folder>maps/</folder>
+    <stage name="Tutorial Screen2.tmx"/>
   </map>
 
 </config>
