@@ -43,6 +43,7 @@ void j1Map::Draw()
 				{
 					int gid = layer->data->gid[ArrayPos(x, y)];
 
+
 					if (gid != 0)
 					{
 						iPoint vec = MapToWorld(x, y);

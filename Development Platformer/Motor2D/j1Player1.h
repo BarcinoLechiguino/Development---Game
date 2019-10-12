@@ -64,8 +64,6 @@ public://methods
 	bool Update(float dt);
 	bool PostUpdate();
 	bool cleanUp();
-	void Draw(SDL_Texture* sprites, float dt);
-
 
 public://variables
 	
