@@ -19,8 +19,11 @@
   </window>
 
   <player>
+    <acceleration value="1"/>
+    <speed_x value="0"/>
+    <max_speed value="10"/>
+    
     <player_1>
-      <speed x = "2" y = "3" gravity = "2"/>
       <idle_anim
         x1="0" y1="0" w1="55" h1="37"
          x2="55" y2="0" w2="55" h2="37"
@@ -54,9 +57,9 @@
          x10="110" y10="111" w10="55" h10="37"
         />
     </player_1>
-    />
+   
     <player_2>
-      <speed x = "2" y = "3" gravity = "2"/>
+
     </player_2>
   </player>
 
