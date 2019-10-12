@@ -37,10 +37,10 @@ struct Player1
 	int p1_time_at_jump; //Time when the jump button is pressed.
 	int p1_jump_time; //jumptimeP1 = time_P1 - timeAtJump_P1
 	
-	int sprite_width = 20;
-	int sprite_height = 30;
+	int sprite_width = /*20*/ 32;
+	int sprite_height = /*30*/64;
 
-	float floor = 500.0f;
+	float floor = 1055.0f;
 
 	SDL_Rect p1_HitBox; //Rectangle that represents the player.
 	p2Point<float> p1_position; //Vector with the position of P1

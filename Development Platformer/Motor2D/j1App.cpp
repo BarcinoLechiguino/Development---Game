@@ -100,7 +100,7 @@ bool j1App::Awake()
 			item = item->next;
 		}
 	}
-
+	 
 	return ret;
 }
 

@@ -26,19 +26,19 @@ bool j1Player1::Init()
 
 bool j1Player1::Awake(pugi::xml_node& config) 
 {	
-	p1.speed_x = config.child("speed_x").attribute("value").as_float();
-	p1.speed_y = config.child("speed_y").attribute("value").as_float();
-	p1.max_speed = config.child("max_speed").attribute("value").as_float();
+	p1.speed_x = config.child("player_1").child("speed_x").attribute("value").as_float();
+	p1.speed_y = config.child("player_1").child("speed_y").attribute("value").as_float();
+	p1.max_speed = config.child("player_1").child("max_speed").attribute("value").as_float();
 	
-	p1.acceleration = config.child("acceleration").attribute("value").as_float();
-	p1.p1_gravity = config.child("gravity").attribute("value").as_float();
+	p1.acceleration = config.child("player_1").child("acceleration").attribute("value").as_float();
+	p1.p1_gravity = config.child("player_1").child("gravity").attribute("value").as_float();
 
 	return true;
 };
 
 bool j1Player1::Start() 
 {
-	p1.p1_position = { 300.0f, p1.floor };
+	p1.p1_position = { 100.0f, p1.floor };
 	p1.p1_HitBox = { (int)p1.p1_position.x,(int)p1.p1_position.y, p1.sprite_width, p1.sprite_height }; //Casked to int "(int)" for optimization.
 
 	return true;
@@ -98,6 +98,8 @@ bool j1Player1::Update(float dt)
 
 		p1.p1_position.x += p1.speed_x; //p1.speed_x is positive here.
 
+		LOG("Position %d %d", p1.p1_position.x, p1.p1_position.y);
+
 		break;
 
 	case goingLeft_P1:
@@ -148,10 +150,10 @@ bool j1Player1::cleanUp()
 	return true;
 };
 
-void j1Player1::Draw(SDL_Texture* sprites, float dt) 
-{
-
-}
+//void j1Player1::Draw(SDL_Texture* sprites, float dt) 
+//{
+//
+//}
 
 /*
 	p1_frames++;

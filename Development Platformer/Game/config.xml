@@ -8,6 +8,7 @@
 	
   <renderer>
     <vsync value="true"/>
+    <camera x="0" y="-575"/>
   </renderer>
 
   <window>
@@ -19,11 +20,14 @@
   </window>
 
   <player>
-    <acceleration value="1"/>
-    <speed_x value="0"/>
-    <max_speed value="10"/>
-    
     <player_1>
+      <speed_x value="0"/>
+      <speed_y value="0"/>
+      <max_speed value="10"/>
+      
+      <acceleration value="1.2"/>
+      <gravity value="0.81"/>
+      
       <idle_anim
         x1="0" y1="0" w1="55" h1="37"
          x2="55" y2="0" w2="55" h2="37"
@@ -59,7 +63,12 @@
     </player_1>
    
     <player_2>
+      <speed_x value="0"/>
+      <speed_y value="0"/>
+      <max_speed value="10"/>
 
+      <acceleration value="1.2"/>
+      <gravity value="0.81"/>
     </player_2>
   </player>
 
