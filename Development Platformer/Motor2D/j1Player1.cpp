@@ -150,14 +150,6 @@ bool j1Player1::cleanUp()
 	return true;
 };
 
-<<<<<<< HEAD
-//void j1Player1::Draw(SDL_Texture* sprites, float dt) 
-//{
-//
-//}
-
-=======
->>>>>>> 909525b319ed1caed168786cd622cae21737c207
 /*
 	p1_frames++;
 
