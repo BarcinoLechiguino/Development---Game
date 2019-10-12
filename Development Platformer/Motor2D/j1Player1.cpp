@@ -84,8 +84,6 @@ bool j1Player1::Update(float dt)
 
 	case goingRight_P1:
 
-		//p1.p1_position.x += 10;
-
 		LOG("GOING RIGHT %d %d", p1.speed_x, p1.max_speed);
 
 		while (p1.speed_x != p1.max_speed)
