@@ -190,6 +190,7 @@ bool j1Player1::cleanUp()
 	return true;
 };
 
+
 bool j1Player1::Load(pugi::xml_node& data)
 {
 	p1.p1_position.x = data.child("position").attribute("x").as_int();
@@ -215,11 +216,6 @@ bool j1Player1::Save(pugi::xml_node& data) const
 //
 //}
 
-
-=======
->>>>>>> b037ad0a5274300047e511cfe5537f7a357a76ed
-=======
->>>>>>> b037ad0a5274300047e511cfe5537f7a357a76ed
 /*
 	p1_frames++;
 
