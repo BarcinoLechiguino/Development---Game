@@ -30,32 +30,32 @@ struct Player1
 	float speed_y; //Speed on Y. Used for jumps.
 	float max_speed; //Cruiser speed for the player.
 
-	float acceleration; //Time it takes the player to reach Cruiser Speed.
-	float p1_gravity; //Acceleration variable for jumps. Gravitational Pull
-
-	int p1_time; //Time P1 has been running.
-	int p1_time_at_jump; //Time when the jump button is pressed.
-	int p1_jump_time; //jumptimeP1 = time_P1 - timeAtJump_P1
+	float acceleration_x; //Time it takes the player to reach Cruiser Speed horizontally.
+	float acceleration_y; //Time it takes the player to reach Cruiser Speed vertically.
+	float p1_gravity; //Acceleration variable for jumps. Gravitational Pull.
 	
-	int sprite_width = /*20*/ 32;
-	int sprite_height = /*30*/64;
+	bool p1_grounded; //Defines whether the player is standing or jumping.
 
-	float floor = 1055.0f;
-	bool p1_grounded;
+	//Changes the state of the player depending on the given argument. Also if true it records the position from where the player jumped.
+	void p1_isGrounded(bool yesnt)
+	{
+		if (p1_grounded == true)
+		{
+			p1_pre_Jump_Position = p1_position;
+		}
 
+		p1_grounded = yesnt;
+	};
+	
 	SDL_Rect p1_HitBox; //Rectangle that represents the player.
 	p2Point<float> p1_position; //Vector with the position of P1
-	p2Point<float> p1_lastGrounded; 
+	p2Point<float> p1_pre_Jump_Position; //
 	P1_State p1_State; //Adds the state enum to the player's variables.
 
-	void p1_SetGroundState(bool state)
-	{
-		if (p1_grounded == true) {
-			p1_lastGrounded = p1_position;
-		}
-		p1_grounded = state;
-	};
-
+	//Temporal Variables
+	int sprite_width = /*20*/ 38;
+	int sprite_height = /*30*/64;
+	float floor = 1055.0f;
 };
 
 struct SDL_Texture;

@@ -26,11 +26,12 @@ bool j1Player1::Init()
 
 bool j1Player1::Awake(pugi::xml_node& config) 
 {	
-	p1.speed_x = config.child("player_1").child("speed_x").attribute("value").as_float();
-	p1.speed_y = config.child("player_1").child("speed_y").attribute("value").as_float();
+	p1.speed_x = config.child("player_1").child("speed").attribute("x").as_float();
+	p1.speed_y = config.child("player_1").child("speed").attribute("y").as_float();
 	p1.max_speed = config.child("player_1").child("max_speed").attribute("value").as_float();
 	
-	p1.acceleration = config.child("player_1").child("acceleration").attribute("value").as_float();
+	p1.acceleration_x = config.child("player_1").child("acceleration").attribute("x").as_float();
+	p1.acceleration_y = config.child("player_1").child("acceleration").attribute("y").as_float();
 	p1.p1_gravity = config.child("player_1").child("gravity").attribute("value").as_float();
 	
 	return true;
@@ -41,7 +42,7 @@ bool j1Player1::Start()
 	p1.p1_position = { 100.0f, p1.floor };
 	p1.p1_HitBox = { (int)p1.p1_position.x,(int)p1.p1_position.y, p1.sprite_width, p1.sprite_height }; //Casked to int "(int)" for optimization.
 
-	p1.p1_SetGroundState(true);
+	p1.p1_isGrounded(true);
 	
 	return true;
 };
@@ -49,7 +50,6 @@ bool j1Player1::Start()
 bool j1Player1::PreUpdate() 
 {
 	//p1.p1_SetGroundState(false); //set  to false when colliders are implemented.
-	//p1.p1_time = SDL_GetTicks() / 20;
 	
 	p1.p1_State = idle_P1;
 	
@@ -66,8 +66,6 @@ bool j1Player1::PreUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) 
 	{
 		p1.p1_State = jumping_P1;
-		p1.p1_time_at_jump = p1.p1_time;
-		p1.p1_jump_time = 0;
 	}
 	
 	return true;
@@ -77,7 +75,7 @@ bool j1Player1::Update(float dt)
 {
 	p1_frames++;
 
-	p1.p1_lastGrounded = p1.p1_position;
+	//p1.p1_lastGrounded = p1.p1_position;
 	
 	switch (p1.p1_State)
 	{
@@ -92,14 +90,10 @@ bool j1Player1::Update(float dt)
 	
 		LOG("GOING RIGHT %d %d", p1.speed_x, p1.max_speed);
 	
+		//As long as D is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
 		while (p1.speed_x != p1.max_speed)
 		{
-			p1.speed_x += p1.acceleration;
-	
-			if (p1.speed_x > p1.max_speed)
-			{
-				p1.speed_x = p1.max_speed;
-			}
+			p1.speed_x += p1.acceleration_x;
 		}
 	
 		p1.p1_position.x += p1.speed_x; //p1.speed_x is positive here.
@@ -110,14 +104,10 @@ bool j1Player1::Update(float dt)
 	
 	case goingLeft_P1:
 	
+		//As long as W is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
 		while (p1.speed_x != -p1.max_speed)
 		{
-			p1.speed_x -= p1.acceleration;
-	
-			if (p1.speed_x < -p1.max_speed)
-			{
-				p1.speed_x = -p1.max_speed;
-			}
+			p1.speed_x -= p1.acceleration_x;
 		}
 	
 		p1.p1_position.x += p1.speed_x;  //p1.speed_x  is negative here.
@@ -125,35 +115,23 @@ bool j1Player1::Update(float dt)
 		break;
 	
 	case jumping_P1:
-
-
-		/*if (p1.grounded == true && jumpCount != 2)
+	
+		if (p1.p1_grounded == true /*|| p1.jumpCount != 2*/)
 		{
-			p1.speed_y = -p1.acceleration * 12;
+			p1.speed_y = -p1.p1_gravity;
 	
-			p1.p1_position.y += p1.speed_y * 5;
-	
-			player.p1.grounded == true;
-		}*/
-	
-		if (p1.p1_grounded == true)
-		{
-			p1.speed_y = -p1.acceleration * 10;
-	
-			p1.p1_position.y += p1.speed_y * 5;
-	
-			//p1.p1_SetGroundState(false);
+			/*jumpCount++;*/
+			p1.p1_isGrounded(false);
 		}
-	
-		p1.p1_SetGroundState(false);
+
 		break;
 	}
 	
 	//If the p1 is in the air then this function brings him/her back down to the floor.
 	if (p1.p1_grounded == false)
 	{
-		p1.speed_y += p1.acceleration;
-	
+		p1.speed_y += p1.acceleration_y;
+		
 		if (p1.speed_y > p1.max_speed)
 		{
 			p1.speed_y = p1.max_speed;
@@ -166,10 +144,9 @@ bool j1Player1::Update(float dt)
 	if (p1.p1_position.y > p1.floor)
 	{
 		p1.p1_position.y = p1.floor - 1;
-		p1.p1_SetGroundState(true);
-	
+		p1.p1_isGrounded(true);
 	}
-	
+
 	//We move the character according the position value after the state has been run.
 	p1.p1_HitBox.x = p1.p1_position.x; 
 	p1.p1_HitBox.y = p1.p1_position.y;
