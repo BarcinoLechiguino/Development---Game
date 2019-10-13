@@ -22,7 +22,7 @@
   <player>
     <player_1>
       <speed_x value="0"/>
-      <speed_y value="10"/>
+      <speed_y value="0"/>
       <max_speed value="10"/>
       <acceleration value="1.2"/>
       <gravity value="0.81"/>
