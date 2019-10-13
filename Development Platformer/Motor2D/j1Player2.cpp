@@ -46,7 +46,7 @@ bool j1Player2::PreUpdate() {
 	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_REPEAT) {
 		P2_State = goingLeft_P2;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN) {
 		P2_State = jumpState_P2;
 	}
 

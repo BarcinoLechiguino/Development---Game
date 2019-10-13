@@ -41,10 +41,21 @@ struct Player1
 	int sprite_height = /*30*/64;
 
 	float floor = 1055.0f;
+	bool p1_grounded;
 
 	SDL_Rect p1_HitBox; //Rectangle that represents the player.
 	p2Point<float> p1_position; //Vector with the position of P1
+	p2Point<float> p1_lastGrounded; 
 	P1_State p1_State; //Adds the state enum to the player's variables.
+
+	void p1_SetGroundState(bool state)
+	{
+		if (p1_grounded == true) {
+			p1_lastGrounded = p1_position;
+		}
+		p1_grounded = state;
+	};
+
 };
 
 struct SDL_Texture;
@@ -74,18 +85,6 @@ public://methods
 public: //P1 Variables
 	
 	Player1 p1;
-
-	/*Animation * animation = nullptr;
-
-	int jump;
-	int distance;
-	float gravity;
-	bool start_jump = false;
-	bool top_jump = true;
-	bool stay_in_platform = false;
-	iPoint speed;*/
-	
-	iPoint position;
 
 	void OnCollision(Collider* collider);
 	bool Load(pugi::xml_node &node);

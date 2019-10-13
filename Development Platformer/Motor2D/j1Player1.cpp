@@ -32,7 +32,7 @@ bool j1Player1::Awake(pugi::xml_node& config)
 	
 	p1.acceleration = config.child("player_1").child("acceleration").attribute("value").as_float();
 	p1.p1_gravity = config.child("player_1").child("gravity").attribute("value").as_float();
-
+	
 	return true;
 };
 
@@ -41,31 +41,35 @@ bool j1Player1::Start()
 	p1.p1_position = { 100.0f, p1.floor };
 	p1.p1_HitBox = { (int)p1.p1_position.x,(int)p1.p1_position.y, p1.sprite_width, p1.sprite_height }; //Casked to int "(int)" for optimization.
 
+	p1.p1_SetGroundState(true);
+	
 	return true;
 };
 
 bool j1Player1::PreUpdate() 
 {
+	//p1.p1_SetGroundState(false); //set  to false when colliders are implemented.
 	//p1.p1_time = SDL_GetTicks() / 20;
 	
 	p1.p1_State = idle_P1;
-
+	
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
 	{
 		p1.p1_State = goingRight_P1;
 	}
-
+	
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
 	{
 		p1.p1_State = goingLeft_P1;
 	}
-
+	
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) 
 	{
-		//p1.p1_time_at_jump = p1.p1_time;
 		p1.p1_State = jumping_P1;
+		p1.p1_time_at_jump = p1.p1_time;
+		p1.p1_jump_time = 0;
 	}
-
+	
 	return true;
 };
 
@@ -73,70 +77,106 @@ bool j1Player1::Update(float dt)
 {
 	p1_frames++;
 
+	p1.p1_lastGrounded = p1.p1_position;
+	
 	switch (p1.p1_State)
 	{
-
+	
 	case idle_P1:
-
+	
 		p1.speed_x = 0;
-
+	
 		break;
-
+	
 	case goingRight_P1:
-
+	
 		LOG("GOING RIGHT %d %d", p1.speed_x, p1.max_speed);
-
+	
 		while (p1.speed_x != p1.max_speed)
 		{
 			p1.speed_x += p1.acceleration;
-
+	
 			if (p1.speed_x > p1.max_speed)
 			{
 				p1.speed_x = p1.max_speed;
 			}
 		}
-
+	
 		p1.p1_position.x += p1.speed_x; //p1.speed_x is positive here.
-
+	
 		LOG("Position %d %d", p1.p1_position.x, p1.p1_position.y);
-
+	
 		break;
-
+	
 	case goingLeft_P1:
-
+	
 		while (p1.speed_x != -p1.max_speed)
 		{
 			p1.speed_x -= p1.acceleration;
-
+	
 			if (p1.speed_x < -p1.max_speed)
 			{
 				p1.speed_x = -p1.max_speed;
 			}
 		}
-
+	
 		p1.p1_position.x += p1.speed_x;  //p1.speed_x  is negative here.
-
+	
 		break;
-
+	
 	case jumping_P1:
-		//p1.p1_jump_time = p1.p1_time - p1.p1_time_at_jump;
-		//p1.p1_position.y = p1.floor - (10*p1.p1_jump_time) + (0.5*(p1.p1_gravity) * (p1.p1_jump_time*p1.p1_jump_time));
-		//p1.p1_position.x = p1.speed_x;
-		//position_P1.y += p1.speed_y;
 
+
+		/*if (p1.grounded == true && jumpCount != 2)
+		{
+			p1.speed_y = -p1.acceleration * 12;
+	
+			p1.p1_position.y += p1.speed_y * 5;
+	
+			player.p1.grounded == true;
+		}*/
+	
+		if (p1.p1_grounded == true)
+		{
+			p1.speed_y = -p1.acceleration * 10;
+	
+			p1.p1_position.y += p1.speed_y * 5;
+	
+			//p1.p1_SetGroundState(false);
+		}
+	
+		p1.p1_SetGroundState(false);
 		break;
 	}
-
-	p1.p1_HitBox.x = p1.p1_position.x;
-	//p1.p1_HitBox.y = p1.p1_position.y;
-
-	if (p1.p1_position.y <= p1.floor)
+	
+	//If the p1 is in the air then this function brings him/her back down to the floor.
+	if (p1.p1_grounded == false)
 	{
-		p1.p1_position.y = p1.floor;
+		p1.speed_y += p1.acceleration;
+	
+		if (p1.speed_y > p1.max_speed)
+		{
+			p1.speed_y = p1.max_speed;
+		}
+	
+		p1.p1_position.y += p1.speed_y;
 	}
-
+	
+	//In case the HitBox clips through the ground.
+	if (p1.p1_position.y > p1.floor)
+	{
+		p1.p1_position.y = p1.floor - 1;
+		p1.p1_SetGroundState(true);
+	
+	}
+	
+	//We move the character according the position value after the state has been run.
+	p1.p1_HitBox.x = p1.p1_position.x; 
+	p1.p1_HitBox.y = p1.p1_position.y;
+	
+	//Draws the HitBox on-screen.
 	App->render->DrawQuad(p1.p1_HitBox, 255, 0, 0);
-
+	
 	return true;
 };
 
@@ -150,81 +190,103 @@ bool j1Player1::cleanUp()
 	return true;
 };
 
-<<<<<<< HEAD
+bool j1Player1::Load(pugi::xml_node& data)
+{
+	p1.p1_position.x = data.child("position").attribute("x").as_int();
+	p1.p1_position.y = data.child("position").attribute("y").as_int();
+
+
+	return true;
+}
+
+// Save Game State
+bool j1Player1::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node pos = data.append_child("position");
+
+	pos.append_attribute("x") = p1.p1_position.x;
+	pos.append_attribute("y") = p1.p1_position.y;
+	
+	return true;
+}
+
 //void j1Player1::Draw(SDL_Texture* sprites, float dt) 
 //{
 //
 //}
 
+
 =======
->>>>>>> 909525b319ed1caed168786cd622cae21737c207
+>>>>>>> b037ad0a5274300047e511cfe5537f7a357a76ed
+=======
+>>>>>>> b037ad0a5274300047e511cfe5537f7a357a76ed
 /*
 	p1_frames++;
 
 	switch (p1.p1_State)
 	{
-
+	
 	case idle_P1:
-
+	
 		p1.speed_x = 0;
-
+	
 		break;
-
+	
 	case goingRight_P1:
-
+	
 		//p1.p1_position.x += 10;
 
 
 		while (p1.speed_x != p1.max_speed)
 		{
 			p1.speed_x += p1.acceleration;
-
+	
 			if (p1.speed_x > p1.max_speed)
 			{
 				p1.speed_x = p1.max_speed;
 			}
 		}
-
+	
 		p1.p1_position.x += p1.speed_x; //p1.speed_x is positive here.
-
+	
 		break;
-
+	
 	case goingLeft_P1:
 		p1.p1_position.x -= 10;
-
+	
 		while (p1.speed_x != -p1.max_speed)
 		{
 			p1.speed_x -= p1.acceleration;
-
+	
 			if (p1.speed_x < -p1.max_speed)
 			{
 				p1.speed_x = -p1.max_speed;
 			}
 		}
-
+	
 		p1.p1_position.x += p1.speed_x;  //p1.speed_x  is negative here.
-
+	
 		break;
-
+	
 	case jumping_P1:
 		//p1.p1_jump_time = p1.p1_time - p1.p1_time_at_jump;
 		//p1.p1_position.y = p1.floor - (10*p1.p1_jump_time) + (0.5*(p1.p1_gravity) * (p1.p1_jump_time*p1.p1_jump_time));
 		//p1.p1_position.x = p1.speed_x;
 		//position_P1.y += p1.speed_y;
-
+	
 		break;
 	}
-
+	
 	p1.p1_HitBox.x = p1.p1_position.x;
 	//p1.p1_HitBox.y = p1.p1_position.y;
-
+	
 	if (p1.p1_position.y <= p1.floor)
 	{
 		p1.p1_position.y = p1.floor;
 	}
-
+	
 	App->render->DrawQuad(p1.p1_HitBox, 255, 0, 0);
-
+	
 	return true;
 */
 
@@ -235,33 +297,33 @@ pugi::xml_parse_result result = file.load_file("Config.xml");
 	if (result != NULL)
 	{
 		pugi::xml_node node = file.child("config");
-
+	
 		speed.x = node.child("player_1").child("speed").attribute("x").as_float();
 		speed.y = node.child("player_1").child("speed").attribute("y").as_float();
-
+	
 		player_size.x = node.child("player_1").child("idle_anim").attribute("w1").as_int();
 		player_size.y = node.child("player_1").child("idle_anim").attribute("h1").as_int();
-
+	
 		gravity = node.child("player_1").child("speed").attribute("gravity").as_float();
-
+	
 		jump = node.child("player").child("jump").attribute("normal").as_float();
-
+	
 		pugi::xml_node anim = node.child("player");
-
+	
 		idle.PushBack({ anim.child("idle_anim").attribute("x1").as_int(),anim.child("idle_anim").attribute("y1").as_int(),anim.child("idle_anim").attribute("w1").as_int(),anim.child("idle_anim").attribute("h1").as_int() });
 		idle.PushBack({ anim.child("idle_anim").attribute("x2").as_int(),anim.child("idle_anim").attribute("y2").as_int(),anim.child("idle_anim").attribute("w2").as_int(),anim.child("idle_anim").attribute("h2").as_int() });
 		idle.PushBack({ anim.child("idle_anim").attribute("x3").as_int(),anim.child("idle_anim").attribute("y3").as_int(),anim.child("idle_anim").attribute("w3").as_int(),anim.child("idle_anim").attribute("h3").as_int() });
 		idle.PushBack({ anim.child("idle_anim").attribute("x4").as_int(),anim.child("idle_anim").attribute("y4").as_int(),anim.child("idle_anim").attribute("w4").as_int(),anim.child("idle_anim").attribute("h4").as_int() });
 		idle.loop = true;
 		idle.speed = anim.child("idle_anim").attribute("speed").as_float();
-
+	
 		crouch.PushBack({ anim.child("crouch_anim").attribute("x1").as_int(),anim.child("crouch_anim").attribute("y1").as_int(),anim.child("crouch_anim").attribute("w1").as_int(),anim.child("crouch_anim").attribute("h1").as_int() });
 		crouch.PushBack({ anim.child("crouch_anim").attribute("x2").as_int(),anim.child("crouch_anim").attribute("y2").as_int(),anim.child("crouch_anim").attribute("w2").as_int(),anim.child("crouch_anim").attribute("h2").as_int() });
 		crouch.PushBack({ anim.child("crouch_anim").attribute("x3").as_int(),anim.child("crouch_anim").attribute("y3").as_int(),anim.child("crouch_anim").attribute("w3").as_int(),anim.child("crouch_anim").attribute("h3").as_int() });
 		crouch.PushBack({ anim.child("crouch_anim").attribute("x4").as_int(),anim.child("crouch_anim").attribute("y4").as_int(),anim.child("crouch_anim").attribute("w4").as_int(),anim.child("crouch_anim").attribute("h4").as_int() });
 		crouch.loop = true;
 		crouch.speed = anim.child("crouch_anim").attribute("speed").as_float();
-
+	
 		run.PushBack({ anim.child("run_anim").attribute("x1").as_int(),anim.child("run_anim").attribute("y1").as_int(),anim.child("run_anim").attribute("w1").as_int(),anim.child("run_anim").attribute("h1").as_int() });
 		run.PushBack({ anim.child("run_anim").attribute("x2").as_int(),anim.child("run_anim").attribute("y2").as_int(),anim.child("run_anim").attribute("w2").as_int(),anim.child("run_anim").attribute("h2").as_int() });
 		run.PushBack({ anim.child("run_anim").attribute("x3").as_int(),anim.child("run_anim").attribute("y3").as_int(),anim.child("run_anim").attribute("w3").as_int(),anim.child("run_anim").attribute("h3").as_int() });
@@ -270,12 +332,12 @@ pugi::xml_parse_result result = file.load_file("Config.xml");
 		run.PushBack({ anim.child("run_anim").attribute("x6").as_int(),anim.child("run_anim").attribute("y6").as_int(),anim.child("run_anim").attribute("w6").as_int(),anim.child("run_anim").attribute("h6").as_int() });
 		run.loop = true;
 		run.speed = anim.child("run_anim").attribute("speed").as_float();
-
+	
 		jump_anim.PushBack({ anim.child("jump_anim").attribute("x1").as_int(),anim.child("jump_anim").attribute("y1").as_int(),anim.child("jump_anim").attribute("w1").as_int(),anim.child("jump_anim").attribute("h1").as_int() });
 		jump_anim.PushBack({ anim.child("jump_anim").attribute("x2").as_int(),anim.child("jump_anim").attribute("y2").as_int(),anim.child("jump_anim").attribute("w2").as_int(),anim.child("jump_anim").attribute("h2").as_int() });
 		jump_anim.loop = false;
 		jump_anim.speed = anim.child("jump_anim").attribute("speed").as_float();
-
+	
 		top_jump = true;
 	}
 */
@@ -288,19 +350,19 @@ animation = &idle;
 		animation = &run;
 		position.x += speed.x * dt;
 	}
-
+	
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && dt != 0)
 	{
 		animation = &run;
 		position.x -= speed.x * dt;
 	}
-
+	
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN && dt != 0 || App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN && dt != 0)
 	{
 		animation = &crouch;
 		position.x = speed.x;
 	}
-
+	
 	if (stay_in_platform)
 	{
 		position.y -= gravity * dt;
@@ -326,9 +388,9 @@ animation = &idle;
 			animation = &jump_anim;
 			position.y -= (speed.y + gravity)*dt;
 		}
-
+	
 	}
-
+	
 	position.y += gravity * dt;
 	stay_in_platform = false;
 
@@ -348,23 +410,5 @@ bool j1Player1::cleanUp()
 
 */
 
-bool j1Player1::Load(pugi::xml_node& data)
-{
-	position.x = data.child("position").attribute("x").as_int();
-	position.y = data.child("position").attribute("y").as_int();
 
-
-	return true;
-}
-
-// Save Game State
-bool j1Player1::Save(pugi::xml_node& data) const
-{
-	pugi::xml_node pos = data.append_child("position");
-
-	pos.append_attribute("x") = position.x;
-	pos.append_attribute("y") = position.y;
-
-	return true;
-}
 

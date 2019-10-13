@@ -22,6 +22,12 @@ struct Input_P2
 	bool M_active; //Boost
 };
 
+struct Player2
+{
+	float speed_x;
+	float speed_y;
+};
+
 class j1Player2 : public j1Module {
 public://methods
 
