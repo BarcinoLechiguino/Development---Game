@@ -7,6 +7,7 @@
 #include "p2Log.h"
 #include "j1Map.h"
 #include "j1Scene.h"
+#include "j1Textures.h"
 
 j1Player1::j1Player1() //Constructor. Called at the first frame.
 {
@@ -21,6 +22,8 @@ j1Player1::~j1Player1()  //Destructor. Called at the last frame.
 
 bool j1Player1::Init() 
 {
+	Graphicsp1 = App->tex->Load("textures/Spritesheets/Character 1/Character_Spritesheet.png");
+
 	return true;
 };
 
@@ -71,7 +74,12 @@ bool j1Player1::PreUpdate()
 	{
 		p1.state = jumping_P1;
 	}
-	
+
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+	{
+		p1.state = crouch_P1;
+	}
+
 	return true;
 };
 
@@ -158,6 +166,8 @@ bool j1Player1::Update(float dt)
 	//Draws the HitBox on-screen.
 	App->render->DrawQuad(p1.HitBox, 255, 0, 0);
 	
+	
+	/*App->render->Blit(Graphicsp1, p1.position.x, p1.position.y, &)*/ //falta el sdl rect
 	return true;
 };
 

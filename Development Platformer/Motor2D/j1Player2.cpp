@@ -70,6 +70,11 @@ bool j1Player2::PreUpdate()
 		p2.state = jumping_P2;
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
+	{
+		p2.state = crouch_P2;
+	}
+
 	return true;
 };
 

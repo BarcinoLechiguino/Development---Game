@@ -11,6 +11,7 @@ enum P2_State {
 	goingRight_P2,
 	goingLeft_P2,
 	jumping_P2,
+	crouch_P2
 };
 
 struct Player2
@@ -91,6 +92,8 @@ private:
 	float p2_frames = 0;
 	//bool runFrames = false;
 	float p2_startFrame = 0;
+
+	SDL_Texture* Graphicsp2 = nullptr;
 };
 
 #endif __j1Player_2_H__

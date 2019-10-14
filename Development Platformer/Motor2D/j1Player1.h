@@ -12,7 +12,8 @@ enum P1_State
 	idle_P1,
 	goingRight_P1,
 	goingLeft_P1,
-	jumping_P1
+	jumping_P1,
+	crouch_P1
 };
 
 //struct Input_P1
@@ -89,6 +90,9 @@ public: //P1 Variables
 	bool Load(pugi::xml_node &node);
 	bool Save(pugi::xml_node &node) const;
 
+	SDL_Texture* Graphicsp1 = nullptr;
+	SDL_Rect rect;
+
 private:
 
 	//Animation idle;
@@ -102,6 +106,8 @@ private:
 	float frames = 0;
 	//bool runFrames = false;
 	float startFrame = 0;
+
+	
 };
 
 #endif __j1Player_1_H__
