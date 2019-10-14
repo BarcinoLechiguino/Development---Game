@@ -29,13 +29,13 @@ bool j1Player1::Awake(pugi::xml_node& config)
 	p1.position.x = config.child("player_1").child("position").attribute("x").as_float();
 	p1.position.y = config.child("player_1").child("position").attribute("y").as_float();
 
-	p1.speed_x = config.child("player_1").child("speed").attribute("x").as_float();
-	p1.speed_y = config.child("player_1").child("speed").attribute("y").as_float();
-	p1.max_speed_x = config.child("player_1").child("max_speed").attribute("x").as_float();
-	p1.max_speed_y = config.child("player_1").child("max_speed").attribute("y").as_float();
+	p1.speed.x = config.child("player_1").child("speed").attribute("x").as_float();
+	p1.speed.y = config.child("player_1").child("speed").attribute("y").as_float();
+	p1.max_speed.x = config.child("player_1").child("max_speed").attribute("x").as_float();
+	p1.max_speed.y = config.child("player_1").child("max_speed").attribute("y").as_float();
 
-	p1.acceleration_x = config.child("player_1").child("acceleration").attribute("x").as_float();
-	p1.acceleration_y = config.child("player_1").child("acceleration").attribute("y").as_float();
+	p1.acceleration.x = config.child("player_1").child("acceleration").attribute("x").as_float();
+	p1.acceleration.y = config.child("player_1").child("acceleration").attribute("y").as_float();
 	p1.gravity = config.child("player_1").child("gravity").attribute("value").as_float();
 	
 	return true;
@@ -86,21 +86,21 @@ bool j1Player1::Update(float dt)
 	
 	case idle_P1:
 	
-		p1.speed_x = 0;
+		p1.speed.x = 0;
 	
 		break;
 	
 	case goingRight_P1:
 	
-		LOG("P2 GOING RIGHT %d %d", p1.speed_x, p1.max_speed_x);
+		LOG("P2 GOING RIGHT %d %d", p1.speed.x, p1.max_speed.x);
 	
 		//As long as D is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
-		while (p1.speed_x != p1.max_speed_x)
+		while (p1.speed.x != p1.max_speed.x)
 		{
-			p1.speed_x += p1.acceleration_x;
+			p1.speed.x += p1.acceleration.x;
 		}
 	
-		p1.position.x += p1.speed_x; //p1.speed_x is positive here.
+		p1.position.x += p1.speed.x; //p1.speed_x is positive here.
 	
 		LOG("P2 Position %d %d", p1.position.x, p1.position.y);
 	
@@ -109,12 +109,12 @@ bool j1Player1::Update(float dt)
 	case goingLeft_P1:
 	
 		//As long as W is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
-		while (p1.speed_x != -p1.max_speed_x)
+		while (p1.speed.x != -p1.max_speed.x)
 		{
-			p1.speed_x -= p1.acceleration_x;
+			p1.speed.x -= p1.acceleration.x;
 		}
 	
-		p1.position.x += p1.speed_x;  //p1.speed_x  is negative here.
+		p1.position.x += p1.speed.x;  //p1.speed_x  is negative here.
 	
 		break;
 	
@@ -122,7 +122,7 @@ bool j1Player1::Update(float dt)
 	
 		if (p1.grounded == true /*|| p1.jumpCount != 2*/)
 		{
-			p1.speed_y = -p1.gravity;
+			p1.speed.y = -p1.gravity;
 	
 			/*jumpCount++;*/
 			p1.p1_isGrounded(false);
@@ -134,14 +134,14 @@ bool j1Player1::Update(float dt)
 	//If the p1 is in the air then this function brings him/her back down to the floor.
 	if (p1.grounded == false)
 	{
-		p1.speed_y += p1.acceleration_y;
+		p1.speed.y += p1.acceleration.y;
 		
-		if (p1.speed_y > p1.max_speed_y)
+		if (p1.speed.y > p1.max_speed.y)
 		{
-			p1.speed_y = p1.max_speed_y;
+			p1.speed.y = p1.max_speed.y;
 		}
 	
-		p1.position.y += p1.speed_y;
+		p1.position.y += p1.speed.y;
 	}
 	
 	//In case the HitBox clips through the ground.
@@ -196,76 +196,6 @@ bool j1Player1::Save(pugi::xml_node& data) const
 //{
 //
 //}
-
-/*
-	p1_frames++;
-
-	switch (p1.p1_State)
-	{
-	
-	case idle_P1:
-	
-		p1.speed_x = 0;
-	
-		break;
-	
-	case goingRight_P1:
-	
-		//p1.p1_position.x += 10;
-
-
-		while (p1.speed_x != p1.max_speed)
-		{
-			p1.speed_x += p1.acceleration;
-	
-			if (p1.speed_x > p1.max_speed)
-			{
-				p1.speed_x = p1.max_speed;
-			}
-		}
-	
-		p1.p1_position.x += p1.speed_x; //p1.speed_x is positive here.
-	
-		break;
-	
-	case goingLeft_P1:
-		p1.p1_position.x -= 10;
-	
-		while (p1.speed_x != -p1.max_speed)
-		{
-			p1.speed_x -= p1.acceleration;
-	
-			if (p1.speed_x < -p1.max_speed)
-			{
-				p1.speed_x = -p1.max_speed;
-			}
-		}
-	
-		p1.p1_position.x += p1.speed_x;  //p1.speed_x  is negative here.
-	
-		break;
-	
-	case jumping_P1:
-		//p1.p1_jump_time = p1.p1_time - p1.p1_time_at_jump;
-		//p1.p1_position.y = p1.floor - (10*p1.p1_jump_time) + (0.5*(p1.p1_gravity) * (p1.p1_jump_time*p1.p1_jump_time));
-		//p1.p1_position.x = p1.speed_x;
-		//position_P1.y += p1.speed_y;
-	
-		break;
-	}
-	
-	p1.p1_HitBox.x = p1.p1_position.x;
-	//p1.p1_HitBox.y = p1.p1_position.y;
-	
-	if (p1.p1_position.y <= p1.floor)
-	{
-		p1.p1_position.y = p1.floor;
-	}
-	
-	App->render->DrawQuad(p1.p1_HitBox, 255, 0, 0);
-	
-	return true;
-*/
 
 /*
 Awake(int x, int y) code Gerard:

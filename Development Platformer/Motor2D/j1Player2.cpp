@@ -27,13 +27,13 @@ bool j1Player2::Awake(pugi::xml_node& config)
 	p2.position.x = config.child("player_2").child("position").attribute("x").as_float();
 	p2.position.y = config.child("player_2").child("position").attribute("y").as_float();
 
-	p2.speed_x = config.child("player_2").child("speed").attribute("x").as_float();
-	p2.speed_y = config.child("player_2").child("speed").attribute("y").as_float();
-	p2.max_speed_x = config.child("player_2").child("max_speed").attribute("x").as_float();
-	p2.max_speed_y = config.child("player_2").child("max_speed").attribute("y").as_float();
+	p2.speed.x = config.child("player_2").child("speed").attribute("x").as_float();
+	p2.speed.y = config.child("player_2").child("speed").attribute("y").as_float();
+	p2.max_speed.x = config.child("player_2").child("max_speed").attribute("x").as_float();
+	p2.max_speed.y = config.child("player_2").child("max_speed").attribute("y").as_float();
 
-	p2.acceleration_x = config.child("player_2").child("acceleration").attribute("x").as_float();
-	p2.acceleration_y = config.child("player_2").child("acceleration").attribute("y").as_float();
+	p2.acceleration.x = config.child("player_2").child("acceleration").attribute("x").as_float();
+	p2.acceleration.y = config.child("player_2").child("acceleration").attribute("y").as_float();
 	p2.gravity = config.child("player_2").child("gravity").attribute("value").as_float();
 
 	return true;
@@ -84,21 +84,21 @@ bool j1Player2::Update(float dt)
 
 	case idle_P2:
 
-		p2.speed_x = 0;
+		p2.speed.x = 0;
 
 		break;
 
 	case goingRight_P2:
 
-		LOG("P2 GOING RIGHT %d %d", p2.speed_x, p2.max_speed_x);
+		LOG("P2 GOING RIGHT %d %d", p2.speed.x, p2.max_speed.x);
 
 		//As long as D is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
-		while (p2.speed_x != p2.max_speed_x)
+		while (p2.speed.x != p2.max_speed.x)
 		{
-			p2.speed_x += p2.acceleration_x;
+			p2.speed.x += p2.acceleration.x;
 		}
 
-		p2.position.x += p2.speed_x; //p2.speed_x is positive here.
+		p2.position.x += p2.speed.x; //p2.speed_x is positive here.
 
 		LOG("P2 Position %d %d", p2.position.x, p2.position.y);
 
@@ -107,12 +107,12 @@ bool j1Player2::Update(float dt)
 	case goingLeft_P2:
 
 		//As long as W is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
-		while (p2.speed_x != -p2.max_speed_x)
+		while (p2.speed.x != -p2.max_speed.x)
 		{
-			p2.speed_x -= p2.acceleration_x;
+			p2.speed.x -= p2.acceleration.x;
 		}
 
-		p2.position.x += p2.speed_x;  //p2.speed_x  is negative here.
+		p2.position.x += p2.speed.x;  //p2.speed_x  is negative here.
 
 		break;
 
@@ -120,7 +120,7 @@ bool j1Player2::Update(float dt)
 
 		if (p2.grounded == true /*|| p2.jumpCount != 2*/)
 		{
-			p2.speed_y = -p2.gravity;
+			p2.speed.y = -p2.gravity;
 
 			/*jumpCount++;*/
 			p2.p2_isGrounded(false);
@@ -132,14 +132,14 @@ bool j1Player2::Update(float dt)
 	//If the p2 is in the air then this function brings him/her back down to the floor.
 	if (p2.grounded == false)
 	{
-		p2.speed_y += p2.acceleration_y;
+		p2.speed.y += p2.acceleration.y;
 
-		if (p2.speed_y > p2.max_speed_x)
+		if (p2.speed.y > p2.max_speed.x)
 		{
-			p2.speed_y = p2.max_speed_x;
+			p2.speed.y = p2.max_speed.x;
 		}
 
-		p2.position.y += p2.speed_y;
+		p2.position.y += p2.speed.y;
 	}
 
 	//In case the HitBox clips through the ground.

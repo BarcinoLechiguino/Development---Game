@@ -26,13 +26,13 @@ enum P1_State
 
 struct Player1
 {
-	float speed_x; //Speed on X. Basic Movement
-	float speed_y; //Speed on Y. Used for jumps.
-	float max_speed_x; //Cruiser speed for the x axis.
-	float max_speed_y; //Cruiser speed for the y axis.
+	p2Point<float> position; //Vector with the position of P1
+	p2Point<float> pre_Jump_Position; //
+	
+	p2Point<float> speed; //Speed on X. Basic Movement
+	p2Point<float> max_speed; //Cruiser speed for both axis.
 
-	float acceleration_x; //Time it takes the player to reach Cruiser Speed horizontally.
-	float acceleration_y; //Time it takes the player to reach Cruiser Speed vertically.
+	p2Point<float> acceleration; //Time it takes the player to reach Cruiser Speed horizontally and/or vertically.
 	float gravity; //Acceleration variable for jumps. Gravitational Pull.
 	
 	bool grounded; //Defines whether the player is standing or jumping.
@@ -49,8 +49,6 @@ struct Player1
 	};
 	
 	SDL_Rect HitBox; //Rectangle that represents the player.
-	p2Point<float> position; //Vector with the position of P1
-	p2Point<float> pre_Jump_Position; //
 	P1_State state; //Adds the state enum to the player's variables.
 
 	//Temporal Variables
