@@ -92,7 +92,7 @@ bool j1Player1::Update(float dt)
 	
 	case goingRight_P1:
 	
-		LOG("GOING RIGHT %d %d", p1.speed_x, p1.max_speed_x);
+		LOG("P2 GOING RIGHT %d %d", p1.speed_x, p1.max_speed_x);
 	
 		//As long as D is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
 		while (p1.speed_x != p1.max_speed_x)
@@ -102,7 +102,7 @@ bool j1Player1::Update(float dt)
 	
 		p1.position.x += p1.speed_x; //p1.speed_x is positive here.
 	
-		LOG("Position %d %d", p1.position.x, p1.position.y);
+		LOG("P2 Position %d %d", p1.position.x, p1.position.y);
 	
 		break;
 	
