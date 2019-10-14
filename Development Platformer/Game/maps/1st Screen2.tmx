@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="52" height="42" tilewidth="32" tileheight="32" infinite="0" nextlayerid="29" nextobjectid="96">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="52" height="42" tilewidth="32" tileheight="32" infinite="0" nextlayerid="29" nextobjectid="97">
  <tileset firstgid="1" name="Layer_0010_1" tilewidth="32" tileheight="32" tilecount="2484" columns="54">
   <image source="Layer_0010_1.png" width="1736" height="1483"/>
  </tileset>
@@ -38040,7 +38040,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="19961"/>
    <tile/>
    <tile/>
    <tile/>
@@ -38092,7 +38091,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="19981"/>
    <tile/>
    <tile/>
    <tile/>
@@ -38144,7 +38142,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="19981"/>
    <tile/>
    <tile/>
    <tile/>
@@ -38196,7 +38193,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="20001"/>
    <tile/>
    <tile/>
    <tile/>
@@ -38247,7 +38243,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="19961"/>
    <tile/>
    <tile/>
    <tile/>
@@ -38299,7 +38294,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="19981"/>
    <tile/>
    <tile/>
    <tile/>
@@ -38351,7 +38345,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="19981"/>
    <tile/>
    <tile/>
    <tile/>
@@ -38403,7 +38396,14 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="20001"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -41667,17 +41667,18 @@
   </object>
   <object id="32" type="1" x="769.167" y="736" width="92" height="36"/>
   <object id="33" type="1" x="611.167" y="737" width="94" height="32"/>
-  <object id="34" type="1" x="672.167" y="606" width="34" height="34"/>
+  <object id="34" type="1" x="640.167" y="606" width="66" height="34"/>
   <object id="35" type="1" x="865.167" y="829" width="93" height="33"/>
   <object id="36" type="1" x="1027.17" y="961" width="93" height="33"/>
   <object id="37" type="1" x="1156.17" y="1023" width="91" height="68"/>
-  <object id="38" type="1" x="706.167" y="491">
-   <polygon points="0,0 94,96 156,95 156,83 98,84 0,-12"/>
+  <object id="38" type="1" x="703.167" y="491">
+   <polygon points="0,0 95.8077,96 159,95 159,83 99.8846,84 0,-12"/>
   </object>
   <object id="39" type="1" x="37.1667" y="417" width="121" height="32"/>
   <object id="40" type="1" x="37.1667" y="669" width="186" height="37"/>
   <object id="41" type="1" x="36.1667" y="928" width="251" height="34"/>
   <object id="42" type="1" x="1411.17" y="1247" width="218" height="46"/>
+  <object id="96" type="1" x="671.667" y="478.667" width="32" height="18"/>
  </objectgroup>
  <objectgroup id="23" name="Dead">
   <object id="43" type="2" x="37" y="1165.5" width="61" height="22"/>
@@ -41729,10 +41730,7 @@
  <objectgroup id="25" name="Desactivable">
   <object id="87" type="3" x="1475" y="63.5" width="92" height="17"/>
  </objectgroup>
- <objectgroup id="26" name="Ladders">
-  <object id="90" type="7" x="640" y="608" width="33" height="127"/>
-  <object id="91" type="7" x="673" y="480" width="31" height="127"/>
- </objectgroup>
+ <objectgroup id="26" name="Ladders"/>
  <objectgroup id="27" name="Respawn">
   <object id="94" type="5" x="127.5" y="1119" width="69" height="67"/>
  </objectgroup>
