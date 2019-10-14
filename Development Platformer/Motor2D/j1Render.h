@@ -5,6 +5,12 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
+struct fixedCamera
+{
+	int midPosX;
+	int midPosY;
+};
+
 class j1Render : public j1Module
 {
 public:
@@ -44,7 +50,8 @@ public:
 	void SetBackgroundColor(SDL_Color color);
 
 public:
-
+	fixedCamera cam;
+	
 	SDL_Renderer*	renderer;
 	SDL_Rect		camera;
 	SDL_Rect		viewport;

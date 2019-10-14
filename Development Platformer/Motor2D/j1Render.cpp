@@ -3,6 +3,8 @@
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Render.h"
+#include "j1Player1.h"
+#include "j1Player2.h"
 
 #define VSYNC true
 
@@ -69,6 +71,27 @@ bool j1Render::PreUpdate()
 
 bool j1Render::Update(float dt)
 {
+	if (App->player1->p1.position.x < App->player2->p2.position.x)
+	{
+		cam.midPosX = App->player1->p1.position.x + ((App->player2->p2.position.x - App->player1->p1.position.x) / 2);
+	}
+	else
+	{
+		cam.midPosX = App->player2->p2.position.x + ((App->player1->p1.position.x - App->player2->p2.position.x) / 2);
+	}
+
+	/*if (App->player1->p1.position.y > App->player2->p2.position.y)
+	{
+		cam.midPosY = App->player2->p2.position.y + ((App->player2->p2.position.y - App->player1->p1.position.y) / 2);
+	}
+	else
+	{
+		cam.midPosY = App->player1->p1.position.x + ((App->player1->p1.position.y - App->player2->p2.position.y) / 2);
+	}*/
+	
+	camera.x = cam.midPosX;
+	//camera.y = cam.midPosY;
+
 	return true;
 }
 
