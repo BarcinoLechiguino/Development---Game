@@ -10,35 +10,57 @@ enum P2_State {
 	idle_P2,
 	goingRight_P2,
 	goingLeft_P2,
-	jumpState_P2,
-};
-
-struct Input_P2
-{
-	bool H_active; //Go Left
-	bool K_active; //Go Right
-	bool U_active; //Jump
-	bool J_active; //Crouch
-	bool M_active; //Boost
+	jumping_P2,
 };
 
 struct Player2
 {
-	float speed_x;
-	float speed_y;
+	float speed_x; //Speed on X. Basic Movement
+	float speed_y; //Speed on Y. Used for jumps.
+	float max_speed_x; //Cruiser speed for the x axis.
+	float max_speed_y; //Cruiser speed for the y axis.
+
+	float acceleration_x; //Time it takes the player to reach Cruiser Speed horizontally.
+	float acceleration_y; //Time it takes the player to reach Cruiser Speed vertically.
+	float gravity; //Acceleration variable for jumps. Gravitational Pull.
+
+	bool grounded; //Defines whether the player is standing or jumping.
+
+	//Changes the state of the player depending on the given argument. Also if true it records the position from where the player jumped.
+	void p2_isGrounded(bool yesnt)
+	{
+		if (grounded == true)
+		{
+			pre_Jump_Position = position;
+		}
+
+		grounded = yesnt;
+	};
+
+	SDL_Rect HitBox; //Rectangle that represents the player.
+	p2Point<float> position; //Vector with the position of P1
+	p2Point<float> pre_Jump_Position; //
+	P2_State state; //Adds the state enum to the player's variables.
+
+	//Temporal Variables
+	int sprite_width = /*20*/ 38;
+	int sprite_height = /*30*/64;
+	float floor = 1055.0f;
 };
 
-class j1Player2 : public j1Module {
+struct SDL_Texture;
+
+class j1Player2 : public j1Module
+{
 public://methods
 
 	j1Player2();
-
 	// Destructor
 	virtual ~j1Player2();
 
 	bool Init();
 
-	bool Awake(pugi::xml_node config);
+	bool Awake(pugi::xml_node&);
 
 	bool Start();
 
@@ -50,31 +72,27 @@ public://methods
 
 	bool cleanUp();
 
+public: //P1 Variables
+
+	Player2 p2;
+
+	void OnCollision(Collider* collider);
+	bool Load(pugi::xml_node &node);
+	bool Save(pugi::xml_node &node) const;
+
 private:
 
+	//Animation idle;
+	//Animation jump_anim;
+	//Animation run;
+	//Animation crouch;
+	//iPoint player_size;
 
-public://variables
+	//pugi::xml_document file;
 
-
-
-
-
-private:
-
-	float floor = 500.0f;
-
-	int boxW = 50;
-	int boxH = 100;
-
-	float playerSpeed = 5;
-
-	int accelerationFrames = 0;
-
-
-	SDL_Rect P2_Sprite;
-	p2Point<float> position_P2;
-
-	P2_State P2_State;
+	float p2_frames = 0;
+	//bool runFrames = false;
+	float p2_startFrame = 0;
 };
 
-#endif // __j1Player_2_H__
+#endif __j1Player_2_H__

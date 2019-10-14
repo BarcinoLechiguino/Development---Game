@@ -28,29 +28,30 @@ struct Player1
 {
 	float speed_x; //Speed on X. Basic Movement
 	float speed_y; //Speed on Y. Used for jumps.
-	float max_speed; //Cruiser speed for the player.
+	float max_speed_x; //Cruiser speed for the x axis.
+	float max_speed_y; //Cruiser speed for the y axis.
 
 	float acceleration_x; //Time it takes the player to reach Cruiser Speed horizontally.
 	float acceleration_y; //Time it takes the player to reach Cruiser Speed vertically.
-	float p1_gravity; //Acceleration variable for jumps. Gravitational Pull.
+	float gravity; //Acceleration variable for jumps. Gravitational Pull.
 	
-	bool p1_grounded; //Defines whether the player is standing or jumping.
+	bool grounded; //Defines whether the player is standing or jumping.
 
 	//Changes the state of the player depending on the given argument. Also if true it records the position from where the player jumped.
 	void p1_isGrounded(bool yesnt)
 	{
-		if (p1_grounded == true)
+		if (grounded == true)
 		{
-			p1_pre_Jump_Position = p1_position;
+			pre_Jump_Position = position;
 		}
 
-		p1_grounded = yesnt;
+		grounded = yesnt;
 	};
 	
-	SDL_Rect p1_HitBox; //Rectangle that represents the player.
-	p2Point<float> p1_position; //Vector with the position of P1
-	p2Point<float> p1_pre_Jump_Position; //
-	P1_State p1_State; //Adds the state enum to the player's variables.
+	SDL_Rect HitBox; //Rectangle that represents the player.
+	p2Point<float> position; //Vector with the position of P1
+	p2Point<float> pre_Jump_Position; //
+	P1_State state; //Adds the state enum to the player's variables.
 
 	//Temporal Variables
 	int sprite_width = /*20*/ 38;
@@ -100,9 +101,9 @@ private:
 
 	//pugi::xml_document file;
 
-	float p1_frames = 0;
+	float frames = 0;
 	//bool runFrames = false;
-	float p1_startFrame = 0;
+	float startFrame = 0;
 };
 
 #endif __j1Player_1_H__

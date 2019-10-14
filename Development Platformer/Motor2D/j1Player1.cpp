@@ -26,21 +26,25 @@ bool j1Player1::Init()
 
 bool j1Player1::Awake(pugi::xml_node& config) 
 {	
+	p1.position.x = config.child("player_1").child("position").attribute("x").as_float();
+	p1.position.y = config.child("player_1").child("position").attribute("y").as_float();
+
 	p1.speed_x = config.child("player_1").child("speed").attribute("x").as_float();
 	p1.speed_y = config.child("player_1").child("speed").attribute("y").as_float();
-	p1.max_speed = config.child("player_1").child("max_speed").attribute("value").as_float();
-	
+	p1.max_speed_x = config.child("player_1").child("max_speed").attribute("x").as_float();
+	p1.max_speed_y = config.child("player_1").child("max_speed").attribute("y").as_float();
+
 	p1.acceleration_x = config.child("player_1").child("acceleration").attribute("x").as_float();
 	p1.acceleration_y = config.child("player_1").child("acceleration").attribute("y").as_float();
-	p1.p1_gravity = config.child("player_1").child("gravity").attribute("value").as_float();
+	p1.gravity = config.child("player_1").child("gravity").attribute("value").as_float();
 	
 	return true;
 };
 
 bool j1Player1::Start() 
 {
-	p1.p1_position = { 100.0f, p1.floor };
-	p1.p1_HitBox = { (int)p1.p1_position.x,(int)p1.p1_position.y, p1.sprite_width, p1.sprite_height }; //Casked to int "(int)" for optimization.
+	p1.position = { p1.position.x, p1.position.y };
+	p1.HitBox = { (int)p1.position.x,(int)p1.position.y, p1.sprite_width, p1.sprite_height }; //Casked to int "(int)" for optimization.
 
 	p1.p1_isGrounded(true);
 	
@@ -51,21 +55,21 @@ bool j1Player1::PreUpdate()
 {
 	//p1.p1_SetGroundState(false); //set  to false when colliders are implemented.
 	
-	p1.p1_State = idle_P1;
+	p1.state = idle_P1;
 	
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
 	{
-		p1.p1_State = goingRight_P1;
+		p1.state = goingRight_P1;
 	}
 	
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
 	{
-		p1.p1_State = goingLeft_P1;
+		p1.state = goingLeft_P1;
 	}
 	
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) 
 	{
-		p1.p1_State = jumping_P1;
+		p1.state = jumping_P1;
 	}
 	
 	return true;
@@ -73,11 +77,11 @@ bool j1Player1::PreUpdate()
 
 bool j1Player1::Update(float dt) 
 {
-	p1_frames++;
+	frames++;
 
 	//p1.p1_lastGrounded = p1.p1_position;
 	
-	switch (p1.p1_State)
+	switch (p1.state)
 	{
 	
 	case idle_P1:
@@ -88,37 +92,37 @@ bool j1Player1::Update(float dt)
 	
 	case goingRight_P1:
 	
-		LOG("GOING RIGHT %d %d", p1.speed_x, p1.max_speed);
+		LOG("GOING RIGHT %d %d", p1.speed_x, p1.max_speed_x);
 	
 		//As long as D is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
-		while (p1.speed_x != p1.max_speed)
+		while (p1.speed_x != p1.max_speed_x)
 		{
 			p1.speed_x += p1.acceleration_x;
 		}
 	
-		p1.p1_position.x += p1.speed_x; //p1.speed_x is positive here.
+		p1.position.x += p1.speed_x; //p1.speed_x is positive here.
 	
-		LOG("Position %d %d", p1.p1_position.x, p1.p1_position.y);
+		LOG("Position %d %d", p1.position.x, p1.position.y);
 	
 		break;
 	
 	case goingLeft_P1:
 	
 		//As long as W is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
-		while (p1.speed_x != -p1.max_speed)
+		while (p1.speed_x != -p1.max_speed_x)
 		{
 			p1.speed_x -= p1.acceleration_x;
 		}
 	
-		p1.p1_position.x += p1.speed_x;  //p1.speed_x  is negative here.
+		p1.position.x += p1.speed_x;  //p1.speed_x  is negative here.
 	
 		break;
 	
 	case jumping_P1:
 	
-		if (p1.p1_grounded == true /*|| p1.jumpCount != 2*/)
+		if (p1.grounded == true /*|| p1.jumpCount != 2*/)
 		{
-			p1.speed_y = -p1.p1_gravity;
+			p1.speed_y = -p1.gravity;
 	
 			/*jumpCount++;*/
 			p1.p1_isGrounded(false);
@@ -128,31 +132,31 @@ bool j1Player1::Update(float dt)
 	}
 	
 	//If the p1 is in the air then this function brings him/her back down to the floor.
-	if (p1.p1_grounded == false)
+	if (p1.grounded == false)
 	{
 		p1.speed_y += p1.acceleration_y;
 		
-		if (p1.speed_y > p1.max_speed)
+		if (p1.speed_y > p1.max_speed_y)
 		{
-			p1.speed_y = p1.max_speed;
+			p1.speed_y = p1.max_speed_y;
 		}
 	
-		p1.p1_position.y += p1.speed_y;
+		p1.position.y += p1.speed_y;
 	}
 	
 	//In case the HitBox clips through the ground.
-	if (p1.p1_position.y > p1.floor)
+	if (p1.position.y > p1.floor)
 	{
-		p1.p1_position.y = p1.floor - 1;
+		p1.position.y = p1.floor - 1;
 		p1.p1_isGrounded(true);
 	}
 
 	//We move the character according the position value after the state has been run.
-	p1.p1_HitBox.x = p1.p1_position.x; 
-	p1.p1_HitBox.y = p1.p1_position.y;
+	p1.HitBox.x = p1.position.x; 
+	p1.HitBox.y = p1.position.y;
 	
 	//Draws the HitBox on-screen.
-	App->render->DrawQuad(p1.p1_HitBox, 255, 0, 0);
+	App->render->DrawQuad(p1.HitBox, 255, 0, 0);
 	
 	return true;
 };
@@ -170,8 +174,8 @@ bool j1Player1::cleanUp()
 
 bool j1Player1::Load(pugi::xml_node& data)
 {
-	p1.p1_position.x = data.child("position").attribute("x").as_int();
-	p1.p1_position.y = data.child("position").attribute("y").as_int();
+	p1.position.x = data.child("position").attribute("x").as_int();
+	p1.position.y = data.child("position").attribute("y").as_int();
 
 
 	return true;
@@ -182,8 +186,8 @@ bool j1Player1::Save(pugi::xml_node& data) const
 {
 	pugi::xml_node pos = data.append_child("position");
 
-	pos.append_attribute("x") = p1.p1_position.x;
-	pos.append_attribute("y") = p1.p1_position.y;
+	pos.append_attribute("x") = p1.position.x;
+	pos.append_attribute("y") = p1.position.y;
 	
 	return true;
 }

@@ -23,7 +23,7 @@
     <player_1>
       <position x="100" y="1055"/>
       <speed x="0" y="0"/>
-      <max_speed value="10"/>
+      <max_speed x="10" y="10"/>
       <acceleration x="1" y="1.4"/>
       <gravity value="15"/>
       <boost x="10"  y="10"/>
