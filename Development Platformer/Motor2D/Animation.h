@@ -18,9 +18,9 @@ private:
 
 public:
 
-	void PushBack(const SDL_Rect& rect)
+	void PushBack(const SDL_Rect& collider)
 	{
-		frames[last_frame++] = rect;
+		frames[last_frame++] = collider;
 	}
 
 	SDL_Rect& GetCurrentFrame()

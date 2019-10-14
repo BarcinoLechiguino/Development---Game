@@ -15,19 +15,20 @@ struct SDL_Rect;
 class Animation; 
 
 struct Collider;
-enum COLLIDER_TYPE
-{
-	COLLIDER_NONE = -1,
-	COLLIDER_WALL,
-	COLLIDER_PLAYER,
-	COLLIDER_START,
-	COLLIDER_DEATH,
-	COLLIDER_WIN,
-	COLLIDER_ACTIVABLE,
-	COLLIDER_LADDER,
-	COLLIDER_GONE,
-	COLLIDER_MAX
-};
+
+//enum COLLIDER_TYPE
+//{
+//	COLLIDER_NONE = -1,
+//	COLLIDER_WALL,
+//	COLLIDER_PLAYER,
+//	COLLIDER_START,
+//	COLLIDER_DEATH,
+//	COLLIDER_WIN,
+//	COLLIDER_ACTIVABLE,
+//	COLLIDER_LADDER,
+//	COLLIDER_GONE,
+//	COLLIDER_MAX
+//};
 
 class j1Module
 {
@@ -87,13 +88,12 @@ public:
 		return true;
 	}
 
+	virtual void OnCollision(Collider* c1, Collider* c2) {}
+
 public:
 
 	p2SString	name;
 	bool		active;
-
-	//virtual void OnCollision(Collider*, Collider*) {}
-
 };
 
 #endif // __j1MODULE_H__
