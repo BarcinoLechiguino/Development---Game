@@ -48,6 +48,17 @@ enum MapTypes
 	MAPTYPE_ISOMETRIC,
 	MAPTYPE_STAGGERED
 };
+
+//Items that scene has
+struct Scenes
+{
+	bool active = false;
+	uint levelnum = 0;
+	p2SString level_tmx;
+	p2SString musicPath;
+
+};
+
 // ----------------------------------------------------
 struct MapData
 {
@@ -60,7 +71,10 @@ struct MapData
 
 	p2List<TileSet*>	tilesets;
 	p2List<MapLayer*>	layers;
+	p2List<Scenes*>		scenes_List;
 };
+
+
 
 // ----------------------------------------------------
 class j1Map : public j1Module
@@ -87,6 +101,24 @@ public:
 	inline uint ArrayPos(int x, int y);
 	iPoint MapToWorld(int x, int y);
 
+	uint num_thismaplvl = 1; //number of the level that is loaded
+
+	p2List_item<Scenes*>* activateScene(uint lvlnum)//function that identificates the active scene, turns it to false and loads the new one
+	{
+		p2List_item<Scenes*>* item_scene;
+
+		for (item_scene = data.scenes_List.start; item_scene; item_scene = item_scene->next)
+		{
+			item_scene->data->active = false;
+		}
+		for (item_scene = data.scenes_List.start; item_scene->data->levelnum != lvlnum && item_scene != nullptr; item_scene = item_scene->next)
+		{
+		}
+		item_scene->data->active = true;
+		atualSceneItem = item_scene;
+		return item_scene;
+	}
+
 private:
 
 	bool LoadMap();
@@ -94,7 +126,6 @@ private:
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	TileSet* GetTileset(int id);
-
 
 public:
 
@@ -105,6 +136,7 @@ private:
 	pugi::xml_document	map_file;
 	p2SString			folder;
 	bool				map_loaded;
+	p2List_item<Scenes*>* atualSceneItem = nullptr;
 };
 
 #endif // __j1MAP_H__

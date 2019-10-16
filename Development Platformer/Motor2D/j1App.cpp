@@ -27,13 +27,12 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	render = new j1Render();
 	tex = new j1Textures();
 	audio = new j1Audio();
-	fade = new j1FadetoBlack();
 	scene = new j1Scene();
 	map = new j1Map();
-	collisions = new j1Collisions();
 	player1 = new j1Player1();
 	player2 = new j1Player2();
-
+	collisions = new j1Collisions();
+	fade = new j1FadetoBlack();
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 	AddModule(input);

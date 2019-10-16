@@ -4,6 +4,7 @@
   <app>
     <title>Mutual Cooperation</title>
     <organization>UPC</organization>
+    <saveFile>save_game.xml</saveFile>
   </app>
 	
   <renderer>
@@ -78,7 +79,9 @@
 
   <map>
     <folder>maps/</folder>
-    <stage name="Tutorial Screen2.tmx"/>
+    <scenes  tmx="Tutorial Screen2.tmx" lvlnum="1" music="audio/music/spooky_skeletons.ogg"/>
+    <scenes  tmx="1st Screen2.tmx" lvlnum="2" music="audio/music/spooky.ogg"/>
   </map>
+
 
 </config>

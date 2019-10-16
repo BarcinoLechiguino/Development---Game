@@ -53,6 +53,7 @@ void j1Map::Draw()
 			}
 		}
 	}
+
 }
 
 SDL_Rect TileSet::GetRect(int id) {

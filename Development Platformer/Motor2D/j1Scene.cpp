@@ -94,6 +94,22 @@ bool j1Scene::Update(float dt)
 			App->map->data.tilesets.count());
 
 		App->win->SetTitle(title.GetString());
+
+		if (App->input->GetKey(SDL_SCANCODE_F1))
+		{
+			App->fade->FadeToBlack(1);
+
+		}
+		if (App->input->GetKey(SDL_SCANCODE_F2))
+		{
+			App->fade->FadeToBlack(2);
+		}
+		if (App->input->GetKey(SDL_SCANCODE_F3))
+		{
+			App->fade->FadeToBlack(App->map->num_thismaplvl);
+		}
+		
+
 		return true;
 }
 

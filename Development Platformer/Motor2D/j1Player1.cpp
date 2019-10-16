@@ -166,8 +166,9 @@ bool j1Player1::Update(float dt)
 	//Draws the HitBox on-screen.
 	App->render->DrawQuad(p1.HitBox, 255, 0, 0);
 	
+	//rect = current_animation->GetCurrentFrame();
 	
-	/*App->render->Blit(Graphicsp1, p1.position.x, p1.position.y, &)*/ //falta el sdl rect
+	//App->render->Blit(Graphicsp1, p1.position.x, p1.position.y, &rect); //falta el sdl rect
 	return true;
 };
 
