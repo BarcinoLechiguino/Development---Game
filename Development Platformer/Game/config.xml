@@ -4,12 +4,10 @@
   <app>
     <title>Mutual Cooperation</title>
     <organization>UPC</organization>
-    <saveFile>save_game.xml</saveFile>
   </app>
 	
   <renderer>
     <vsync value="true"/>
-    <camera x="0" y="-575"/>
   </renderer>
 
   <window>
@@ -19,6 +17,10 @@
     <resizable value="false"/>
     <fullscreen_window value="false"/>
   </window>
+
+  <file_system>
+    <path>data.zip</path>
+  </file_system>
 
   <player>
     <player_1>
@@ -73,15 +75,24 @@
     </player_2>
   </player>
 
-  <file_system>
-    <path>data.zip</path>
-  </file_system>
+  <audio>
+    <music>
+      <folder>audio/music/</folder>
+    </music>
+    <sfx>
+      <folder>audio/fx/</folder>
+    </sfx>
+  </audio>
 
   <map>
     <folder>maps/</folder>
-    <scenes  tmx="Tutorial Screen2.tmx" lvlnum="1" music="audio/music/spooky_skeletons.ogg"/>
-    <scenes  tmx="1st Screen2.tmx" lvlnum="2" music="audio/music/spooky.ogg"/>
   </map>
+  
+  <scene>
+    <map_name name="Tutorial Screen2.tmx"></map_name>
+    <map_name name="1st Screen2.tmx"></map_name>
+    <fade_time value="1"/>
+  </scene>
 
 
 </config>

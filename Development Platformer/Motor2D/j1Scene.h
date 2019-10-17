@@ -5,6 +5,12 @@
 
 struct SDL_Texture;
 
+enum ListOfMapNames
+{
+	TutorialLevel = 0,
+	FirstLevel
+};
+
 class j1Scene : public j1Module
 {
 public:
@@ -15,7 +21,7 @@ public:
 	virtual ~j1Scene();
 
 	// Called before render is available
-	bool Awake();
+	bool Awake(pugi::xml_node&);
 
 	// Called before the first frame
 	bool Start();
@@ -32,12 +38,17 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	bool Load(pugi::xml_node& data);
+	bool Save(pugi::xml_node& data) const;
+
+	bool Load_lvl(int time);
 private:
 
 public:
-	bool load = false;
-	bool tutorial_map = true;
-	bool map_saved = true;
+	int currentMap;
+	p2List<p2SString*> map_names;
+	float fade_time;
+	bool to_end;
 };
 
 #endif // __j1SCENE_H__

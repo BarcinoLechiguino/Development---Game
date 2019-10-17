@@ -10,11 +10,11 @@
 #include "j1Audio.h"
 #include "j1Scene.h"
 #include "j1Map.h"
-#include "j1FadetoBlack.h"
 #include "j1Collisions.h"
 #include "j1Player1.h"
 #include "j1Player2.h"
 #include "j1App.h"
+#include "j1FadeScene.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -32,7 +32,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	player1 = new j1Player1();
 	player2 = new j1Player2();
 	collisions = new j1Collisions();
-	fade = new j1FadetoBlack();
+	fadescene = new j1Fade_Scene();
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 	AddModule(input);
@@ -44,6 +44,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(collisions);
 	AddModule(player1);
 	AddModule(player2);
+	AddModule(fadescene);
 
 	// render last to swap buffer
 	AddModule(render);
@@ -77,6 +78,8 @@ bool j1App::Awake()
 	pugi::xml_node		config;
 	pugi::xml_node		app_config;
 
+	save_game = "save_file";
+	load_game = "save_file";
 	bool ret = false;
 		
 	config = LoadConfig(config_file);
@@ -282,7 +285,7 @@ const char* j1App::GetOrganization() const
 }
 
 // Load / Save
-void j1App::LoadGame(const char* file)
+void j1App::LoadGame()
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list
@@ -290,7 +293,7 @@ void j1App::LoadGame(const char* file)
 }
 
 // ---------------------------------------
-void j1App::SaveGame(const char* file) const
+void j1App::SaveGame() const
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list ... should we overwrite ?
