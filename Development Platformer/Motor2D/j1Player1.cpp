@@ -205,6 +205,7 @@
 //	return true;
 //}
 
+
 j1Player1::j1Player1() : j1Module()
 {
 	name.create("player");
@@ -298,4 +299,5 @@ bool j1Player1::Update(float dt) {
 
 	return true;
 }
+
 

@@ -259,7 +259,6 @@ bool j1Player2::Start() {
 
 bool j1Player2::PreUpdate()
 {
-
 	return true;
 }
 
@@ -289,4 +288,108 @@ bool j1Player2::Update(float dt) {
 	App->render->Blit(texture, x, y, &r);
 
 	return true;
-}
+};
+
+//bool j1Player2::Update(float dt)
+//{
+//	//p2_frames++;
+//
+//	////p2.p1_lastGrounded = p2.p1_position;
+//
+//	//switch (p2.state)
+//	//{
+//
+//	//case idle_P2:
+//
+//	//	p2.speed.x = 0;
+//
+//	//	break;
+//
+//	//case goingRight_P2:
+//
+//	//	LOG("P2 GOING RIGHT %d %d", p2.speed.x, p2.max_speed.x);
+//
+//	//	//As long as D is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
+//	//	while (p2.speed.x != p2.max_speed.x)
+//	//	{
+//	//		p2.speed.x += p2.acceleration.x;
+//	//	}
+//
+//	//	p2.position.x += p2.speed.x; //p2.speed_x is positive here.
+//
+//	//	LOG("P2 Position %d %d", p2.position.x, p2.position.y);
+//
+//	//	break;
+//
+//	//case goingLeft_P2:
+//
+//	//	//As long as W is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
+//	//	while (p2.speed.x != -p2.max_speed.x)
+//	//	{
+//	//		p2.speed.x -= p2.acceleration.x;
+//	//	}
+//
+//	//	p2.position.x += p2.speed.x;  //p2.speed_x  is negative here.
+//
+//	//	break;
+//
+//	//case jumping_P2:
+//
+//	//	if (p2.grounded == true /*|| p2.jumpCount != 2*/)
+//	//	{
+//	//		p2.speed.y = -p2.gravity;
+//
+//	//		/*jumpCount++;*/
+//	//		p2.p2_isGrounded(false);
+//	//	}
+//
+//	//	break;
+//	//}
+//
+//	////If the p2 is in the air then this function brings him/her back down to the floor.
+//	//if (p2.grounded == false)
+//	//{
+//	//	p2.speed.y += p2.acceleration.y;
+//
+//	//	if (p2.speed.y > p2.max_speed.x)
+//	//	{
+//	//		p2.speed.y = p2.max_speed.x;
+//	//	}
+//
+//	//	p2.position.y += p2.speed.y;
+//	//}
+//
+//	////In case the HitBox clips through the ground.
+//	//if (p2.position.y > p2.floor)
+//	//{
+//	//	p2.position.y = p2.floor - 1;
+//	//	p2.p2_isGrounded(true);
+//	//}
+//
+//	////We move the character according the position value after the state has been run.
+//	//p2.HitBox.x = p2.position.x;
+//	//p2.HitBox.y = p2.position.y;
+//
+//	////Draws the HitBox on-screen.
+//	////App->render->DrawQuad(p2.HitBox, 255, 255, 0);
+//
+//	return true;
+//};
+//
+//bool j1Player2::PostUpdate()
+//{
+//	return true;
+//};
+//
+//bool j1Player2::cleanUp()
+//{
+//	return true;
+//};
+//
+//
+//bool j1Player2::Load(pugi::xml_node& data)
+//{
+//	p2.position.x = data.child("position").attribute("x").as_int();
+//	p2.position.y = data.child("position").attribute("y").as_int();
+//	
+//}
