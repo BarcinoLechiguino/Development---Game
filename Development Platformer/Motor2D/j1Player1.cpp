@@ -100,7 +100,7 @@ bool j1Player1::Update(float dt)
 	
 	case goingRight_P1:
 	
-		LOG("P2 GOING RIGHT %d %d", p1.speed.x, p1.max_speed.x);
+		LOG("P1 GOING RIGHT %d %d", p1.speed.x, p1.max_speed.x);
 	
 		//As long as D is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
 		while (p1.speed.x != p1.max_speed.x)
@@ -110,7 +110,7 @@ bool j1Player1::Update(float dt)
 	
 		p1.position.x += p1.speed.x; //p1.speed_x is positive here.
 	
-		LOG("P2 Position %d %d", p1.position.x, p1.position.y);
+		LOG("P1 Position %d %d", p1.position.x, p1.position.y);
 	
 		break;
 	
@@ -202,131 +202,6 @@ bool j1Player1::Save(pugi::xml_node& data) const
 	
 	return true;
 }
-
-//void j1Player1::Draw(SDL_Texture* sprites, float dt) 
-//{
-//
-//}
-
-/*
-Awake(int x, int y) code Gerard:
-pugi::xml_parse_result result = file.load_file("Config.xml");
-
-	if (result != NULL)
-	{
-		pugi::xml_node node = file.child("config");
-	
-		speed.x = node.child("player_1").child("speed").attribute("x").as_float();
-		speed.y = node.child("player_1").child("speed").attribute("y").as_float();
-	
-		player_size.x = node.child("player_1").child("idle_anim").attribute("w1").as_int();
-		player_size.y = node.child("player_1").child("idle_anim").attribute("h1").as_int();
-	
-		gravity = node.child("player_1").child("speed").attribute("gravity").as_float();
-	
-		jump = node.child("player").child("jump").attribute("normal").as_float();
-	
-		pugi::xml_node anim = node.child("player");
-	
-		idle.PushBack({ anim.child("idle_anim").attribute("x1").as_int(),anim.child("idle_anim").attribute("y1").as_int(),anim.child("idle_anim").attribute("w1").as_int(),anim.child("idle_anim").attribute("h1").as_int() });
-		idle.PushBack({ anim.child("idle_anim").attribute("x2").as_int(),anim.child("idle_anim").attribute("y2").as_int(),anim.child("idle_anim").attribute("w2").as_int(),anim.child("idle_anim").attribute("h2").as_int() });
-		idle.PushBack({ anim.child("idle_anim").attribute("x3").as_int(),anim.child("idle_anim").attribute("y3").as_int(),anim.child("idle_anim").attribute("w3").as_int(),anim.child("idle_anim").attribute("h3").as_int() });
-		idle.PushBack({ anim.child("idle_anim").attribute("x4").as_int(),anim.child("idle_anim").attribute("y4").as_int(),anim.child("idle_anim").attribute("w4").as_int(),anim.child("idle_anim").attribute("h4").as_int() });
-		idle.loop = true;
-		idle.speed = anim.child("idle_anim").attribute("speed").as_float();
-	
-		crouch.PushBack({ anim.child("crouch_anim").attribute("x1").as_int(),anim.child("crouch_anim").attribute("y1").as_int(),anim.child("crouch_anim").attribute("w1").as_int(),anim.child("crouch_anim").attribute("h1").as_int() });
-		crouch.PushBack({ anim.child("crouch_anim").attribute("x2").as_int(),anim.child("crouch_anim").attribute("y2").as_int(),anim.child("crouch_anim").attribute("w2").as_int(),anim.child("crouch_anim").attribute("h2").as_int() });
-		crouch.PushBack({ anim.child("crouch_anim").attribute("x3").as_int(),anim.child("crouch_anim").attribute("y3").as_int(),anim.child("crouch_anim").attribute("w3").as_int(),anim.child("crouch_anim").attribute("h3").as_int() });
-		crouch.PushBack({ anim.child("crouch_anim").attribute("x4").as_int(),anim.child("crouch_anim").attribute("y4").as_int(),anim.child("crouch_anim").attribute("w4").as_int(),anim.child("crouch_anim").attribute("h4").as_int() });
-		crouch.loop = true;
-		crouch.speed = anim.child("crouch_anim").attribute("speed").as_float();
-	
-		run.PushBack({ anim.child("run_anim").attribute("x1").as_int(),anim.child("run_anim").attribute("y1").as_int(),anim.child("run_anim").attribute("w1").as_int(),anim.child("run_anim").attribute("h1").as_int() });
-		run.PushBack({ anim.child("run_anim").attribute("x2").as_int(),anim.child("run_anim").attribute("y2").as_int(),anim.child("run_anim").attribute("w2").as_int(),anim.child("run_anim").attribute("h2").as_int() });
-		run.PushBack({ anim.child("run_anim").attribute("x3").as_int(),anim.child("run_anim").attribute("y3").as_int(),anim.child("run_anim").attribute("w3").as_int(),anim.child("run_anim").attribute("h3").as_int() });
-		run.PushBack({ anim.child("run_anim").attribute("x4").as_int(),anim.child("run_anim").attribute("y4").as_int(),anim.child("run_anim").attribute("w4").as_int(),anim.child("run_anim").attribute("h4").as_int() });
-		run.PushBack({ anim.child("run_anim").attribute("x5").as_int(),anim.child("run_anim").attribute("y5").as_int(),anim.child("run_anim").attribute("w5").as_int(),anim.child("run_anim").attribute("h5").as_int() });
-		run.PushBack({ anim.child("run_anim").attribute("x6").as_int(),anim.child("run_anim").attribute("y6").as_int(),anim.child("run_anim").attribute("w6").as_int(),anim.child("run_anim").attribute("h6").as_int() });
-		run.loop = true;
-		run.speed = anim.child("run_anim").attribute("speed").as_float();
-	
-		jump_anim.PushBack({ anim.child("jump_anim").attribute("x1").as_int(),anim.child("jump_anim").attribute("y1").as_int(),anim.child("jump_anim").attribute("w1").as_int(),anim.child("jump_anim").attribute("h1").as_int() });
-		jump_anim.PushBack({ anim.child("jump_anim").attribute("x2").as_int(),anim.child("jump_anim").attribute("y2").as_int(),anim.child("jump_anim").attribute("w2").as_int(),anim.child("jump_anim").attribute("h2").as_int() });
-		jump_anim.loop = false;
-		jump_anim.speed = anim.child("jump_anim").attribute("speed").as_float();
-	
-		top_jump = true;
-	}
-*/
-
-/*
-animation = &idle;
-
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && dt != 0)
-	{
-		animation = &run;
-		position.x += speed.x * dt;
-	}
-	
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && dt != 0)
-	{
-		animation = &run;
-		position.x -= speed.x * dt;
-	}
-	
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN && dt != 0 || App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN && dt != 0)
-	{
-		animation = &crouch;
-		position.x = speed.x;
-	}
-	
-	if (stay_in_platform)
-	{
-		position.y -= gravity * dt;
-		jump_anim.Reset();
-		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN && dt != 0)
-		{
-			start_jump = false;
-			if (start_jump == false)
-			{
-				jump_anim.Reset();
-				distance = position.y - jump;
-				position.y -= (speed.y + gravity)*dt;
-				start_jump = true;
-				stay_in_platform = false;
-				top_jump = false;
-			}
-		}
-	}
-	else
-	{
-		if (position.y > distance && top_jump == false)
-		{
-			animation = &jump_anim;
-			position.y -= (speed.y + gravity)*dt;
-		}
-	
-	}
-	
-	position.y += gravity * dt;
-	stay_in_platform = false;
-
-
-	return true;
-};
-
-bool j1Player1::PostUpdate() 
-{
-	return true;
-};
-
-bool j1Player1::cleanUp() 
-{
-	return true;
-};
-
-*/
 
 
 
