@@ -80,8 +80,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="j1FadeScene.cpp" />
     <ClCompile Include="j1Collisions.cpp" />
-    <ClCompile Include="j1FadeToBlack.cpp" />
     <ClCompile Include="j1Main.cpp" />
     <ClCompile Include="j1App.cpp" />
     <ClCompile Include="j1Audio.cpp" />
@@ -98,8 +98,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="j1FadeScene.h" />
     <ClInclude Include="j1Collisions.h" />
-    <ClInclude Include="j1FadeToBlack.h" />
     <ClInclude Include="j1Map.h" />
     <ClInclude Include="j1Player1.h" />
     <ClInclude Include="j1Player2.h" />
@@ -119,6 +119,13 @@
     <ClInclude Include="p2SString.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Game\maps\1st Screen2.tmx" />
+    <None Include="..\Game\maps\Tutorial Screen2.tmx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\Game\config.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

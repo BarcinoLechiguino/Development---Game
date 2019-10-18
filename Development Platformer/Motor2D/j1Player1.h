@@ -92,6 +92,9 @@ public: //P1 Variables
 
 	SDL_Texture* Graphicsp1 = nullptr;
 	SDL_Rect rect;
+	Animation* current_animation = nullptr;
+
+	bool fading = false; // fade character when changing scenes
 
 private:
 
@@ -106,7 +109,7 @@ private:
 	float frames = 0;
 	//bool runFrames = false;
 	float startFrame = 0;
-
+	
 	
 };
 

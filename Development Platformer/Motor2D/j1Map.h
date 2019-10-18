@@ -6,17 +6,37 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
+struct ObjectsData
+{
+	p2SString name;
+	int	x;
+	int	y;
+	uint width;
+	uint height;
+
+};
+
+struct ObjectsGroup
+{
+	p2SString name;
+	p2List<ObjectsData*> objects;
+	~ObjectsGroup();
+};
+
 struct MapLayer
 {
 	p2SString name = nullptr;
+	uint* gid = nullptr;
 	uint width = 0;
 	uint height = 0;
-	uint* gid = nullptr;
+	uint size = 0;
 	float speed_x = 0.0f;
 
-	uint Get(int x, int y) const
+	~MapLayer();
+
+	inline uint Get(uint x, uint y) const
 	{
-		return gid[width*y + x];;
+		return x + y * width;
 	}
 };
 
@@ -32,13 +52,14 @@ struct TileSet
 	int	spacing;
 	int	tile_width;
 	int	tile_height;
-	SDL_Texture* texture;
+	SDL_Texture* texture = nullptr;
 	int	tex_width;
 	int	tex_height;
 	int	num_tiles_width;
 	int	num_tiles_height;
 	int	offset_x;
 	int	offset_y;
+
 };
 
 enum MapTypes
@@ -48,6 +69,9 @@ enum MapTypes
 	MAPTYPE_ISOMETRIC,
 	MAPTYPE_STAGGERED
 };
+
+
+
 // ----------------------------------------------------
 struct MapData
 {
@@ -55,12 +79,14 @@ struct MapData
 	int					height;
 	int					tile_width;
 	int					tile_height;
-	SDL_Color			background_color;
 	MapTypes			type;
-
 	p2List<TileSet*>	tilesets;
 	p2List<MapLayer*>	layers;
+	p2List<ObjectsGroup*> objLayers;
+	p2SString music_File;
 };
+
+
 
 // ----------------------------------------------------
 class j1Map : public j1Module
@@ -68,23 +94,21 @@ class j1Map : public j1Module
 public:
 
 	j1Map();
-
 	// Destructor
 	virtual ~j1Map();
-
 	// Called before render is available
 	bool Awake(pugi::xml_node& conf);
-
 	// Called each loop iteration
 	void Draw();
-
 	// Called before quitting
 	bool CleanUp();
-
 	// Load new map
 	bool Load(const char* path);
 
-	inline uint ArrayPos(int x, int y);
+	//Unloads the map and changes by another one. 
+	bool SwitchMaps(p2SString* new_map);
+
+	// Load new map
 	iPoint MapToWorld(int x, int y);
 
 private:
@@ -93,18 +117,22 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
-	TileSet* GetTileset(int id);
-
+	bool LoadObjectLayers(pugi::xml_node& node, ObjectsGroup* group);
 
 public:
 
 	MapData data;
 
-private:
+	inline uint Get(int x, int y) const
+	{
+		return  (y * data.width + x);
+	}
 
+private:
 	pugi::xml_document	map_file;
 	p2SString			folder;
 	bool				map_loaded;
+
 };
 
 #endif // __j1MAP_H__

@@ -88,12 +88,31 @@ public:
 		return true;
 	}
 
+	void Enable()
+	{
+		if (enabled == false)
+		{
+			enabled = true;
+			Start();
+		}
+	}
+
+	void Disable()
+	{
+		if (enabled == true)
+		{
+			enabled = false;
+			CleanUp();
+		}
+	}
+
 	virtual void OnCollision(Collider* c1, Collider* c2) {}
 
 public:
 
-	p2SString	name;
-	bool		active;
+	p2SString name;
+	bool active;
+	bool enabled = true;
 };
 
 #endif // __j1MODULE_H__

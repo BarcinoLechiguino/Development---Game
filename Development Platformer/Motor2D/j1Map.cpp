@@ -4,6 +4,12 @@
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "j1Map.h"
+#include "j1Window.h"
+#include "j1Collisions.h"
+#include "j1FadeScene.h"
+#include "j1Input.h"
+#include "j1Audio.h"
+#include "j1Scene.h"
 #include <math.h>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -31,53 +37,35 @@ void j1Map::Draw()
 	if(map_loaded == false)
 		return;
 
-	for (p2List_item<TileSet*> *tile = data.tilesets.start; tile != NULL; tile = tile->next)
+	for (uint y = 0; y < data.layers.count(); y++)
 	{
-
-		for (p2List_item<MapLayer*> *layer = data.layers.start; layer != NULL; layer = layer->next)
+		for (uint x = 0; x < data.tilesets.count(); x++)
 		{
-
-			for (int x = 0; x < data.width; x++)
+			for (uint i = 0; i < data.height; i++)
 			{
-				for (int y = 0; y < data.height; y++)
+				for (uint j = 0; j < data.width; j++)
 				{
-					int gid = layer->data->gid[ArrayPos(x, y)];
+					App->render->Blit(data.tilesets[x]->texture, j*data.tile_width, i*data.tile_height, &data.tilesets[x]->GetRect(data.layers[y]->gid[data.layers[y]->Get(j, i)]), SDL_FLIP_NONE, -data.layers[y]->speed_x);
 
-
-					if (gid != 0)
-					{
-						iPoint vec = MapToWorld(x, y);
-						App->render->Blit(tile->data->texture, vec.x, vec.y, &tile->data->GetRect(gid));
-					}
 				}
+
 			}
 		}
 	}
-}
-
-SDL_Rect TileSet::GetRect(int id) {
-
-	int id_ = id - firstgid;
-
-	SDL_Rect Rect = { 0, 0, 0, 0 };
-
-	Rect.w = tile_width;
-	Rect.h = tile_height;
-
-	int columns = id_ % num_tiles_width;
-	int rows = id_ / num_tiles_width;
-
-	Rect.x = margin + (columns*Rect.w) + (columns*spacing);
-	Rect.y = margin + (rows * Rect.h) + (rows * spacing);
-
-	return Rect;
 
 }
 
-inline uint j1Map::ArrayPos(int x, int y)
+SDL_Rect TileSet::GetRect(int id)
 {
-	return uint(y*data.width + x);
+	int relative_id = id - firstgid;
+	SDL_Rect rect;
+	rect.w = tile_width;
+	rect.h = tile_height;
+	rect.x = margin + ((rect.w + spacing) * (relative_id % num_tiles_width));
+	rect.y = margin + ((rect.h + spacing) * (relative_id / num_tiles_width));
+	return rect;
 }
+
 
 iPoint j1Map::MapToWorld(int x, int y)
 {
@@ -94,6 +82,7 @@ bool j1Map::CleanUp()
 {
 	LOG("Unloading map");
 
+	//App->player1->Disable(); NEED A DISABLE FUNCTION
 	// Remove all tilesets
 	p2List_item<TileSet*>* item;
 	item = data.tilesets.start;
@@ -115,6 +104,7 @@ bool j1Map::CleanUp()
 		map_layer_item = map_layer_item->next;
 	}
 
+	//Clean Colliders
 	data.layers.clear();
 
 	// Clean up the pugui tree
@@ -167,7 +157,7 @@ bool j1Map::Load(const char* file_name)
 
 	pugi::xml_node layernode;
 
-	for (layernode = map_file.child("map").child("layer"); layernode && ret; layernode = layernode.next_sibling("layer"))
+	for (layernode = map_file.child("map").child("layer"); layernode; layernode = layernode.next_sibling("layer"))
 	{
 		MapLayer* set_layer = new MapLayer();
 
@@ -178,6 +168,19 @@ bool j1Map::Load(const char* file_name)
 
 		data.layers.add(set_layer);
 	}
+
+	pugi::xml_node group;
+	for (group = map_file.child("map").child("objectgroup"); group && ret; group = group.next_sibling("objectgroup"))
+	{
+		ObjectsGroup* set = new ObjectsGroup();
+
+		if (ret == true)
+		{
+			ret = LoadObjectLayers(group, set);
+		}
+		data.objLayers.add(set);
+	}
+	//Load Collision info
 
 	if(ret == true)
 	{
@@ -209,6 +212,15 @@ bool j1Map::Load(const char* file_name)
 			item_layer = item_layer->next;
 		}
 
+		p2List_item<ObjectsGroup*>* obj_layer = data.objLayers.start;
+		while (obj_layer != NULL)
+		{
+			ObjectsGroup* o = obj_layer->data;
+			LOG("Group ----");
+			LOG("Gname: %s", o->name.GetString());
+
+			obj_layer = obj_layer->next;
+		}
 	}
 
 	map_loaded = ret;
@@ -233,31 +245,8 @@ bool j1Map::LoadMap()
 		data.height = map.attribute("height").as_int();
 		data.tile_width = map.attribute("tilewidth").as_int();
 		data.tile_height = map.attribute("tileheight").as_int();
-		p2SString bg_color(map.attribute("backgroundcolor").as_string());
 
-		data.background_color.r = 0;
-		data.background_color.g = 0;
-		data.background_color.b = 0;
-		data.background_color.a = 0;
-
-		if(bg_color.Length() > 0)
-		{
-			p2SString red, green, blue;
-			bg_color.SubString(1, 2, red);
-			bg_color.SubString(3, 4, green);
-			bg_color.SubString(5, 6, blue);
-
-			int v = 0;
-
-			sscanf_s(red.GetString(), "%x", &v);
-			if(v >= 0 && v <= 255) data.background_color.r = v;
-
-			sscanf_s(green.GetString(), "%x", &v);
-			if(v >= 0 && v <= 255) data.background_color.g = v;
-
-			sscanf_s(blue.GetString(), "%x", &v);
-			if(v >= 0 && v <= 255) data.background_color.b = v;
-		}
+		data.music_File = map.child("properties").child("property").attribute("value").as_string();
 
 		p2SString orientation(map.attribute("orientation").as_string());
 
@@ -352,6 +341,8 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->height = node.attribute("height").as_int();
 	layer->speed_x = node.child("properties").child("property").attribute("value").as_float();
 	pugi::xml_node layer_data = node.child("data");
+	layer->gid = new uint[layer->width*layer->height];
+	memset(layer->gid, 0u, sizeof(uint)*layer->height*layer->width);
 
 	if (layer_data == NULL)
 	{
@@ -361,38 +352,59 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	}
 	else
 	{
-		layer->gid = new uint[layer->width*layer->height];
-		memset(layer->gid, 0, layer->width*layer->height);
-
 		int i = 0;
-		for (pugi::xml_node tile = layer_data.child("tile"); tile; tile = tile.next_sibling("tile"))
+		for (pugi::xml_node tileset = node.child("data").child("tile"); tileset; tileset = tileset.next_sibling("tile"))
 		{
-			layer->gid[i++] = tile.attribute("gid").as_int(0);
+
+			layer->gid[i] = tileset.attribute("gid").as_uint();
+
+			LOG("%u", layer->gid[i]);
+			++i;
 		}
+		return true;
 	}
 
 	return ret;
 }
 
-TileSet* j1Map::GetTileset(int id) {
+bool j1Map::LoadObjectLayers(pugi::xml_node & node, ObjectsGroup * group)
+{
+	bool ret = true;
 
-	p2List_item<TileSet*>* aux_tile = data.tilesets.start;
+	group->name = node.attribute("name").as_string();
 
-	while (aux_tile != NULL)
+	for (pugi::xml_node& obj = node.child("object"); obj && ret; obj = obj.next_sibling("object"))
 	{
-		if (aux_tile->next == nullptr)
-			return aux_tile->data;
-		else
-		{
-			if (id >= aux_tile->data->firstgid && aux_tile->next->data->firstgid > id)
-			{
-				return aux_tile->data;
-			}
-		}
-		aux_tile = aux_tile->next;
+		ObjectsData* data = new ObjectsData;
+
+		data->height = obj.attribute("height").as_uint();
+		data->width = obj.attribute("width").as_uint();
+		data->x = obj.attribute("x").as_uint();
+		data->y = obj.attribute("y").as_uint();
+		data->name = obj.attribute("name").as_string();
+
+		group->objects.add(data);
 	}
 
-	return nullptr;
-
+	return ret;
 }
 
+bool j1Map::SwitchMaps(p2SString* new_map)
+{
+	CleanUp();
+	App->scene->to_end = false; // we put this in false so there are no repetitions
+	Load(new_map->GetString());
+	App->audio->PlayMusic(App->map->data.music_File.GetString());
+
+	return true;
+}
+
+MapLayer::~MapLayer()
+{
+	delete[] gid;
+}
+
+ObjectsGroup::~ObjectsGroup()
+{
+	objects.clear();
+}
