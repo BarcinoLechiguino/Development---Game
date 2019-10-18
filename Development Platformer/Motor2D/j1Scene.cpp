@@ -9,6 +9,7 @@
 #include "j1Map.h"
 #include "j1FadeScene.h"
 #include "j1Scene.h"
+#include "j1Player1.h"
 
 j1Scene::j1Scene() : j1Module()
 {

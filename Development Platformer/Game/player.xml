@@ -1,0 +1,136 @@
+<!-- Player animations -->
+
+<player>
+  <player1 Start_pos_x="30" Start_pos_y="30"  >
+    <collider w="110" h="74"/>
+  
+  <animation>
+    
+    <image source="textures/Spritesheets/Character 1/Character_Spritesheet.png"/>
+    <image source="textures/Spritesheets/Character 1/adventurer-hand-combat-Sheet.png"/>
+     
+    
+    <idle_anim>
+      <frame x="0" y="0" w="110" h="74"  />
+      <frame x="110" y="0" w="110" h="74"/>
+      <frame x="220" y="0" w="110" h="74"/>
+      <frame x="330" y="0" w="110" h="74"/>
+    </idle_anim>
+       
+    <crouch_anim>
+      <frame x="440" y="0" w="110" h="74"/>
+      <frame x="550" y="0" w="110" h="74"/>
+      <frame x="660" y="0" w="110" h="74"/>
+      <frame x="0" y="74" w="110" h="74" />
+    </crouch_anim>
+          
+    <run_anim>
+      <frame x="110" y="74" w="110" h="74"/>
+      <frame x="220" y="74" w="110" h="74"/>
+      <frame x="330" y="74" w="110" h="74"/>
+      <frame x="440" y="74" w="110" h="74"/>
+      <frame x="550" y="74" w="110" h="74"/>
+      <frame x="660" y="74" w="110" h="74"/>
+    </run_anim>
+        
+    <jump_anim>
+      <frame x="0" y="148" w="110" h="74"     />
+      <frame x="110" y="148" w="110" h="74"   />
+      <frame x="220" y="148" w="110" h="74"   />
+      <frame x="330" y="148" w="110" h="74"   />
+      <frame x="440" y="148" w="110" h="74"   />
+      <frame x="550" y="148" w="110" h="74"   />
+      <frame x="660" y="148" w="110" h="74"   />
+      <frame x="0" y="222" w="110" h="74"     />
+      <frame x="110" y="222" w="110" h="74"   />
+      <frame x="220" y="222" w="110" h="74"/>
+    </jump_anim>
+
+    <death_anim>
+      <frame x="550" y="370" w="110" h="74"/>
+      <frame x="660" y="370" w="110" h="74"/>
+      <frame x="0" y="444" w="110" h="74"  />
+      <frame x="110" y="444" w="110" h="74"/>
+      <frame x="220" y="444" w="110" h="74"/>
+      <frame x="330" y="444" w="110" h="74"/>
+      <frame x="440" y="444" w="110" h="74"/>
+      </death_anim>
+     
+      <spawn_anim>
+        <frame x="440" y1="444" w="110" h="74"/>
+        <frame x="550" y2="444" w="110" h="74"/>
+        <frame x="660" y3="444" w="110" h="74"/>
+        <frame x="0" y4="518" w="110" h="74"  />
+        <frame x="110" y5="518" w="110" h="74"/>
+        <frame x="220" y6="518" w="110" h="74"/>
+    </spawn_anim>
+    
+  </animation>
+  </player1>
+
+  <player2 Start_pos_x="0" Start_pos_y="20"  >
+    <collider w="110" h="74"/>
+
+    <animation>
+
+      <image source="textures/Spritesheets/Character 2/Character_Spritesheet2.png"/>
+      <image source="textures/Spritesheets/Character 2/adventurer-hand-combat-Sheet2.png"/>
+
+      <idle_anim>
+        <frame x="0" y="0" w="110" h="74"  />
+        <frame x="110" y="0" w="110" h="74"/>
+        <frame x="220" y="0" w="110" h="74"/>
+        <frame x="330" y="0" w="110" h="74"/>
+      </idle_anim>
+
+      <crouch_anim>
+        <frame x="440" y="0" w="110" h="74"/>
+        <frame x="550" y="0" w="110" h="74"/>
+        <frame x="660" y="0" w="110" h="74"/>
+        <frame x="0" y="74" w="110" h="74" />
+      </crouch_anim>
+
+      <run_anim>
+        <frame x="110" y="74" w="110" h="74"/>
+        <frame x="220" y="74" w="110" h="74"/>
+        <frame x="330" y="74" w="110" h="74"/>
+        <frame x="440" y="74" w="110" h="74"/>
+        <frame x="550" y="74" w="110" h="74"/>
+        <frame x="660" y="74" w="110" h="74"/>
+      </run_anim>
+
+      <jump_anim>
+        <frame x="0" y="148" w="110" h="74"     />
+        <frame x="110" y="148" w="110" h="74"   />
+        <frame x="220" y="148" w="110" h="74"   />
+        <frame x="330" y="148" w="110" h="74"   />
+        <frame x="440" y="148" w="110" h="74"   />
+        <frame x="550" y="148" w="110" h="74"   />
+        <frame x="660" y="148" w="110" h="74"   />
+        <frame x="0" y="222" w="110" h="74"     />
+        <frame x="110" y="222" w="110" h="74"   />
+        <frame x="220" y="222" w="110" h="74"/>
+      </jump_anim>
+
+      <death_anim>
+        <frame x="550" y="370" w="110" h="74"/>
+        <frame x="660" y="370" w="110" h="74"/>
+        <frame x="0" y="444" w="110" h="74"  />
+        <frame x="110" y="444" w="110" h="74"/>
+        <frame x="220" y="444" w="110" h="74"/>
+        <frame x="330" y="444" w="110" h="74"/>
+        <frame x="440" y="444" w="110" h="74"/>
+      </death_anim>
+
+      <spawn_anim>
+        <frame x="440" y1="444" w="110" h="74"/>
+        <frame x="550" y2="444" w="110" h="74"/>
+        <frame x="660" y3="444" w="110" h="74"/>
+        <frame x="0" y4="518" w="110" h="74"  />
+        <frame x="110" y5="518" w="110" h="74"/>
+        <frame x="220" y6="518" w="110" h="74"/>
+      </spawn_anim>
+
+    </animation>
+  </player2>
+</player>

@@ -71,14 +71,14 @@ bool j1Render::PreUpdate()
 
 bool j1Render::Update(float dt)
 {
-	if (App->player1->p1.position.x < App->player2->p2.position.x)
+	/*if (App->player1->p1.position.x < App->player2->p2.position.x)
 	{
 		cam.midPosX = App->player1->p1.position.x + ((App->player2->p2.position.x - App->player1->p1.position.x) / 2);
 	}
 	else
 	{
 		cam.midPosX = App->player2->p2.position.x + ((App->player1->p1.position.x - App->player2->p2.position.x) / 2);
-	}
+	}*/
 
 	/*if (App->player1->p1.position.y > App->player2->p2.position.y)
 	{

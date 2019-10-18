@@ -79,6 +79,7 @@ struct MapData
 	int					height;
 	int					tile_width;
 	int					tile_height;
+	float gravity = 0.2f;
 	MapTypes			type;
 	p2List<TileSet*>	tilesets;
 	p2List<MapLayer*>	layers;

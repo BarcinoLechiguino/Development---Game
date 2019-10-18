@@ -16,8 +16,6 @@
 
 j1Fade_Scene::j1Fade_Scene()
 {
-	
-
 }
 
 j1Fade_Scene::~j1Fade_Scene()
