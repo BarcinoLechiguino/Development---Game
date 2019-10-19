@@ -84,9 +84,9 @@ bool j1Render::Update(float dt)
 	else
 	{
 		cam.midPosX = App->player2->p2.position.x + ((App->player1->p1.position.x - App->player2->p2.position.x) / 2);
-	}*/
+	}
 
-	/*if (App->player1->p1.position.y > App->player2->p2.position.y)
+	if (App->player1->p1.position.y > App->player2->p2.position.y)
 	{
 		cam.midPosY = App->player2->p2.position.y + ((App->player2->p2.position.y - App->player1->p1.position.y) / 2);
 	}
@@ -97,6 +97,12 @@ bool j1Render::Update(float dt)
 	
 	camera.x = cam.midPosX;
 	//camera.y = cam.midPosY;
+
+	/*uint winWidth, winHeight;
+	App->win->GetWindowSize(winWidth, winHeight);
+
+	camera.x = App->player1->p1.position.x + winWidth / 2 - App->player1->p1.sprite_width;
+	camera.y = App->player1->p1.position.y + (winHeight / 2) - App->player1->p1.sprite_height / 2;*/
 
 	return true;
 }
