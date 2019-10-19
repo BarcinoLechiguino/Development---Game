@@ -59,6 +59,9 @@ struct Player1
 	Animation crouching;
 	Animation jumping;
 	Animation* current_animation;
+	p2SString		jumpFX;
+	p2SString		deathFX;
+	p2SString		duoFX;
 
 	bool moving_right = false;
 	bool moving_left = false;
@@ -108,8 +111,9 @@ public: //P1 Variables
 	void GodModeInput();
 
 	bool fading = false; // fade character when changing scenes
-
+	bool player_alive = false;
 	bool GodMode = false;
+
 
 private:
 	float p1_frames = 0;

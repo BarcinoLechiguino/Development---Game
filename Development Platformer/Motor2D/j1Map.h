@@ -9,11 +9,10 @@
 struct ObjectsData
 {
 	p2SString name;
-	int	x;
-	int	y;
 	uint width;
 	uint height;
-
+	int	x;
+	int	y;
 };
 
 struct ObjectsGroup
@@ -123,11 +122,6 @@ private:
 public:
 
 	MapData data;
-
-	inline uint Get(int x, int y) const
-	{
-		return  (y * data.width + x);
-	}
 
 
 private:

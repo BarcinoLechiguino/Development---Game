@@ -27,6 +27,9 @@
       <acceleration x="1" y="1.4"/>
       <gravity value="15"/>
       <boost x="10"  y="10"/>
+      <jumpFX source="Jump.wav"/>
+      <deathFX source="Death.wav"/>
+      <duoFX source="DuoJump.wav"/>
     </player_1>
    
     <player_2>
@@ -36,6 +39,9 @@
       <acceleration x="1" y="1.4"/>
       <gravity value="15"/>
       <boost x="10"  y="10"/>
+      <jumpFX source="Jump.wav"/>
+      <deathFX source="Death.wav"/>
+      <duoFX source="DuoJump.wav"/>
     </player_2>
   </player>
 

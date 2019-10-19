@@ -109,6 +109,14 @@ bool j1Player1::Start()
 
 	p1.p1_isGrounded(true);
 
+	p1.state = idle_P1;
+
+	App->audio->LoadFx(p1.jumpFX.GetString());
+	App->audio->LoadFx(p1.deathFX.GetString());
+	App->audio->LoadFx(p1.duoFX.GetString());
+
+	player_alive = true;
+
 	return true;
 };
 
@@ -136,6 +144,7 @@ bool j1Player1::PreUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN) 
 	{
 		p1.state = jumping_P1;
+		App->audio->PlayFx(1, 0);
 	}
 
 	return true;
