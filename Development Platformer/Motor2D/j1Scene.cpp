@@ -114,7 +114,15 @@ bool j1Scene::Update(float dt)
 
 	else if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		App->SaveGame();
-		
+
+	else if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	{
+		if (App->player1->GodMode)
+			App->player1->GodMode = false;
+		else
+			App->player1->GodMode = true;
+	}
+
 	App->map->Draw();
 
 		return true;
@@ -174,4 +182,6 @@ bool j1Scene::Load_lvl(int time)
 	App->map->SwitchMaps(map_names[time]);
 	return false;
 }
+
+
 

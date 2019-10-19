@@ -39,16 +39,16 @@ j1Player1::j1Player1() //Constructor. Called at the first frame.
 	p1.running_left.PushBack({ 632, 96, 39, 49 });
 	p1.running_left.speed = 0.2f;
 
-	p1.jumping.PushBack({ 0,148,110,74 });
-	p1.jumping.PushBack({ 110,148,110,74 });
-	p1.jumping.PushBack({ 220,148,110,74 });
-	p1.jumping.PushBack({ 330,148,110,74 });
-	p1.jumping.PushBack({ 440,148,110,74 });
-	p1.jumping.PushBack({ 550,148,110,74 });
-	p1.jumping.PushBack({ 660,148,110,74 });
-	p1.jumping.PushBack({ 0,222,110,74 });
-	p1.jumping.PushBack({ 110,222,110,74 });
-	p1.jumping.PushBack({ 220,222,110,74 });
+	p1.jumping.PushBack({ 0,148,39,74 });
+	p1.jumping.PushBack({ 110,148,39,74 });
+	p1.jumping.PushBack({ 220,148,39,74 });
+	p1.jumping.PushBack({ 330,148,39,74 });
+	p1.jumping.PushBack({ 440,148,39,74 });
+	p1.jumping.PushBack({ 550,148,39,74 });
+	p1.jumping.PushBack({ 660,148,39,74 });
+	p1.jumping.PushBack({ 0,222,39,74 });
+	p1.jumping.PushBack({ 110,222,39,74 });
+	p1.jumping.PushBack({ 220,222,39,74 });
 	p1.jumping.speed = 0.2f;
 
 	p1.crouching.PushBack({440, 0, 110, 74});
@@ -118,22 +118,22 @@ bool j1Player1::PreUpdate()
 	
 	p1.state = idle_P1;
 	
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) 
 	{
 		p1.state = goingRight_P1;
 	}
 	
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) 
 	{
 		p1.state = goingLeft_P1;
 	}
 	
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 	{
 		p1.state = crouching_P1;
 	}
 	
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) 
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN) 
 	{
 		p1.state = jumping_P1;
 	}
@@ -172,7 +172,7 @@ bool j1Player1::Update(float dt)
 		p1.current_animation = &p1.running_right;
 		p1.moving_right = true;
 	
-		LOG("P2 Position %d %d", p1.position.x, p1.position.y);
+		LOG("P1 Position %d %d", p1.position.x, p1.position.y);
 	
 		break;
 	
@@ -251,30 +251,41 @@ bool j1Player1::PostUpdate()
 
 bool j1Player1::cleanUp() 
 {
+	App->tex->UnLoad(p1.texture);
 	return true;
 };
 
 
-bool j1Player1::Load(pugi::xml_node& data)
+bool j1Player1::Load(pugi::xml_node& nodePlayer)
 {
-	p1.position.x = data.child("position").attribute("x").as_int();
-	p1.position.y = data.child("position").attribute("y").as_int();
-
-
+	
 	return true;
 }
-
-// Save Game State
-bool j1Player1::Save(pugi::xml_node& data) const
+bool j1Player1::Save(pugi::xml_node&  nodePlayer) const
 {
-	pugi::xml_node pos = data.append_child("position");
-
-	pos.append_attribute("x") = p1.position.x;
-	pos.append_attribute("y") = p1.position.y;
 	
 	return true;
 }
 
+void j1Player1::GodModeInput()
+{
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	{
+		
+	}
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	{
+		
+	}
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	{
+		
+	}
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	{
+		
+	}
+}
 
 //j1Player1::j1Player1() : j1Module()
 //{

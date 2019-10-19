@@ -8,7 +8,7 @@
 	
   <renderer>
     <vsync value="true"/>
-    <camera x="0" y="-575"/>
+    <camera x ="100" y ="100"/>
   </renderer>
 
   <window>
@@ -21,18 +21,16 @@
 
   <player>
     <player_1>
-      <position x="100" y="-575"/>
+      <position x="0" y="0"/>
       <speed x="0" y="0"/>
       <max_speed x="10" y="10"/>
       <acceleration x="1" y="1.4"/>
       <gravity value="15"/>
       <boost x="10"  y="10"/>
-      
-      
     </player_1>
    
     <player_2>
-      <position x="150" y="-575"/>
+      <position x="50" y="50"/>
       <speed x="0" y="0"/>
       <max_speed x="10" y="10"/>
       <acceleration x="1" y="1.4"/>
@@ -63,7 +61,5 @@
     <map_name name="1st Screen2.tmx"></map_name>
     <fade_time value="1"/>
   </scene>
-
-  <player>player.xml</player>
 
 </config>

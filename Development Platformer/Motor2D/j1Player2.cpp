@@ -110,22 +110,22 @@ bool j1Player2::PreUpdate()
 
 	p2.state = idle_P2;
 
-	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
 		p2.state = goingRight_P2;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		p2.state = goingLeft_P2;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
 	{
 		p2.state = jumping_P2;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 	{
 		p2.state = crouching_P2;
 	}
@@ -249,8 +249,8 @@ bool j1Player2::cleanUp()
 
 bool j1Player2::Load(pugi::xml_node& data)
 {
-	p2.position.x = data.child("position").attribute("x").as_int();
-	p2.position.y = data.child("position").attribute("y").as_int();
+	p2.position.x = data.child("position2").attribute("x").as_int();
+	p2.position.y = data.child("position2").attribute("y").as_int();
 
 	return true;
 }
@@ -258,10 +258,30 @@ bool j1Player2::Load(pugi::xml_node& data)
 // Save Game State
 bool j1Player2::Save(pugi::xml_node& data) const
 {
-	pugi::xml_node pos = data.append_child("position");
+	pugi::xml_node pos = data.append_child("position2");
 
 	pos.append_attribute("x") = p2.position.x;
 	pos.append_attribute("y") = p2.position.y;
 
 	return true;
+}
+
+void j1Player2::GodModeInput()
+{
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
+
+	}
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	{
+
+	}
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+	{
+
+	}
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	{
+
+	}
 }

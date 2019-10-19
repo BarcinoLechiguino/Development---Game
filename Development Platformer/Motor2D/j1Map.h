@@ -129,6 +129,7 @@ public:
 		return  (y * data.width + x);
 	}
 
+
 private:
 	pugi::xml_document	map_file;
 	p2SString			folder;

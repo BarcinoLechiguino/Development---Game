@@ -105,13 +105,26 @@ public: //P1 Variables
 	void OnCollision(Collider* collider);
 	bool Load(pugi::xml_node &node);
 	bool Save(pugi::xml_node &node) const;
+	void GodModeInput();
 
 	bool fading = false; // fade character when changing scenes
+
+	bool GodMode = false;
 
 private:
 	float p1_frames = 0;
 	//bool runFrames = false;
 	float p1_startFrame = 0;
+
+	float x = 0; 
+	float y = 0;
+	
+	
+	float velocity = 2.0f;
+	float gravity = 3.0f;
+
+	bool moving_right = false;
+	bool moving_left = false;
 };
 
 #endif __j1Player_1_H__
