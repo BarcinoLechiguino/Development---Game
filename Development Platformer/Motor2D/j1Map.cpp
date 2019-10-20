@@ -37,32 +37,38 @@ void j1Map::Draw()
 	if(map_loaded == false)
 		return;
 
-	for (uint y = 0; y < data.layers.count(); y++)
-	{
-		for (uint x = 0; x < data.tilesets.count(); x++)
+	MapLayer* layer = data.layers[0];
+
+	p2List_item<MapLayer*>* item = data.layers.start;
+
+	for (item; item != nullptr; item = item->next) {
+
+		uint* gid = item->data->gid;
+		int i = 0;
+		for (uint y = 0; y < data.height; ++y)
 		{
-			for (uint i = 0; i < data.height; i++)
+			for (uint x = 0; x < data.width; ++x)
 			{
-				for (uint j = 0; j < data.width; j++)
-				{
-					App->render->Blit(data.tilesets[x]->texture, j*data.tile_width, i*data.tile_height, &data.tilesets[x]->GetRect(data.layers[y]->gid[data.layers[y]->Get(j, i)]), SDL_FLIP_NONE, -data.layers[y]->speed_x);
-
-				}
-
+				App->render->Blit(data.tilesets[0]->texture,
+				MapToWorld(x, y).x, MapToWorld(x, y).y,
+				data.tilesets[0]->GetRect(gid[i]));
+				i++;
 			}
 		}
+
 	}
 
 }
 
-SDL_Rect TileSet::GetRect(int id)
+
+SDL_Rect* TileSet::GetRect(int id)
 {
 	int relative_id = id - firstgid;
-	SDL_Rect rect;
-	rect.w = tile_width;
-	rect.h = tile_height;
-	rect.x = margin + ((rect.w + spacing) * (relative_id % num_tiles_width));
-	rect.y = margin + ((rect.h + spacing) * (relative_id / num_tiles_width));
+	SDL_Rect* rect = ReturnedRect;
+	rect->w = tile_width;
+	rect->h = tile_height;
+	rect->x = margin + ((rect->w + spacing) * (relative_id % num_tiles_width));
+	rect->y = margin + ((rect->h + spacing) * (relative_id / num_tiles_width));
 	return rect;
 }
 

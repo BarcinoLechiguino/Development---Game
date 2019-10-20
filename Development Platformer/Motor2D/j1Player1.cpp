@@ -87,6 +87,7 @@ bool j1Player1::Init()
 
 bool j1Player1::Awake(pugi::xml_node& config) 
 {	
+
 	//Gets all the required player variables from the config xml file
 	p1.position.x = config.child("player_1").child("position").attribute("x").as_float();
 	p1.position.y = config.child("player_1").child("position").attribute("y").as_float();
@@ -100,9 +101,16 @@ bool j1Player1::Awake(pugi::xml_node& config)
 	p1.acceleration.y = config.child("player_1").child("acceleration").attribute("y").as_float();
 	p1.gravity = config.child("player_1").child("gravity").attribute("value").as_float();
 
+	/*p1.jumpFX = config.child("jumpFX").attribute("name").as_string();
+	p1.deathFX = config.child("deathFX").attribute("name").as_string();
+	p1.duoFX = config.child("landFX").attribute("name").as_string();*/
+
 	//Sets the first cycle of animations to the idle set.
 	p1.current_animation = &p1.idle;
 	
+	jumpFX = App->audio->LoadFx("audio/fx/Jump.wav");
+	deathFX = App->audio->LoadFx("audio/fx/Death.wav");
+
 	return true;
 };
 
@@ -113,15 +121,15 @@ bool j1Player1::Start()
 
 	p1.position = { p1.position.x, p1.position.y };
 	p1.HitBox = { (int)p1.position.x,(int)p1.position.y, p1.sprite_width, p1.sprite_height }; //Casked to int "(int)" for optimization.
-	p1.collider = App->collisions->AddCollider(p1.HitBox, PLAYER, this);
+	//p1.collider = App->collisions->AddCollider(p1.HitBox, PLAYER, this);
+
+	/*App->audio->LoadFx(p1.jumpFX.GetString());
+	App->audio->LoadFx(p1.deathFX.GetString());
+	App->audio->LoadFx(p1.duoFX.GetString());*/
 
 	p1.p1_isGrounded(true);
 
 	p1.state = idle_P1;
-
-	App->audio->LoadFx(p1.jumpFX.GetString());
-	App->audio->LoadFx(p1.deathFX.GetString());
-	App->audio->LoadFx(p1.duoFX.GetString());
 
 	player_alive = true;
 
@@ -134,27 +142,34 @@ bool j1Player1::PreUpdate()
 	
 	p1.state = idle_P1;
 	
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
+	if (!GodMode)
 	{
-		p1.state = goingRight_P1;
-	}
-	
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
-	{
-		p1.state = goingLeft_P1;
-	}
-	
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-	{
-		p1.state = crouching_P1;
-	}
-	
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) 
-	{
-		p1.state = jumping_P1;
-		App->audio->PlayFx(1, 0);
-	}
 
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		{
+			p1.state = goingRight_P1;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		{
+			p1.state = goingLeft_P1;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		{
+			p1.state = crouching_P1;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+		{
+			p1.state = jumping_P1;
+			
+		}
+	}
+	else
+	{
+		GodModeInput();
+	}
 	return true;
 };
 
@@ -219,7 +234,7 @@ bool j1Player1::Update(float dt)
 		if (p1.grounded == true /*|| p1.jumpCount != 2*/)
 		{
 			p1.speed.y = -p1.gravity;
-	
+		App->audio->PlayFx(jumpFX);
 			/*jumpCount++;*/
 			p1.p1_isGrounded(false);
 		}

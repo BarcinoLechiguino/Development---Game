@@ -59,16 +59,16 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_KP_8) == KEY_REPEAT)
 		App->render->camera.y -= 10;
 
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_KP_2) == KEY_REPEAT)
 		App->render->camera.y += 10;
 
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_KP_4) == KEY_REPEAT)
 		App->render->camera.x -= 10;
 
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT)
 		App->render->camera.x += 10;
 	
 	//if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
@@ -110,10 +110,12 @@ bool j1Scene::Update(float dt)
 		Load_lvl(1);
 
 	else if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-		App->LoadGame();
+		 App->SaveGame();
+
 
 	else if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
-		App->SaveGame();
+		App->LoadGame();
+
 
 	else if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{

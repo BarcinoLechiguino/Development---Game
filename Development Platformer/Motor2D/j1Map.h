@@ -40,9 +40,6 @@ struct ObjectGroup
 	uint object_size;	//Quantity of objects.
 };
 
-
-
-
 struct MapLayer
 {
 	p2SString name = nullptr;	//Map name
@@ -64,8 +61,8 @@ struct MapLayer
 struct TileSet
 {
 
-	SDL_Rect GetRect(int id);
-
+	SDL_Rect* GetRect(int id);
+	SDL_Rect* ReturnedRect = new SDL_Rect;
 	p2SString name;
 	int	firstgid;
 	int	margin;

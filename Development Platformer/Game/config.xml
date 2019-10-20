@@ -8,7 +8,7 @@
 	
   <renderer>
     <vsync value="true"/>
-    <camera x ="0" y ="535"/>
+    <camera x ="0" y ="0"/>
   </renderer>
   
   <window>
@@ -19,31 +19,7 @@
     <fullscreen_window value="false"/>
   </window>
 
-  <player>
-    <player_1>
-      <position x="100" y="0"/>
-      <speed x="0" y="0"/>
-      <max_speed x="10" y="10"/>
-      <acceleration x="1" y="1.4"/>
-      <gravity value="15"/>
-      <boost x="10"  y="10"/>
-      <jumpFX source="Jump.wav"/>
-      <deathFX source="Death.wav"/>
-      <duoFX source="DuoJump.wav"/>
-    </player_1>
-   
-    <player_2>
-      <position x="150" y="0"/>
-      <speed x="0" y="0"/>
-      <max_speed x="10" y="10"/>
-      <acceleration x="1" y="1.4"/>
-      <gravity value="15"/>
-      <boost x="10"  y="10"/>
-      <jumpFX source="Jump.wav"/>
-      <deathFX source="Death.wav"/>
-      <duoFX source="DuoJump.wav"/>
-    </player_2>
-  </player>
+ 
 
   <audio>
     <music>
@@ -61,6 +37,32 @@
   <map>
     <folder>maps/</folder>
   </map>
+
+  <player>
+    <player_1>
+      <position x="100" y="0"/>
+      <speed x="0" y="0"/>
+      <max_speed x="10" y="10"/>
+      <acceleration x="1" y="1.4"/>
+      <gravity value="15"/>
+      <boost x="10"  y="10"/>
+      <jumpFX name ="Jump.wav"/>
+      <DuoJumpFX name ="Jump_Duo.wav"/>
+      <DeathFX name ="Death.wav"/>
+    </player_1>
+
+    <player_2>
+      <position x="150" y="0"/>
+      <speed x="0" y="0"/>
+      <max_speed x="10" y="10"/>
+      <acceleration x="1" y="1.4"/>
+      <gravity value="15"/>
+      <boost x="10"  y="10"/>
+      <jumpFX name ="Jump.wav"/>
+      <DuoJumpFX name ="Jump_Duo.wav"/>
+      <DeathFX name ="Death.wav"/>
+    </player_2>
+  </player>
   
   <scene>
     <map_name name="Tutorial Screen2.tmx"></map_name>

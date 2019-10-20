@@ -52,13 +52,11 @@ j1Player2::j1Player2() //Constructor. Called at the first frame.
 	p2.falling.PushBack({ 236, 226, 33, 59 });
 	p2.falling.speed = 0.2f;
 
-	p2.crouching.PushBack({ 30, 172, 39, 47 });
-	p2.crouching.PushBack({ 130, 176, 39, 43 });
 	p2.crouching.PushBack({ 432, 30, 37, 41 });
 	p2.crouching.PushBack({ 530, 28, 39, 43 });
 	p2.crouching.PushBack({ 630, 28, 37, 43 });
 	p2.crouching.PushBack({ 34, 104, 33, 41 });
-	p2.crouching.speed = 0.2f;
+	p2.crouching.speed = 0.1f;
 
 	p2.death.PushBack({ 550, 370, 110, 74 });
 	p2.death.PushBack({ 660, 370, 110, 74 });

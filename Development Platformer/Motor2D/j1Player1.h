@@ -67,13 +67,9 @@ struct Player1
 	Animation falling;
 
 	Animation* current_animation;
-	p2SString		jumpFX;
-	p2SString		deathFX;
-	p2SString		duoFX;
 
 	bool moving_right = false;
 	bool moving_left = false;
-	uint duojump_fx, jump_fx, death_fx;
 	
 	SDL_Rect HitBox; //Rectangle that represents the player.
 	P1_State state; //Adds the state enum to the player's variables.
@@ -83,6 +79,10 @@ struct Player1
 	int sprite_width = /*20*/ 38;
 	int sprite_height = /*30*/64;
 	float floor = 0.0f;
+
+	/*p2SString		jumpFX;
+	p2SString		deathFX;
+	p2SString		duoFX;*/
 };
 
 class j1Player1 : public j1Module 
@@ -120,7 +120,6 @@ public: //P1 Variables
 	bool player_alive = false;
 	bool GodMode = false;
 
-
 private:
 	float p1_frames = 0;
 	//bool runFrames = false;
@@ -129,6 +128,9 @@ private:
 	float x = 0; 
 	float y = 0;
 	
+	uint		jumpFX;
+	uint		deathFX;
+	uint		duoFX;
 	
 	float velocity = 2.0f;
 	float gravity = 3.0f;
