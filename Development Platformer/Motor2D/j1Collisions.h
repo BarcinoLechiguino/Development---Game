@@ -4,41 +4,30 @@
 #include "j1Module.h"
 #include "SDL/include/SDL.h"
 
-enum class Collider_Type
-{
-	UKNOWN = -1,
-	PLAYER,
-	WALL,
-	PLATFORM,
-	HAZARD,
-	SWITCH,
-	WIN
-};
+enum Object_Type;
+struct ObjectData;
 
 struct Collider
 {
 	SDL_Rect collider;
-	Collider_Type type;
-
+	Object_Type type;
 	j1Module* callback = nullptr;
-
 	bool delete_collider = false; //Used to delete colliders that are not needed anymore or
 
-	Collider(SDL_Rect rectangle, Collider_Type type, j1Module* calback = nullptr) : collider(rectangle), type(type), callback(calback)//Should change?
+	//Revise all this.
+	Collider(SDL_Rect collider, Object_Type type, j1Module* callback = nullptr) : collider(collider), type(type), callback(callback)//Should change?
 	{
 
 	};
 
-	void SetPos(int x, int y)
+	Collider(ObjectData object);
+
+	Collider() {};
+
+	void Set_Position(int x, int y)
 	{
 		collider.x = x;
 		collider.y = y;
-	}
-
-	void SetSize(int w, int h)
-	{
-		collider.w = w;
-		collider.h = h;
 	}
 
 	bool check_collision(const SDL_Rect& r) const;
@@ -72,12 +61,17 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-private:
-	//Variables
-	p2List<Collider*> colliders;
+	Collider* AddCollider(SDL_Rect collider, Object_Type type, j1Module* callback);
+	void LoadFromMap();
 
+private:
+	void Collider_Debug();
 
 public:
+	//Variables
+	Collider collider;
+	p2List<Collider*> collider_list;
+	bool collider_debug;
 
 private:
 

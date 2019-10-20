@@ -7,6 +7,9 @@
 #include "j1Input.h"
 #include "Animation.h"
 
+struct Collider;
+struct SDL_Texture;
+
 enum P1_State 
 {
 	idle_P1,
@@ -37,6 +40,7 @@ struct Player1
 	float gravity; //Acceleration variable for jumps. Gravitational Pull.
 	
 	bool grounded; //Defines whether the player is standing or jumping.
+	bool flip; //Defines if the animation should be flipped or not.
 
 	//Changes the state of the player depending on the given argument. Also if true it records the position from where the player jumped.
 	void p1_isGrounded(bool yesnt)
@@ -49,6 +53,7 @@ struct Player1
 		grounded = yesnt;
 	};
 	
+	//Animation Variables
 	SDL_Texture* texture = nullptr;
 	SDL_Texture* texture2 = nullptr;
 	
@@ -58,6 +63,9 @@ struct Player1
 	Animation death;
 	Animation crouching;
 	Animation jumping;
+	Animation mid_jump;
+	Animation falling;
+
 	Animation* current_animation;
 	p2SString		jumpFX;
 	p2SString		deathFX;
@@ -65,19 +73,17 @@ struct Player1
 
 	bool moving_right = false;
 	bool moving_left = false;
-	bool flip = false;
 	uint duojump_fx, jump_fx, death_fx;
 	
 	SDL_Rect HitBox; //Rectangle that represents the player.
 	P1_State state; //Adds the state enum to the player's variables.
+	Collider* collider; //Collider
 
 	//Temporal Variables
 	int sprite_width = /*20*/ 38;
 	int sprite_height = /*30*/64;
-	float floor = 1055.0f;
+	float floor = 0.0f;
 };
-
-struct SDL_Texture;
 
 class j1Player1 : public j1Module 
 {

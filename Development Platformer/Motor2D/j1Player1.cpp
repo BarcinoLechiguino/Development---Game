@@ -8,6 +8,7 @@
 #include "j1Map.h"
 #include "j1Scene.h"
 #include "j1Textures.h"
+#include "j1Collisions.h"
 #include "j1FadeScene.h"
 #include "j1Audio.h"
 
@@ -19,7 +20,7 @@ j1Player1::j1Player1() //Constructor. Called at the first frame.
 	
 	p1.idle.PushBack({ 28, 14, 37, 57 });
 	p1.idle.PushBack({ 132, 12, 33, 59 });
-	p1.idle.PushBack({ 230, 12, 38, 59 });
+	p1.idle.PushBack({ 230, 12, 37, 59 });
 	p1.idle.PushBack({ 326, 14, 39, 57 });
 	p1.idle.speed = 0.1f;
 
@@ -39,23 +40,29 @@ j1Player1::j1Player1() //Constructor. Called at the first frame.
 	p1.running_left.PushBack({ 632, 96, 39, 49 });
 	p1.running_left.speed = 0.2f;
 
-	p1.jumping.PushBack({ 0,148,39,74 });
-	p1.jumping.PushBack({ 110,148,39,74 });
-	p1.jumping.PushBack({ 220,148,39,74 });
-	p1.jumping.PushBack({ 330,148,39,74 });
-	p1.jumping.PushBack({ 440,148,39,74 });
-	p1.jumping.PushBack({ 550,148,39,74 });
-	p1.jumping.PushBack({ 660,148,39,74 });
-	p1.jumping.PushBack({ 0,222,39,74 });
-	p1.jumping.PushBack({ 110,222,39,74 });
-	p1.jumping.PushBack({ 220,222,39,74 });
-	p1.jumping.speed = 0.2f;
+	p1.jumping.PushBack({ 30, 172, 39, 47 });
+	p1.jumping.PushBack({ 130, 176, 39, 43 });
+	p1.jumping.PushBack({ 234, 162, 37, 53 });
+	p1.jumping.PushBack({ 328, 158, 41, 45 });
+	p1.jumping.PushBack({ 436, 162, 29, 41 });
+	p1.jumping.speed = 0.3f;
 
-	p1.crouching.PushBack({440, 0, 110, 74});
-	p1.crouching.PushBack({550, 0, 110, 74});
-	p1.crouching.PushBack({660, 0, 110, 74});
-	p1.crouching.PushBack({0, 74, 110, 74});
-	p1.crouching.speed = 0.2f;
+	p1.mid_jump.PushBack({ 528, 168, 47, 33 });
+	p1.mid_jump.PushBack({ 640, 168, 35, 41 });
+	p1.mid_jump.PushBack({ 22, 248, 51, 33 });
+	p1.mid_jump.speed = 0.2f;
+
+	p1.falling.PushBack({ 136, 224, 33, 61 });
+	p1.falling.PushBack({ 236, 226, 33, 59 });
+	p1.falling.speed = 0.2f;
+
+	/*p1.crouching.PushBack({ 30, 172, 39, 47 });
+	p1.crouching.PushBack({ 130, 176, 39, 43 });*/
+	p1.crouching.PushBack({ 432, 30, 37, 41 });
+	p1.crouching.PushBack({ 530, 28, 39, 43 });
+	p1.crouching.PushBack({ 630, 28, 37, 43 });
+	p1.crouching.PushBack({ 34, 104, 33, 41 });
+	p1.crouching.speed = 0.1f;
 
 	p1.death.PushBack({550, 370, 110, 74});
 	p1.death.PushBack({660, 370, 110, 74});
@@ -106,6 +113,7 @@ bool j1Player1::Start()
 
 	p1.position = { p1.position.x, p1.position.y };
 	p1.HitBox = { (int)p1.position.x,(int)p1.position.y, p1.sprite_width, p1.sprite_height }; //Casked to int "(int)" for optimization.
+	p1.collider = App->collisions->AddCollider(p1.HitBox, PLAYER, this);
 
 	p1.p1_isGrounded(true);
 
@@ -126,22 +134,22 @@ bool j1Player1::PreUpdate()
 	
 	p1.state = idle_P1;
 	
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) 
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
 	{
 		p1.state = goingRight_P1;
 	}
 	
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) 
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
 	{
 		p1.state = goingLeft_P1;
 	}
 	
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
 		p1.state = crouching_P1;
 	}
 	
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN) 
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) 
 	{
 		p1.state = jumping_P1;
 		App->audio->PlayFx(1, 0);
@@ -221,7 +229,7 @@ bool j1Player1::Update(float dt)
 	
 	//If the p1 is in the air then this function brings him/her back down to the floor.
 	if (p1.grounded == false)
-	{
+	{	
 		p1.speed.y += p1.acceleration.y;
 		
 		if (p1.speed.y > p1.max_speed.y)
@@ -230,6 +238,15 @@ bool j1Player1::Update(float dt)
 		}
 	
 		p1.position.y += p1.speed.y;
+
+		if (p1.speed.y < 0)
+		{
+			p1.current_animation = &p1.jumping;
+		}
+		else
+		{
+			p1.current_animation = &p1.falling;
+		}
 	}
 	
 	//In case the HitBox clips through the ground.
@@ -249,6 +266,7 @@ bool j1Player1::Update(float dt)
 	p1.HitBox = p1.current_animation->GetCurrentFrame();
 	
 	App->render->Blit(p1.texture, p1.position.x, p1.position.y, &p1.HitBox);
+	//SDL_RenderCopyEx(App->render->renderer, p1.texture, &p1.HitBox, &p1.HitBox, 0, NULL, SDL_FLIP_HORIZONTAL);
 
 	return true;
 };

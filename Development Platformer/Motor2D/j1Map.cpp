@@ -156,32 +156,32 @@ bool j1Map::Load(const char* file_name)
 
 	// Load layer info ----------------------------------------------
 
-	pugi::xml_node layernode;
-
-	for (layernode = map_file.child("map").child("layer"); layernode; layernode = layernode.next_sibling("layer"))
+	pugi::xml_node layer;
+	for (layer = map_file.child("map").child("layer"); layer; layer = layer.next_sibling("layer"))
 	{
 		MapLayer* set_layer = new MapLayer();
 
 		if (ret == true)
 		{
-			ret = LoadLayer(layernode, set_layer);
+			ret = LoadLayer(layer, set_layer);
 		}
 
 		data.layers.add(set_layer);
 	}
 
-	pugi::xml_node group;
-	for (group = map_file.child("map").child("objectgroup"); group && ret; group = group.next_sibling("objectgroup"))
+
+	//Load Collider Info ------------------------------------------
+	pugi::xml_node object_group;
+	for (object_group = map_file.child("map").child("objectgroup"); object_group && ret; object_group = object_group.next_sibling("objectgroup"))
 	{
-		ObjectsGroup* set = new ObjectsGroup();
+		ObjectGroup* set = new ObjectGroup(); //New Object group
 
 		if (ret == true)
 		{
-			ret = LoadObjectLayers(group, set);
+			ret = LoadObjectLayers(object_group, set);
 		}
-		data.objLayers.add(set);
+		data.objectGroups.add(set);
 	}
-	//Load Collision info
 
 	if(ret == true)
 	{
@@ -213,10 +213,10 @@ bool j1Map::Load(const char* file_name)
 			item_layer = item_layer->next;
 		}
 
-		p2List_item<ObjectsGroup*>* obj_layer = data.objLayers.start;
+		p2List_item<ObjectGroup*>* obj_layer = data.objectGroups.start;
 		while (obj_layer != NULL)
 		{
-			ObjectsGroup* o = obj_layer->data;
+			ObjectGroup* o = obj_layer->data;
 			LOG("Group ----");
 			LOG("Gname: %s", o->name.GetString());
 
@@ -246,6 +246,47 @@ bool j1Map::LoadMap()
 		data.height = map.attribute("height").as_int();
 		data.tile_width = map.attribute("tilewidth").as_int();
 		data.tile_height = map.attribute("tileheight").as_int();
+		/*data.background_colour = map.attribute("backgroundcolor").as_string();
+
+		//Setting the values of the SDL_Color struct to 0 (black).
+		data.colour.r = 0;
+		data.colour.g = 0;
+		data.colour.b = 0;
+		data.colour.a = 0;
+
+		//Sets the values of the colours of the background to the values recieved from the map file.
+		if (data.background_colour.Length() > 0) //If any of the values recieved from the map file are different from 0 then this is run.
+		{
+			p2SString red;
+			p2SString green;
+			p2SString blue;
+
+			//Pastes the strings into a buffer. Pastes the value of background_colour on red/green/blue.
+			data.background_colour.SubString(1, 2, red);
+			data.background_colour.SubString(3, 4, green);
+			data.background_colour.SubString(5, 6, blue);
+
+			int rgb_value = 0;
+
+			//Sets the received values from the tmx file as the background colour.
+			sscanf_s(red.GetString(), "%x", &rgb_value);//Sscanf_s gets a buffer and a format (int). %x is the translation to rgb from hexadecimal.
+			if (rgb_value >= 0 && rgb_value <= 255)
+			{
+				data.colour.r = rgb_value;
+			}
+			
+			sscanf_s(green.GetString(), "%x", &rgb_value);
+			if (rgb_value >= 0 && rgb_value <= 255) 
+			{
+				data.colour.g = rgb_value;
+			} 
+
+			sscanf_s(blue.GetString(), "%x", &rgb_value);
+			if (rgb_value >= 0 && rgb_value <= 255)
+			{
+				data.colour.b = rgb_value;
+			}	
+		}*/
 
 		data.music_File = map.child("properties").child("property").attribute("value").as_string();
 
@@ -309,6 +350,9 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	}
 	else
 	{
+		/*p2SString debug = folder.GetString();
+		debug += image.attribute("source").as_string();
+		set->texture = App->tex->Load(debug.GetString());*/
 		set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
 		int w, h;
 		SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
@@ -341,10 +385,18 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->width = node.attribute("width").as_int();
 	layer->height = node.attribute("height").as_int();
 	layer->speed_x = node.child("properties").child("property").attribute("value").as_float();
+	
 	pugi::xml_node layer_data = node.child("data");
 	layer->gid = new uint[layer->width*layer->height];
 	memset(layer->gid, 0u, sizeof(uint)*layer->height*layer->width);
 
+	/*int i = 0;
+	for (pugi::xml_node iterator_node = node.child("data").child("tile"); iterator_node; iterator_node = iterator_node.next_sibling("tile"), i++)
+	{
+		layer->gid[i] = iterator_node.attribute("gid").as_uint();
+	}*/
+
+	
 	if (layer_data == NULL)
 	{
 		LOG("Error parsing map xml file: Cannot find 'layer/data' tag.");
@@ -356,7 +408,6 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		int i = 0;
 		for (pugi::xml_node tileset = node.child("data").child("tile"); tileset; tileset = tileset.next_sibling("tile"))
 		{
-
 			layer->gid[i] = tileset.attribute("gid").as_uint();
 
 			LOG("%u", layer->gid[i]);
@@ -368,15 +419,87 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	return ret;
 }
 
-bool j1Map::LoadObjectLayers(pugi::xml_node & node, ObjectsGroup * group)
+bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 {
 	bool ret = true;
 
-	group->name = node.attribute("name").as_string();
+	objectgroup->id = node.attribute("id").as_uint();
+	objectgroup->name = node.attribute("name").as_string();
 
-	for (pugi::xml_node& obj = node.child("object"); obj && ret; obj = obj.next_sibling("object"))
+	//Goes through all the objects and records how many of them there are.
+	int object_quantity = 0;
+	for (pugi::xml_node objIterator = node.child("object"); objIterator; objIterator = objIterator.next_sibling("object"))
 	{
-		ObjectsData* data = new ObjectsData;
+		object_quantity++;
+	}
+
+	//Sets the amount of objects to be drawn (Allocates memory for all the objects)
+	objectgroup->object_size = object_quantity;
+	objectgroup->object = new ObjectData[object_quantity];
+	memset(objectgroup->object, 0, object_quantity * sizeof(ObjectData));
+
+	//A SDL_rect recieves the matching variable values and then identifies which type of object it is.
+	int index = 0;
+	for (pugi::xml_node objIterator = node.child("object"); objIterator; objIterator = objIterator.next_sibling("object"), index++)
+	{
+		SDL_Rect* hitbox = new SDL_Rect;
+
+		hitbox->x = objIterator.attribute("x").as_uint();
+		hitbox->y = objIterator.attribute("y").as_uint();
+		hitbox->w = objIterator.attribute("width").as_uint();
+		hitbox->h = objIterator.attribute("height").as_uint();
+
+		objectgroup->object[index].hitbox = hitbox;
+		objectgroup->object[index].id = objIterator.attribute("id").as_uint();
+		objectgroup->object[index].name = objIterator.attribute("name").as_uint();
+
+		//The type string that the object passes is passed to a string.
+		//p2SString type(objIterator.attribute("type").as_string());
+		objectgroup->type = objIterator.attribute("type").as_string();
+
+		//If enum class-> Object_Type::HAZARD and not just HAZARD  and etc.
+		if (objectgroup->type == "solid")
+		{
+			objectgroup->object[index].type = SOLID;
+		}
+		else if (objectgroup->type == "platform")
+		{
+			objectgroup->object[index].type = PLATFORM;
+		}
+		else if (objectgroup->type == "hazard")
+		{
+			objectgroup->object[index].type = HAZARD;
+		}
+		else if (objectgroup->type == "item")
+		{
+			objectgroup->object[index].type = ITEM;
+		}
+		else if (objectgroup->type == "desactivable")
+		{
+			objectgroup->object[index].type = DESACTIVABLE;
+		}
+
+		//These last two can be put as position variables in the config.xml file.
+		else if (objectgroup->type == "respawn")
+		{
+			objectgroup->object[index].type = RESPAWN;
+		}
+		else if (objectgroup->type == "goal")
+		{
+			objectgroup->object[index].type = GOAL;
+		}
+
+		//Revise Positioning on this
+		else
+		{
+			objectgroup->object[index].type = UNKNOWN;
+		}
+
+	}
+	
+	/*for (pugi::xml_node& obj = node.child("object"); obj && ret; obj = obj.next_sibling("object"))
+	{
+		ObjectData* data = new ObjectData;
 
 		data->height = obj.attribute("height").as_uint();
 		data->width = obj.attribute("width").as_uint();
@@ -384,8 +507,8 @@ bool j1Map::LoadObjectLayers(pugi::xml_node & node, ObjectsGroup * group)
 		data->y = obj.attribute("y").as_uint();
 		data->name = obj.attribute("name").as_string();
 
-		group->objects.add(data);
-	}
+		objectgroup->objects.add(data);
+	}*/
 
 	return ret;
 }
@@ -405,7 +528,7 @@ MapLayer::~MapLayer()
 	delete[] gid;
 }
 
-ObjectsGroup::~ObjectsGroup()
-{
-	objects.clear();
-}
+//ObjectsGroup::~ObjectsGroup()
+//{
+//	objects.clear();
+//}

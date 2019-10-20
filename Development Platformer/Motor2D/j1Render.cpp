@@ -95,7 +95,7 @@ bool j1Render::Update(float dt)
 		cam.midPosY = App->player1->p1.position.x + ((App->player1->p1.position.y - App->player2->p2.position.y) / 2);
 	}*/
 	
-	camera.x = cam.midPosX;
+	//camera.x = cam.midPosX;
 	//camera.y = cam.midPosY;
 
 	/*uint winWidth, winHeight;

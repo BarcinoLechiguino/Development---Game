@@ -5,6 +5,8 @@
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "j1Input.h"
+#include "j1Map.h"
+#include "j1Collisions.h"
 #include "p2Log.h"
 
 j1Player2::j1Player2() //Constructor. Called at the first frame.
@@ -14,7 +16,7 @@ j1Player2::j1Player2() //Constructor. Called at the first frame.
 
 	p2.idle.PushBack({ 28, 14, 37, 57 });
 	p2.idle.PushBack({ 132, 12, 33, 59 });
-	p2.idle.PushBack({ 230, 12, 38, 59 });
+	p2.idle.PushBack({ 230, 12, 37, 59 });
 	p2.idle.PushBack({ 326, 14, 39, 57 });
 	p2.idle.speed = 0.1f;
 
@@ -26,30 +28,36 @@ j1Player2::j1Player2() //Constructor. Called at the first frame.
 	p2.running_right.PushBack({ 632, 96, 39, 49 });
 	p2.running_right.speed = 0.2f;
 
-	p2.running_left.PushBack({ 110,74,110,74 });
-	p2.running_left.PushBack({ 220,74,110,74 });
-	p2.running_left.PushBack({ 330,74,110,74 });
-	p2.running_left.PushBack({ 440,74,110,74 });
-	p2.running_left.PushBack({ 550,74,110,74 });
-	p2.running_left.PushBack({ 660,74,110,74 });
+	p2.running_left.PushBack({ 134, 90, 39, 55 });
+	p2.running_left.PushBack({ 232, 92, 39, 53 });
+	p2.running_left.PushBack({ 332, 96, 39, 49 });
+	p2.running_left.PushBack({ 434, 90, 45, 55 });
+	p2.running_left.PushBack({ 532, 92, 39, 53 });
+	p2.running_left.PushBack({ 632, 96, 39, 49 });
 	p2.running_left.speed = 0.2f;
 
-	p2.jumping.PushBack({ 0,148,110,74 });
-	p2.jumping.PushBack({ 110,148,110,74 });
-	p2.jumping.PushBack({ 220,148,110,74 });
-	p2.jumping.PushBack({ 330,148,110,74 });
-	p2.jumping.PushBack({ 440,148,110,74 });
-	p2.jumping.PushBack({ 550,148,110,74 });
-	p2.jumping.PushBack({ 660,148,110,74 });
-	p2.jumping.PushBack({ 0,222,110,74 });
-	p2.jumping.PushBack({ 110,222,110,74 });
-	p2.jumping.PushBack({ 220,222,110,74 });
+	p2.jumping.PushBack({ 30, 172, 39, 47 });
+	p2.jumping.PushBack({ 130, 176, 39, 43 });
+	p2.jumping.PushBack({ 234, 162, 37, 53 });
+	p2.jumping.PushBack({ 328, 158, 41, 45 });
+	p2.jumping.PushBack({ 436, 162, 29, 41 });
 	p2.jumping.speed = 0.2f;
 
-	p2.crouching.PushBack({ 440, 0, 110, 74 });
-	p2.crouching.PushBack({ 550, 0, 110, 74 });
-	p2.crouching.PushBack({ 660, 0, 110, 74 });
-	p2.crouching.PushBack({ 0, 74, 110, 74 });
+	p2.mid_jump.PushBack({ 528, 168, 47, 33 });
+	p2.mid_jump.PushBack({ 640, 168, 35, 41 });
+	p2.mid_jump.PushBack({ 22, 248, 51, 33 });
+	p2.mid_jump.speed = 0.2f;
+
+	p2.falling.PushBack({ 136, 224, 33, 61 });
+	p2.falling.PushBack({ 236, 226, 33, 59 });
+	p2.falling.speed = 0.2f;
+
+	p2.crouching.PushBack({ 30, 172, 39, 47 });
+	p2.crouching.PushBack({ 130, 176, 39, 43 });
+	p2.crouching.PushBack({ 432, 30, 37, 41 });
+	p2.crouching.PushBack({ 530, 28, 39, 43 });
+	p2.crouching.PushBack({ 630, 28, 37, 43 });
+	p2.crouching.PushBack({ 34, 104, 33, 41 });
 	p2.crouching.speed = 0.2f;
 
 	p2.death.PushBack({ 550, 370, 110, 74 });
@@ -99,6 +107,8 @@ bool j1Player2::Start()
 	p2.position = { p2.position.x, p2.position.y };
 	p2.HitBox = { (int)p2.position.x,(int)p2.position.y, p2.sprite_width, p2.sprite_height }; //Casked to int "(int)" for optimization.
 
+	p2.collider = App->collisions->AddCollider(p2.HitBox, PLAYER, this);
+
 	p2.p2_isGrounded(true);
 
 	return true;
@@ -110,22 +120,22 @@ bool j1Player2::PreUpdate()
 
 	p2.state = idle_P2;
 
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT)
 	{
 		p2.state = goingRight_P2;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_REPEAT)
 	{
 		p2.state = goingLeft_P2;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
 	{
 		p2.state = jumping_P2;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
 	{
 		p2.state = crouching_P2;
 	}
@@ -213,6 +223,15 @@ bool j1Player2::Update(float dt)
 		}
 
 		p2.position.y += p2.speed.y;
+
+		if (p2.speed.y < 0)
+		{
+			p2.current_animation = &p2.jumping;
+		}
+		else
+		{
+			p2.current_animation = &p2.falling;
+		}
 	}
 
 	//In case the HitBox clips through the ground.

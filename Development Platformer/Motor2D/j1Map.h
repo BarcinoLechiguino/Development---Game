@@ -6,30 +6,51 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
-struct ObjectsData
+//Kinds of colliders we are working with
+enum Object_Type //Cuidado con el class. If enum class-> Object_Type::HAZARD and not just HAZARD
 {
-	p2SString name;
-	uint width;
-	uint height;
-	int	x;
-	int	y;
+	UNKNOWN = -1,
+	PLAYER,
+	SOLID,
+	PLATFORM,
+	HAZARD,
+	ITEM,
+	DESACTIVABLE,
+	RESPAWN,
+	GOAL
 };
 
-struct ObjectsGroup
+//Information of a specific object in the map.
+struct ObjectData
 {
-	p2SString name;
-	p2List<ObjectsData*> objects;
-	~ObjectsGroup();
+	uint id;				//Id number of the object.
+	p2SString name;			//Name of the object.
+	Object_Type type;		//Type of collider associated with the object.
+	SDL_Rect* hitbox;		//Rectangle that represents the object.
+	SDL_Texture* texture;	//Visible image of the object.
 };
+
+//Object layer that has all the objects in the same "plane".
+struct ObjectGroup
+{
+	uint id;			//Id number of the object group.
+	p2SString name;		//Name of the object group.
+	ObjectData* object;	//Individual info of each object.
+	p2SString type;		//Object type
+	uint object_size;	//Quantity of objects.
+};
+
+
+
 
 struct MapLayer
 {
-	p2SString name = nullptr;
-	uint* gid = nullptr;
-	uint width = 0;
-	uint height = 0;
-	uint size = 0;
-	float speed_x = 0.0f;
+	p2SString name = nullptr;	//Map name
+	uint* gid;					//Tile Id
+	uint width = 0;				//Tile Width
+	uint height = 0;			//Tile Height
+	uint size = 0;				//Tile / Map size?
+	float speed_x = 0.0f;		//Parallax speed
 
 	~MapLayer();
 
@@ -79,10 +100,15 @@ struct MapData
 	int					tile_width;
 	int					tile_height;
 	float gravity = 0.2f;
+	
 	MapTypes			type;
 	p2List<TileSet*>	tilesets;
 	p2List<MapLayer*>	layers;
-	p2List<ObjectsGroup*> objLayers;
+	p2List<ObjectGroup*> objectGroups;
+	
+	p2SString background_colour; //Sets the string that will recieve the value of the string in the map file.
+	SDL_Color colour; //Info of which colour the background has. SDL_Color is a struct that represents colours.
+
 	p2SString music_File;
 };
 
@@ -117,7 +143,7 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
-	bool LoadObjectLayers(pugi::xml_node& node, ObjectsGroup* group);
+	bool LoadObjectLayers(pugi::xml_node& node, ObjectGroup* group);
 
 public:
 

@@ -16,20 +16,6 @@ class Animation;
 
 struct Collider;
 
-//enum COLLIDER_TYPE
-//{
-//	COLLIDER_NONE = -1,
-//	COLLIDER_WALL,
-//	COLLIDER_PLAYER,
-//	COLLIDER_START,
-//	COLLIDER_DEATH,
-//	COLLIDER_WIN,
-//	COLLIDER_ACTIVABLE,
-//	COLLIDER_LADDER,
-//	COLLIDER_GONE,
-//	COLLIDER_MAX
-//};
-
 class j1Module
 {
 public:

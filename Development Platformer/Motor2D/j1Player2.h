@@ -7,6 +7,9 @@
 #include "j1Input.h"
 #include "Animation.h"
 
+struct Collider;
+struct SDL_Texture;
+
 enum P2_State
 {
 	idle_P2,
@@ -58,6 +61,8 @@ struct Player2
 	Animation death;
 	Animation crouching;
 	Animation jumping;
+	Animation mid_jump;
+	Animation falling;
 	Animation* current_animation;
 
 	bool moving_right = false;
@@ -67,14 +72,13 @@ struct Player2
 
 	SDL_Rect HitBox; //Rectangle that represents the player.
 	P2_State state; //Adds the state enum to the player's variables.
+	Collider* collider;
 
 	//Temporal Variables
 	int sprite_width = /*20*/ 38;
 	int sprite_height = /*30*/64;
-	float floor = 1055.0f;
+	float floor = 0.0f;
 };
-
-struct SDL_Texture;
 
 class j1Player2 : public j1Module
 {
