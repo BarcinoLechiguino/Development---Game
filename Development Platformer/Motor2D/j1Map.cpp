@@ -180,11 +180,11 @@ bool j1Map::Load(const char* file_name)
 	pugi::xml_node object_group;
 	for (object_group = map_file.child("map").child("objectgroup"); object_group && ret; object_group = object_group.next_sibling("objectgroup"))
 	{
-		ObjectGroup* set = new ObjectGroup(); //New Object group
+		ObjectGroup* set = new ObjectGroup(); //New Object group pointer that will iterate through the memebers of the ObjectGroup struct to fill the object group data (id, name, object...) layer as well as the info of each object.
 
 		if (ret == true)
 		{
-			ret = LoadObjectLayers(object_group, set);
+			ret = LoadObjectLayers(object_group, set); //
 		}
 		data.objectGroups.add(set);
 	}
@@ -425,6 +425,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	return ret;
 }
 
+//Loads the object layers (colliders) from the xml map. It iterates through  a specific object layer (in the load() it is iterated through to get all the object info).
 bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 {
 	bool ret = true;

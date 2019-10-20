@@ -92,6 +92,7 @@ public:
 		}
 	}
 
+	//Collision handling
 	virtual void OnCollision(Collider* c1, Collider* c2) {}
 
 public:

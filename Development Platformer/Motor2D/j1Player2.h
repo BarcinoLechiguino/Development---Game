@@ -106,7 +106,7 @@ public: //P1 Variables
 
 	Player2 p2;
 
-	void OnCollision(Collider* collider);
+	void OnCollision(Collider* C1, Collider* C2);
 	bool Load(pugi::xml_node &node);
 	bool Save(pugi::xml_node &node) const;
 	void GodModeInput();

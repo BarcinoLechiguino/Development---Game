@@ -111,9 +111,11 @@ public: //P1 Variables
 	
 	Player1 p1;
 
-	void OnCollision(Collider* collider);
-	bool Load(pugi::xml_node &node);
-	bool Save(pugi::xml_node &node) const;
+	void OnCollision(Collider* C1, Collider* C2); //Collision Handling
+
+	bool Load(pugi::xml_node &node); //Loading from xml file
+	bool Save(pugi::xml_node &node) const; //Saving to xml file
+
 	void GodModeInput();
 
 	bool fading = false; // fade character when changing scenes

@@ -283,6 +283,15 @@ bool j1Player2::Save(pugi::xml_node& data) const
 	return true;
 }
 
+//Collision Handling
+void j1Player2::OnCollision(Collider* C1, Collider* C2) //See if without * it works
+{
+	if (C2->type == PLAYER)
+	{
+
+	}
+}
+
 void j1Player2::GodModeInput()
 {
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)

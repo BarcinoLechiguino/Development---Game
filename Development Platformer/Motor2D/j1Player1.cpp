@@ -121,7 +121,7 @@ bool j1Player1::Start()
 
 	p1.position = { p1.position.x, p1.position.y };
 	p1.HitBox = { (int)p1.position.x,(int)p1.position.y, p1.sprite_width, p1.sprite_height }; //Casked to int "(int)" for optimization.
-	//p1.collider = App->collisions->AddCollider(p1.HitBox, PLAYER, this);
+	p1.collider = App->collisions->AddCollider(p1.HitBox, PLAYER, this); //Adds a collider for the player.
 
 	/*App->audio->LoadFx(p1.jumpFX.GetString());
 	App->audio->LoadFx(p1.deathFX.GetString());
@@ -309,6 +309,13 @@ bool j1Player1::Save(pugi::xml_node&  nodePlayer) const
 	return true;
 }
 
+//Collision Handling -------
+void j1Player1::OnCollision(Collider* C1, Collider* C2)
+{
+
+}
+
+
 void j1Player1::GodModeInput()
 {
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
@@ -328,99 +335,4 @@ void j1Player1::GodModeInput()
 		
 	}
 }
-
-//j1Player1::j1Player1() : j1Module()
-//{
-//	name.create("player");
-//
-//	idle.PushBack({ 0,0,110,74 });
-//	idle.PushBack({ 132,0,110,74 });
-//	idle.PushBack({ 220,0,110,74 });
-//	idle.PushBack({ 330,0,110,74 });
-//	idle.speed = 0.2f;
-//
-//	run.PushBack({ 110,74,110,74 });
-//	run.PushBack({ 220,74,110,74 });
-//	run.PushBack({ 330,74,110,74 });
-//	run.PushBack({ 440,74,110,74 });
-//	run.PushBack({ 550,74,110,74 });
-//	run.PushBack({ 660,74,110,74 });
-//	run.speed = 0.2f;
-//
-//	jump.PushBack({ 0,148,110,74 });
-//	jump.PushBack({ 110,148,110,74 });
-//	jump.PushBack({ 220,148,110,74 });
-//	jump.PushBack({ 330,148,110,74 });
-//	jump.PushBack({ 440,148,110,74 });
-//	jump.PushBack({ 550,148,110,74 });
-//	jump.PushBack({ 660,148,110,74 });
-//	jump.PushBack({ 0,222,110,74 });
-//	jump.PushBack({ 110,222,110,74 });
-//	jump.PushBack({ 220,222,110,74 });
-//	jump.speed = 0.2f;
-//
-//	crouch.PushBack({440, 0, 110, 74});
-//	crouch.PushBack({550, 0, 110, 74});
-//	crouch.PushBack({660, 0, 110, 74});
-//	crouch.PushBack({0, 74, 110, 74});
-//	crouch.speed = 0.2f;
-//
-//	death.PushBack({550, 370, 110, 74});
-//	death.PushBack({660, 370, 110, 74});
-//	death.PushBack({0, 444, 110, 74});
-//	death.PushBack({110, 444, 110, 74});
-//	death.PushBack({220, 444, 110, 74});
-//	death.PushBack({330, 444, 110, 74});
-//	death.PushBack({440, 444, 110, 74});
-//	death.speed = 0.2f;
-//}
-//
-//bool j1Player1::Awake(pugi::xml_node& config) {
-//
-//	LOG("Loading Player Data");
-//	bool ret = true;
-//	current_animation = &idle;
-//	return ret;
-//}
-//bool j1Player1::Start() {
-//
-//	texture = App->tex->Load("textures/Spritesheets/Character 1/character_spritesheet_I_Buena.png");
-//	texture2 = App->tex->Load("textures/Spritesheets/Character 1/adventurer-hand-combat-Sheet.png");
-//
-//	return true;
-//}
-//
-//bool j1Player1::PreUpdate()
-//{
-//	return true;
-//}
-//
-//bool j1Player1::Update(float dt) {
-//
-//	current_animation = &idle;
-//
-//	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
-//		x += velocity*2;
-//		current_animation = &run;
-//		moving_right = true;
-//	}
-//	else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
-//		x -= velocity*2;
-//		current_animation = &run;
-//		moving_left = true;
-//
-//	}
-//	else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
-//		
-//		current_animation = &crouch;
-//	}
-//	y += gravity;
-//
-//	SDL_Rect r = current_animation->GetCurrentFrame();
-//
-//	App->render->Blit(texture, x, y, &r);
-//
-//	return true;
-//}
-
 
