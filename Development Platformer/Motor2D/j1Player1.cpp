@@ -58,10 +58,10 @@ j1Player1::j1Player1() //Constructor. Called at the first frame.
 
 	/*p1.crouching.PushBack({ 30, 172, 39, 47 });
 	p1.crouching.PushBack({ 130, 176, 39, 43 });*/
-	p1.crouching.PushBack({ 432, 30, 37, 41 });
-	p1.crouching.PushBack({ 530, 28, 39, 43 });
-	p1.crouching.PushBack({ 630, 28, 37, 43 });
-	p1.crouching.PushBack({ 34, 104, 33, 41 });
+	p1.crouching.PushBack({ 432, 10, 37, 61 }); //20 Pixels of margin vertically up.
+	p1.crouching.PushBack({ 530, 8, 39, 63 });
+	p1.crouching.PushBack({ 630, 8, 37, 63 });
+	p1.crouching.PushBack({ 34, 84, 33, 61 });
 	p1.crouching.speed = 0.1f;
 
 	p1.death.PushBack({550, 370, 110, 74});

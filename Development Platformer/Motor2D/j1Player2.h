@@ -63,6 +63,7 @@ struct Player2
 	Animation jumping;
 	Animation mid_jump;
 	Animation falling;
+
 	Animation* current_animation;
 
 	bool moving_right = false;
