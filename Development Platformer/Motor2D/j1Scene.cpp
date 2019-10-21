@@ -10,6 +10,7 @@
 #include "j1FadeScene.h"
 #include "j1Scene.h"
 #include "j1Player1.h"
+#include "j1Player2.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -120,9 +121,17 @@ bool j1Scene::Update(float dt)
 	else if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
 		if (App->player1->GodMode)
+		{
 			App->player1->GodMode = false;
-		else
+			App->player2->GodMode = false;
+		}
+		else 
+		{
 			App->player1->GodMode = true;
+			App->player2->GodMode = true;
+		}
+	
+
 	}
 
 	App->map->Draw();

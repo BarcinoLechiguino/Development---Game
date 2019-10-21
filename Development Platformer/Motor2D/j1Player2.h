@@ -112,6 +112,8 @@ public: //P1 Variables
 	bool Save(pugi::xml_node &node) const;
 	void GodModeInput();
 
+	bool player2_alive = false;
+	bool GodMode = false;
 	bool fading = false; // fade character when changing scenes
 
 private:

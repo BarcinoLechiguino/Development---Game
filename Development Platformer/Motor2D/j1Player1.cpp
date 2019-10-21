@@ -131,7 +131,7 @@ bool j1Player1::Start()
 
 	p1.state = idle_P1;
 
-	player_alive = true;
+	player1_alive = true;
 
 	return true;
 };
@@ -298,14 +298,19 @@ bool j1Player1::cleanUp()
 };
 
 
-bool j1Player1::Load(pugi::xml_node& nodePlayer)
+bool j1Player1::Load(pugi::xml_node& data)
 {
-	
+	p1.position.x = data.child("position1").attribute("x").as_int();
+	p1.position.y = data.child("position1").attribute("y").as_int();
 	return true;
 }
-bool j1Player1::Save(pugi::xml_node&  nodePlayer) const
+
+bool j1Player1::Save(pugi::xml_node&  data) const
 {
-	
+	pugi::xml_node pos = data.append_child("position1");
+
+	pos.append_attribute("x") = p1.position.x;
+	pos.append_attribute("y") = p1.position.y;
 	return true;
 }
 
@@ -318,21 +323,21 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 
 void j1Player1::GodModeInput()
 {
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		
+		p1.position.x += 2;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		
+		p1.position.x -= 2;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
-		
+		p1.position.y -= 2;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
-		
+		p1.position.y += 2;
 	}
 }
 

@@ -7,7 +7,9 @@
 #include "j1Input.h"
 #include "j1Map.h"
 #include "j1Collisions.h"
+#include "j1FadeScene.h"
 #include "p2Log.h"
+#include "j1Audio.h"
 
 j1Player2::j1Player2() //Constructor. Called at the first frame.
 {
@@ -111,6 +113,10 @@ bool j1Player2::Start()
 
 	p2.p2_isGrounded(true);
 
+	p2.state = idle_P2;
+
+	player2_alive = true;
+
 	return true;
 };
 
@@ -120,27 +126,35 @@ bool j1Player2::PreUpdate()
 
 	p2.state = idle_P2;
 
-	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT)
+	if (!GodMode)
 	{
-		p2.state = goingRight_P2;
-	}
 
-	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_REPEAT)
-	{
-		p2.state = goingLeft_P2;
-	}
+		if (App->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT)
+		{
+			p2.state = goingRight_P2;
+		}
 
-	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
-	{
-		p2.state = jumping_P2;
-	}
+		if (App->input->GetKey(SDL_SCANCODE_H) == KEY_REPEAT)
+		{
+			p2.state = goingLeft_P2;
+		}
 
-	if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT)
-	{
-		p2.state = crouching_P2;
-	}
+		if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
+		{
+			p2.state = jumping_P2;
+		}
 
+		if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT)
+		{
+			p2.state = crouching_P2;
+		}
+		else
+		{
+			GodModeInput();
+		}
+	}
 	return true;
+
 };
 
 bool j1Player2::Update(float dt)
@@ -262,6 +276,7 @@ bool j1Player2::PostUpdate()
 
 bool j1Player2::cleanUp()
 {
+	App->tex->UnLoad(p2.texture);
 	return true;
 };
 
@@ -296,20 +311,20 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2) //See if without * it wo
 
 void j1Player2::GodModeInput()
 {
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT)
 	{
-
+		p2.position.x += 2;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_REPEAT)
 	{
-
+		p2.position.x -= 2;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_REPEAT)
 	{
-
+		p2.position.y -= 2;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT)
 	{
-
+		p2.position.y += 2;
 	}
 }
