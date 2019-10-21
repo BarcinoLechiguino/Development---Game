@@ -9,12 +9,14 @@
 		<currentMap num="0" />
 	</scene>
 	<collisions />
-	<player />
 	<player>
-		<position2 x="150" y="0" />
+		<position1 x="220" y="0" />
+	</player>
+	<player>
+		<position2 x="710" y="0" />
 	</player>
 	<:anonymous />
 	<renderer>
-		<camera x="0" y="-540" />
+		<camera x="-10" y="230" />
 	</renderer>
 </game_state>

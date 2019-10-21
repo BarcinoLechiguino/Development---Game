@@ -119,7 +119,7 @@ public: //P1 Variables
 	void GodModeInput();
 
 	bool fading = false; // fade character when changing scenes
-	bool player_alive = false;
+	bool player1_alive = false;
 	bool GodMode = false;
 
 private:
