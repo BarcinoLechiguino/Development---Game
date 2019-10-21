@@ -148,11 +148,12 @@ bool j1Player2::PreUpdate()
 		{
 			p2.state = crouching_P2;
 		}
-		else
-		{
-			GodModeInput();
-		}
 	}
+	else
+	{
+		GodModeInput();
+	}
+
 	return true;
 
 };
@@ -313,18 +314,18 @@ void j1Player2::GodModeInput()
 {
 	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT)
 	{
-		p2.position.x += 2;
+		p2.position.x += 10;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_REPEAT)
 	{
-		p2.position.x -= 2;
+		p2.position.x -= 10;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_REPEAT)
 	{
-		p2.position.y -= 2;
+		p2.position.y -= 10;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT)
 	{
-		p2.position.y += 2;
+		p2.position.y += 10;
 	}
 }

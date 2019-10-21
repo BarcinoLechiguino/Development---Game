@@ -325,19 +325,19 @@ void j1Player1::GodModeInput()
 {
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		p1.position.x += 2;
+		p1.position.x += 10;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		p1.position.x -= 2;
+		p1.position.x -= 10;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
-		p1.position.y -= 2;
+		p1.position.y -= 10;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
-		p1.position.y += 2;
+		p1.position.y += 10;
 	}
 }
 
