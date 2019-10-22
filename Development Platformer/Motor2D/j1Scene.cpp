@@ -80,7 +80,7 @@ bool j1Scene::Update(float dt)
 
 	else if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 		App->player1->Restart();
-	App->player2->Restart();
+	//App->player2->Restart();
 
 	else if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		 App->SaveGame();
