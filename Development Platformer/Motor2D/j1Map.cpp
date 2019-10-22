@@ -37,43 +37,68 @@ void j1Map::Draw()
 	if(map_loaded == false)
 		return;
 
-	MapLayer* layer = data.layers[0];
+	//MapLayer* layer = data.layers[0]; //The problem lays here, the index remains at 0 so only the first layeris loaded
+	//New
+	p2List_item<TileSet*>* tileset = data.tilesets.start; //Tileset iteration list
+	
+	
+	p2List_item<MapLayer*>* layer_iterator = data.layers.start;
 
-	p2List_item<MapLayer*>* item = data.layers.start;
+	for (layer_iterator; layer_iterator != NULL; layer_iterator = layer_iterator->next) 
+	{
+		uint* gid = layer_iterator->data->gid;
 
-	for (item; item != nullptr; item = item->next) {
-
-		uint* gid = item->data->gid;
-		int i = 0;
+		uint i = 0;
 		for (uint y = 0; y < data.height; ++y)
 		{
 			for (uint x = 0; x < data.width; ++x)
 			{
-				App->render->Blit(data.tilesets[0]->texture,
-				MapToWorld(x, y).x, MapToWorld(x, y).y,
-				data.tilesets[0]->GetRect(gid[i]));
+				//New
+				App->render->Blit(data.tilesets[0]->texture, data.tilesets[0]->MapToWorld(x, y).x, data.tilesets[0]->MapToWorld(x, y).y, data.tilesets[0]->GetRect(gid[i]));
 				i++;
 			}
 		}
-
+		layer_iterator = layer_iterator->next; //Go to next layer.
 	}
 
+	//New
+	/*while(layer_iterator != NULL  && tileset != NULL)
+	{
+		while (tileset != NULL)
+		{
+			uint* gid = layer_iterator->data->gid;
+
+			uint i = 0;
+			for (uint y = 0; y < data.height; ++y)
+			{
+				for (uint x = 0; x < data.width; ++x)
+				{
+					//New
+					//App->render->Blit(data.tilesets[0]->texture, data.tilesets[0]->MapToWorld(x, y).x, data.tilesets[0]->MapToWorld(x, y).y, data.tilesets[0]->GetRect(gid[i]));
+					App->render->Blit(tileset->data->texture, tileset->data->MapToWorld(x, y).x, tileset->data->MapToWorld(x, y).y, tileset->data->GetRect(gid[i]));
+					i++;
+				}
+			}
+			tileset = tileset->next;
+		}
+		layer_iterator = layer_iterator->next; //Go to next layer.
+	}*/
 }
 
+//New Comment
+//SDL_Rect* TileSet::GetRect(int tile_id)
+//{
+//	int relative_id = tile_id - firstgid;
+//	SDL_Rect* rect = ReturnedRect;
+//	rect->w = tile_width;
+//	rect->h = tile_height;
+//	rect->x = margin + ((rect->w + spacing) * (relative_id % num_tiles_width));
+//	rect->y = margin + ((rect->h + spacing) * (relative_id / num_tiles_width));
+//	return rect;
+//}
 
-SDL_Rect* TileSet::GetRect(int id)
-{
-	int relative_id = id - firstgid;
-	SDL_Rect* rect = ReturnedRect;
-	rect->w = tile_width;
-	rect->h = tile_height;
-	rect->x = margin + ((rect->w + spacing) * (relative_id % num_tiles_width));
-	rect->y = margin + ((rect->h + spacing) * (relative_id / num_tiles_width));
-	return rect;
-}
-
-
-iPoint j1Map::MapToWorld(int x, int y)
+//Old Map to World, passed to the tileset struct in map.h
+/*iPoint j1Map::MapToWorld(int x, int y)
 {
 	iPoint vec;
 
@@ -81,7 +106,7 @@ iPoint j1Map::MapToWorld(int x, int y)
 	vec.y = y * data.tile_height;
 
 	return vec;
-}
+}*/
 
 // Called before quitting
 bool j1Map::CleanUp()
@@ -392,16 +417,34 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->height = node.attribute("height").as_int();
 	layer->speed_x = node.child("properties").child("property").attribute("value").as_float();
 	
-	pugi::xml_node layer_data = node.child("data");
-	layer->gid = new uint[layer->width*layer->height];
-	memset(layer->gid, 0u, sizeof(uint)*layer->height*layer->width);
-
-	/*int i = 0;
-	for (pugi::xml_node iterator_node = node.child("data").child("tile"); iterator_node; iterator_node = iterator_node.next_sibling("tile"), i++)
+	layer->gid = new uint[layer->height * layer->width];
+	memset(layer->gid, 0, layer->width * layer->height * sizeof(uint));
+	
+	int i = 0;
+	for (pugi::xml_node iterator_node = node.child("data").child("tile"); iterator_node; iterator_node = iterator_node.next_sibling("tile"))
 	{
 		layer->gid[i] = iterator_node.attribute("gid").as_uint();
-	}*/
+		LOG("Layer %u of the tileset.", layer->gid[i]);
+		i++;
+	}
+	
+	pugi::xml_node layer_data = node.child("data");
+	//New comment
+	/*layer->gid = new uint[layer->width*layer->height];				
+	memset(layer->gid, 0u, sizeof(uint)*layer->height*layer->width);*/
 
+	//New
+	/*Goes through all the objects and records how many of them there are.
+	int layer_quantity = 0;
+	for (pugi::xml_node layerIterator = node.child("layer"); layerIterator; layerIterator = layerIterator.next_sibling("layer"))
+	{
+		layer_quantity++;
+	}
+
+	//Sets the amount of layers to be drawn (Allocates memory for all layers)
+	layer->size = layer_quantity;
+	layer->tileset = new TileSet[layer_quantity];
+	memset(layer->tileset, 0, layer_quantity * sizeof(TileSet));*/
 	
 	if (layer_data == NULL)
 	{
@@ -411,6 +454,9 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	}
 	else
 	{
+		layer->gid = new uint[layer->width*layer->height]; // New
+		memset(layer->gid, 0, layer->width*layer->height); // New
+		
 		int i = 0;
 		for (pugi::xml_node tileset = node.child("data").child("tile"); tileset; tileset = tileset.next_sibling("tile"))
 		{
@@ -422,7 +468,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		return true;
 	}
 
-	return ret;
+	return true;
 }
 
 //Loads the object layers (colliders) from the xml map. It iterates through  a specific object layer (in the load() it is iterated through to get all the object info).
@@ -532,7 +578,8 @@ bool j1Map::SwitchMaps(p2SString* new_map)
 
 MapLayer::~MapLayer()
 {
-	delete[] gid;
+	/*delete[] gid;*/ //New comment
+	RELEASE(gid); //New
 }
 
 //ObjectsGroup::~ObjectsGroup()

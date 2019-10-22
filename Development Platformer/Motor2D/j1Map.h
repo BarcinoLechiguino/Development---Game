@@ -42,14 +42,19 @@ struct ObjectGroup
 
 struct MapLayer
 {
-	p2SString name = nullptr;	//Map name
+	p2SString name;				//Map name
 	uint* gid;					//Tile Id
 	uint width = 0;				//Tile Width
 	uint height = 0;			//Tile Height
 	uint size = 0;				//Tile / Map size?
 	float speed_x = 0.0f;		//Parallax speed
 
+	/*MapLayer() : gid(NULL) {}*/ //New Comment
+
 	~MapLayer();
+	/*{
+		RELEASE(gid); //New Comment
+	}*/
 
 	inline uint Get(uint x, uint y) const
 	{
@@ -60,9 +65,37 @@ struct MapLayer
 // ----------------------------------------------------
 struct TileSet
 {
+	//New
+	SDL_Rect* Tile_Rect = new SDL_Rect;
+		
+	SDL_Rect* GetRect(int tile_id)
+	{
 
-	SDL_Rect* GetRect(int id);
-	SDL_Rect* ReturnedRect = new SDL_Rect;
+		SDL_Rect* ret = Tile_Rect;
+
+		int x = ((tile_id - firstgid) % num_tiles_width);
+		int y = ((tile_id - firstgid) / num_tiles_width);
+
+		ret->x = x * tile_width + margin + spacing * x;
+		ret->y = y * tile_height + margin + spacing * y;
+		ret->w = tile_width;
+		ret->h = tile_height;
+
+		return ret;
+	}
+
+	//New (int instead of uint)
+	//Substitutes the MapToWorld() function.
+	p2Point<int> MapToWorld(int x, int y)
+	{
+		p2Point<int> vec; //position or vect, both work.
+
+		vec.x = x * tile_width;
+		vec.y = y * tile_height;
+
+		return vec;
+	}
+
 	p2SString name;
 	int	firstgid;
 	int	margin;
