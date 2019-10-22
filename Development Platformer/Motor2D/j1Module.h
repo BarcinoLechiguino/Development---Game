@@ -93,7 +93,7 @@ public:
 	}
 
 	//Collision handling
-	virtual void OnCollision(Collider* c1, Collider* c2) {}
+	virtual void OnCollision(Collider* C1, Collider* C2) {}
 
 public:
 

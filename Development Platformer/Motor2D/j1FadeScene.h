@@ -30,6 +30,9 @@ public:
 	//returns true if it's changing map
 	bool IsChanging() const;
 
+	//New, must change.
+	bool FadeToBlack(const char* mapname, float time = 2.0f);
+
 private:
 
 public:
@@ -49,6 +52,7 @@ private:
 	uint start_time = 0;
 	uint total_time = 0;
 	SDL_Rect screen;
+	const char* mapName;
 
 
 };

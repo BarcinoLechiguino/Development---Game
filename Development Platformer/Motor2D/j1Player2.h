@@ -39,6 +39,7 @@ struct Player2
 	p2Point<float> acceleration; //Time it takes the player to reach Cruiser Speed horizontally and/or vertically.
 	float gravity; //Acceleration variable for jumps. Gravitational Pull.
 
+	bool flip = false; //Defines if the sprite should be flipped or not
 	bool grounded; //Defines whether the player is standing or jumping.
 
 	//Changes the state of the player depending on the given argument. Also if true it records the position from where the player jumped.
@@ -63,12 +64,8 @@ struct Player2
 	Animation jumping;
 	Animation mid_jump;
 	Animation falling;
-
 	Animation* current_animation;
 
-	bool moving_right = false;
-	bool moving_left = false;
-	bool flip = false;
 	uint duojump_fx, jump_fx, death_fx;
 
 	SDL_Rect HitBox; //Rectangle that represents the player.

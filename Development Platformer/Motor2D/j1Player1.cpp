@@ -160,7 +160,7 @@ bool j1Player1::PreUpdate()
 			p1.state = crouching_P1;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
 			p1.state = jumping_P1;
 			
@@ -201,6 +201,7 @@ bool j1Player1::Update(float dt)
 	
 		p1.position.x += p1.speed.x; //p1.speed_x is positive here.
 
+		p1.flip = false;
 		p1.current_animation = &p1.running_right;
 		p1.moving_right = true;
 	
@@ -218,6 +219,7 @@ bool j1Player1::Update(float dt)
 	
 		p1.position.x += p1.speed.x;  //p1.speed_x  is negative here.
 
+		p1.flip = true;
 		p1.current_animation = &p1.running_left;
 		p1.moving_left = true;
 	
@@ -277,11 +279,21 @@ bool j1Player1::Update(float dt)
 	
 	//Draws the HitBox on-screen.
 	//App->render->DrawQuad(p1.HitBox_Alpha, 255, 0, 0, 200);
-	
+
 	p1.HitBox = p1.current_animation->GetCurrentFrame();
 	
-	App->render->Blit(p1.texture, p1.position.x, p1.position.y, &p1.HitBox);
-	//SDL_RenderCopyEx(App->render->renderer, p1.texture, &p1.HitBox, &p1.HitBox, 0, NULL, SDL_FLIP_HORIZONTAL);
+	App->render->Blit(p1.texture, p1.position.x, p1.position.y, &p1.HitBox, p1.flip);
+	
+	p1.collider->Set_Position(p1.position.x, p1.position.y); //Makes the collider follow the player.
+
+	/*if (p1.flip)
+	{
+		p1.collider->Set_Position(p1.position.x, p1.position.y); //Makes the collider follow the player.
+	}
+	else
+	{
+		p1.collider->Set_Position(p1.position.x + 5, p1.position.y); //Makes the collider follow the player.
+	}*/
 
 	return true;
 };
@@ -315,10 +327,10 @@ bool j1Player1::Save(pugi::xml_node&  data) const
 }
 
 //Collision Handling -------
-void j1Player1::OnCollision(Collider* C1, Collider* C2)
-{
-
-}
+//void j1Player1::OnCollision(Collider* C1, Collider* C2)
+//{
+//
+//}
 
 void j1Player1::Restart()
 {
@@ -353,5 +365,37 @@ void j1Player1::GodModeInput()
 	{
 		p1.position.y += 10;
 	}
+}
+
+//Collision Handling ---------------------------------------
+void j1Player1::OnCollision(Collider* C1, Collider* C2)
+{
+	if (C2->type == PLAYER)
+	{
+		Collider* temp = C1;
+		C1 = C2;
+		C2 = temp;
+	}
+	if (C1->type != PLAYER)
+	{
+		return;
+	}
+
+	//Player colliding against solids
+	if (C1->type == PLAYER && C2->type == SOLID)
+	{
+		//Player Colliding from above the Solid
+		if (p1.position.y < C2->collider.y + C2->collider.h)
+		{
+			if (p1.speed.y != 0)
+			{
+				p1.speed.y = 0;
+			}
+			p1.position.y = C2->collider.y - p1.collider->collider.h + 1;
+			
+			p1.grounded = true;
+		}
+	}
+
 }
 

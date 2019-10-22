@@ -27,6 +27,7 @@ struct ObjectData
 	p2SString name;			//Name of the object.
 	Object_Type type;		//Type of collider associated with the object.
 	SDL_Rect* hitbox;		//Rectangle that represents the object.
+	float rotation;			//Rotation of the object.
 	SDL_Texture* texture;	//Visible image of the object.
 };
 
@@ -67,7 +68,7 @@ struct TileSet
 {
 	//New
 	SDL_Rect* Tile_Rect = new SDL_Rect;
-		
+	
 	SDL_Rect* GetRect(int tile_id)
 	{
 
@@ -175,9 +176,11 @@ private:
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadObjectLayers(pugi::xml_node& node, ObjectGroup* group);
 
+	TileSet* GetTilesetFromTileId(int id) const;
+
 public:
 
-	MapData data;
+	MapData data; 
 
 
 private:

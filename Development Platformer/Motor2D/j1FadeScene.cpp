@@ -9,6 +9,7 @@
 #include "j1Player2.h"
 #include "j1Audio.h"
 #include "j1Map.h"
+#include "j1Collisions.h"
 
 #include "SDL\include\SDL_render.h"
 #include "SDL\include\SDL_timer.h"
@@ -47,36 +48,62 @@ bool j1Fade_Scene::Update(float dt)
 
 	switch (current_step)
 	{
-	case fade_step::fade_to_black:
-	{
-		if (now >= total_time) //Point where the screen is totally black, and the new map is loaded.
+		case fade_step::fade_to_black:
 		{
-			App->scene->currentMap = nextMap;
-			App->map->SwitchMaps(App->scene->map_names[nextMap]);
-			
-			total_time += total_time;
-			start_time = SDL_GetTicks();
-			fading = false;
-			current_step = fade_step::fade_from_black;
+			if (now >= total_time) //Point where the screen is totally black, and the new map is loaded.
+			{
+				//New, revise and change
+				App->map->data = { 0 }; //Empties all map data.
+				App->collisions->collider_list.clear(); //Clears all previously loaded colliders.
+
+				App->map->Load(mapName); //Load specified map
+				App->collisions->LoadFromMap(); //Load Collisions
+
+				/*App->scene->currentMap = nextMap;
+				App->map->SwitchMaps(App->scene->map_names[nextMap]);*/
+				
+				total_time += total_time;
+				start_time = SDL_GetTicks();
+				fading = false;
+				current_step = fade_step::fade_from_black;
+			}
 		}
-	}break;
+		break;
 
-	case fade_step::fade_from_black:
-	{
-		normalized = 1.0f - normalized;
-
-		if (now >= total_time)
+		case fade_step::fade_from_black:
 		{
-			current_step = fade_step::none;
-		}
+			normalized = 1.0f - normalized;
 
-	}break;
+			if (now >= total_time)
+			{
+				current_step = fade_step::none;
+			}
+
+		}
+		break;
 	}
 
 	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(normalized * 255.0f));
 	SDL_RenderFillRect(App->render->renderer, &screen);
 
 	return true;
+}
+
+bool j1Fade_Scene ::FadeToBlack(const char* mapname, float time)
+{
+	bool ret = false;
+
+	mapName = mapname;
+
+	if (current_step == fade_step::none)
+	{
+		current_step = fade_step::fade_to_black;
+		start_time = SDL_GetTicks();
+		total_time = (Uint32)(time * 0.5f * 1000.0f);
+		ret = true;
+	}
+
+	return ret;
 }
 
 bool j1Fade_Scene::ChangeMap(int newMap, float time)

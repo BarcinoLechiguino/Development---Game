@@ -10,6 +10,7 @@
 #include "j1Input.h"
 #include "j1Audio.h"
 #include "j1Scene.h"
+#include "p2Point.h"
 #include <math.h>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -41,6 +42,35 @@ void j1Map::Draw()
 	//New
 	p2List_item<TileSet*>* tileset = data.tilesets.start; //Tileset iteration list
 	
+	//New
+	/*MapLayer* layer = this->data.layers.start->data;
+
+	p2List_item<MapLayer*>* layerIter = this->data.layers.start;
+
+	while (layerIter != NULL)
+	{
+		layer = layerIter->data;
+
+		for (int y = 0; y < data.height; ++y)
+		{
+			for (int x = 0; x < data.width; ++x)
+			{
+				int tile_id = layer->Get(x, y);
+				if (tile_id > 0)
+				{
+					TileSet* tileset = GetTilesetFromTileId(tile_id);
+					if (tileset != nullptr)
+					{
+						SDL_Rect r = *tileset->GetRect(tile_id);
+						iPoint pos = tileset->MapToWorld(x, y);
+
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+					}
+				}
+			}
+		}
+		layerIter = layerIter->next;
+	}*/
 	
 	p2List_item<MapLayer*>* layer_iterator = data.layers.start;
 
@@ -81,9 +111,31 @@ void j1Map::Draw()
 			}
 			tileset = tileset->next;
 		}
+
 		layer_iterator = layer_iterator->next; //Go to next layer.
 	}*/
 }
+
+TileSet* j1Map::GetTilesetFromTileId(int id) const
+{
+	p2List_item<TileSet*>* tilesetIter = data.tilesets.start;
+
+	TileSet* ret = NULL;
+
+	while (tilesetIter != NULL)
+	{
+		if (id >= tilesetIter->data->firstgid)
+		{
+
+			ret = tilesetIter->data;
+		}
+
+		tilesetIter = tilesetIter->next;
+	}
+
+	return ret;
+}
+
 
 //New Comment
 //SDL_Rect* TileSet::GetRect(int tile_id)
@@ -505,6 +557,7 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 		objectgroup->object[index].hitbox = hitbox;
 		objectgroup->object[index].id = objIterator.attribute("id").as_uint();
 		objectgroup->object[index].name = objIterator.attribute("name").as_uint();
+		objectgroup->object[index].rotation = objIterator.attribute("rotation").as_float();
 
 		//The type string that the object passes is passed to a string.
 		//p2SString type(objIterator.attribute("type").as_string());

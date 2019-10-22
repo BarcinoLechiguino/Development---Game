@@ -129,24 +129,24 @@ bool j1Player2::PreUpdate()
 	if (!GodMode)
 	{
 
-		if (App->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT)
+		if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT)
 		{
 			p2.state = goingRight_P2;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_H) == KEY_REPEAT)
+		if (App->input->GetKey(SDL_SCANCODE_KP_4) == KEY_REPEAT)
 		{
 			p2.state = goingLeft_P2;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN)
-		{
-			p2.state = jumping_P2;
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT)
+		if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_REPEAT)
 		{
 			p2.state = crouching_P2;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_KP_0) == KEY_DOWN)
+		{
+			p2.state = jumping_P2;
 		}
 	}
 	else
@@ -186,8 +186,8 @@ bool j1Player2::Update(float dt)
 
 		p2.position.x += p2.speed.x; //p2.speed_x is positive here.
 
+		p2.flip = false;
 		p2.current_animation = &p2.running_right;
-		p2.moving_right = true;
 
 		LOG("P2 Position %d %d", p2.position.x, p2.position.y);
 
@@ -203,8 +203,8 @@ bool j1Player2::Update(float dt)
 
 		p2.position.x += p2.speed.x;  //p2.speed_x  is negative here.
 
+		p2.flip = true;
 		p2.current_animation = &p2.running_left;
-		p2.moving_left = true;
 
 		break;
 
@@ -265,7 +265,7 @@ bool j1Player2::Update(float dt)
 
 	p2.HitBox = p2.current_animation->GetCurrentFrame();
 
-	App->render->Blit(p2.texture, p2.position.x, p2.position.y, &p2.HitBox);
+	App->render->Blit(p2.texture, p2.position.x, p2.position.y, &p2.HitBox, p2.flip);
 
 	return true;
 };

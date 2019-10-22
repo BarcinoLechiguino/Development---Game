@@ -4,18 +4,18 @@
 #include "j1Module.h"
 #include "SDL/include/SDL.h"
 
-enum Object_Type;
+enum Object_Type; //If it was enum class we would need to refer to the types with Object_Type::SOLID for examole.
 struct ObjectData;
 
 struct Collider
 {
 	SDL_Rect collider;
 	Object_Type type;
-	j1Module* callback = nullptr;
+	j1Module* callback = NULL;
 	bool delete_collider = false; //Used to delete colliders that are not needed anymore or
 
 	//Revise all this.
-	Collider(SDL_Rect collider, Object_Type type, j1Module* callback = nullptr) : collider(collider), type(type), callback(callback)//Should change?
+	Collider(SDL_Rect collider, Object_Type type, j1Module* callback = NULL) : collider(collider), type(type), callback(callback)//Should change?
 	{
 
 	};
@@ -30,7 +30,7 @@ struct Collider
 		collider.y = y;
 	}
 
-	bool check_collision(const SDL_Rect& r) const;
+	bool Check_Collision(const SDL_Rect& r) const;
 };
 
 class j1Collisions : public j1Module 
@@ -69,7 +69,7 @@ private:
 
 public:
 	//Variables
-	Collider collider;
+	Collider collider; //Call to struct from the j1 collision module.
 	p2List<Collider*> collider_list;
 	bool collider_debug;
 

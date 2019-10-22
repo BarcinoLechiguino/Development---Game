@@ -4,9 +4,10 @@
 #include "j1Render.h"
 
 
-j1Collisions::j1Collisions() : j1Module()
+j1Collisions::j1Collisions() : j1Module()/*, collider_debug(true)*/
 {
 	name.create("collisions");
+	collider_debug = true;
 }
 
 bool j1Collisions::Init()
@@ -73,7 +74,7 @@ bool j1Collisions::PreUpdate()
 
 			if (c1 != c2)
 			{
-				if (c1->check_collision(c2->collider) == true && (c1->type == PLAYER || c2->type == PLAYER))
+				if (c1->Check_Collision(c2->collider) == true && (c1->type == PLAYER || c2->type == PLAYER))
 				{
 					if (c1->callback)
 					{
@@ -165,9 +166,9 @@ Collider* j1Collisions::AddCollider(SDL_Rect collider, Object_Type type, j1Modul
 {
 	Collider* coll = new Collider;
 
-	coll->callback = callback;
 	coll->collider = collider;
 	coll->type = type;
+	coll->callback = callback;
 
 	collider_list.add(coll);
 
@@ -188,7 +189,7 @@ void j1Collisions::LoadFromMap() // Remember to put in fade to black.
 	}
 }
 
-bool Collider::check_collision(const SDL_Rect& r) const
+bool Collider::Check_Collision(const SDL_Rect& r) const
 {
 	return ((r.x + r.w > collider.x) && (r.x < collider.x + collider.w) &&
 		(r.y + r.h > collider.y) && (r.y < collider.y + collider.h));

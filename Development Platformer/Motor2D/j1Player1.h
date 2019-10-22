@@ -77,7 +77,7 @@ struct Player1
 
 	//Temporal Variables
 	int sprite_width = /*20*/ 38;
-	int sprite_height = /*30*/64;
+	int sprite_height = /*30*/60;
 	float floor = 0.0f;
 
 	/*p2SString		jumpFX;

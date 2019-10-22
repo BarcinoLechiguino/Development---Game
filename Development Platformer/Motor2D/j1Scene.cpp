@@ -9,6 +9,7 @@
 #include "j1Map.h"
 #include "j1FadeScene.h"
 #include "j1Scene.h"
+#include "j1Collisions.h"
 #include "j1Player1.h"
 #include "j1Player2.h"
 
@@ -60,36 +61,75 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_KP_8) == KEY_REPEAT)
-		App->render->camera.y -= 10;
-
-	if (App->input->GetKey(SDL_SCANCODE_KP_2) == KEY_REPEAT)
-		App->render->camera.y += 10;
-
-	if (App->input->GetKey(SDL_SCANCODE_KP_4) == KEY_REPEAT)
-		App->render->camera.x -= 10;
-
-	if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT)
+	//Camera Movement With Arrow Keys
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	{
 		App->render->camera.x += 10;
-
+	}
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	{
+		App->render->camera.x -= 10;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	{
+		App->render->camera.y += 10;
+	}	
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	{
+		App->render->camera.y -= 10;
+	}
+	
+	//Debug Keys
+	//Load First Level Key
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-		Load_lvl(0);
+	{
+		//Load_lvl(0);
 
+		//New
+		App->fadescene->FadeToBlack("Tutorial Screen2.tmx");
+	}
+
+	//Load Second Level Key
 	else if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
-		Load_lvl(1);
+	{
+		//Load_lvl(1);
 
+		App->fadescene->FadeToBlack("1st Screen2.tmx");
+	}
+
+	//Restart Key
 	else if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	{
 		App->player1->Restart();
-	//App->player2->Restart();
-
+		//App->player2->Restart();
+	}
+	
+	//Save Game Key
 	else if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-		 App->SaveGame();
-
-
+	{
+		App->SaveGame();
+	}
+	
+	//Load Game Key
 	else if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+	{
 		App->LoadGame();
+	}
 
-
+	//Colliders Debug Draw Activation Key
+	else if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	{
+		if (App->collisions->collider_debug)
+		{
+			App->collisions->collider_debug = false;
+		}
+		else
+		{
+			App->collisions->collider_debug = true;
+		}
+	}
+	
+	//GodMode Activation Key
 	else if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
 		if (App->player1->GodMode)
@@ -102,13 +142,15 @@ bool j1Scene::Update(float dt)
 			App->player1->GodMode = true;
 			App->player2->GodMode = true;
 		}
-	
-
 	}
-
 	App->map->Draw();
 
-		return true;
+
+	//Technical title
+	/*p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d", App->map->data.width, App->map->data.height, App->map->data.tile_width, App->map->data.tile_height, App->map->data.tilesets.count());
+	App->win->SetTitle(title.GetString());*/
+
+	return true;
 }
 
 

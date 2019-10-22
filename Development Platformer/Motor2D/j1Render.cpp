@@ -158,27 +158,43 @@ void j1Render::ResetViewPort()
 }
 
 // Blit to screen
-bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivot_x, int pivot_y) const
+bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, bool flip, float speed, double angle, int pivot_x, int pivot_y) const
 {
 	bool ret = true;
 	uint scale = App->win->GetScale();
 
-	SDL_Rect collider;
-	collider.x = (int)(camera.x * speed) + x * scale;
-	collider.y = (int)(camera.y * speed) + y * scale;
-
-	if(section != NULL)
+	SDL_Rect sprite;
+	if (flip)
 	{
-		collider.w = section->w;
-		collider.h = section->h;
+		sprite.x = (int)(camera.x * speed) + x * scale + 60; //Add players sprite width.
+		sprite.y = (int)(camera.y * speed) + y * scale;
 	}
 	else
 	{
-		SDL_QueryTexture(texture, NULL, NULL, &collider.w, &collider.h);
+		sprite.x = (int)(camera.x * speed) + x * scale;
+		sprite.y = (int)(camera.y * speed) + y * scale;
+	}
+	
+	if(section != NULL)
+	{
+		if (flip)
+		{
+			sprite.w = -section->w; //Sprite will be printed from top right to left down instead of top left right down.
+			sprite.h = section->h;
+		}
+		else
+		{
+			sprite.w = section->w;
+			sprite.h = section->h;
+		}
+	}
+	else
+	{
+		SDL_QueryTexture(texture, NULL, NULL, &sprite.w, &sprite.h);
 	}
 
-	collider.w *= scale;
-	collider.h *= scale;
+	sprite.w *= scale;
+	sprite.h *= scale;
 
 	SDL_Point* p = NULL;
 	SDL_Point pivot;
@@ -190,7 +206,7 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 		p = &pivot;
 	}
 
-	if(SDL_RenderCopyEx(renderer, texture, section, &collider, angle, p, SDL_FLIP_NONE) != 0)
+	if(SDL_RenderCopyEx(renderer, texture, section, &sprite, angle, p, SDL_FLIP_NONE) != 0)
 	{
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;
