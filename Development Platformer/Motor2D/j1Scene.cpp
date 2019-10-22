@@ -71,35 +71,6 @@ bool j1Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT)
 		App->render->camera.x += 10;
-	
-	//if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-	//{
-	//	App->SaveGame("Save_Game.xml");
-	//	if (tutorial_map)
-	//		map_saved = true;
-	//	else
-	//		map_saved = false;
-	//}
-
-	//if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
-	//	load = true;
-	//if (load)
-	//{
-	//	if (tutorial_map && map_saved)
-	//	{
-	//		App->LoadGame("Save_Game.xml");
-	//		App->fade->fadetoBlack();
-	//		/*App->audio->PlayMusic();*/
-
-	//	}
-
-	//	if (!tutorial_map && !map_saved)
-	//	{
-	//		App->LoadGame("Save_Game.xml");
-	//		App->fade->fadetoBlack();
-	//		/*App->audio->PlayMusic();*/
-	//	}
-	//	load = false;
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		Load_lvl(0);
@@ -108,7 +79,8 @@ bool j1Scene::Update(float dt)
 		Load_lvl(1);
 
 	else if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
-		Load_lvl(1);
+		App->player1->Restart();
+	App->player2->Restart();
 
 	else if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		 App->SaveGame();

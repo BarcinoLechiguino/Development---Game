@@ -320,6 +320,20 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 
 }
 
+void j1Player1::Restart()
+{
+	//Same loop as int Start() to find the start zone
+	/*for (p2List_item<ObjectsGroup*>* obj = App->map->data.objLayers.start; obj; obj = obj->next)
+		if (obj->data->name == ("Collisions"))
+			for (p2List_item<ObjectsData*>* objdata = obj->data->objects.start; objdata; objdata = objdata->next)
+				if (objdata->data->name == ("Spawn"))
+				{
+					p1.speed.x = 0;
+					p1.speed.y = 0;
+					p1.state = idle_P1;
+				}*/
+	player1_alive = true;
+}
 
 void j1Player1::GodModeInput()
 {

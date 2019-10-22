@@ -115,7 +115,7 @@ public: //P1 Variables
 
 	bool Load(pugi::xml_node &node); //Loading from xml file
 	bool Save(pugi::xml_node &node) const; //Saving to xml file
-
+	void Restart();
 	void GodModeInput();
 
 	bool fading = false; // fade character when changing scenes

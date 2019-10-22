@@ -199,3 +199,5 @@ Collider::Collider(ObjectData object)
 	collider = *object.hitbox;
 	type = object.type;
 }
+
+
