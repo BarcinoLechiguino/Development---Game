@@ -144,7 +144,7 @@ bool j1Player2::PreUpdate()
 			p2.state = crouching_P2;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_KP_0) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
 		{
 			p2.state = jumping_P2;
 		}
@@ -250,11 +250,11 @@ bool j1Player2::Update(float dt)
 	}
 
 	//In case the HitBox clips through the ground.
-	if (p2.position.y > p2.floor)
+	/*if (p2.position.y > p2.floor)
 	{
 		p2.position.y = p2.floor - 1;
 		p2.p2_isGrounded(true);
-	}
+	}*/
 
 	//We move the character according the position value after the state has been run.
 	p2.HitBox.x = p2.position.x;
@@ -312,19 +312,19 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2) //See if without * it wo
 
 void j1Player2::GodModeInput()
 {
-	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT)
 	{
 		p2.position.x += 10;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_KP_4) == KEY_REPEAT)
 	{
 		p2.position.x -= 10;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_U) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_KP_8) == KEY_REPEAT)
 	{
 		p2.position.y -= 10;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_J) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_REPEAT)
 	{
 		p2.position.y += 10;
 	}

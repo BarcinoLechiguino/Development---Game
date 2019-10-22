@@ -267,11 +267,11 @@ bool j1Player1::Update(float dt)
 	}
 	
 	//In case the HitBox clips through the ground.
-	if (p1.position.y > p1.floor)
+	/*if (p1.position.y > p1.floor)
 	{
 		p1.position.y = p1.floor - 1;
 		p1.p1_isGrounded(true);
-	}
+	}*/
 
 	//We move the character according the position value after the state has been run.
 	p1.HitBox.x = p1.position.x; 

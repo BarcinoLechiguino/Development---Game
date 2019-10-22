@@ -143,6 +143,20 @@ bool j1Scene::Update(float dt)
 			App->player2->GodMode = true;
 		}
 	}
+
+	//Volume Change
+	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
+	{
+		App->audio->general_volume += 5;
+		App->audio->SetVolumeMusic();
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
+	{
+		App->audio->general_volume -= 5;
+		App->audio->SetVolumeMusic();
+	}
+
 	App->map->Draw();
 
 

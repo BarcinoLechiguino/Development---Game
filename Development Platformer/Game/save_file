@@ -10,10 +10,10 @@
 	</scene>
 	<collisions />
 	<player>
-		<position1 x="100" y="0" />
+		<position1 x="480" y="900" />
 	</player>
 	<player>
-		<position2 x="200" y="0" />
+		<position2 x="670" y="900" />
 	</player>
 	<:anonymous />
 	<renderer>

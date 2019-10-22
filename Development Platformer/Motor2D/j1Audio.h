@@ -34,6 +34,13 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
+	// Load / Save
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+
+	//Set volume
+	void SetVolumeMusic();
+
 private:
 
 	_Mix_Music*			music;
@@ -43,6 +50,7 @@ public:
 
 	p2SString			music_folder;
 	p2SString			sfx_folder;
+	uint general_volume;
 };
 
 #endif // __j1AUDIO_H__

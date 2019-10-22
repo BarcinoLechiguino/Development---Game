@@ -176,3 +176,23 @@ bool j1Audio::PlayFx(unsigned int id, int repeat)
 
 	return ret;
 }
+
+bool j1Audio::Load(pugi::xml_node & load)
+{
+	general_volume = load.child("default_volume").attribute("value").as_int();
+	Mix_VolumeMusic(general_volume);
+	return true;
+}
+
+bool j1Audio::Save(pugi::xml_node& save) const
+{
+	save.append_child("volume");
+	save.child("default_volume").append_attribute("value") = general_volume;
+
+	return true;
+}
+
+void j1Audio::SetVolumeMusic()
+{
+	Mix_VolumeMusic(general_volume);
+}
