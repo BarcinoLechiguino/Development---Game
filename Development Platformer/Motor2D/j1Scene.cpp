@@ -142,6 +142,16 @@ bool j1Scene::Update(float dt)
 			App->player1->GodMode = true;
 			App->player2->GodMode = true;
 		}
+
+		//Deactivable bool activation deactivation
+		if (App->map->activated == true)
+		{
+			App->map->activated = false;
+		}
+		else
+		{
+			App->map->activated = true;
+		}
 	}
 
 	//Volume Change

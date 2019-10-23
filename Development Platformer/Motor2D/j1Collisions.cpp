@@ -30,17 +30,6 @@ bool j1Collisions::Start()
 
 bool j1Collisions::PreUpdate() 
 {
-	/* Old code for reference
-
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
-	{
-		if (colliders[i] != nullptr && colliders[i]->to_delete == true)
-		{
-			delete colliders[i];
-			colliders[i] = nullptr;
-		}
-	}*/
-
 	p2List_item<Collider*>* collider_item = collider_list.start; //Change item for collider.
 
 	//Iterates all colliders to delete them if the related bool is true.

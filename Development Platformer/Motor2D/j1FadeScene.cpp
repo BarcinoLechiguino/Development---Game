@@ -89,6 +89,7 @@ bool j1Fade_Scene::Update(float dt)
 	return true;
 }
 
+//New, revise
 bool j1Fade_Scene ::FadeToBlack(const char* mapname, float time)
 {
 	bool ret = false;
