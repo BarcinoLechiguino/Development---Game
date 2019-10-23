@@ -538,6 +538,8 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 		object_quantity++;
 	}
 
+	LOG("OBJECT QUANTITY %d", object_quantity);
+
 	//Sets the amount of objects to be drawn (Allocates memory for all the objects)
 	objectgroup->object_size = object_quantity;
 	objectgroup->object = new ObjectData[object_quantity];

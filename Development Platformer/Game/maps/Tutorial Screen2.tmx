@@ -8,6 +8,27 @@
  </tileset>
  <tileset firstgid="1025" name="0x72_16x16RobotTileset.v1" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
   <image source="0x72_16x16RobotTileset.v1.png" width="1024" height="1024"/>
+  <tile id="199">
+   <animation>
+    <frame tileid="199" duration="10"/>
+    <frame tileid="200" duration="10"/>
+    <frame tileid="201" duration="10"/>
+   </animation>
+  </tile>
+  <tile id="256">
+   <animation>
+    <frame tileid="256" duration="10"/>
+    <frame tileid="257" duration="10"/>
+    <frame tileid="258" duration="10"/>
+   </animation>
+  </tile>
+  <tile id="259">
+   <animation>
+    <frame tileid="259" duration="10"/>
+    <frame tileid="260" duration="10"/>
+    <frame tileid="261" duration="10"/>
+   </animation>
+  </tile>
  </tileset>
  <tileset firstgid="2049" name="Vortex Portal" tilewidth="32" tileheight="32" tilecount="100" columns="10">
   <image source="Vortex Portal.png" width="345" height="345"/>
