@@ -545,7 +545,10 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 
 	//A SDL_rect recieves the matching variable values and then identifies which type of object it is.
 	int index = 0;
-	for (pugi::xml_node objIterator = node.child("object"); objIterator; objIterator = objIterator.next_sibling("object"), index++)
+	pugi::xml_node objIterator = node.child("object");
+	
+	//for (pugi::xml_node objIterator = node.child("object"); objIterator; objIterator = objIterator.next_sibling("object"), index++)
+	while(objIterator != NULL)
 	{
 		SDL_Rect* hitbox = new SDL_Rect;
 
@@ -600,7 +603,9 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 		{
 			objectgroup->object[index].type = UNKNOWN;
 		}
-
+		
+		objIterator = objIterator.next_sibling("object");
+		index++;
 	}
 	
 	/*for (pugi::xml_node& obj = node.child("object"); obj && ret; obj = obj.next_sibling("object"))

@@ -180,6 +180,7 @@ private:
 
 public:
 
+	bool activated = false; //Bool for the deactivable colliders.
 	MapData data; 
 
 
@@ -187,7 +188,6 @@ private:
 	pugi::xml_document	map_file;
 	p2SString			folder;
 	bool				map_loaded;
-
 };
 
 #endif // __j1MAP_H__
