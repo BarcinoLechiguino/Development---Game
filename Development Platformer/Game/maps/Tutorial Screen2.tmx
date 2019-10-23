@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="52" height="42" tilewidth="32" tileheight="32" infinite="0" nextlayerid="17" nextobjectid="98">
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="52" height="42" tilewidth="32" tileheight="32" infinite="0" nextlayerid="17" nextobjectid="100">
  <properties>
   <property name="BackgroundMusic" value="IcelandTheme.ogg"/>
  </properties>
@@ -17528,75 +17528,75 @@
   <object id="32" name="Platform" type="platform" x="1504" y="704" width="127.958" height="12.6667"/>
   <object id="33" name="Platform" type="platform" x="1440" y="768" width="192" height="12.3333"/>
   <object id="34" name="Platform" type="platform" x="1376" y="832" width="256.029" height="11.6667"/>
-  <object id="38" name="Floor" type="solid" x="1632" y="-1.33333" width="32" height="1072"/>
-  <object id="39" name="Floor" type="solid" x="0" y="-1.33333" width="1631.5" height="42.6667"/>
-  <object id="40" name="Floor" type="solid" x="1.33333" y="41.6667" width="29.3333" height="669"/>
-  <object id="42" name="Floor" type="solid" x="30.5" y="672.5" width="192.5" height="31"/>
-  <object id="43" name="Floor" type="solid" x="160.5" y="703" width="30" height="160"/>
-  <object id="44" name="Floor" type="solid" x="127.5" y="844.5" width="32.5" height="211.5"/>
-  <object id="45" name="Floor" type="solid" x="95.5" y="1054.5" width="32" height="64"/>
-  <object id="46" name="Ground" type="solid" x="127" y="1119" width="288" height="32"/>
-  <object id="47" name="Ground" type="solid" x="383" y="1151.5" width="32" height="96"/>
-  <object id="49" name="Ground" type="solid" x="416" y="1248" width="576" height="32"/>
-  <object id="50" name="Ground" type="solid" x="992" y="1184" width="32" height="64"/>
+  <object id="38" name="Floor" type="solid" x="1632" y="0.0224012" width="32.0078" height="1087.98"/>
+  <object id="39" name="Floor" type="solid" x="32" y="0" width="1600" height="32.0072"/>
+  <object id="40" name="Floor" type="solid" x="0" y="0" width="32.0208" height="704.001"/>
+  <object id="42" name="Floor" type="solid" x="32" y="672" width="192.011" height="32"/>
+  <object id="43" name="Floor" type="solid" x="160" y="704" width="31.9797" height="160"/>
+  <object id="44" name="Floor" type="solid" x="128" y="832.016" width="32.0111" height="224.098"/>
+  <object id="45" name="Floor" type="solid" x="96" y="1024" width="32" height="128.097"/>
+  <object id="46" name="Ground" type="solid" x="128" y="1120" width="287.996" height="32.101"/>
+  <object id="47" name="Ground" type="solid" x="384" y="1152.09" width="32" height="127.896"/>
+  <object id="49" name="Ground" type="solid" x="416" y="1248" width="576.011" height="32"/>
+  <object id="50" name="Ground" type="solid" x="992" y="1184" width="32" height="95.9801"/>
   <object id="51" name="Ground" type="solid" x="1024" y="1184" width="64" height="32"/>
   <object id="52" name="Ground" type="solid" x="1056" y="1120" width="32" height="64"/>
   <object id="53" name="Ground" type="solid" x="1088" y="1120" width="64" height="32"/>
   <object id="54" name="Ground" type="solid" x="1120" y="1056" width="32" height="64"/>
-  <object id="55" name="Ground" type="solid" x="1152.5" y="1057.5" width="64" height="32"/>
+  <object id="55" name="Ground" type="solid" x="1152" y="1056" width="64" height="32"/>
   <object id="56" name="Ground" type="solid" x="1184" y="992" width="32" height="64"/>
-  <object id="57" name="Ground" type="solid" x="1216" y="992" width="287.5" height="32"/>
+  <object id="57" name="Ground" type="solid" x="1216" y="992" width="287.989" height="32"/>
   <object id="58" name="Ground" type="solid" x="1472" y="1024" width="32" height="64"/>
-  <object id="59" name="Ground" type="solid" x="1504" y="1056" width="127.75" height="32"/>
+  <object id="59" name="Ground" type="solid" x="1504" y="1056" width="128.017" height="32"/>
   <object id="60" name="Floor" type="solid" x="32" y="192" width="192" height="32"/>
   <object id="61" name="Floor" type="solid" x="32" y="224" width="160" height="32"/>
-  <object id="62" name="Floor" type="solid" x="32" y="256" width="129" height="32"/>
+  <object id="62" name="Floor" type="solid" x="32" y="256" width="128" height="32"/>
   <object id="64" name="Floor" type="solid" x="32" y="288" width="96" height="32"/>
-  <object id="65" name="Floor" type="solid" x="32" y="320" width="64.5" height="32"/>
+  <object id="65" name="Floor" type="solid" x="32" y="320" width="64.0333" height="32"/>
   <object id="66" name="Floor" type="solid" x="32" y="352" width="32" height="32"/>
   <object id="67" name="Floor" type="solid" x="1376" y="192" width="256" height="32"/>
-  <object id="68" name="Floor" type="solid" x="1376" y="224" width="256" height="32"/>
-  <object id="69" name="Floor" type="solid" x="1536.5" y="352" width="95" height="32"/>
-  <object id="70" name="Floor" type="solid" x="1407.5" y="288" width="224.5" height="32"/>
-  <object id="71" name="Floor" type="solid" x="1376" y="256" width="256.5" height="32"/>
-  <object id="72" name="Floor" type="solid" x="1472" y="320" width="159.5" height="32"/>
-  <object id="73" name="Floor" type="solid" x="1194" y="287" width="77" height="44.5"/>
-  <object id="74" name="Floor" type="solid" x="768" y="832" width="257" height="33"/>
-  <object id="76" name="Floor" type="solid" x="768" y="896" width="257" height="33"/>
-  <object id="77" name="Floor" type="solid" x="800" y="864.75" width="192.5" height="31.5"/>
-  <object id="78" name="Floor" type="solid" x="384" y="896" width="257" height="33"/>
-  <object id="79" name="Floor" type="solid" x="192" y="544" width="96" height="31.5"/>
-  <object id="80" name="Floor" type="solid" x="416" y="832" width="224" height="33"/>
-  <object id="81" name="Floor" type="solid" x="416" y="864" width="192.5" height="31.5"/>
-  <object id="82" name="Floor" type="solid" x="256" y="768" width="287" height="31.5"/>
-  <object id="83" name="Floor" type="solid" x="416" y="800" width="96" height="31.5"/>
-  <object id="84" name="Floor" type="solid" x="352" y="480" width="96" height="31.5"/>
-  <object id="85" name="Floor" type="solid" x="768" y="512" width="127.5" height="31.5"/>
-  <object id="86" name="Floor" type="solid" x="864" y="543.25" width="192" height="32.25"/>
-  <object id="87" name="Floor" type="solid" x="1024" y="511.25" width="161" height="32.25"/>
-  <object id="88" name="Floor" type="solid" x="1152" y="479.25" width="64.5" height="32.25"/>
-  <object id="89" name="Floor" type="solid" x="1184" y="448" width="64.5" height="31.5"/>
-  <object id="90" name="Floor" type="solid" x="512" y="448" width="159.5" height="31.5"/>
-  <object id="91" name="Floor" type="solid" x="544" y="479.795" width="192" height="31.7045"/>
-  <object id="92" name="Floor" type="solid" x="544" y="511.659" width="128" height="31.8409"/>
-  <object id="93" name="Floor" type="solid" x="576" y="543.455" width="96" height="32.0455"/>
-  <object id="94" name="Floor" type="solid" x="672" y="288" width="96" height="31.5"/>
-  <object id="95" name="Floor" type="solid" x="704" y="320" width="96" height="31.5"/>
-  <object id="96" name="Floor" type="solid" x="736" y="352" width="96" height="31.5"/>
-  <object id="97" name="Floor" type="solid" x="768" y="384" width="383.5" height="31.5"/>
+  <object id="68" name="Floor" type="solid" x="1376" y="224" width="256.004" height="32"/>
+  <object id="69" name="Floor" type="solid" x="1536" y="352" width="96.0108" height="32"/>
+  <object id="70" name="Floor" type="solid" x="1408" y="288" width="224.004" height="32"/>
+  <object id="71" name="Floor" type="solid" x="1376" y="256" width="256.014" height="32"/>
+  <object id="72" name="Floor" type="solid" x="1472" y="320" width="160.017" height="32"/>
+  <object id="73" name="Floor" type="solid" x="1194" y="287.909" width="76.0576" height="44.0778"/>
+  <object id="74" name="Floor" type="solid" x="768" y="832" width="256" height="32.0075"/>
+  <object id="76" name="Floor" type="solid" x="768" y="896" width="255.991" height="32.0056"/>
+  <object id="77" name="Floor" type="solid" x="800" y="864" width="192.033" height="32.0007"/>
+  <object id="78" name="Floor" type="solid" x="384" y="896" width="256" height="32.0625"/>
+  <object id="79" name="Floor" type="solid" x="192" y="544" width="96" height="31.875"/>
+  <object id="80" name="Floor" type="solid" x="416" y="832" width="224" height="32"/>
+  <object id="81" name="Floor" type="solid" x="416" y="864" width="192.002" height="32.0006"/>
+  <object id="82" name="Floor" type="solid" x="256" y="768" width="288.043" height="32.0021"/>
+  <object id="83" name="Floor" type="solid" x="416" y="800" width="96" height="32.0111"/>
+  <object id="84" name="Floor" type="solid" x="352" y="480" width="96" height="31.9889"/>
+  <object id="85" name="Floor" type="solid" x="768" y="512" width="127.987" height="32.0156"/>
+  <object id="86" name="Floor" type="solid" x="864" y="544" width="192" height="31.9688"/>
+  <object id="87" name="Floor" type="solid" x="1024" y="512" width="160.043" height="32.05"/>
+  <object id="88" name="Floor" type="solid" x="1152" y="480" width="63.9844" height="32.0056"/>
+  <object id="89" name="Floor" type="solid" x="1184" y="448" width="64" height="32"/>
+  <object id="90" name="Floor" type="solid" x="512" y="448.001" width="159.999" height="32.0033"/>
+  <object id="91" name="Floor" type="solid" x="544" y="480" width="192" height="32.0051"/>
+  <object id="92" name="Floor" type="solid" x="544" y="512" width="128" height="32.0011"/>
+  <object id="93" name="Floor" type="solid" x="576" y="544" width="96" height="32.005"/>
+  <object id="94" name="Floor" type="solid" x="672" y="288" width="96" height="32"/>
+  <object id="95" name="Floor" type="solid" x="704" y="320" width="96" height="32"/>
+  <object id="96" name="Floor" type="solid" x="736" y="352" width="96" height="32.0111"/>
+  <object id="97" name="Floor" type="solid" x="768" y="384" width="384" height="32.0033"/>
  </objectgroup>
  <objectgroup id="11" name="Hazards">
   <object id="17" name="Spikes" type="hazard" x="257.891" y="537.949" width="30.0625" height="6"/>
-  <object id="18" name="Spikes" type="hazard" x="801.938" y="416" width="190.031" height="6.04348"/>
+  <object id="18" name="Spikes" type="hazard" x="801.938" y="416.007" width="190.031" height="6.03688"/>
   <object id="19" name="Spikes" type="hazard" x="1056" y="416" width="63.9783" height="5.93957"/>
   <object id="20" name="Spikes" type="hazard" x="641.957" y="1209.93" width="126.067" height="6.125"/>
-  <object id="22" name="Lasers" type="hazard" x="641.994" y="845.048" width="126.142" height="73.9843"/>
+  <object id="22" name="Lasers" type="hazard" x="639.994" y="845.048" width="128.009" height="73.9843"/>
  </objectgroup>
  <objectgroup id="12" name="Desactivables">
   <object id="23" name="Lasergate" type="desactivable" x="1325.5" y="64.108" width="40.75" height="287.983"/>
  </objectgroup>
  <objectgroup id="14" name="Activables">
-  <object id="24" name="Lever" type="item" x="128" y="160" width="32" height="31.9566"/>
+  <object id="24" name="Lever" type="item" x="128" y="160" width="32" height="32.001"/>
  </objectgroup>
  <objectgroup id="15" name="Respawn">
   <object id="26" name="Origin" type="respawn" x="224.5" y="1055.75" width="63" height="63"/>
