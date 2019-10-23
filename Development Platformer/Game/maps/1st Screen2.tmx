@@ -22013,14 +22013,12 @@
   <object id="83" name="Spikes" type="hazard" x="1602.24" y="988.153" width="29.6932" height="3.84659"/>
   <object id="84" name="Spikes" type="hazard" x="1474" y="796.136" width="91.8182" height="3.36364"/>
  </objectgroup>
- <objectgroup id="30" name="Colliders"/>
  <objectgroup id="24" name="Items">
   <object id="85" name="Key" type="item" x="32" y="64" width="31" height="32"/>
  </objectgroup>
  <objectgroup id="25" name="Desactivable">
   <object id="87" name="Trapdoor" type="desactivable" x="1472" y="128" width="96.0356" height="17"/>
  </objectgroup>
- <objectgroup id="26" name="Ladders"/>
  <objectgroup id="27" name="Respawn">
   <object id="94" name="Origin" type="respawn" x="128.125" y="1117.13" width="69" height="67"/>
  </objectgroup>
