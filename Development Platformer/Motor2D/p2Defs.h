@@ -59,4 +59,8 @@ inline const char* const PATH(const char* folder, const char* file)
 	return path;
 }
 
+//Own Definitions
+#define MAX_LAYERS
+#define MAX_OBJECTS
+
 #endif
