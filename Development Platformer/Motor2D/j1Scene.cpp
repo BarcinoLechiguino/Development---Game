@@ -86,7 +86,7 @@ bool j1Scene::Update(float dt)
 		//Load_lvl(0);
 
 		//New
-		App->fadescene->FadeToBlack("Tutorial Screen2.tmx");
+		App->fadescene->FadeToBlack("Test.tmx");
 	}
 
 	//Load Second Level Key
@@ -94,7 +94,7 @@ bool j1Scene::Update(float dt)
 	{
 		//Load_lvl(1);
 
-		App->fadescene->FadeToBlack("1st Screen2.tmx");
+		App->fadescene->FadeToBlack("Test1.tmx");
 	}
 
 	//Restart Key

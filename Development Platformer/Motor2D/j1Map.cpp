@@ -40,83 +40,40 @@ void j1Map::Draw()
 		return;
 	}
 	
-	p2List_item<TileSet*>* tileset = data.tilesets.start; //Tileset iteration list
-	p2List_item<MapLayer*>* layer_iterator = data.layers.start;
+	MapLayer* layer = data.layers[0];
 
-	//New Revise
-	while (layer_iterator != NULL)
-	{
-		while (tileset != NULL)
+	p2List_item<MapLayer*>* item = data.layers.start;
+
+	for (item; item != nullptr; item = item->next) {
+
+		uint* gid = item->data->gid;
+		int i = 0;
+		for (uint y = 0; y < data.height; ++y)
 		{
-			uint* gid = layer_iterator->data->gid;
-
-			uint i = 0;
-			uint j = 0;
-			for (uint y = 0; y < data.height; ++y)
+			for (uint x = 0; x < data.width; ++x)
 			{
-				for (uint x = 0; x < data.width; ++x)
-				{
-					p2Point<uint> pos = tileset->data->MapToWorld(x, y);
-					//New
-					//App->render->Blit(data.tilesets[j]->texture, data.tilesets[j]->MapToWorld(x, y).x, data.tilesets[j]->MapToWorld(x, y).y, data.tilesets[j]->GetTileRect(gid[i]));
-					App->render->Blit(tileset->data->texture, pos.x, pos.y, tileset->data->GetTileRect(gid[i]));
-					i++;
-				}
+				App->render->Blit(data.tilesets[0]->texture,
+					MapToWorld(x, y).x, MapToWorld(x, y).y,
+					data.tilesets[0]->GetTileRect(gid[i]));
+				i++;
 			}
-			tileset = tileset->next;
 		}
-		layer_iterator = layer_iterator->next; //Go to next layer.
+
 	}
-
-	//Old one
-	//for (layer_iterator; layer_iterator != NULL; layer_iterator = layer_iterator->next) 
-	//{
-	//	uint* gid = layer_iterator->data->gid;
-
-	//	uint i = 0;
-	//	for (uint y = 0; y < data.height; ++y)
-	//	{
-	//		for (uint x = 0; x < data.width; ++x)
-	//		{
-	//			//New
-	//			App->render->Blit(data.tilesets[0]->texture, data.tilesets[0]->MapToWorld(x, y).x, data.tilesets[0]->MapToWorld(x, y).y, data.tilesets[0]->GetTileRect(gid[i]));
-	//			i++;
-	//		}
-	//	}
-	//	layer_iterator = layer_iterator->next; //Go to next layer.
-	//}
-	
-	//New from Handout 5
-	/*MapLayer* layer = this->data.layers.start->data;
-
-	p2List_item<MapLayer*>* layerIterator = this->data.layers.start;
-
-	while (layerIterator != NULL)
-	{
-		layer = layerIterator->data;
-
-		for (int y = 0; y < data.height; ++y)
-		{
-			for (int x = 0; x < data.width; ++x)
-			{
-				int tile_id = layer->Get(x, y);
-				if (tile_id > 0)
-				{
-					TileSet* tileset = GetTilesetFromTileId(tile_id);
-					if (tileset != nullptr)
-					{
-						SDL_Rect r = *tileset->GetTileRect(tile_id);
-						p2Point<uint> pos = tileset->MapToWorld(x, y);
-
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
-					}
-				}
-			}
-		}
-		layerIterator = layerIterator->next;
-	}*/
 }
 
+iPoint j1Map::MapToWorld(int x, int y) const
+{
+	iPoint ret(0, 0);
+
+	if (data.type == MAPTYPE_ORTHOGONAL)
+	{
+		ret.x = x * data.tile_width;
+		ret.y = y * data.tile_height;
+	}
+
+	return ret;
+}
 //From Handout 5
 TileSet* j1Map::GetTilesetFromTileId(int id) const
 {

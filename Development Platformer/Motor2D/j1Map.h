@@ -88,16 +88,7 @@ struct TileSet
 		return tile_rect;
 	}
 
-	//This method translates the position of the tile on the map to its equivalent position on screen.
-	p2Point<uint> MapToWorld(uint x, uint y)
-	{
-		p2Point<uint> position;				//Position of the tile on the world.
-
-		position.x = x * tile_width;		//Position x of the tile on the map in pixels. For tile_width = 32 --> Tile 1: x = 0, Tile 2: x = 32.
-		position.y = y * tile_height;		//Position y of the tile on the map in pixels. For tile_height = 32 --> Tile 1: y = 0, Tile 2: y = 32.
-
-		return position;
-	}
+	
 
 	p2SString			name;				//Tileset name.
 	int					firstgid;			//First global tile id. Maps to the first id in the tileset.
@@ -164,7 +155,7 @@ public:
 	bool SwitchMaps(p2SString* new_map);
 
 	// Load new map
-	iPoint MapToWorld(int x, int y);
+	iPoint MapToWorld(int x, int y) const;
 
 private:
 
