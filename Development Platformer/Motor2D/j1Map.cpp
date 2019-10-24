@@ -467,18 +467,18 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 	objectgroup->name = node.attribute("name").as_string();
 
 	//Goes through all the objects and records how many of them there are.
-	int num_objects = 0;
+	int object_count = 0;
 	for (pugi::xml_node objIterator = node.child("object"); objIterator; objIterator = objIterator.next_sibling("object"))
 	{
-		num_objects++;
+		object_count++;
 	}
 
-	LOG("NUM OBJECTS %d", num_objects);
+	LOG("NUM OBJECTS %d", object_count);
 
 	//Sets the amount of objects to be drawn (Allocates memory for all the objects)
-	objectgroup->object_size = num_objects;								//Sets the object_size to the number of objects in the objectGroup layer that is being iterated. 
-	objectgroup->object = new ObjectData[num_objects];					//Allocates memory for all the objects there are in the objectGroup layer that is being iterated. 
-	memset(objectgroup->object, 0, num_objects * sizeof(ObjectData));	//Sets all the memory to 0 (?)
+	objectgroup->num_objects = object_count;								//Sets the object_size to the number of objects in the objectGroup layer that is being iterated. 
+	objectgroup->object = new ObjectData[object_count];					//Allocates memory for all the objects there are in the objectGroup layer that is being iterated. 
+	memset(objectgroup->object, 0, object_count * sizeof(ObjectData));	//Sets all the memory to 0 (?)
 
 	//A SDL_rect recieves the matching variable values and then identifies which type of object it is.
 	int index = 0;

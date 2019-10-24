@@ -38,7 +38,7 @@ struct ObjectGroup
 	p2SString			name;			//ObjectGroup's name.
 	ObjectData*			object;			//Individual info of each object in the ObjectGroup layer.
 	p2SString			type;			//ObjectGroup's type. It's an arbitrary string added in Tiled to the Object/ObjectGroup.
-	uint				object_size;	//Quantity of objects. Treure per obj def.
+	uint				num_objects;	//Quantity of objects. Treure per obj def.
 };
 
 struct MapLayer
