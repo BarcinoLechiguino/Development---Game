@@ -385,15 +385,10 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 	if (C1->type == PLAYER && C2->type == SOLID)
 	{
 		//Player Colliding from above the Solid
-		if (p1.position.y < C2->collider.y + C2->collider.h)
+		if (p1.position.y > C2->collider.y + C2->collider.h)
 		{
-			if (p1.speed.y != 0)
-			{
 				p1.speed.y = 0;
-			}
-			p1.position.y = C2->collider.y - p1.collider->collider.h + 1;
-			
-			p1.grounded = true;
+				p1.position.y = C2->collider.y;
 		}
 
 		//Player Colliding from 
