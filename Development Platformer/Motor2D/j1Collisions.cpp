@@ -170,7 +170,7 @@ void j1Collisions::LoadFromMap() // Remember to put in fade to black.
 	p2List_item<ObjectGroup*>* object_list = App->map->data.objectGroups.start;
 	while (object_list != NULL)
 	{
-		for (int i = 0; i < object_list->data->object_size; i++)
+		for (int i = 0; i < object_list->data->num_objects; i++)
 		{
 			AddCollider(*object_list->data->object[i].hitbox, object_list->data->object[i].type, NULL);
 		}
