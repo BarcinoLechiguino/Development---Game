@@ -35,21 +35,65 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 void j1Map::Draw()
 {
-	if(map_loaded == false)
+	if (map_loaded == false)
+	{
 		return;
-
-	//MapLayer* layer = data.layers[0]; //The problem lays here, the index remains at 0 so only the first layeris loaded
-	//New
-	p2List_item<TileSet*>* tileset = data.tilesets.start; //Tileset iteration list
+	}
 	
-	//New
+	p2List_item<TileSet*>* tileset = data.tilesets.start; //Tileset iteration list
+	p2List_item<MapLayer*>* layer_iterator = data.layers.start;
+
+	//New Revise
+	while (layer_iterator != NULL)
+	{
+		while (tileset != NULL)
+		{
+			uint* gid = layer_iterator->data->gid;
+
+			uint i = 0;
+			uint j = 0;
+			for (uint y = 0; y < data.height; ++y)
+			{
+				for (uint x = 0; x < data.width; ++x)
+				{
+					p2Point<uint> pos = tileset->data->MapToWorld(x, y);
+					//New
+					//App->render->Blit(data.tilesets[j]->texture, data.tilesets[j]->MapToWorld(x, y).x, data.tilesets[j]->MapToWorld(x, y).y, data.tilesets[j]->GetTileRect(gid[i]));
+					App->render->Blit(tileset->data->texture, pos.x, pos.y, tileset->data->GetTileRect(gid[i]));
+					i++;
+				}
+			}
+			tileset = tileset->next;
+		}
+		layer_iterator = layer_iterator->next; //Go to next layer.
+	}
+
+	//Old one
+	//for (layer_iterator; layer_iterator != NULL; layer_iterator = layer_iterator->next) 
+	//{
+	//	uint* gid = layer_iterator->data->gid;
+
+	//	uint i = 0;
+	//	for (uint y = 0; y < data.height; ++y)
+	//	{
+	//		for (uint x = 0; x < data.width; ++x)
+	//		{
+	//			//New
+	//			App->render->Blit(data.tilesets[0]->texture, data.tilesets[0]->MapToWorld(x, y).x, data.tilesets[0]->MapToWorld(x, y).y, data.tilesets[0]->GetTileRect(gid[i]));
+	//			i++;
+	//		}
+	//	}
+	//	layer_iterator = layer_iterator->next; //Go to next layer.
+	//}
+	
+	//New from Handout 5
 	/*MapLayer* layer = this->data.layers.start->data;
 
-	p2List_item<MapLayer*>* layerIter = this->data.layers.start;
+	p2List_item<MapLayer*>* layerIterator = this->data.layers.start;
 
-	while (layerIter != NULL)
+	while (layerIterator != NULL)
 	{
-		layer = layerIter->data;
+		layer = layerIterator->data;
 
 		for (int y = 0; y < data.height; ++y)
 		{
@@ -61,61 +105,19 @@ void j1Map::Draw()
 					TileSet* tileset = GetTilesetFromTileId(tile_id);
 					if (tileset != nullptr)
 					{
-						SDL_Rect r = *tileset->GetRect(tile_id);
-						iPoint pos = tileset->MapToWorld(x, y);
+						SDL_Rect r = *tileset->GetTileRect(tile_id);
+						p2Point<uint> pos = tileset->MapToWorld(x, y);
 
 						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
 					}
 				}
 			}
 		}
-		layerIter = layerIter->next;
-	}*/
-	
-	p2List_item<MapLayer*>* layer_iterator = data.layers.start;
-
-	for (layer_iterator; layer_iterator != NULL; layer_iterator = layer_iterator->next) 
-	{
-		uint* gid = layer_iterator->data->gid;
-
-		uint i = 0;
-		for (uint y = 0; y < data.height; ++y)
-		{
-			for (uint x = 0; x < data.width; ++x)
-			{
-				//New
-				App->render->Blit(data.tilesets[0]->texture, data.tilesets[0]->MapToWorld(x, y).x, data.tilesets[0]->MapToWorld(x, y).y, data.tilesets[0]->GetRect(gid[i]));
-				i++;
-			}
-		}
-		layer_iterator = layer_iterator->next; //Go to next layer.
-	}
-
-	//New
-	/*while(layer_iterator != NULL  && tileset != NULL)
-	{
-		while (tileset != NULL)
-		{
-			uint* gid = layer_iterator->data->gid;
-
-			uint i = 0;
-			for (uint y = 0; y < data.height; ++y)
-			{
-				for (uint x = 0; x < data.width; ++x)
-				{
-					//New
-					//App->render->Blit(data.tilesets[0]->texture, data.tilesets[0]->MapToWorld(x, y).x, data.tilesets[0]->MapToWorld(x, y).y, data.tilesets[0]->GetRect(gid[i]));
-					App->render->Blit(tileset->data->texture, tileset->data->MapToWorld(x, y).x, tileset->data->MapToWorld(x, y).y, tileset->data->GetRect(gid[i]));
-					i++;
-				}
-			}
-			tileset = tileset->next;
-		}
-
-		layer_iterator = layer_iterator->next; //Go to next layer.
+		layerIterator = layerIterator->next;
 	}*/
 }
 
+//From Handout 5
 TileSet* j1Map::GetTilesetFromTileId(int id) const
 {
 	p2List_item<TileSet*>* tilesetIter = data.tilesets.start;
@@ -135,30 +137,6 @@ TileSet* j1Map::GetTilesetFromTileId(int id) const
 
 	return ret;
 }
-
-
-//New Comment
-//SDL_Rect* TileSet::GetRect(int tile_id)
-//{
-//	int relative_id = tile_id - firstgid;
-//	SDL_Rect* rect = ReturnedRect;
-//	rect->w = tile_width;
-//	rect->h = tile_height;
-//	rect->x = margin + ((rect->w + spacing) * (relative_id % num_tiles_width));
-//	rect->y = margin + ((rect->h + spacing) * (relative_id / num_tiles_width));
-//	return rect;
-//}
-
-//Old Map to World, passed to the tileset struct in map.h
-/*iPoint j1Map::MapToWorld(int x, int y)
-{
-	iPoint vec;
-
-	vec.x = x * data.tile_width;
-	vec.y = y * data.tile_height;
-
-	return vec;
-}*/
 
 // Called before quitting
 bool j1Map::CleanUp()
@@ -252,7 +230,6 @@ bool j1Map::Load(const char* file_name)
 		data.layers.add(set_layer);
 	}
 
-
 	//Load Collider Info ------------------------------------------
 	pugi::xml_node object_group;
 	for (object_group = map_file.child("map").child("objectgroup"); object_group && ret; object_group = object_group.next_sibling("objectgroup"))
@@ -329,48 +306,6 @@ bool j1Map::LoadMap()
 		data.height = map.attribute("height").as_int();
 		data.tile_width = map.attribute("tilewidth").as_int();
 		data.tile_height = map.attribute("tileheight").as_int();
-		/*data.background_colour = map.attribute("backgroundcolor").as_string();
-
-		//Setting the values of the SDL_Color struct to 0 (black).
-		data.colour.r = 0;
-		data.colour.g = 0;
-		data.colour.b = 0;
-		data.colour.a = 0;
-
-		//Sets the values of the colours of the background to the values recieved from the map file.
-		if (data.background_colour.Length() > 0) //If any of the values recieved from the map file are different from 0 then this is run.
-		{
-			p2SString red;
-			p2SString green;
-			p2SString blue;
-
-			//Pastes the strings into a buffer. Pastes the value of background_colour on red/green/blue.
-			data.background_colour.SubString(1, 2, red);
-			data.background_colour.SubString(3, 4, green);
-			data.background_colour.SubString(5, 6, blue);
-
-			int rgb_value = 0;
-
-			//Sets the received values from the tmx file as the background colour.
-			sscanf_s(red.GetString(), "%x", &rgb_value);//Sscanf_s gets a buffer and a format (int). %x is the translation to rgb from hexadecimal.
-			if (rgb_value >= 0 && rgb_value <= 255)
-			{
-				data.colour.r = rgb_value;
-			}
-			
-			sscanf_s(green.GetString(), "%x", &rgb_value);
-			if (rgb_value >= 0 && rgb_value <= 255) 
-			{
-				data.colour.g = rgb_value;
-			} 
-
-			sscanf_s(blue.GetString(), "%x", &rgb_value);
-			if (rgb_value >= 0 && rgb_value <= 255)
-			{
-				data.colour.b = rgb_value;
-			}	
-		}*/
-
 		data.music_File = map.child("properties").child("property").attribute("value").as_string();
 
 		p2SString orientation(map.attribute("orientation").as_string());
@@ -436,7 +371,7 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 		/*p2SString debug = folder.GetString();
 		debug += image.attribute("source").as_string();
 		set->texture = App->tex->Load(debug.GetString());*/
-		set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
+		set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string())); //Revise Source bc of bad map loading.
 		int w, h;
 		SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
 		set->tex_width = image.attribute("width").as_int();
@@ -532,24 +467,22 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 	objectgroup->name = node.attribute("name").as_string();
 
 	//Goes through all the objects and records how many of them there are.
-	int object_quantity = 0;
+	int num_objects = 0;
 	for (pugi::xml_node objIterator = node.child("object"); objIterator; objIterator = objIterator.next_sibling("object"))
 	{
-		object_quantity++;
+		num_objects++;
 	}
 
-	LOG("OBJECT QUANTITY %d", object_quantity);
+	LOG("NUM OBJECTS %d", num_objects);
 
 	//Sets the amount of objects to be drawn (Allocates memory for all the objects)
-	objectgroup->object_size = object_quantity;
-	objectgroup->object = new ObjectData[object_quantity];
-	memset(objectgroup->object, 0, object_quantity * sizeof(ObjectData));
+	objectgroup->object_size = num_objects;								//Sets the object_size to the number of objects in the objectGroup layer that is being iterated. 
+	objectgroup->object = new ObjectData[num_objects];					//Allocates memory for all the objects there are in the objectGroup layer that is being iterated. 
+	memset(objectgroup->object, 0, num_objects * sizeof(ObjectData));	//Sets all the memory to 0 (?)
 
 	//A SDL_rect recieves the matching variable values and then identifies which type of object it is.
 	int index = 0;
 	pugi::xml_node objIterator = node.child("object");
-	
-	//for (pugi::xml_node objIterator = node.child("object"); objIterator; objIterator = objIterator.next_sibling("object"), index++)
 	while(objIterator != NULL)
 	{
 		SDL_Rect* hitbox = new SDL_Rect;
@@ -606,8 +539,8 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 			objectgroup->object[index].type = UNKNOWN;
 		}
 		
-		objIterator = objIterator.next_sibling("object");
 		index++;
+		objIterator = objIterator.next_sibling("object");
 	}
 	
 	/*for (pugi::xml_node& obj = node.child("object"); obj && ret; obj = obj.next_sibling("object"))

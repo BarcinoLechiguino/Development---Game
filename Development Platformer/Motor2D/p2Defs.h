@@ -61,6 +61,6 @@ inline const char* const PATH(const char* folder, const char* file)
 
 //Own Definitions
 #define MAX_LAYERS
-#define MAX_OBJECTS
+#define MAX_OBJECTS 106
 
 #endif

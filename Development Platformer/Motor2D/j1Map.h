@@ -23,39 +23,36 @@ enum Object_Type //Cuidado con el class. If enum class-> Object_Type::HAZARD and
 //Information of a specific object in the map.
 struct ObjectData
 {
-	uint id;				//Id number of the object.
-	p2SString name;			//Name of the object.
-	Object_Type type;		//Type of collider associated with the object.
-	SDL_Rect* hitbox;		//Rectangle that represents the object.
-	float rotation;			//Rotation of the object.
-	SDL_Texture* texture;	//Visible image of the object.
+	uint				id;			//Object's id.
+	p2SString			name;		//Object's name.
+	Object_Type			type;		//Type of collider associated with the object.
+	SDL_Rect*			hitbox;		//Rectangle that represents the object. As x, y, w and h are object properties, they can be grouped in a SDL_Rect.
+	float				rotation;	//Rotation of the object in degrees clockwise.
+	SDL_Texture*		texture;	//Visible image of the object.
 };
 
 //Object layer that has all the objects in the same "plane".
 struct ObjectGroup
 {
-	uint id;			//Id number of the object group.
-	p2SString name;		//Name of the object group.
-	ObjectData* object;	//Individual info of each object.
-	p2SString type;		//Object type
-	uint object_size;	//Quantity of objects.
+	uint				id;				//ObjectGroup layer id.
+	p2SString			name;			//ObjectGroup's name.
+	ObjectData*			object;			//Individual info of each object in the ObjectGroup layer.
+	p2SString			type;			//ObjectGroup's type. It's an arbitrary string added in Tiled to the Object/ObjectGroup.
+	uint				object_size;	//Quantity of objects. Treure per obj def.
 };
 
 struct MapLayer
 {
-	p2SString name;				//Map name
-	uint* gid;					//Tile Id
-	uint width = 0;				//Tile Width
-	uint height = 0;			//Tile Height
-	uint size = 0;				//Tile / Map size?
-	float speed_x = 0.0f;		//Parallax speed
+	p2SString			name;			//Map name
+	uint*				gid;			//Tile Id
+	uint				width;			//Tile Width
+	uint				height;			//Tile Height
+	uint				size;			//Tile / Map size?
+	float				speed_x = 0.0f;	//Parallax speed
 
-	/*MapLayer() : gid(NULL) {}*/ //New Comment
+	MapLayer() : gid(NULL) {} //New Comment
 
-	~MapLayer();
-	/*{
-		RELEASE(gid); //New Comment
-	}*/
+	~MapLayer(); //Defined at j1Map.cpp
 
 	inline uint Get(uint x, uint y) const
 	{
@@ -66,50 +63,55 @@ struct MapLayer
 // ----------------------------------------------------
 struct TileSet
 {
-	//New
-	SDL_Rect* Tile_Rect = new SDL_Rect;
+	SDL_Rect* TileRect = new SDL_Rect; //Allocates memory for TileRect.
 	
-	SDL_Rect* GetRect(int tile_id)
+	//This method calculates the position of each tile when given a tile id. 
+	SDL_Rect* GetTileRect(uint tile_id) 
 	{
+		SDL_Rect* tile_rect = TileRect; //The memory allocated for TileRect is now allocated to tile_rect. (?)
 
-		SDL_Rect* ret = Tile_Rect;
+		int relative_id = tile_id - firstgid;  //Calculates the relative position of the tile_id respect the  first initial global id.
+		
+		tile_rect->w = tile_width;			//Sets the width of the Rect holding the tile to the width of the tile in pixels.
+		tile_rect->h = tile_height;			//Sets the width of the Rect holding the tile to the height of the tile in pixels.
+		tile_rect->x =  margin + ((tile_rect->w + spacing) * (relative_id % num_tiles_width));
+		tile_rect->y =  margin + ((tile_rect->h + spacing) * (relative_id / num_tiles_width));
+		
+		//Try
+		/*int x = (relative_id % num_tiles_width);
+		int y = (relative_id / num_tiles_width);
+		tile_rect->x = x * tile_width + margin + spacing * x;
+		tile_rect->y = y * tile_height + margin + spacing * y;
+		tile_rect->w = tile_width;
+		tile_rect->h = tile_height;*/
 
-		int x = ((tile_id - firstgid) % num_tiles_width);
-		int y = ((tile_id - firstgid) / num_tiles_width);
-
-		ret->x = x * tile_width + margin + spacing * x;
-		ret->y = y * tile_height + margin + spacing * y;
-		ret->w = tile_width;
-		ret->h = tile_height;
-
-		return ret;
+		return tile_rect;
 	}
 
-	//New (int instead of uint)
-	//Substitutes the MapToWorld() function.
-	p2Point<int> MapToWorld(int x, int y)
+	//This method translates the position of the tile on the map to its equivalent position on screen.
+	p2Point<uint> MapToWorld(uint x, uint y)
 	{
-		p2Point<int> vec; //position or vect, both work.
+		p2Point<uint> position;				//Position of the tile on the world.
 
-		vec.x = x * tile_width;
-		vec.y = y * tile_height;
+		position.x = x * tile_width;		//Position x of the tile on the map in pixels. For tile_width = 32 --> Tile 1: x = 0, Tile 2: x = 32.
+		position.y = y * tile_height;		//Position y of the tile on the map in pixels. For tile_height = 32 --> Tile 1: y = 0, Tile 2: y = 32.
 
-		return vec;
+		return position;
 	}
 
-	p2SString name;
-	int	firstgid;
-	int	margin;
-	int	spacing;
-	int	tile_width;
-	int	tile_height;
-	SDL_Texture* texture = nullptr;
-	int	tex_width;
-	int	tex_height;
-	int	num_tiles_width;
-	int	num_tiles_height;
-	int	offset_x;
-	int	offset_y;
+	p2SString			name;				//Tileset name.
+	int					firstgid;			//First global tile id. Maps to the first id in the tileset.
+	int					tile_width;			//Maximum width of tiles in a given tileset.
+	int					tile_height;		//Maximum height of tiles in a given tilesset.
+	int					spacing;			//Space in pixels between the tiles in a given tileset.
+	int					margin;				//Margin around the tiles in a given tileset.
+	SDL_Texture*		texture = nullptr;	//Image that will be embedded on the tileset.
+	int					tex_width;			//Image width in pixels.
+	int					tex_height;			//Image height in pixels.
+	int					num_tiles_width;	//Number of tiles at the X axis that will have a given texture. Ex: num_tiles_width = tile_width / tex_width; 
+	int					num_tiles_height;	//Number of tiles at the Y axis that will have a given texture. Ex: num_tiles_height = tile_height / tex_height;
+	int					offset_x;			//Horizontal offset in pixels.
+	int					offset_y;			//Vertical offset in pixels.
 
 };
 
@@ -118,7 +120,8 @@ enum MapTypes
 	MAPTYPE_UNKNOWN = 0,
 	MAPTYPE_ORTHOGONAL,
 	MAPTYPE_ISOMETRIC,
-	MAPTYPE_STAGGERED
+	MAPTYPE_STAGGERED,
+	MAPTYPE_HEXAGONAL
 };
 
 
@@ -126,19 +129,14 @@ enum MapTypes
 // ----------------------------------------------------
 struct MapData
 {
-	int					width;
-	int					height;
-	int					tile_width;
-	int					tile_height;
-	float gravity = 0.2f;
-	
-	MapTypes			type;
-	p2List<TileSet*>	tilesets;
-	p2List<MapLayer*>	layers;
-	p2List<ObjectGroup*> objectGroups;
-	
-	p2SString background_colour; //Sets the string that will recieve the value of the string in the map file.
-	SDL_Color colour; //Info of which colour the background has. SDL_Color is a struct that represents colours.
+	int						width;				//Map width in tiles.
+	int						height;				//Map height in tiles.
+	int						tile_width;			//Tile width in pixels.
+	int						tile_height;		//Tile height in pixels.
+	MapTypes				type;				//Type of map (Orthogonal, Isometric, Staggered or Hexagonal)
+	p2List<TileSet*>		tilesets;			//List that accesses all tilesets and their data members/properties.
+	p2List<MapLayer*>		layers;				//List that accesses all layers and their data members/properties.
+	p2List<ObjectGroup*>	objectGroups;		//List that accesses all object groups and their data members/properties.
 
 	p2SString music_File;
 };

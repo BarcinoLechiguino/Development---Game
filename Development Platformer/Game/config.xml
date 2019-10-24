@@ -67,7 +67,7 @@
   </player>
   
   <scene>
-    <map_name name="Tutorial Screen.tmx"></map_name>
+    <map_name name="Tutorial Screen2.tmx"></map_name>
     <map_name name="1st Screen2.tmx"></map_name>
     <fade_time value="1"/>
   </scene>

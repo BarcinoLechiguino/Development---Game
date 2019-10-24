@@ -129,8 +129,8 @@ void j1Collisions::Collider_Debug()
 			App->render->DrawQuad(collider_item->data->collider, 255, 255, 255, alpha);
 			break;
 
-		case RESPAWN: //Black or maybe purple
-			App->render->DrawQuad(collider_item->data->collider, 0, 0, 0, alpha);
+		case RESPAWN: //Purple
+			App->render->DrawQuad(collider_item->data->collider, 255, 0, 255, alpha);
 			break;
 
 		case GOAL: //Pink

@@ -395,6 +395,8 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			
 			p1.grounded = true;
 		}
+
+		//Player Colliding from 
 	}
 
 }
