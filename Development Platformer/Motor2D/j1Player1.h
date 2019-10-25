@@ -16,9 +16,17 @@ enum P1_State
 	goingRight_P1,
 	goingLeft_P1,
 	crouching_P1,
-	jumping_P1,
-	falling_P1
+	jumping_P1
 };
+
+//struct Input_P1
+//{
+//	bool A_active; //Go Left
+//	bool D_active; //Go Right
+//	bool W_active; //Jump
+//	bool S_active; //Crouch
+//	bool C_active; //Boost
+//};
 
 struct Player1
 {
@@ -29,50 +37,49 @@ struct Player1
 	p2Point<float>	speed;				//P1's Speed Vector Variable. (Not actually declared as a vector but that is irrelevant to us right now)
 	p2Point<float>	max_speed;			//P1's Cruiser Speed for both axis.
 
-	p2Point<float>	acceleration;		//Time it takes the player to reach Cruiser Speed horizontally and/or vertically.
-	float			gravity;			//Acceleration variable for jumps. Gravitational Pull.
+	p2Point<float> acceleration; //Time it takes the player to reach Cruiser Speed horizontally and/or vertically.
+	float gravity; //Acceleration variable for jumps. Gravitational Pull.
 	
+	bool grounded; //Defines whether the player is standing or jumping.
+	bool flip; //Defines if the animation should be flipped or not.
 
-	bool			GoingRight = false;
-	bool			GoingLeft = false;
-	bool			Jumping = false;
-	bool			Falling = false;
-	bool			grounded;			//Tracks whether the player is standing on the ground or is jumping.
-	bool			flip;				//Tracks the direction in which P1 is facing (animation sprite flip).
-
-	//Tracks whether the player is grounded or not. If P1 is not on the ground then it also keeps record of the last position P1 was before jumping. 
-	void p1_isGrounded(bool status)
+	//Changes the state of the player depending on the given argument. Also if true it records the position from where the player jumped.
+	void p1_isGrounded(bool yesnt)
 	{
 		if (grounded == true)
 		{
 			pre_Jump_Position = position;
 		}
 
-		grounded = status;
+		grounded = yesnt;
 	};
 	
 	//Animation Variables
 	SDL_Texture* texture = nullptr;
 	SDL_Texture* texture2 = nullptr;
 	
-	Animation idle;					//Idle Animation of P1.
-	Animation running_right;		//Running right Animation of P1.
-	Animation running_left;			//Idle Animation of P1.
-	Animation death;				//Idle Animation of P1.
-	Animation crouching;			//Idle Animation of P1.
-	Animation jumping;				//Idle Animation of P1.
-	Animation mid_jump;				//Idle Animation of P1.
-	Animation falling;				//Idle Animation of P1.
+	Animation idle;
+	Animation running_right;
+	Animation running_left;
+	Animation death;
+	Animation crouching;
+	Animation jumping;
+	Animation mid_jump;
+	Animation falling;
 
-	Animation* current_animation;	//Tracks the current animation of P1.
+	Animation* current_animation;
+
+	bool moving_right = false;
+	bool moving_left = false;
 	
-	SDL_Rect	HitBox;				//Rectangle that represents the player.
-	P1_State	state;				//Adds the state enum to the player's variables.
-	Collider*	collider;			//Collider of P1.
+	SDL_Rect HitBox; //Rectangle that represents the player.
+	P1_State state; //Adds the state enum to the player's variables.
+	Collider* collider; //Collider
 
 	//Temporal Variables
-	int		sprite_width = /*20*/ 38;
-	int		sprite_height = /*30*/60;
+	int sprite_width = /*20*/ 38;
+	int sprite_height = /*30*/60;
+	float floor = 0.0f;
 
 	/*p2SString		jumpFX;
 	p2SString		deathFX;
@@ -105,19 +112,14 @@ public: //P1 Variables
 	
 	Player1 p1;
 
-	void GoRight();									//Method that moves P1 to the right.
-	void GoLeft();									//Method that moves P1 to the left.
-	void Crouch();									//Method that makes P1 crouch.
-	void Jump();									//Method that makes P1 jump.
-	void Fall();									//Method that makes P1 fall.
+	void OnCollision(Collider* C1, Collider* C2); //Collision Handling
 
-	void OnCollision(Collider* C1, Collider* C2);	//Collision Handling
-	bool Load(pugi::xml_node &node);				//Loading from xml file
-	bool Save(pugi::xml_node &node) const;			//Saving to xml file
+	bool Load(pugi::xml_node &node); //Loading from xml file
+	bool Save(pugi::xml_node &node) const; //Saving to xml file
 	void Restart();
 	void GodModeInput();
 
-	bool fading = false;							// fade character when changing scenes
+	bool fading = false; // fade character when changing scenes
 	bool player1_alive = false;
 	bool GodMode = false;
 
