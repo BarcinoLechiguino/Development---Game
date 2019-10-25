@@ -32,7 +32,8 @@ struct Player2
 {
 	p2Point<float> position; //Vector with the position of P1
 	p2Point<float> pre_Jump_Position; //
-
+	int initial_position_x = 200; //magic numbers... try to fix
+	int initial_position_y = 1150; //magic numbers... try to fix
 	p2Point<float> speed; //Speed on X. Basic Movement
 	p2Point<float> max_speed; //Cruiser speed for both axis.
 
@@ -108,6 +109,7 @@ public: //P1 Variables
 	bool Load(pugi::xml_node &node);
 	bool Save(pugi::xml_node &node) const;
 	void GodModeInput();
+	void Restart();
 
 	bool player2_alive = false;
 	bool GodMode = false;

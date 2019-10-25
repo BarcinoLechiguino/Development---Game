@@ -87,6 +87,8 @@ bool j1Scene::Update(float dt)
 
 		//New
 		App->fadescene->FadeToBlack("Test.tmx");
+		App->player1->Restart();
+		App->player2->Restart();
 	}
 
 	//Load Second Level Key
@@ -95,13 +97,15 @@ bool j1Scene::Update(float dt)
 		//Load_lvl(1);
 
 		App->fadescene->FadeToBlack("Test1.tmx");
+		App->player1->Restart();
+		App->player2->Restart();
 	}
 
 	//Restart Key
 	else if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 	{
 		App->player1->Restart();
-		//App->player2->Restart();
+		App->player2->Restart();
 	}
 	
 	//Save Game Key
