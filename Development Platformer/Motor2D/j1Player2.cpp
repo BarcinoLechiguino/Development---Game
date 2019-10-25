@@ -249,6 +249,13 @@ bool j1Player2::Update(float dt)
 		}
 	}
 
+	//In case the HitBox clips through the ground.
+	/*if (p2.position.y > p2.floor)
+	{
+		p2.position.y = p2.floor - 1;
+		p2.p2_isGrounded(true);
+	}*/
+
 	//We move the character according the position value after the state has been run.
 	p2.HitBox.x = p2.position.x;
 	p2.HitBox.y = p2.position.y;
@@ -260,15 +267,7 @@ bool j1Player2::Update(float dt)
 
 	App->render->Blit(p2.texture, p2.position.x, p2.position.y, &p2.HitBox, p2.flip);
 
-	//Making the collider follow the player while also taking into account if P1 is flipped.
-	if (!p2.flip)
-	{
-		p2.collider->Set_Position(p2.position.x, p2.position.y);
-	}
-	else
-	{
-		p2.collider->Set_Position(p2.position.x + 22, p2.position.y);
-	}
+	p2.collider->Set_Position(p2.position.x, p2.position.y); //Makes the collider follow the player.
 
 	return true;
 };

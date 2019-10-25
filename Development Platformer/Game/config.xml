@@ -19,6 +19,9 @@
     <fullscreen_window value="false"/>
   </window>
 
+ 
+
+  
   <audio>
     <default_volume value="100"/>
     <music>
@@ -45,8 +48,6 @@
       <acceleration x="1" y="1.4"/>
       <gravity value="15"/>
       <boost x="10"  y="10"/>
-      <flags />
-      
       <jumpFX name ="Jump.wav"/>
       <DuoJumpFX name ="Jump_Duo.wav"/>
       <DeathFX name ="Death.wav"/>

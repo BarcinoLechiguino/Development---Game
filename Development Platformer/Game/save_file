@@ -12,13 +12,13 @@
 	</scene>
 	<collisions />
 	<player>
-		<position1 x="410" y="1123" />
+		<position1 x="970" y="1123" />
 	</player>
 	<player>
-		<position2 x="200" y="1119" />
+		<position2 x="550" y="-64" />
 	</player>
 	<:anonymous />
 	<renderer>
-		<camera x="100" y="-570" />
+		<camera x="240" y="170" />
 	</renderer>
 </game_state>

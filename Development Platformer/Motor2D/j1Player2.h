@@ -16,9 +16,17 @@ enum P2_State
 	goingRight_P2,
 	goingLeft_P2,
 	crouching_P2,
-	jumping_P2,
-	falling_P2
+	jumping_P2
 };
+
+//struct Input_P2
+//{
+//	bool H_active; //Go Left
+//	bool K_active; //Go Right
+//	bool U_active; //Jump
+//	bool J_active; //Crouch
+//	bool N_active; //Boost
+//};
 
 struct Player2
 {
