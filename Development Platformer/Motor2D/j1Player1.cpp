@@ -72,7 +72,6 @@ j1Player1::j1Player1() //Constructor. Called at the first frame.
 	p1.death.PushBack({330, 444, 110, 74});
 	p1.death.PushBack({440, 444, 110, 74});
 	p1.death.speed = 0.2f;
-
 };
 
 j1Player1::~j1Player1()  //Destructor. Called at the last frame.
@@ -127,9 +126,14 @@ bool j1Player1::Start()
 	App->audio->LoadFx(p1.deathFX.GetString());
 	App->audio->LoadFx(p1.duoFX.GetString());*/
 
-	p1.p1_isGrounded(true);
-
-	p1.state = idle_P1;
+	if (p1.grounded)
+	{
+		p1.state = idle_P1;
+	}
+	/*else
+	{
+		p1.state = falling_P1;
+	}*/
 
 	player1_alive = true;
 
@@ -138,9 +142,12 @@ bool j1Player1::Start()
 
 bool j1Player1::PreUpdate() 
 {
-	//p1.p1_SetGroundState(false); //set  to false when colliders are implemented.
+	p1.p1_isGrounded(false); //set  to false when colliders are implemented.
 	
-	p1.state = idle_P1;
+	/*if (!p1.grounded)
+	{
+		p1.state = falling_P1;
+	}*/
 	
 	if (!GodMode)
 	{
@@ -190,62 +197,38 @@ bool j1Player1::Update(float dt)
 		break;
 	
 	case goingRight_P1:
-	
-		LOG("P2 GOING RIGHT %d %d", p1.speed.x, p1.max_speed.x);
 		
-		//As long as D is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
-		while (p1.speed.x != p1.max_speed.x)
-		{
-			p1.speed.x += p1.acceleration.x;
-		}
-	
-		p1.position.x += p1.speed.x; //p1.speed_x is positive here.
+		GoRight();
 
-		p1.flip = false;
-		p1.current_animation = &p1.running_right;
-		p1.moving_right = true;
-	
-		LOG("P1 Position %d %d", p1.position.x, p1.position.y);
-	
 		break;
 	
 	case goingLeft_P1:
 	
-		//As long as W is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
-		while (p1.speed.x != -p1.max_speed.x)
-		{
-			p1.speed.x -= p1.acceleration.x;
-		}
-	
-		p1.position.x += p1.speed.x;  //p1.speed_x  is negative here.
-
-		p1.flip = true;
-		p1.current_animation = &p1.running_left;
-		p1.moving_left = true;
+		GoLeft();
 	
 		break;
 	
 	case crouching_P1:
 
-		p1.current_animation = &p1.crouching;
+		Crouch();
 
-	break;
+		break;
 
 	case jumping_P1:
 	
-		if (p1.grounded == true /*|| p1.jumpCount != 2*/)
-		{
-			p1.speed.y = -p1.gravity;
-		App->audio->PlayFx(jumpFX);
-			/*jumpCount++;*/
-			p1.p1_isGrounded(false);
-		}
+		Jump();
+
+		break;
+
+	case falling_P1:
+
+		Fall();
 
 		break;
 	}
 	
 	//If the p1 is in the air then this function brings him/her back down to the floor.
-	if (p1.grounded == false)
+	/*if (p1.grounded == false)
 	{	
 		p1.speed.y += p1.acceleration.y;
 		
@@ -264,13 +247,6 @@ bool j1Player1::Update(float dt)
 		{
 			p1.current_animation = &p1.falling;
 		}
-	}
-	
-	//In case the HitBox clips through the ground.
-	/*if (p1.position.y > p1.floor)
-	{
-		p1.position.y = p1.floor - 1;
-		p1.p1_isGrounded(true);
 	}*/
 
 	//We move the character according the position value after the state has been run.
@@ -283,17 +259,16 @@ bool j1Player1::Update(float dt)
 	p1.HitBox = p1.current_animation->GetCurrentFrame();
 	
 	App->render->Blit(p1.texture, p1.position.x, p1.position.y, &p1.HitBox, p1.flip);
-	
-	p1.collider->Set_Position(p1.position.x, p1.position.y); //Makes the collider follow the player.
 
-	/*if (p1.flip)
+	//Making the collider follow the player while also taking into account if P1 is flipped.
+	if (!p1.flip)
 	{
-		p1.collider->Set_Position(p1.position.x, p1.position.y); //Makes the collider follow the player.
+		p1.collider->Set_Position(p1.position.x, p1.position.y);
 	}
 	else
 	{
-		p1.collider->Set_Position(p1.position.x + 5, p1.position.y); //Makes the collider follow the player.
-	}*/
+		p1.collider->Set_Position(p1.position.x + 22, p1.position.y);
+	}
 
 	return true;
 };
@@ -325,12 +300,6 @@ bool j1Player1::Save(pugi::xml_node&  data) const
 	pos.append_attribute("y") = p1.position.y;
 	return true;
 }
-
-//Collision Handling -------
-//void j1Player1::OnCollision(Collider* C1, Collider* C2)
-//{
-//
-//}
 
 void j1Player1::Restart()
 {
@@ -370,64 +339,137 @@ void j1Player1::GodModeInput()
 //Collision Handling ---------------------------------------
 void j1Player1::OnCollision(Collider* C1, Collider* C2)
 {
-	if (C2->type == PLAYER)
+	if (!GodMode)					//Will only check collisions if GodMode is false.
 	{
-		Collider* temp = C1;
-		C1 = C2;
-		C2 = temp;
-	}
-	if (C1->type != PLAYER)
-	{
-		return;
-	}
-
-	//Player colliding against solids
-	if (C1->type == PLAYER && C2->type == SOLID)
-	{
-		//Player Colliding from above the Solid
-		if (p1.position.y + C1->collider.h > C2->collider.y /*p1.position.y + C1->collider.h - p1.max_speed.y - 2 < C2->collider.y
-			&& C1->collider.x < C2->collider.x + C2->collider.w
-			&& C1->collider.x + C1->collider.w > C2->collider.x*/)
+		if (C2->type == PLAYER)
 		{
+			Collider* temp = C1;
+			C1 = C2;
+			C2 = temp;
+		}
+		if (C1->type != PLAYER)
+		{
+			return;
+		}
+
+		//Player colliding against solids
+		if (C1->type == PLAYER && C2->type == SOLID)
+		{
+			//Player Colliding from above the Solid
+			if (p1.position.y + C1->collider.h > C2->collider.y /*p1.position.y + C1->collider.h - p1.max_speed.y - 2 < C2->collider.y
+				&& C1->collider.x < C2->collider.x + C2->collider.w
+				&& C1->collider.x + C1->collider.w > C2->collider.x*/)
+			{
 				p1.speed.y = 0;
 				p1.grounded = true;
 				p1.position.y = C2->collider.y - C1->collider.h;
 				LOG("P1 IS COLLIDING WITH SOLID FROM AVOBE");
 
-			/*if (p1.speed.y > 0)
-			{
-				p1.speed.y = 0;
+				/*if (p1.speed.y > 0)
+				{
+					p1.speed.y = 0;
+				}
+
+				p1.position.y = C2->collider.y - p1.collider->collider.h;
+
+				p1.grounded = true*/;
 			}
 
-			p1.position.y = C2->collider.y - p1.collider->collider.h;
+			//Player Colliding from below the Solid
+			/*if (p1.position.y < C2->collider.y + C2->collider.h)
+			{
+				p1.speed.y = 0;
+				p1.position.y = C2->collider.y + C2->collider.h;
+				LOG("P1 IS COLLIDING WITH SOLID FROM BELOW");
+			}*/
 
-			p1.grounded = true*/;
-		}
+			//Player is colliding from right (going left)
+		/*	if (p1.position.x < C2->collider.x + C2->collider.w)
+			{
+				p1.speed.x = 0;
+				p1.position.x = C2->collider.x + C2->collider.w;
+				LOG("P1 IS COLLIDING WITH SOLID FROM THE RIGHT");
+			}*/
 
-		//Player Colliding from below the Solid
-		/*if (p1.position.y < C2->collider.y + C2->collider.h)
-		{
-			p1.speed.y = 0;
-			p1.position.y = C2->collider.y + C2->collider.h;
-			LOG("P1 IS COLLIDING WITH SOLID FROM BELOW");
-		}*/
-
-		//Player is colliding from right (going left)
-	/*	if (p1.position.x < C2->collider.x + C2->collider.w)
-		{
-			p1.speed.x = 0;
-			p1.position.x = C2->collider.x + C2->collider.w; 
-			LOG("P1 IS COLLIDING WITH SOLID FROM THE RIGHT");
-		}*/
-
-		//Player is colliding from left (going right)
-		if (p1.position.x + C1->collider.w < C2->collider.x)
-		{
-			p1.speed.x = 0;
-			p1.position.x = C2->collider.x - C1->collider.w;
-			LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
+			//Player is colliding from left (going right)
+			if (p1.position.x + C1->collider.w < C2->collider.x)
+			{
+				p1.speed.x = 0;
+				p1.position.x = C2->collider.x - C1->collider.w;
+				LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
+			}
 		}
 	}
+}
 
+//Movement methods
+void j1Player1::GoRight()
+{
+	LOG("P2 GOING RIGHT %d %d", p1.speed.x, p1.max_speed.x);
+
+	//As long as D is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
+	while (p1.speed.x != p1.max_speed.x)
+	{
+		p1.speed.x += p1.acceleration.x;
+	}
+
+	p1.position.x += p1.speed.x; //p1.speed_x is positive here.
+
+	p1.flip = false;
+	p1.current_animation = &p1.running_right;
+	p1.GoingRight = true;
+
+	LOG("P1 Position %d %d", p1.position.x, p1.position.y);
+}
+
+void j1Player1::GoLeft()
+{
+	//As long as W is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
+	while (p1.speed.x != -p1.max_speed.x)
+	{
+		p1.speed.x -= p1.acceleration.x;
+	}
+
+	p1.position.x += p1.speed.x;  //p1.speed_x  is negative here.
+
+	p1.flip = true;
+	p1.current_animation = &p1.running_left;
+	p1.GoingLeft = true;
+}
+
+void j1Player1::Crouch()
+{
+	p1.current_animation = &p1.crouching;
+}
+
+void j1Player1::Jump()
+{
+	if (p1.grounded == true)
+	{
+		p1.speed.y = -p1.gravity;
+		App->audio->PlayFx(jumpFX);
+		p1.p1_isGrounded(false);
+	}
+}
+
+void j1Player1::Fall()
+{
+	p1.speed.y += p1.acceleration.y;
+
+	if (p1.speed.y > p1.max_speed.y)
+	{
+		p1.speed.y = p1.max_speed.y;
+	}
+
+	p1.position.y += p1.speed.y;
+
+	if (p1.speed.y < 0)
+	{
+		p1.current_animation = &p1.jumping;
+	}
+	else
+	{
+		p1.current_animation = &p1.falling;
+	}
 }
 
