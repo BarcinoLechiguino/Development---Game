@@ -267,6 +267,8 @@ bool j1Player2::Update(float dt)
 
 	App->render->Blit(p2.texture, p2.position.x, p2.position.y, &p2.HitBox, p2.flip);
 
+	p2.collider->Set_Position(p2.position.x, p2.position.y); //Makes the collider follow the player.
+
 	return true;
 };
 
@@ -302,14 +304,41 @@ bool j1Player2::Save(pugi::xml_node& data) const
 }
 
 //Collision Handling
-void j1Player2::OnCollision(Collider* C1, Collider* C2) //See if without * it works
+void j1Player2::OnCollision(Collider* C1, Collider* C2)
 {
 	if (C2->type == PLAYER)
 	{
-
+		Collider* temp = C1;
+		C1 = C2;
+		C2 = temp;
 	}
-}
+	if (C1->type != PLAYER)
+	{
+		return;
+	}
 
+	//Player colliding against solids
+	if (C1->type == PLAYER && C2->type == SOLID)
+	{
+		//Player Colliding from above the Solid
+		if (p2.position.y + C1->collider.h > C2->collider.y)
+		{
+			p2.speed.y = 0;
+			p2.grounded = true;
+			p2.position.y = C2->collider.y - C1->collider.h;
+			LOG("P2 IS COLLIDING WITH SOLID");
+		}
+
+		//Player Colliding from  below the Solid
+		/*if (p2.position.y < C2->collider.y + C2->collider.h)
+		{
+			p2.speed.y = 0;
+			p2.position.y = C2->collider.y + C1->collider.h;
+			LOG("P2 IS COLLIDING WITH SOLID FROM BELOW");
+		}*/
+	}
+
+}
 void j1Player2::GodModeInput()
 {
 	if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT)

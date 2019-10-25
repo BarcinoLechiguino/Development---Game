@@ -9,7 +9,6 @@
 //Kinds of colliders we are working with
 enum Object_Type //Cuidado con el class. If enum class-> Object_Type::HAZARD and not just HAZARD
 {
-	UNKNOWN = -1,
 	PLAYER,
 	SOLID,
 	PLATFORM,
@@ -17,7 +16,8 @@ enum Object_Type //Cuidado con el class. If enum class-> Object_Type::HAZARD and
 	ITEM,
 	DESACTIVABLE,
 	RESPAWN,
-	GOAL
+	GOAL,
+	UNKNOWN = -1
 };
 
 //Information of a specific object in the map.
@@ -26,7 +26,7 @@ struct ObjectData
 	uint				id;			//Object's id.
 	p2SString			name;		//Object's name.
 	Object_Type			type;		//Type of collider associated with the object.
-	SDL_Rect*			hitbox;		//Rectangle that represents the object. As x, y, w and h are object properties, they can be grouped in a SDL_Rect.
+	SDL_Rect*			collider;	//Rectangle that represents the object. As x, y, w and h are object properties, they can be grouped in a SDL_Rect.
 	float				rotation;	//Rotation of the object in degrees clockwise.
 	SDL_Texture*		texture;	//Visible image of the object.
 };
@@ -76,19 +76,20 @@ struct TileSet
 		tile_rect->h = tile_height;			//Sets the width of the Rect holding the tile to the height of the tile in pixels.
 		tile_rect->x =  margin + ((tile_rect->w + spacing) * (relative_id % num_tiles_width));
 		tile_rect->y =  margin + ((tile_rect->h + spacing) * (relative_id / num_tiles_width));
-		
-		//Try
-		/*int x = (relative_id % num_tiles_width);
-		int y = (relative_id / num_tiles_width);
-		tile_rect->x = x * tile_width + margin + spacing * x;
-		tile_rect->y = y * tile_height + margin + spacing * y;
-		tile_rect->w = tile_width;
-		tile_rect->h = tile_height;*/
 
 		return tile_rect;
 	}
 
-	
+	//This method translates the position of the tile on the map to its equivalent position on screen.
+	p2Point<uint> MapToWorld(uint x, uint y)
+	{
+		p2Point<uint> position;				//Position of the tile on the world.
+
+		position.x = x * tile_width;		//Position x of the tile on the map in pixels. For tile_width = 32 --> Tile 1: x = 0, Tile 2: x = 32.
+		position.y = y * tile_height;		//Position y of the tile on the map in pixels. For tile_height = 32 --> Tile 1: y = 0, Tile 2: y = 32.
+
+		return position;
+	}
 
 	p2SString			name;				//Tileset name.
 	int					firstgid;			//First global tile id. Maps to the first id in the tileset.
@@ -155,7 +156,7 @@ public:
 	bool SwitchMaps(p2SString* new_map);
 
 	// Load new map
-	iPoint MapToWorld(int x, int y) const;
+	iPoint MapToWorld(int x, int y) const; //Ya hay un map to world en TileSet
 
 private:
 

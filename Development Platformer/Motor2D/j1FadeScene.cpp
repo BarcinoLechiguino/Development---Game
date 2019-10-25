@@ -57,7 +57,7 @@ bool j1Fade_Scene::Update(float dt)
 				App->collisions->collider_list.clear(); //Clears all previously loaded colliders.
 
 				App->map->Load(mapName); //Load specified map
-				App->collisions->LoadFromMap(); //Load Collisions
+				App->collisions->LoadColliderFromMap(); //Load Collisions
 
 				/*App->scene->currentMap = nextMap;
 				App->map->SwitchMaps(App->scene->map_names[nextMap]);*/

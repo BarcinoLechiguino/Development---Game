@@ -62,7 +62,7 @@ void j1Map::Draw()
 	}
 }
 
-iPoint j1Map::MapToWorld(int x, int y) const
+iPoint j1Map::MapToWorld(int x, int y) const 
 {
 	iPoint ret(0, 0);
 
@@ -74,6 +74,7 @@ iPoint j1Map::MapToWorld(int x, int y) const
 
 	return ret;
 }
+
 //From Handout 5
 TileSet* j1Map::GetTilesetFromTileId(int id) const
 {
@@ -173,7 +174,6 @@ bool j1Map::Load(const char* file_name)
 	}
 
 	// Load layer info ----------------------------------------------
-
 	pugi::xml_node layer;
 	for (layer = map_file.child("map").child("layer"); layer; layer = layer.next_sibling("layer"))
 	{
@@ -188,16 +188,16 @@ bool j1Map::Load(const char* file_name)
 	}
 
 	//Load Collider Info ------------------------------------------
-	pugi::xml_node object_group;
-	for (object_group = map_file.child("map").child("objectgroup"); object_group && ret; object_group = object_group.next_sibling("objectgroup"))
+	pugi::xml_node objectgroup;
+	for (objectgroup = map_file.child("map").child("objectgroup"); objectgroup && ret; objectgroup = objectgroup.next_sibling("objectgroup"))
 	{
-		ObjectGroup* set = new ObjectGroup(); //New Object group pointer that will iterate through the memebers of the ObjectGroup struct to fill the object group data (id, name, object...) layer as well as the info of each object.
+		ObjectGroup* new_objectgroup = new ObjectGroup(); //Allocates memory for the objectgroup being iterated.
 
 		if (ret == true)
 		{
-			ret = LoadObjectLayers(object_group, set); //
+			ret = LoadObjectLayers(objectgroup, new_objectgroup);  //Loads the data members of the objectgroup that is being iterated.
 		}
-		data.objectGroups.add(set);
+		data.objectGroups.add(new_objectgroup);
 	}
 
 	if(ret == true)
@@ -373,23 +373,6 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	}
 	
 	pugi::xml_node layer_data = node.child("data");
-	//New comment
-	/*layer->gid = new uint[layer->width*layer->height];				
-	memset(layer->gid, 0u, sizeof(uint)*layer->height*layer->width);*/
-
-	//New
-	/*Goes through all the objects and records how many of them there are.
-	int layer_quantity = 0;
-	for (pugi::xml_node layerIterator = node.child("layer"); layerIterator; layerIterator = layerIterator.next_sibling("layer"))
-	{
-		layer_quantity++;
-	}
-
-	//Sets the amount of layers to be drawn (Allocates memory for all layers)
-	layer->size = layer_quantity;
-	layer->tileset = new TileSet[layer_quantity];
-	memset(layer->tileset, 0, layer_quantity * sizeof(TileSet));*/
-	
 	if (layer_data == NULL)
 	{
 		LOG("Error parsing map xml file: Cannot find 'layer/data' tag.");
@@ -420,98 +403,74 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 {
 	bool ret = true;
 
-	objectgroup->id = node.attribute("id").as_uint();
-	objectgroup->name = node.attribute("name").as_string();
+	objectgroup->id = node.attribute("id").as_int();			//Sets the id of a given objectgroup to the id loaded from the tmx map.
+	objectgroup->name = node.attribute("name").as_string();		//Sets the name of a given objectgroup to the name loaded from the tmx map.
 
-	//Goes through all the objects and records how many of them there are.
 	int object_count = 0;
-	for (pugi::xml_node objIterator = node.child("object"); objIterator; objIterator = objIterator.next_sibling("object"))
+	//This loop iterates all the childs with the object tag, with each iteration of the loop one object is added to the count. Used to reduce memory space waste.
+	for (pugi::xml_node object_iterator = node.child("object"); object_iterator; object_iterator = object_iterator.next_sibling("object"))	//Iterates the data members inside the object tag and stops when the pointer is NULL(there are no objects left to iterate) or if ret == false.
 	{
 		object_count++;
 	}
 
-	LOG("NUM OBJECTS %d", object_count);
+	objectgroup->num_objects = object_count;							//Sets the value of num_objects to the value gotten from iteration all the objectgroups.
+	objectgroup->object = new ObjectData[object_count];					//Individually allocates memory for each object. Here object_count is the exact number of objects all objectgroups contain, so there is no memory waste.
+	memset(objectgroup->object, 0, object_count * sizeof(ObjectData));	//Sets all allocated memory to 0;
 
-	//Sets the amount of objects to be drawn (Allocates memory for all the objects)
-	objectgroup->num_objects = object_count;								//Sets the object_size to the number of objects in the objectGroup layer that is being iterated. 
-	objectgroup->object = new ObjectData[object_count];					//Allocates memory for all the objects there are in the objectGroup layer that is being iterated. 
-	memset(objectgroup->object, 0, object_count * sizeof(ObjectData));	//Sets all the memory to 0 (?)
-
-	//A SDL_rect recieves the matching variable values and then identifies which type of object it is.
 	int index = 0;
-	pugi::xml_node objIterator = node.child("object");
-	while(objIterator != NULL)
+	for (pugi::xml_node object_iterator = node.child("object"); object_iterator; object_iterator = object_iterator.next_sibling("object")) //Iterates again all objects passed in the tmx map.
 	{
-		SDL_Rect* hitbox = new SDL_Rect;
+		objectgroup->object[index].id = object_iterator.attribute("id").as_int();			//Gets the id of the object being loaded from tmx and sets it to the corresponding object in the world.
+		objectgroup->object[index].name = object_iterator.attribute("name").as_string();	//Gets the name of the object being loaded from tmx and sets it to the corresponding object in the world.
 
-		hitbox->x = objIterator.attribute("x").as_uint();
-		hitbox->y = objIterator.attribute("y").as_uint();
-		hitbox->w = objIterator.attribute("width").as_uint();
-		hitbox->h = objIterator.attribute("height").as_uint();
+		SDL_Rect* collider = new SDL_Rect;			//Allocates memory for the buffer rect(x,y,w,z) that will receive the data members of an object from the objectgroup being iterated.
 
-		objectgroup->object[index].hitbox = hitbox;
-		objectgroup->object[index].id = objIterator.attribute("id").as_uint();
-		objectgroup->object[index].name = objIterator.attribute("name").as_uint();
-		objectgroup->object[index].rotation = objIterator.attribute("rotation").as_float();
+		collider->x = object_iterator.attribute("x").as_int();			//Sets the buffer rect's x position to the x position of the object given by the tmx map this iteration.
+		collider->y = object_iterator.attribute("y").as_int();			//Sets the buffer rect's y position to the y position of the object given by the tmx map this iteration.
+		collider->w = object_iterator.attribute("width").as_int();		//Sets the buffer rect's width to the width of the object given by the tmx map this iteration.
+		collider->h = object_iterator.attribute("height").as_int();		//Sets the buffer rect's height to the height of the object given by the tmx map this iteration.
 
-		//The type string that the object passes is passed to a string.
-		//p2SString type(objIterator.attribute("type").as_string());
-		objectgroup->type = objIterator.attribute("type").as_string();
+		objectgroup->object[index].collider = collider;		//Passes the buffer rect's data members to the object in this index position. Need to use a buffer due to objectgroup only accepting a class expression.
 
-		//If enum class-> Object_Type::HAZARD and not just HAZARD  and etc.
-		if (objectgroup->type == "solid")
-		{
-			objectgroup->object[index].type = SOLID;
-		}
-		else if (objectgroup->type == "platform")
-		{
-			objectgroup->object[index].type = PLATFORM;
-		}
-		else if (objectgroup->type == "hazard")
-		{
-			objectgroup->object[index].type = HAZARD;
-		}
-		else if (objectgroup->type == "item")
-		{
-			objectgroup->object[index].type = ITEM;
-		}
-		else if (objectgroup->type == "desactivable")
-		{
-			objectgroup->object[index].type = DESACTIVABLE;
-		}
 
-		//These last two can be put as position variables in the config.xml file.
-		else if (objectgroup->type == "respawn")
-		{
-			objectgroup->object[index].type = RESPAWN;
-		}
-		else if (objectgroup->type == "goal")
-		{
-			objectgroup->object[index].type = GOAL;
-		}
+		p2SString object_type(object_iterator.attribute("type").as_string());		//Buffer string that improves readability of the code.
 
-		//Revise Positioning on this
+		//Checking the object type string being loaded from the tmx file. It's a string that's abitrarily set on Tiled, so it should be known exactly which type strings will be passed. 
+		if (object_type == "solid")
+		{
+			objectgroup->object[index].type = SOLID;			//As the object type string matches "solid" the object's type will be set to SOLID.
+		}
+		else if (object_type == "platform")
+		{
+			objectgroup->object[index].type = PLATFORM;			//As the object type string matches "platform" the object's type will be set to PLATFORM.
+		}
+		else if (object_type == "hazard")
+		{
+			objectgroup->object[index].type = HAZARD;			//As the object type string matches "hazard" the object's type will be set to HAZARD.
+		}
+		else if (object_type == "item")
+		{
+			objectgroup->object[index].type = ITEM;				//As the object type string matches "item" the object's type will be set to ITEM.
+		}
+		else if (object_type == "desctivable")
+		{
+			objectgroup->object[index].type = DESACTIVABLE;		//As the object type string matches "desactivable" the object's type will be set to DESACTIVABLE.
+		}
+		else if (object_type == "respawn")
+		{
+			objectgroup->object[index].type = RESPAWN;			//As the object type string matches "respawn" the object's type will be set to RESPAWN.
+		}
+		else if (object_type == "goal")
+		{
+			objectgroup->object[index].type = GOAL;				//As the object type string matches "goal" the object's type will be set to GOAL.
+		}
 		else
 		{
-			objectgroup->object[index].type = UNKNOWN;
+			objectgroup->object[index].type = UNKNOWN;			//If the object type string does not match any type, the object will be assigned the UKNOWN type.
 		}
-		
-		index++;
-		objIterator = objIterator.next_sibling("object");
+
+		index++;	//index is increased in one so the next object is iterated.
 	}
-	
-	/*for (pugi::xml_node& obj = node.child("object"); obj && ret; obj = obj.next_sibling("object"))
-	{
-		ObjectData* data = new ObjectData;
-
-		data->height = obj.attribute("height").as_uint();
-		data->width = obj.attribute("width").as_uint();
-		data->x = obj.attribute("x").as_uint();
-		data->y = obj.attribute("y").as_uint();
-		data->name = obj.attribute("name").as_string();
-
-		objectgroup->objects.add(data);
-	}*/
 
 	return ret;
 }
@@ -531,8 +490,3 @@ MapLayer::~MapLayer()
 	/*delete[] gid;*/ //New comment
 	RELEASE(gid); //New
 }
-
-//ObjectsGroup::~ObjectsGroup()
-//{
-//	objects.clear();
-//}

@@ -385,13 +385,48 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 	if (C1->type == PLAYER && C2->type == SOLID)
 	{
 		//Player Colliding from above the Solid
-		if (p1.position.y > C2->collider.y + C2->collider.h)
+		if (p1.position.y + C1->collider.h > C2->collider.y /*p1.position.y + C1->collider.h - p1.max_speed.y - 2 < C2->collider.y
+			&& C1->collider.x < C2->collider.x + C2->collider.w
+			&& C1->collider.x + C1->collider.w > C2->collider.x*/)
 		{
 				p1.speed.y = 0;
-				p1.position.y = C2->collider.y;
+				p1.grounded = true;
+				p1.position.y = C2->collider.y - C1->collider.h;
+				LOG("P1 IS COLLIDING WITH SOLID FROM AVOBE");
+
+			/*if (p1.speed.y > 0)
+			{
+				p1.speed.y = 0;
+			}
+
+			p1.position.y = C2->collider.y - p1.collider->collider.h;
+
+			p1.grounded = true*/;
 		}
 
-		//Player Colliding from 
+		//Player Colliding from below the Solid
+		/*if (p1.position.y < C2->collider.y + C2->collider.h)
+		{
+			p1.speed.y = 0;
+			p1.position.y = C2->collider.y + C2->collider.h;
+			LOG("P1 IS COLLIDING WITH SOLID FROM BELOW");
+		}*/
+
+		//Player is colliding from right (going left)
+	/*	if (p1.position.x < C2->collider.x + C2->collider.w)
+		{
+			p1.speed.x = 0;
+			p1.position.x = C2->collider.x + C2->collider.w; 
+			LOG("P1 IS COLLIDING WITH SOLID FROM THE RIGHT");
+		}*/
+
+		//Player is colliding from left (going right)
+		if (p1.position.x + C1->collider.w < C2->collider.x)
+		{
+			p1.speed.x = 0;
+			p1.position.x = C2->collider.x - C1->collider.w;
+			LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
+		}
 	}
 
 }

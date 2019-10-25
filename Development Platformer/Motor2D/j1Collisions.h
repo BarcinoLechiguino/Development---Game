@@ -62,7 +62,7 @@ public:
 	bool CleanUp();
 
 	Collider* AddCollider(SDL_Rect collider, Object_Type type, j1Module* callback);
-	void LoadFromMap();
+	void LoadColliderFromMap();
 
 private:
 	void Collider_Debug();

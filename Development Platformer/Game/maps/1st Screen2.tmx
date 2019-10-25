@@ -22017,7 +22017,7 @@
  </objectgroup>
  <objectgroup id="26" name="Ladders"/>
  <objectgroup id="27" name="Respawn">
-  <object id="94" name="Origin" type="respawn" x="128.125" y="1117.13" width="69" height="67"/>
+  <object id="94" name="Origin" type="respawn" x="128" y="1088" width="69" height="67"/>
  </objectgroup>
  <objectgroup id="22" name="End">
   <object id="95" name="Goal" type="goal" x="1504" y="1152" width="63.9375" height="64.0435"/>
