@@ -1,5 +1,6 @@
 #include "j1App.h"
 #include "j1Player2.h"
+#include "j1Player1.h"
 #include "j1Module.h"
 #include "p2Point.h"
 #include "j1Render.h"
@@ -147,6 +148,12 @@ bool j1Player2::PreUpdate()
 		if (App->input->GetKey(SDL_SCANCODE_KP_0) == KEY_DOWN)
 		{
 			p2.state = jumping_P2;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_KP_7) == KEY_DOWN)
+		{
+			p2.position.x = App->player1->p1.position.x + 40;
+			p2.position.y = App->player1->p1.position.y;
 		}
 	}
 	else
@@ -302,6 +309,13 @@ bool j1Player2::Save(pugi::xml_node& data) const
 	pos.append_attribute("y") = p2.position.y;
 
 	return true;
+}
+
+void j1Player2::Restart()
+{
+	p2.position.x = p2.initial_position_x;
+	p2.position.y = p2.initial_position_y;
+	player2_alive = true;
 }
 
 //Collision Handling

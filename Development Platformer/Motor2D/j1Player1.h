@@ -24,7 +24,8 @@ struct Player1
 {
 	p2Point<float>	position;			//Point with the position of P1 on the world.
 	p2Point<float>	pre_Jump_Position;	//Keeps record of the last position(x, y) that P1 was grounded.
-	
+	int initial_position_x = 150; //magic numbers... try to fix
+	int initial_position_y = 1150; //magic numbers... try to fix
 	p2Point<float>	speed;				//P1's Speed Vector Variable. (Not actually declared as a vector but that is irrelevant to us right now)
 	p2Point<float>	max_speed;			//P1's Cruiser Speed for both axis.
 

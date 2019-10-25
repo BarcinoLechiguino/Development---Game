@@ -1,5 +1,6 @@
 #include "j1App.h"
 #include "j1Player1.h"
+#include "j1Player2.h"
 #include "j1Module.h"
 #include "p2Point.h"
 #include "j1Render.h"
@@ -64,13 +65,13 @@ j1Player1::j1Player1() //Constructor. Called at the first frame.
 	p1.crouching.PushBack({ 34, 84, 33, 61 });
 	p1.crouching.speed = 0.1f;
 
-	p1.death.PushBack({550, 370, 110, 74});
-	p1.death.PushBack({660, 370, 110, 74});
-	p1.death.PushBack({0, 444, 110, 74});
-	p1.death.PushBack({110, 444, 110, 74});
-	p1.death.PushBack({220, 444, 110, 74});
-	p1.death.PushBack({330, 444, 110, 74});
-	p1.death.PushBack({440, 444, 110, 74});
+	p1.death.PushBack({ 0,0,70,64 });
+	p1.death.PushBack({ 70,0,70,64 });
+	p1.death.PushBack({ 140,0,70,64 });
+	p1.death.PushBack({ 210,0,70,64 });
+	p1.death.PushBack({ 280,0,70,64 });
+	p1.death.PushBack({ 350,0,70,64 });
+	p1.death.PushBack({ 420,0,70,64 });
 	p1.death.speed = 0.2f;
 };
 
@@ -122,9 +123,8 @@ bool j1Player1::Start()
 	p1.HitBox = { (int)p1.position.x,(int)p1.position.y, p1.sprite_width, p1.sprite_height }; //Casked to int "(int)" for optimization.
 	p1.collider = App->collisions->AddCollider(p1.HitBox, PLAYER, this); //Adds a collider for the player.
 
-	/*App->audio->LoadFx(p1.jumpFX.GetString());
-	App->audio->LoadFx(p1.deathFX.GetString());
-	App->audio->LoadFx(p1.duoFX.GetString());*/
+	jumpFX = App->audio->LoadFx("audio/fx/Jump.wav");
+	deathFX = App->audio->LoadFx("audio/fx/Death.wav");
 
 	if (p1.grounded)
 	{
@@ -171,6 +171,16 @@ bool j1Player1::PreUpdate()
 		{
 			p1.state = jumping_P1;
 			
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
+		{
+			p1.position.x = App->player2->p2.position.x + 40;
+			p1.position.y = App->player2->p2.position.y;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+		{
+			//Death logic
 		}
 	}
 	else
@@ -303,16 +313,8 @@ bool j1Player1::Save(pugi::xml_node&  data) const
 
 void j1Player1::Restart()
 {
-	//Same loop as int Start() to find the start zone
-	/*for (p2List_item<ObjectsGroup*>* obj = App->map->data.objLayers.start; obj; obj = obj->next)
-		if (obj->data->name == ("Collisions"))
-			for (p2List_item<ObjectsData*>* objdata = obj->data->objects.start; objdata; objdata = objdata->next)
-				if (objdata->data->name == ("Spawn"))
-				{
-					p1.speed.x = 0;
-					p1.speed.y = 0;
-					p1.state = idle_P1;
-				}*/
+	p1.position.x = p1.initial_position_x;
+	p1.position.y = p1.initial_position_y;
 	player1_alive = true;
 }
 
