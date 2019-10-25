@@ -142,6 +142,7 @@
     <None Include="..\Game\maps\Tutorial Screen2.tmx">
       <Filter>Desenvolupament  ========</Filter>
     </None>
+    <None Include="..\Game\save_file" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml">

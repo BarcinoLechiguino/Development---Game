@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="52" height="42" tilewidth="32" tileheight="32" infinite="0" nextlayerid="22" nextobjectid="81">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="52" height="42" tilewidth="32" tileheight="32" infinite="0" nextlayerid="22" nextobjectid="81">
  <properties>
   <property name="BackgroundMusic" value="IcelandTheme.ogg"/>
  </properties>
@@ -35,10 +35,7 @@
    </animation>
   </tile>
  </tileset>
- <tileset firstgid="1025" name="industrial.v1" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
-  <image source="industrial.v1.png" width="1024" height="1024"/>
- </tileset>
- <layer id="1" name="Background" width="52" height="42">
+ <layer id="1" name="Background" width="52" height="42" visible="0">
   <data>
    <tile gid="513"/>
    <tile gid="514"/>
@@ -4000,15 +3997,15 @@
    <tile gid="229"/>
    <tile gid="231"/>
    <tile gid="234"/>
-   <tile gid="147"/>
-   <tile gid="1"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="2"/>
-   <tile gid="4"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -4049,18 +4046,9 @@
    <tile gid="936"/>
    <tile gid="936"/>
    <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
+   <tile gid="197"/>
+   <tile gid="199"/>
+   <tile gid="202"/>
    <tile/>
    <tile/>
    <tile/>
@@ -4081,6 +4069,15 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile gid="936"/>
    <tile gid="936"/>
    <tile gid="936"/>
@@ -4101,18 +4098,18 @@
    <tile gid="936"/>
    <tile gid="936"/>
    <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
-   <tile gid="936"/>
+   <tile gid="229"/>
+   <tile gid="231"/>
+   <tile gid="234"/>
+   <tile gid="147"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
+   <tile gid="2"/>
    <tile/>
    <tile/>
    <tile/>
@@ -15369,9 +15366,9 @@
   <object id="12" name="Floor" type="solid" x="32" y="672" width="192.011" height="32"/>
   <object id="13" name="Floor" type="solid" x="160" y="704" width="31.9797" height="160"/>
   <object id="14" name="Floor" type="solid" x="128" y="832.016" width="32.0111" height="224.098"/>
-  <object id="15" name="Floor" type="solid" x="96" y="1024" width="32" height="128.097"/>
-  <object id="16" name="Ground" type="solid" x="128" y="1120" width="287.996" height="32.101"/>
-  <object id="17" name="Ground" type="solid" x="384" y="1152" width="32" height="127.896"/>
+  <object id="15" name="Floor" type="solid" x="96" y="1024" width="32" height="158.097"/>
+  <object id="16" name="Ground" type="solid" x="96" y="1183" width="287.996" height="32.101"/>
+  <object id="17" name="Ground" type="solid" x="384" y="1184" width="32" height="95.896"/>
   <object id="18" name="Ground" type="solid" x="416" y="1248" width="576.011" height="32"/>
   <object id="19" name="Ground" type="solid" x="992" y="1184" width="32" height="95.9801"/>
   <object id="20" name="Ground" type="solid" x="1024" y="1184" width="64" height="32"/>
@@ -15438,7 +15435,7 @@
   <object id="76" name="Lever" type="item" x="128" y="143" width="32.0128" height="49.0114"/>
  </objectgroup>
  <objectgroup id="20" name="Respawn">
-  <object id="77" name="Origin" type="respawn" x="192" y="1056" width="63" height="63"/>
+  <object id="77" name="Origin" type="respawn" x="192" y="1120" width="63" height="63"/>
  </objectgroup>
  <objectgroup id="21" name="End">
   <object id="78" name="Goal" type="goal" x="1471.99" y="96" width="96.3412" height="64.1667"/>
