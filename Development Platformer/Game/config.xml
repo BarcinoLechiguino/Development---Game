@@ -67,8 +67,8 @@
   </player>
   
   <scene>
-    <map_name name="Test.tmx"></map_name>
-    <map_name name="Test1.tmx"></map_name>
+    <map_name name="1st_Level.tmx"></map_name>
+    <map_name name="2nd_Level.tmx"></map_name>
     <fade_time value="1"/>
   </scene>
 

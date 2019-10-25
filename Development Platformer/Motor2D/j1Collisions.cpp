@@ -181,7 +181,7 @@ void j1Collisions::LoadColliderFromMap() // Remember to put in fade to black.
 //Checks all possible collider collisions
 bool Collider::Check_Collision(const SDL_Rect& r) const //Main collider calls the method and given collider is passed as an argument.
 {
-	return ((r.x + r.w > collider.x) &&				// Collision going from right to left.
+	return ((r.x + r.w > collider.x) &&			// Collision going from right to left.
 		(r.x < collider.x + collider.w) &&		// Collison going from left to right.
 		(r.y + r.h > collider.y) &&				// Collision going down up. Jumping collision (With player, ground, platform...).
 		(r.y < collider.y + collider.h));		// Collision going up down. Falling collision (With player, ground, platform...).

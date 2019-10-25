@@ -53,8 +53,10 @@ bool j1Fade_Scene::Update(float dt)
 			if (now >= total_time) //Point where the screen is totally black, and the new map is loaded.
 			{
 				//New, revise and change
-				App->map->data = { 0 }; //Empties all map data.
-				App->collisions->collider_list.clear(); //Clears all previously loaded colliders.
+				//App->map->data = { 0 };						//Empties all map data.
+				App->map->data.tilesets.clear();			//Clears all previously loaded tilesets.
+				App->map->data.layers.clear();
+				App->collisions->collider_list.clear();		//Clears all previously loaded colliders.
 
 				App->map->Load(mapName); //Load specified map
 				App->collisions->LoadColliderFromMap(); //Load Collisions

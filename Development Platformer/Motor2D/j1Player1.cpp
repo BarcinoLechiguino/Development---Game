@@ -233,11 +233,10 @@ bool j1Player1::Update(float dt)
 
 	case jumping_P1:
 	
-		if (p1.grounded == true /*|| p1.jumpCount != 2*/)
+		if (p1.grounded == true )
 		{
 			p1.speed.y = -p1.gravity;
-		App->audio->PlayFx(jumpFX);
-			/*jumpCount++;*/
+			App->audio->PlayFx(jumpFX);
 			p1.p1_isGrounded(false);
 		}
 
@@ -384,7 +383,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 	//Player colliding against solids
 	if (C1->type == PLAYER && C2->type == SOLID)
 	{
-		//Player Colliding from above the Solid
+		//Player Colliding from Above the Solid
 		if (p1.position.y + C1->collider.h > C2->collider.y /*p1.position.y + C1->collider.h - p1.max_speed.y - 2 < C2->collider.y
 			&& C1->collider.x < C2->collider.x + C2->collider.w
 			&& C1->collider.x + C1->collider.w > C2->collider.x*/)
