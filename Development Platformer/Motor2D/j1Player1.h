@@ -136,6 +136,9 @@ private:
 	uint		jumpFX;
 	uint		deathFX;
 	uint		duoFX;
+	uint		passFX;
+	uint		tpFX;
+	uint		activateFX;
 	
 	float velocity = 2.0f;
 	float gravity = 3.0f;

@@ -34,8 +34,6 @@
 
   <file_system>
     <path>data.zip</path>
-    <load> save_file.xml </load>
-    <save> save_file.xml </save>
   </file_system>
 
   <map>
@@ -53,6 +51,9 @@
       <jumpFX name ="Jump.wav"/>
       <DuoJumpFX name ="Jump_Duo.wav"/>
       <DeathFX name ="Death.wav"/>
+      <ActivateFX name = "Activate.wav"/>
+      <TPFX name = "TP.wav"/>
+      <PassFX name = "Pass.wav"/>
     </player_1>
 
     <player_2>

@@ -144,11 +144,13 @@ bool j1Player2::PreUpdate()
 		if (App->input->GetKey(SDL_SCANCODE_KP_0) == KEY_DOWN)
 		{
 			p2.state = jumping_P2;
+			App->audio->PlayFx(1, 0);
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_KP_7) == KEY_DOWN)
 		{
 			p2.state = teleporting_P2;
+			App->audio->PlayFx(5, 0);
 		}
 	}
 	else

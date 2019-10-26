@@ -78,8 +78,8 @@ bool j1App::Awake()
 	pugi::xml_node		config;
 	pugi::xml_node		app_config;
 
-	save_game = "save_file"; //Needs .xml?
-	load_game = "save_file"; //Needs .xml?
+	save_game = "save_file"; 
+	load_game = "save_file"; 
 
 	bool ret = false;
 		
@@ -317,7 +317,7 @@ bool j1App::LoadGameNow()
 
 	pugi::xml_parse_result result = data.load_file(load_game.GetString());
 
-	if(result != NULL)
+	if (result != NULL)
 	{
 		LOG("Loading new Game State from %s...", load_game.GetString());
 
@@ -326,14 +326,14 @@ bool j1App::LoadGameNow()
 		p2List_item<j1Module*>* item = modules.start;
 		ret = true;
 
-		while(item != NULL && ret == true)
+		while (item != NULL && ret == true)
 		{
 			ret = item->data->Load(root.child(item->data->name.GetString()));
 			item = item->next;
 		}
 
 		data.reset();
-		if(ret == true)
+		if (ret == true)
 			LOG("...finished loading");
 		else
 			LOG("...loading process interrupted with error on module %s", (item != NULL) ? item->data->name.GetString() : "unknown");
@@ -354,18 +354,18 @@ bool j1App::SavegameNow() const
 	// xml object were we will store all data
 	pugi::xml_document data;
 	pugi::xml_node root;
-	
+
 	root = data.append_child("game_state");
 
 	p2List_item<j1Module*>* item = modules.start;
 
-	while(item != NULL && ret == true)
+	while (item != NULL && ret == true)
 	{
 		ret = item->data->Save(root.append_child(item->data->name.GetString()));
 		item = item->next;
 	}
 
-	if(ret == true)
+	if (ret == true)
 	{
 		data.save_file(save_game.GetString());
 		LOG("... finished saving", );

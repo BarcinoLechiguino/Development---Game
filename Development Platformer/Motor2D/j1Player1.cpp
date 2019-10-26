@@ -123,8 +123,6 @@ bool j1Player1::Awake(pugi::xml_node& config)
 	//Sets the first cycle of animations to the idle set.
 	p1.current_animation = &p1.idle;
 	
-	jumpFX = App->audio->LoadFx("audio/fx/Jump.wav");
-	deathFX = App->audio->LoadFx("audio/fx/Death.wav");
 
 	return true;
 };
@@ -135,6 +133,10 @@ bool j1Player1::Start()
 
 	jumpFX = App->audio->LoadFx("audio/fx/Jump.wav");
 	deathFX = App->audio->LoadFx("audio/fx/Death.wav");
+	duoFX = App->audio->LoadFx("audio/fx/Jump_Duo.wav");
+	activateFX = App->audio->LoadFx("audio/fx/Activate.wav");
+	tpFX = App->audio->LoadFx("audio/fx/TP.wav");
+	passFX = App->audio->LoadFx("audio/fx/Pass.wav");
 
 	p1.isGrounded(true);
 	p1.item_activated = false;
@@ -179,11 +181,13 @@ bool j1Player1::PreUpdate()
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
 			p1.state = jumping_P1;
+			App->audio->PlayFx(1, 0);
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
 		{
 			p1.state = teleporting_P1;
+			App->audio->PlayFx(5, 0);
 		}
 
 		//if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN ) //first player dies
@@ -235,7 +239,7 @@ bool j1Player1::Update(float dt)
 		p1.speed.x = 0;
 		p1.current_animation = &p1.idle;
 		p1.isCrouching = false;
-	
+
 		break;
 	
 	case goingRight_P1:
@@ -303,6 +307,7 @@ bool j1Player1::Update(float dt)
 	case teleporting_P1:
 
 		TeleportP2ToP1();
+		
 
 		break;
 	}
@@ -545,6 +550,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 				App->player2->p2.item_activated = true;
 
 				//Assign fx --> An activating Beep and the  sound  of  a lock being opened?
+				App->audio->PlayFx(4, 1);
 			}
 		}
 
@@ -621,6 +627,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 				}
 
 				//Assign Fx --> A teleporting or warping sound.
+				App->audio->PlayFx(6, 0);
 			}
 		}
 	}
@@ -629,19 +636,17 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 
 bool j1Player1::Load(pugi::xml_node& data)
 {
-	p1.position.x = data.child("position1").attribute("x").as_int();		//Loads the position of the X axis saved from save_file.xml.
-	p1.position.y = data.child("position1").attribute("y").as_int();		//Loads the position of the Y axis saved from save_file.xml.
-
+	p1.position.x = data.child("position1").attribute("x").as_int();	//Loads the position of the X axis saved in the save_file.xml.
+	p1.position.y = data.child("position1").attribute("y").as_int();	//Loads the position of the X axis saved in the save_file.xml.
 	return true;
 }
 
 bool j1Player1::Save(pugi::xml_node&  data) const
 {
-	pugi::xml_node pos = data.append_child("position1");		//Declares the node and with "append_" it is set to overwrite the data in the given xml. 
+	pugi::xml_node pos = data.append_child("position1");	//Declares the node and with "append_" it is set to overwrite the data in the given xml. 
 
-	pos.append_attribute("x") = p1.position.x;					//Saves the position of P1 on  the X axis the moment Save() is called. "append_" used again to overwrite previous position data.
-	pos.append_attribute("y") = p1.position.y;					//Saves the position of P1 on  the Y axis the moment Save() is called. "append_" used again to overwrite previous position data.
-
+	pos.append_attribute("x") = p1.position.x;				//Saves the position of P1 on  the X axis the moment Save() is called. "append_" used again to overwrite previous position data.
+	pos.append_attribute("y") = p1.position.y;				//Saves the position of P1 on  the Y axis the moment Save() is called. "append_" used again to overwrite previous position data.
 	return true;
 }
 
