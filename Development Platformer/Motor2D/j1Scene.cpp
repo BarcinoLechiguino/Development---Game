@@ -86,7 +86,7 @@ bool j1Scene::Update(float dt)
 		//Load_lvl(0);
 
 		//New
-		App->fadescene->FadeToBlack("Test.tmx");
+		App->fadescene->FadeToBlack("1st_Level.tmx");
 		App->player1->Restart();
 		App->player2->Restart();
 	}
@@ -96,7 +96,7 @@ bool j1Scene::Update(float dt)
 	{
 		//Load_lvl(1);
 
-		App->fadescene->FadeToBlack("Test1.tmx");
+		App->fadescene->FadeToBlack("2nd_Level.tmx");
 		App->player1->Restart();
 		App->player2->Restart();
 	}

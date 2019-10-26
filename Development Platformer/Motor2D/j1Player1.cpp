@@ -191,9 +191,32 @@ bool j1Player1::PreUpdate()
 			p1.state = teleporting_P1;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN ) //first player dies
 		{
 			//Death logic
+			lives--;
+			//Antes la animacion de muerte tiene que haber finalizado
+			TeleportP1ToP2();
+			
+		}
+		if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN) //second player dies
+		{
+			//Death logic
+			lives--;
+			TeleportP2ToP1();
+
+		}
+		if (lives == 0) {
+
+			player1_alive = false;
+			App->player2->player2_alive = false;
+
+			if (player1_alive == false && App->player2->player2_alive == false) {
+
+				Restart();
+				App->player2->Restart();
+				lives = 3;
+			}
 		}
 	}
 	else
@@ -361,6 +384,20 @@ void j1Player1::TeleportP2ToP1()	//Method that teleports P2 directly in front of
 	{
 		App->player2->p2.position.x = p1.position.x - p1.collider->collider.w / 2;
 		App->player2->p2.position.y = p1.position.y;
+	}
+}
+
+void j1Player1::TeleportP1ToP2()	
+{
+	if (p1.flip == false) 
+	{
+		p1.position.x = App->player2->p2.position.x + App->player2->p2.collider->collider.w;
+		p1.position.y = App->player2->p2.position.y;
+	}
+	else
+	{
+		p1.position.x = App->player2->p2.position.x + App->player2->p2.collider->collider.w/2;
+		p1.position.y = App->player2->p2.position.y;
 	}
 }
 

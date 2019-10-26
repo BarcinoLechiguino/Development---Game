@@ -311,6 +311,20 @@ void j1Player2::TeleportP1ToP2()
 	}
 }
 
+void j1Player2::TeleportP2ToP1()
+{
+	if (p2.flip == false) //The players will be always teleported directly in front of one another. 
+	{
+		p2.position.x = App->player1->p1.position.x + App->player1->p1.collider->collider.w;
+		p2.position.y = App->player1->p1.position.y;
+	}
+	else
+	{
+		p2.position.x = App->player1->p1.position.x + App->player1->p1.collider->collider.w/2;
+		p2.position.y = App->player1->p1.position.y;
+	}
+}
+
 //Collision Handling
 void j1Player2::OnCollision(Collider* C1, Collider* C2)
 {

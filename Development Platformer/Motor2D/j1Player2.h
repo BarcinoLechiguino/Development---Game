@@ -114,6 +114,7 @@ public: //P1 Variables
 	Player2 p2;
 
 	void TeleportP1ToP2();
+	void TeleportP2ToP1();
 
 	bool Load(pugi::xml_node &node);				//Loading from xml file.
 	bool Save(pugi::xml_node &node) const;			//Saving to xml file.

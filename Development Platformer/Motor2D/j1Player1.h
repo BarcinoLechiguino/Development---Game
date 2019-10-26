@@ -107,7 +107,8 @@ public: //P1 Variables
 	Player1 p1;
 
 	void TeleportP2ToP1();
-	
+	void TeleportP1ToP2();
+
 	bool Load(pugi::xml_node &node);				//Loading from xml file.
 	bool Save(pugi::xml_node &node) const;			//Saving to xml file.
 	void OnCollision(Collider* C1, Collider* C2);	//Collision Logic Handling.
@@ -116,6 +117,7 @@ public: //P1 Variables
 
 	bool fading = false; // fade character when changing scenes
 	bool player1_alive = false;
+	int lives = 3;
 	bool GodMode = false;
 
 private:
