@@ -328,7 +328,7 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 		/*p2SString debug = folder.GetString();
 		debug += image.attribute("source").as_string();
 		set->texture = App->tex->Load(debug.GetString());*/
-		set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string())); //Revise Source bc of bad map loading.
+		set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
 		int w, h;
 		SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
 		set->tex_width = image.attribute("width").as_int();
@@ -452,9 +452,9 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 		{
 			objectgroup->object[index].type = ITEM;				//As the object type string matches "item" the object's type will be set to ITEM.
 		}
-		else if (object_type == "desctivable")
+		else if (object_type == "desactivable")
 		{
-			objectgroup->object[index].type = DESACTIVABLE;		//As the object type string matches "desactivable" the object's type will be set to DESACTIVABLE.
+			objectgroup->object[index].type = DEACTIVABLE;		//As the object type string matches "desactivable" the object's type will be set to DESACTIVABLE.
 		}
 		else if (object_type == "respawn")
 		{

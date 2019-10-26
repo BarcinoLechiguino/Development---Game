@@ -25,17 +25,21 @@ enum P1_State
 struct Player1
 {
 	p2Point<float>	position;			//Point with the position of P1 on the world.
+	p2Point<float>	previous_position;	//Keeps track of the last position of P1 at all moments.
 	p2Point<float>	last_grounded;		//Keeps record of the last position(x, y) that P1 was grounded.
-	p2Point<float>	initial_position;	//Keeps record of the first position(x, y) of P1 when spawns in the map.
+	p2Point<float>	spawn_position;		//Keeps record of the first position(x, y) of P1 when spawns in the map.
 	p2Point<float>	speed;				//P1's Speed Vector Variable. (Not actually declared as a vector but that is irrelevant to us right now)
 	p2Point<float>	max_speed;			//P1's Cruiser Speed for both axis.
 	p2Point<float>	acceleration;		//Sets how much time it takes P1 to reach Cruiser Speed horizontally and/or vertically.
-	p2Point<float>	boost_jump;			//Sets how much vertical or horizontal impulse will P1 get 
+	p2Point<float>	boost_jump;			//Sets how much vertical or horizontal impulse will P1 get.
 	float			gravity;			//Acceleration variable for jumps. Gravitational Pull.
 
 	bool			grounded;			//Keeps track of P1 and returns true when P1 is not jumping or falling.
 	bool			flip;				//Keeps track of which direction P1's is looking at. Changes the sprite orientation when returns true.
-	bool	isCrouching;
+	bool			isCrouching;		//Keeps track of the action P1 is performing. In this case crouching.
+	bool			isJumping;			//Keeps track of the action P1 is performing. In this case jumping.
+	bool			isBoostJumping;		//Keeps track of the action P1 is performing. In this case boost jumping.
+	bool			item_activated;		//Keeps track of the items P1 interacts with.
 
 	//Changes the state of the player depending on the given argument. Also if true it records the position from where the player jumped.
 	void isGrounded(bool status)
@@ -106,12 +110,13 @@ public: //P1 Variables
 	
 	Player1 p1;
 
-	void TeleportP2ToP1();
-	void TeleportP1ToP2();
+	void TeleportP2ToP1();							//Moves P2 directly in front of P1. It takes into account where P1 is looking at.
+	void RespawnP1ToP2();							//Moves P1 directly behind P2 on death.
+	void OnCollision(Collider* C1, Collider* C2);	//Collision Logic Handling.
 
 	bool Load(pugi::xml_node &node);				//Loading from xml file.
 	bool Save(pugi::xml_node &node) const;			//Saving to xml file.
-	void OnCollision(Collider* C1, Collider* C2);	//Collision Logic Handling.
+	bool LoadPlayer1();								//Loads P1 on screen (Position, Colliders...)
 	void Restart();									//Resets P1's position to where P1 started the level. 
 	void GodModeInput();							//Enables / Disables the God Mode.
 

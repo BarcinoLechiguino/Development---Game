@@ -25,7 +25,7 @@ public:
 	bool Update(float dt);
 
 	//Change map with a fade time
-	bool ChangeMap(int newMap, float time);
+	bool ChangeMap(const char* newMap);
 
 	//returns true if it's changing map
 	bool IsChanging() const;

@@ -14,7 +14,7 @@ enum Object_Type //Cuidado con el class. If enum class-> Object_Type::HAZARD and
 	PLATFORM,
 	HAZARD,
 	ITEM,
-	DESACTIVABLE,
+	DEACTIVABLE,
 	RESPAWN,
 	GOAL,
 	UNKNOWN = -1

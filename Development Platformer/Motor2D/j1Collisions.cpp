@@ -102,36 +102,37 @@ void j1Collisions::Collider_Debug()
 		{
 			switch (collider_iterator->data->type)	//We declare a switch that will consider collider types as possible cases.
 			{
-				//Declaring a DrawQuad() with a set colour depending of the type of the object/collider that is being iterated at that moment. ALPHA is the transparency value.
+			//Declaring a DrawQuad() with a set colour depending of the type of the object/collider that is being iterated at that moment. ALPHA is the transparency value.
 
-			case PLAYER:	//PLAYER collider will be GREEN.
+			case PLAYER:		//PLAYER collider will be GREEN.
 				App->render->DrawQuad(collider_iterator->data->collider, 0, 255, 0, ALPHA);
 				break;
 
-			case SOLID:	//SOLID collider will be BLUE.
+			case SOLID:			//SOLID collider will be BLUE.
 				App->render->DrawQuad(collider_iterator->data->collider, 0, 0, 255, ALPHA);
 				break;
 
-			case PLATFORM: //PLATFORM collider will be WHITE.
+			case PLATFORM:		//PLATFORM collider will be WHITE.
 				App->render->DrawQuad(collider_iterator->data->collider, 255, 255, 255, ALPHA);
+				break;
 
-			case HAZARD: //HAZARD collider will be RED
+			case HAZARD:		//HAZARD collider will be RED
 				App->render->DrawQuad(collider_iterator->data->collider, 255, 0, 0, ALPHA);
 				break;
 
-			case ITEM: //ITEM collider will be ORANGE
+			case ITEM:			//ITEM collider will be ORANGE
 				App->render->DrawQuad(collider_iterator->data->collider, 255, 150, 0, ALPHA);
 				break;
 
-			case DESACTIVABLE: //DEACTIVABLE collider will be YELLOW
+			case DEACTIVABLE:	//DEACTIVABLE collider will be YELLOW
 				App->render->DrawQuad(collider_iterator->data->collider, 255, 255, 0, ALPHA);
 				break;
 
-			case RESPAWN: //RESPAWN collider will be PURPLE
+			case RESPAWN:		//RESPAWN collider will be PURPLE
 				App->render->DrawQuad(collider_iterator->data->collider, 255, 0, 255, ALPHA);
 				break;
 
-			case GOAL: //GOAL collider will be PINK
+			case GOAL:			//GOAL collider will be PINK
 				App->render->DrawQuad(collider_iterator->data->collider, 255, 0, 150, ALPHA);
 				break;
 			}
@@ -181,10 +182,10 @@ void j1Collisions::LoadColliderFromMap() // Remember to put in fade to black.
 //Checks all possible collider collisions
 bool Collider::Check_Collision(const SDL_Rect& r) const //Main collider calls the method and given collider is passed as an argument.
 {
-	return ((r.x + r.w > collider.x) &&			// Collision going from right to left.
-		(r.x < collider.x + collider.w) &&		// Collison going from left to right.
-		(r.y + r.h > collider.y) &&				// Collision going down up. Jumping collision (With player, ground, platform...).
-		(r.y < collider.y + collider.h));		// Collision going up down. Falling collision (With player, ground, platform...).
+	return ((r.x + r.w > collider.x) &&			// Collision going from left to right.
+		(r.x < collider.x + collider.w) &&		// Collison going from right to left.
+		(r.y + r.h > collider.y) &&				// Collision going up down. Falling collision (With player, ground, platform...).
+		(r.y < collider.y + collider.h));		// Collision going down up. Jumping collision (With player, ground, platform...).
 }
 
 //Method that sets a collider's data members with the values of the data members of a given object. 

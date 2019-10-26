@@ -106,15 +106,10 @@ bool j1Player2::Awake(pugi::xml_node& config)
 
 bool j1Player2::Start()
 {
-	p2.texture = App->tex->Load("textures/Spritesheets/Character 2/Character_Spritesheet2_Buena.png");
-	p2.texture2 = App->tex->Load("textures/Spritesheets/Character 2/adventurer-hand-combat-Sheet2.png");
-	
-	p2.position = { p2.position.x, p2.position.y - 10 };
-	p2.initial_position = p2.position;
-	p2.HitBox = { (int)p2.position.x,(int)p2.position.y, p2.sprite_width, p2.sprite_height }; //Casked to int as the values passed by p2.position are floats.
-	p2.collider = App->collisions->AddCollider(p2.HitBox, PLAYER, this);
+	LoadPlayer2();
 
 	p2.p2_isGrounded(true);
+	p2.item_activated = false;
 
 	p2.state = idle_P2;
 
@@ -311,9 +306,9 @@ void j1Player2::TeleportP1ToP2()
 	}
 }
 
-void j1Player2::TeleportP2ToP1()
+void j1Player2::RespawnP2ToP1()		//Method that, on death, will respawn P2 behind P1.
 {
-	if (p2.flip == false) //The players will be always teleported directly in front of one another. 
+	if (p2.flip == true)			//The players will be always respawned directly behind of one another. 
 	{
 		p2.position.x = App->player1->p1.position.x + App->player1->p1.collider->collider.w;
 		p2.position.y = App->player1->p1.position.y;
@@ -381,10 +376,22 @@ bool j1Player2::Save(pugi::xml_node& data) const
 	return true;
 }
 
+bool j1Player2::LoadPlayer2()
+{
+	p2.texture = App->tex->Load("textures/Spritesheets/Character 2/Character_Spritesheet2_Buena.png");
+	p2.texture2 = App->tex->Load("textures/Spritesheets/Character 2/adventurer-hand-combat-Sheet2.png");
+
+	p2.position = { p2.position.x, p2.position.y};
+	p2.spawn_position = p2.position;
+	p2.HitBox = { (int)p2.position.x,(int)p2.position.y, p2.sprite_width, p2.sprite_height }; //Casked to int as the values passed by p2.position are floats.
+	p2.collider = App->collisions->AddCollider(p2.HitBox, PLAYER, this);
+
+	return true;
+}
+
 void j1Player2::Restart()
 {
-	p2.position.x = p2.initial_position.x;
-	p2.position.y = p2.initial_position.y;
+	p2.position = p2.spawn_position;
 	player2_alive = true;
 }
 

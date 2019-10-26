@@ -34,6 +34,8 @@
 
   <file_system>
     <path>data.zip</path>
+    <load> save_file.xml </load>
+    <save> save_file.xml </save>
   </file_system>
 
   <map>
@@ -55,6 +57,8 @@
 
     <player_2>
       <position x="200" y="1150"/>
+      <previous_position x="0" y="0"/>
+      <last_grounded x="0" y="0"/>
       <speed x="0" y="0"/>
       <max_speed x="8" y="14"/>
       <acceleration x="1" y="14"/>
@@ -67,7 +71,7 @@
   </player>
   
   <scene>
-    <map_name name="2nd_Level.tmx"></map_name>
+    <map_name name="Tutorial_Level.tmx"></map_name>
     <map_name name="1st_Level.tmx"></map_name>
     <fade_time value="1"/>
   </scene>

@@ -86,7 +86,7 @@ bool j1Scene::Update(float dt)
 		//Load_lvl(0);
 
 		//New
-		App->fadescene->FadeToBlack("1st_Level.tmx");
+		App->fadescene->FadeToBlack("Tutorial_Level.tmx");
 		App->player1->Restart();
 		App->player2->Restart();
 	}
@@ -96,7 +96,7 @@ bool j1Scene::Update(float dt)
 	{
 		//Load_lvl(1);
 
-		App->fadescene->FadeToBlack("2nd_Level.tmx");
+		App->fadescene->FadeToBlack("1st_Level.tmx");
 		App->player1->Restart();
 		App->player2->Restart();
 	}
@@ -187,18 +187,10 @@ bool j1Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if (to_end)
-	{
-		if (currentMap < map_names.count() - 1)
-			ret = App->fadescene->ChangeMap(++currentMap, fade_time);
-		else
-			currentMap = 0, ret = App->fadescene->ChangeMap(currentMap, fade_time);
-
-
-		to_end = false;
-	}
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	{
 		ret = false;
+	}
 
 	return ret;
 }

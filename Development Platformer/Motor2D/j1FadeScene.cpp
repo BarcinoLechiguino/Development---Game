@@ -52,16 +52,7 @@ bool j1Fade_Scene::Update(float dt)
 		{
 			if (now >= total_time) //Point where the screen is totally black, and the new map is loaded.
 			{
-				//New, revise and change
-				App->map->data = { 0 };						//Empties all map data.
-				App->map->data.tilesets.clear();			//Clears all previously loaded tilesets.
-				App->collisions->collider_list.clear();		//Clears all previously loaded colliders.
-
-				App->map->Load(mapName); //Load specified map
-				App->collisions->LoadColliderFromMap(); //Load Collisions
-
-				/*App->scene->currentMap = nextMap;
-				App->map->SwitchMaps(App->scene->map_names[nextMap]);*/
+				ChangeMap(mapName);
 				
 				total_time += total_time;
 				start_time = SDL_GetTicks();
@@ -90,7 +81,6 @@ bool j1Fade_Scene::Update(float dt)
 	return true;
 }
 
-//New, revise
 bool j1Fade_Scene ::FadeToBlack(const char* mapname, float time)
 {
 	bool ret = false;
@@ -105,23 +95,25 @@ bool j1Fade_Scene ::FadeToBlack(const char* mapname, float time)
 		ret = true;
 	}
 
+	App->player1->Restart();
+	App->player2->Restart();
+
 	return ret;
 }
 
-bool j1Fade_Scene::ChangeMap(int newMap, float time)
+bool j1Fade_Scene::ChangeMap(const char* newMap)
 {
-	bool ret = false;
+	bool ret = true;
 
-	nextMap = newMap;
+	App->map->data = { 0 };						//Clears all map data.
+	//App->map->data.tilesets.clear();			//Clears all previously loaded tilesets.
+	App->collisions->collider_list.clear();		//Clears all previously loaded colliders.
 
-	if (current_step == fade_step::none)
-	{
-		current_step = fade_step::fade_to_black;
-		start_time = SDL_GetTicks();
-		total_time = (Uint32)(time*0.5f*1000.0f);
-		fading = true;
-		ret = true;
-	}
+	App->map->Load(newMap);						//Loads a specified map
+	App->collisions->LoadColliderFromMap();		//Load Collisions
+	App->player1->LoadPlayer1();				//Load / Reset P1
+	App->player2->LoadPlayer2();				//Load / Reset P2
+	
 
 	return ret;
 }
