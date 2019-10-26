@@ -18,45 +18,23 @@ j1Player1::j1Player1() //Constructor. Called at the first frame.
 	//String that will be given to the different functions (Awake(), Load()...) to generate the handler node.
 	name.create("player"); //The string has to be the same as the name of the node in the xml file.
 	
-	
+	//P1 Idle animation.
 	p1.idle.PushBack({ 28, 14, 37, 57 });
 	p1.idle.PushBack({ 132, 12, 33, 59 });
 	p1.idle.PushBack({ 230, 12, 37, 59 });
 	p1.idle.PushBack({ 326, 14, 39, 57 });
 	p1.idle.speed = 0.1f;
+	
+	//P1 Running animation.
+	p1.running.PushBack({ 134, 90, 39, 55 });
+	p1.running.PushBack({ 232, 92, 39, 53 });
+	p1.running.PushBack({ 332, 96, 39, 49 });
+	p1.running.PushBack({ 434, 90, 45, 55 });
+	p1.running.PushBack({ 532, 92, 39, 53 });
+	p1.running.PushBack({ 632, 96, 39, 49 });
+	p1.running.speed = 0.2f;
 
-	p1.running_right.PushBack({ 134, 90, 39, 55 });
-	p1.running_right.PushBack({ 232, 92, 39, 53 });
-	p1.running_right.PushBack({ 332, 96, 39, 49 });
-	p1.running_right.PushBack({ 434, 90, 45, 55 });
-	p1.running_right.PushBack({ 532, 92, 39, 53 });
-	p1.running_right.PushBack({ 632, 96, 39, 49 });
-	p1.running_right.speed = 0.15f;
-
-	p1.running_left.PushBack({ 134, 90, 39, 55 });
-	p1.running_left.PushBack({ 232, 92, 39, 53 });
-	p1.running_left.PushBack({ 332, 96, 39, 49 });
-	p1.running_left.PushBack({ 434, 90, 45, 55 });
-	p1.running_left.PushBack({ 532, 92, 39, 53 });
-	p1.running_left.PushBack({ 632, 96, 39, 49 });
-	p1.running_left.speed = 0.2f;
-
-	p1.jumping.PushBack({ 30, 172, 39, 47 });
-	p1.jumping.PushBack({ 130, 176, 39, 43 });
-	p1.jumping.PushBack({ 234, 162, 37, 53 });
-	p1.jumping.PushBack({ 328, 158, 41, 45 });
-	p1.jumping.PushBack({ 436, 162, 29, 41 });
-	p1.jumping.speed = 0.3f;
-
-	p1.mid_jump.PushBack({ 528, 168, 47, 33 });
-	p1.mid_jump.PushBack({ 640, 168, 35, 41 });
-	p1.mid_jump.PushBack({ 22, 248, 51, 33 });
-	p1.mid_jump.speed = 0.2f;
-
-	p1.falling.PushBack({ 136, 224, 33, 61 });
-	p1.falling.PushBack({ 236, 226, 33, 59 });
-	p1.falling.speed = 0.2f;
-
+	//P1 Crouching animation.
 	/*p1.crouching.PushBack({ 30, 172, 39, 47 });
 	p1.crouching.PushBack({ 130, 176, 39, 43 });*/
 	p1.crouching.PushBack({ 432, 10, 37, 61 }); //20 Pixels of margin vertically up.
@@ -65,6 +43,40 @@ j1Player1::j1Player1() //Constructor. Called at the first frame.
 	p1.crouching.PushBack({ 34, 84, 33, 61 });
 	p1.crouching.speed = 0.1f;
 
+	//P1 Jumping Animation
+	p1.jumping.PushBack({ 30, 172, 39, 47 });
+	p1.jumping.PushBack({ 130, 176, 39, 43 });
+	p1.jumping.PushBack({ 234, 162, 37, 53 });
+	p1.jumping.PushBack({ 328, 158, 41, 45 });
+	p1.jumping.PushBack({ 436, 162, 29, 41 });
+	p1.jumping.speed = 0.3f;
+
+	//P1 Frontflip Animation
+	p1.frontflip.PushBack({ 528, 168, 47, 33 });
+	p1.frontflip.PushBack({ 528, 168, 47, 33 });
+	p1.frontflip.PushBack({ 640, 168, 35, 41 });
+	p1.frontflip.PushBack({ 640, 168, 35, 41 });
+	p1.frontflip.PushBack({ 22, 248, 51, 33 });
+	p1.frontflip.PushBack({ 22, 248, 51, 33 });
+	p1.frontflip.speed = 0.2f;
+
+	//P1 Boosted Jump Animation
+	p1.boosted_jump.PushBack({ 30, 172, 39, 47 });
+	p1.boosted_jump.PushBack({ 130, 176, 39, 43 });
+	p1.boosted_jump.PushBack({ 234, 162, 37, 53 });
+	p1.boosted_jump.PushBack({ 328, 158, 41, 45 });
+	p1.boosted_jump.PushBack({ 436, 162, 29, 41 });
+	p1.boosted_jump.PushBack({ 528, 168, 47, 33 });
+	p1.boosted_jump.PushBack({ 640, 168, 35, 41 });
+	p1.boosted_jump.PushBack({ 22, 248, 51, 33 });
+	p1.boosted_jump.speed = 0.2f;
+
+	//P1 Falling Animation
+	p1.falling.PushBack({ 136, 224, 33, 61 });
+	p1.falling.PushBack({ 236, 226, 33, 59 });
+	p1.falling.speed = 0.2f;
+
+	//P1 Death Animation
 	p1.death.PushBack({ 0,0,70,64 });
 	p1.death.PushBack({ 70,0,70,64 });
 	p1.death.PushBack({ 140,0,70,64 });
@@ -73,7 +85,6 @@ j1Player1::j1Player1() //Constructor. Called at the first frame.
 	p1.death.PushBack({ 350,0,70,64 });
 	p1.death.PushBack({ 420,0,70,64 });
 	p1.death.speed = 0.2f;
-
 };
 
 j1Player1::~j1Player1()  //Destructor. Called at the last frame.
@@ -102,6 +113,9 @@ bool j1Player1::Awake(pugi::xml_node& config)
 	p1.acceleration.y = config.child("player_1").child("acceleration").attribute("y").as_float();
 	p1.gravity = config.child("player_1").child("gravity").attribute("value").as_float();
 
+	p1.boost_jump.x = config.child("player_1").child("boost_jump").attribute("x").as_float();
+	p1.boost_jump.y = config.child("player_1").child("boost_jump").attribute("y").as_float();
+
 	/*p1.jumpFX = config.child("jumpFX").attribute("name").as_string();
 	p1.deathFX = config.child("deathFX").attribute("name").as_string();
 	p1.duoFX = config.child("landFX").attribute("name").as_string();*/
@@ -121,13 +135,14 @@ bool j1Player1::Start()
 	p1.texture2 = App->tex->Load("textures/Spritesheets/Character 1/adventurer-hand-combat-Sheet.png");
 
 	p1.position = { p1.position.x, p1.position.y };
-	p1.HitBox = { (int)p1.position.x,(int)p1.position.y, p1.sprite_width, p1.sprite_height }; //Casked to int "(int)" for optimization.
+	p1.initial_position = p1.position;
+	p1.HitBox = { (int)p1.position.x,(int)p1.position.y, p1.sprite_width, p1.sprite_height }; //Casked to int as the values passed by p2.position are floats.
 	p1.collider = App->collisions->AddCollider(p1.HitBox, PLAYER, this); //Adds a collider for the player.
 
 	jumpFX = App->audio->LoadFx("audio/fx/Jump.wav");
 	deathFX = App->audio->LoadFx("audio/fx/Death.wav");
 
-	p1.p1_isGrounded(true);
+	p1.isGrounded(true);
 
 	p1.state = idle_P1;
 
@@ -138,10 +153,16 @@ bool j1Player1::Start()
 
 bool j1Player1::PreUpdate() 
 {
-	//p1.p1_SetGroundState(false); //set  to false when colliders are implemented.
+	/*p1.isGrounded(false); //set  to false when colliders are implemented.
+	
+	if (p1.state != jumping_P1 && p1.state != falling_P1)
+	{
+		p1.state = idle_P1;
+		p1.grounded = true;
+	}*/
 	
 	p1.state = idle_P1;
-	
+
 	if (!GodMode)
 	{
 
@@ -163,14 +184,13 @@ bool j1Player1::PreUpdate()
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
 			p1.state = jumping_P1;
-			
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
 		{
-			p1.position.x = App->player2->p2.position.x + 40;
-			p1.position.y = App->player2->p2.position.y;
+			p1.state = teleporting_P1;
 		}
+
 		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
 		{
 			//Death logic
@@ -187,7 +207,7 @@ bool j1Player1::Update(float dt)
 {
 	p1_frames++;
 
-	//p1.p1_lastGrounded = p1.p1_position;
+	p1.last_grounded = p1.position;
 	
 	switch (p1.state)
 	{
@@ -196,6 +216,7 @@ bool j1Player1::Update(float dt)
 	
 		p1.speed.x = 0;
 		p1.current_animation = &p1.idle;
+		p1.isCrouching = false;
 	
 		break;
 	
@@ -212,7 +233,7 @@ bool j1Player1::Update(float dt)
 		p1.position.x += p1.speed.x; //p1.speed_x is positive here.
 
 		p1.flip = false;
-		p1.current_animation = &p1.running_right;
+		p1.current_animation = &p1.running;
 		p1.moving_right = true;
 	
 		LOG("P1 Position %d %d", p1.position.x, p1.position.y);
@@ -230,7 +251,7 @@ bool j1Player1::Update(float dt)
 		p1.position.x += p1.speed.x;  //p1.speed_x  is negative here.
 
 		p1.flip = true;
-		p1.current_animation = &p1.running_left;
+		p1.current_animation = &p1.running;
 		p1.moving_left = true;
 	
 		break;
@@ -238,17 +259,31 @@ bool j1Player1::Update(float dt)
 	case crouching_P1:
 
 		p1.current_animation = &p1.crouching;
+		p1.isCrouching = false;
 
-	break;
+
+		break;
 
 	case jumping_P1:
 	
 		if (p1.grounded == true )
 		{
-			p1.speed.y = -p1.gravity;
+			p1.speed.y = -p1.acceleration.y;
 			App->audio->PlayFx(jumpFX);
-			p1.p1_isGrounded(false);
+			p1.isGrounded(false);
 		}
+
+		break;
+
+	case falling_P1:
+		
+		p1.grounded = false;
+
+		break;
+
+	case teleporting_P1:
+
+		TeleportP2ToP1();
 
 		break;
 	}
@@ -256,7 +291,7 @@ bool j1Player1::Update(float dt)
 	//If the p1 is in the air then this function brings him/her back down to the floor.
 	if (p1.grounded == false)
 	{	
-		p1.speed.y += p1.acceleration.y;
+		p1.speed.y += p1.gravity;
 		
 		if (p1.speed.y > p1.max_speed.y)
 		{
@@ -265,44 +300,41 @@ bool j1Player1::Update(float dt)
 	
 		p1.position.y += p1.speed.y;
 
-		if (p1.speed.y < 0)
+		//Jump animation modifications.
+		if (p1.speed.y < -2)
 		{
 			p1.current_animation = &p1.jumping;
+		}
+		else if (p1.speed.y < 2)
+		{
+			p1.current_animation = &p1.frontflip;
 		}
 		else
 		{
 			p1.current_animation = &p1.falling;
 		}
 	}
-	
-	//In case the HitBox clips through the ground.
-	/*if (p1.position.y > p1.floor)
-	{
-		p1.position.y = p1.floor - 1;
-		p1.p1_isGrounded(true);
-	}*/
 
 	//We move the character according the position value after the state has been run.
 	p1.HitBox.x = p1.position.x; 
 	p1.HitBox.y = p1.position.y;
-	
-	//Draws the HitBox on-screen.
-	//App->render->DrawQuad(p1.HitBox_Alpha, 255, 0, 0, 200);
 
 	p1.HitBox = p1.current_animation->GetCurrentFrame();
 	
 	App->render->Blit(p1.texture, p1.position.x, p1.position.y, &p1.HitBox, p1.flip);
 	
-	p1.collider->Set_Position(p1.position.x, p1.position.y); //Makes the collider follow the player.
-
-	/*if (p1.flip)
+	//Makes P1's collider follow P1. If there is a flip in spritesheet it is taken into account.
+	if (p1.flip == false)
 	{
 		p1.collider->Set_Position(p1.position.x, p1.position.y); //Makes the collider follow the player.
 	}
 	else
 	{
-		p1.collider->Set_Position(p1.position.x + 5, p1.position.y); //Makes the collider follow the player.
-	}*/
+		p1.collider->Set_Position(p1.position.x + 22, p1.position.y); //Makes the collider follow the player.
+	}
+
+	//Draws the HitBox on-screen.
+	//App->render->DrawQuad(p1.HitBox_Alpha, 255, 0, 0, 200);
 
 	return true;
 };
@@ -312,59 +344,23 @@ bool j1Player1::PostUpdate()
 	return true;
 };
 
-bool j1Player1::cleanUp() 
+bool j1Player1::CleanUp() 
 {
 	App->tex->UnLoad(p1.texture);
 	return true;
 };
 
-
-bool j1Player1::Load(pugi::xml_node& data)
+void j1Player1::TeleportP2ToP1()	//Method that teleports P2 directly in front of P1. Takes into account which direction P1 is facing. Can trigger some fun interactions between players :)
 {
-	p1.position.x = data.child("position1").attribute("x").as_int();
-	p1.position.y = data.child("position1").attribute("y").as_int();
-	return true;
-}
-
-bool j1Player1::Save(pugi::xml_node&  data) const
-{
-	pugi::xml_node pos = data.append_child("position1");
-
-	pos.append_attribute("x") = p1.position.x;
-	pos.append_attribute("y") = p1.position.y;
-	return true;
-}
-
-//Collision Handling -------
-//void j1Player1::OnCollision(Collider* C1, Collider* C2)
-//{
-//
-//}
-
-void j1Player1::Restart()
-{
-	p1.position.x = p1.initial_position_x;
-	p1.position.y = p1.initial_position_y;
-	player1_alive = true;
-}
-
-void j1Player1::GodModeInput()
-{
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	if (p1.flip == false) //The players will be always teleported directly in front of one another. 
 	{
-		p1.position.x += 10;
+		App->player2->p2.position.x = p1.position.x + p1.collider->collider.w;
+		App->player2->p2.position.y = p1.position.y;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	else
 	{
-		p1.position.x -= 10;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-	{
-		p1.position.y -= 10;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-	{
-		p1.position.y += 10;
+		App->player2->p2.position.x = p1.position.x - p1.collider->collider.w / 2;
+		App->player2->p2.position.y = p1.position.y;
 	}
 }
 
@@ -386,14 +382,20 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 	if (C1->type == PLAYER && C2->type == SOLID)
 	{
 		//Player Colliding from Above the Solid
-		if (p1.position.y + C1->collider.h > C2->collider.y /*p1.position.y + C1->collider.h - p1.max_speed.y - 2 < C2->collider.y
-			&& C1->collider.x < C2->collider.x + C2->collider.w
-			&& C1->collider.x + C1->collider.w > C2->collider.x*/)
+		if (C1->collider.y + C1->collider.h > C2->collider.y && C1->collider.x < C2->collider.x + C2->collider.w && C1->collider.x + C1->collider.w > C2->collider.x)
 		{
+			p1.speed.y = 0;
+			p1.position.y = C2->collider.y - C1->collider.h;
+			p1.grounded = true;
+			LOG("P1 IS COLLIDING WITH SOLID FROM AVOBE");
+			
+			/*if (p1.grounded == false)
+			{
 				p1.speed.y = 0;
-				p1.grounded = true;
 				p1.position.y = C2->collider.y - C1->collider.h;
+				p1.grounded = true;
 				LOG("P1 IS COLLIDING WITH SOLID FROM AVOBE");
+			}*/
 
 			/*if (p1.speed.y > 0)
 			{
@@ -414,21 +416,80 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 		}*/
 
 		//Player is colliding from right (going left)
-	/*	if (p1.position.x < C2->collider.x + C2->collider.w)
-		{
-			p1.speed.x = 0;
-			p1.position.x = C2->collider.x + C2->collider.w; 
-			LOG("P1 IS COLLIDING WITH SOLID FROM THE RIGHT");
-		}*/
+		//if (p1.position.x < C2->collider.x + C2->collider.w)
+		//{
+		//	p1.speed.x = 0;
+		//	p1.position.x = C2->collider.x + C2->collider.w;
+		//	LOG("P1 IS COLLIDING WITH SOLID FROM THE RIGHT");
+		//}
 
-		//Player is colliding from left (going right)
-		if (p1.position.x + C1->collider.w < C2->collider.x)
-		{
-			p1.speed.x = 0;
-			p1.position.x = C2->collider.x - C1->collider.w;
-			LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
-		}
+		////Player is colliding from left (going right)
+		//if (p1.position.x + C1->collider.w < C2->collider.x)
+		//{
+		//	p1.speed.x = 0;
+		//	p1.position.x = C2->collider.x - C1->collider.w;
+		//	LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
+		//}
 	}
 
+	//Player Colliding Against Another Player
+	if(C1->type == PLAYER && C2->type == PLAYER)
+	{
+		if (C1->collider.x + C1->collider.w > C2->collider.x || C1->collider.x < C2->collider.x + C2->collider.w  /*&& p1.speed.x == p1.max_speed.x*/) //As the boost can be done even if P1 is static, this allows for more precise jumps... hopefully.
+		{
+			if (App->player2->p2.state == crouching_P2)
+			{
+				if (p1.grounded == true)
+				{
+					p1.speed.y -= p1.boost_jump.y;
+					p1.grounded = false;
+				}
+			}
+			LOG("P1 IS COLLIDING WITH P2 FROM THE LEFT");
+		}
+	}
+}
+
+bool j1Player1::Load(pugi::xml_node& data)
+{
+	p1.position.x = data.child("position1").attribute("x").as_int();	//Loads the position of the X axis saved in the save_file.xml.
+	p1.position.y = data.child("position1").attribute("y").as_int();	//Loads the position of the X axis saved in the save_file.xml.
+	return true;
+}
+
+bool j1Player1::Save(pugi::xml_node&  data) const
+{
+	pugi::xml_node pos = data.append_child("position1");	//Declares the node and with "append_" it is set to overwrite the data in the given xml. 
+
+	pos.append_attribute("x") = p1.position.x;				//Saves the position of P1 on  the X axis the moment Save() is called. "append_" used again to overwrite previous position data.
+	pos.append_attribute("y") = p1.position.y;				//Saves the position of P1 on  the Y axis the moment Save() is called. "append_" used again to overwrite previous position data.
+	return true;
+}
+
+void j1Player1::Restart()
+{
+	p1.position.x = p1.initial_position.x;
+	p1.position.y = p1.initial_position.y;
+	player1_alive = true;
+}
+
+void j1Player1::GodModeInput()
+{
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
+		p1.position.x += GOD_MODE_SPEED;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	{
+		p1.position.x -= GOD_MODE_SPEED;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+	{
+		p1.position.y -= GOD_MODE_SPEED;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	{
+		p1.position.y += GOD_MODE_SPEED;
+	}
 }
 

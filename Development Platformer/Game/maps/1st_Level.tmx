@@ -35,7 +35,7 @@
    </animation>
   </tile>
  </tileset>
- <layer id="1" name="Background" width="52" height="42" visible="0">
+ <layer id="1" name="Background" width="52" height="42">
   <data>
    <tile gid="513"/>
    <tile gid="514"/>

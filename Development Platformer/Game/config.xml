@@ -44,10 +44,10 @@
     <player_1>
       <position x="150" y="1150"/>
       <speed x="0" y="0"/>
-      <max_speed x="10" y="10"/>
-      <acceleration x="1" y="1.4"/>
-      <gravity value="15"/>
-      <boost x="10"  y="10"/>
+      <max_speed x="8" y="14"/>
+      <acceleration x="1" y="14"/>
+      <gravity value="1"/>
+      <boost_jump x="0"  y="20"/>
       <jumpFX name ="Jump.wav"/>
       <DuoJumpFX name ="Jump_Duo.wav"/>
       <DeathFX name ="Death.wav"/>
@@ -56,10 +56,10 @@
     <player_2>
       <position x="200" y="1150"/>
       <speed x="0" y="0"/>
-      <max_speed x="10" y="10"/>
-      <acceleration x="1" y="1.4"/>
-      <gravity value="15"/>
-      <boost x="10"  y="10"/>
+      <max_speed x="8" y="14"/>
+      <acceleration x="1" y="14"/>
+      <gravity value="1"/>
+      <boost_jump x="0"  y="20"/>
       <jumpFX name ="Jump.wav"/>
       <DuoJumpFX name ="Jump_Duo.wav"/>
       <DeathFX name ="Death.wav"/>
@@ -67,8 +67,8 @@
   </player>
   
   <scene>
-    <map_name name="1st_Level.tmx"></map_name>
     <map_name name="2nd_Level.tmx"></map_name>
+    <map_name name="1st_Level.tmx"></map_name>
     <fade_time value="1"/>
   </scene>
 

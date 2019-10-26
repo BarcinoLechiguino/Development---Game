@@ -65,7 +65,7 @@ bool j1Collisions::PreUpdate()
 				{
 					if (C1->callback)
 					{
-						C1->callback->OnCollision(C1, C2);
+						C1->callback->OnCollision(C1, C2);		//Callback sends the OnCollision methods in P1's and P2's modules the colliders being iterated in this iteration.
 					}
 					else if (C1->callback)
 					{

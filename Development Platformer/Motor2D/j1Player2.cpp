@@ -17,59 +17,61 @@ j1Player2::j1Player2() //Constructor. Called at the first frame.
 	//String that will be given to the different functions (Awake(), Load()...) to generate the handler node.
 	name.create("player"); //The string has to be the same as the name of the node in the xml file.
 
+	//P2 Idle animation.
 	p2.idle.PushBack({ 28, 14, 37, 57 });
 	p2.idle.PushBack({ 132, 12, 33, 59 });
 	p2.idle.PushBack({ 230, 12, 37, 59 });
 	p2.idle.PushBack({ 326, 14, 39, 57 });
 	p2.idle.speed = 0.1f;
 
-	p2.running_right.PushBack({ 134, 90, 39, 55 });
-	p2.running_right.PushBack({ 232, 92, 39, 53 });
-	p2.running_right.PushBack({ 332, 96, 39, 49 });
-	p2.running_right.PushBack({ 434, 90, 45, 55 });
-	p2.running_right.PushBack({ 532, 92, 39, 53 });
-	p2.running_right.PushBack({ 632, 96, 39, 49 });
-	p2.running_right.speed = 0.2f;
+	//P2 Running animation.
+	p2.running.PushBack({ 134, 90, 39, 55 });
+	p2.running.PushBack({ 232, 92, 39, 53 });
+	p2.running.PushBack({ 332, 96, 39, 49 });
+	p2.running.PushBack({ 434, 90, 45, 55 });
+	p2.running.PushBack({ 532, 92, 39, 53 });
+	p2.running.PushBack({ 632, 96, 39, 49 });
+	p2.running.speed = 0.2f;
 
-	p2.running_left.PushBack({ 134, 90, 39, 55 });
-	p2.running_left.PushBack({ 232, 92, 39, 53 });
-	p2.running_left.PushBack({ 332, 96, 39, 49 });
-	p2.running_left.PushBack({ 434, 90, 45, 55 });
-	p2.running_left.PushBack({ 532, 92, 39, 53 });
-	p2.running_left.PushBack({ 632, 96, 39, 49 });
-	p2.running_left.speed = 0.2f;
+	//P2 Crouching animation.
+	p2.crouching.PushBack({ 432, 10, 37, 61 }); //20 Pixels of margin vertically up.
+	p2.crouching.PushBack({ 530, 8, 39, 63 });
+	p2.crouching.PushBack({ 630, 8, 37, 63 });
+	p2.crouching.PushBack({ 34, 84, 33, 61 });
+	p2.crouching.speed = 0.1f;
 
+	//P1 Jumping Animation
 	p2.jumping.PushBack({ 30, 172, 39, 47 });
 	p2.jumping.PushBack({ 130, 176, 39, 43 });
 	p2.jumping.PushBack({ 234, 162, 37, 53 });
 	p2.jumping.PushBack({ 328, 158, 41, 45 });
 	p2.jumping.PushBack({ 436, 162, 29, 41 });
-	p2.jumping.speed = 0.2f;
+	p2.jumping.speed = 0.3f;
 
-	p2.mid_jump.PushBack({ 528, 168, 47, 33 });
-	p2.mid_jump.PushBack({ 640, 168, 35, 41 });
-	p2.mid_jump.PushBack({ 22, 248, 51, 33 });
-	p2.mid_jump.speed = 0.2f;
+	//P2 Boosted Jump Animation
+	p2.boosted_jump.PushBack({ 30, 172, 39, 47 });
+	p2.boosted_jump.PushBack({ 130, 176, 39, 43 });
+	p2.boosted_jump.PushBack({ 234, 162, 37, 53 });
+	p2.boosted_jump.PushBack({ 328, 158, 41, 45 });
+	p2.boosted_jump.PushBack({ 436, 162, 29, 41 });
+	p2.boosted_jump.PushBack({ 528, 168, 47, 33 });
+	p2.boosted_jump.PushBack({ 640, 168, 35, 41 });
+	p2.boosted_jump.PushBack({ 22, 248, 51, 33 });
+	p2.boosted_jump.speed = 0.2f;
 
+	//P2 Falling Animation
 	p2.falling.PushBack({ 136, 224, 33, 61 });
 	p2.falling.PushBack({ 236, 226, 33, 59 });
 	p2.falling.speed = 0.2f;
 
-	/*p2.crouching.PushBack({ 30, 172, 39, 47 });
-	p2.crouching.PushBack({ 130, 176, 39, 43 });*/
-	p2.crouching.PushBack({ 430, 10, 39, 61 }); //20 Pixels of margin vertically up.
-	p2.crouching.PushBack({ 530, 8, 39, 63 });
-	p2.crouching.PushBack({ 628, 8, 39, 63 });
-	p2.crouching.PushBack({ 28, 84, 39, 61 });
-	p2.crouching.speed = 0.1f;
-
-	p2.death.PushBack({ 550, 370, 110, 74 });
-	p2.death.PushBack({ 660, 370, 110, 74 });
-	p2.death.PushBack({ 0, 444, 110, 74 });
-	p2.death.PushBack({ 110, 444, 110, 74 });
-	p2.death.PushBack({ 220, 444, 110, 74 });
-	p2.death.PushBack({ 330, 444, 110, 74 });
-	p2.death.PushBack({ 440, 444, 110, 74 });
+	//P1 Death Animation
+	p2.death.PushBack({ 0,0,70,64 });
+	p2.death.PushBack({ 70,0,70,64 });
+	p2.death.PushBack({ 140,0,70,64 });
+	p2.death.PushBack({ 210,0,70,64 });
+	p2.death.PushBack({ 280,0,70,64 });
+	p2.death.PushBack({ 350,0,70,64 });
+	p2.death.PushBack({ 420,0,70,64 });
 	p2.death.speed = 0.2f;
 };
 
@@ -107,9 +109,9 @@ bool j1Player2::Start()
 	p2.texture = App->tex->Load("textures/Spritesheets/Character 2/Character_Spritesheet2_Buena.png");
 	p2.texture2 = App->tex->Load("textures/Spritesheets/Character 2/adventurer-hand-combat-Sheet2.png");
 	
-	p2.position = { p2.position.x, p2.position.y };
-	p2.HitBox = { (int)p2.position.x,(int)p2.position.y, p2.sprite_width, p2.sprite_height }; //Casked to int "(int)" for optimization.
-
+	p2.position = { p2.position.x, p2.position.y - 10 };
+	p2.initial_position = p2.position;
+	p2.HitBox = { (int)p2.position.x,(int)p2.position.y, p2.sprite_width, p2.sprite_height }; //Casked to int as the values passed by p2.position are floats.
 	p2.collider = App->collisions->AddCollider(p2.HitBox, PLAYER, this);
 
 	p2.p2_isGrounded(true);
@@ -124,7 +126,6 @@ bool j1Player2::Start()
 bool j1Player2::PreUpdate()
 {
 	//p2.p1_SetGroundState(false); //set  to false when colliders are implemented.
-
 	p2.state = idle_P2;
 
 	if (!GodMode)
@@ -152,8 +153,7 @@ bool j1Player2::PreUpdate()
 
 		if (App->input->GetKey(SDL_SCANCODE_KP_7) == KEY_DOWN)
 		{
-			p2.position.x = App->player1->p1.position.x + 40;
-			p2.position.y = App->player1->p1.position.y;
+			p2.state = teleporting_P2;
 		}
 	}
 	else
@@ -178,6 +178,7 @@ bool j1Player2::Update(float dt)
 
 		p2.speed.x = 0;
 		p2.current_animation = &p2.idle;
+		p2.isCrouching = false;
 
 		break;
 
@@ -194,7 +195,7 @@ bool j1Player2::Update(float dt)
 		p2.position.x += p2.speed.x; //p2.speed_x is positive here.
 
 		p2.flip = false;
-		p2.current_animation = &p2.running_right;
+		p2.current_animation = &p2.running;
 
 		LOG("P2 Position %d %d", p2.position.x, p2.position.y);
 
@@ -211,25 +212,30 @@ bool j1Player2::Update(float dt)
 		p2.position.x += p2.speed.x;  //p2.speed_x  is negative here.
 
 		p2.flip = true;
-		p2.current_animation = &p2.running_left;
+		p2.current_animation = &p2.running;
 
 		break;
 
 	case crouching_P2:
 
 		p2.current_animation = &p2.crouching;
+		p2.isCrouching = true;
 
-	break;
+		break;
 	
 	case jumping_P2:
 
-		if (p2.grounded == true /*|| p2.jumpCount != 2*/)
+		if (p2.grounded == true)
 		{
-			p2.speed.y = -p2.gravity;
-
-			/*jumpCount++;*/
+			p2.speed.y = -p2.acceleration.y;
 			p2.p2_isGrounded(false);
 		}
+
+		break;
+
+	case teleporting_P2:
+
+		TeleportP1ToP2();
 
 		break;
 	}
@@ -237,7 +243,7 @@ bool j1Player2::Update(float dt)
 	//If the p2 is in the air then this function brings him/her back down to the floor.
 	if (p2.grounded == false)
 	{
-		p2.speed.y += p2.acceleration.y;
+		p2.speed.y += p2.gravity;
 
 		if (p2.speed.y > p2.max_speed.x)
 		{
@@ -256,25 +262,26 @@ bool j1Player2::Update(float dt)
 		}
 	}
 
-	//In case the HitBox clips through the ground.
-	/*if (p2.position.y > p2.floor)
-	{
-		p2.position.y = p2.floor - 1;
-		p2.p2_isGrounded(true);
-	}*/
-
 	//We move the character according the position value after the state has been run.
 	p2.HitBox.x = p2.position.x;
 	p2.HitBox.y = p2.position.y;
-
-	//Draws the HitBox on-screen.
-	//App->render->DrawQuad(p2.HitBox, 255, 255, 0);
 
 	p2.HitBox = p2.current_animation->GetCurrentFrame();
 
 	App->render->Blit(p2.texture, p2.position.x, p2.position.y, &p2.HitBox, p2.flip);
 
-	p2.collider->Set_Position(p2.position.x, p2.position.y); //Makes the collider follow the player.
+	//Makes P2's collider follow P2. If there is a flip in spritesheet it is taken into account.
+	if (p2.flip == false)
+	{
+		p2.collider->Set_Position(p2.position.x, p2.position.y); //Makes the collider follow the player.
+	}
+	else
+	{
+		p2.collider->Set_Position(p2.position.x + 22, p2.position.y);
+	}
+
+	//Draws the HitBox on-screen.
+	//App->render->DrawQuad(p2.HitBox, 255, 255, 0);
 
 	return true;
 };
@@ -284,37 +291,24 @@ bool j1Player2::PostUpdate()
 	return true;
 };
 
-bool j1Player2::cleanUp()
+bool j1Player2::CleanUp()
 {
 	App->tex->UnLoad(p2.texture);
 	return true;
 };
 
-
-bool j1Player2::Load(pugi::xml_node& data)
+void j1Player2::TeleportP1ToP2()
 {
-	p2.position.x = data.child("position2").attribute("x").as_int();
-	p2.position.y = data.child("position2").attribute("y").as_int();
-
-	return true;
-}
-
-// Save Game State
-bool j1Player2::Save(pugi::xml_node& data) const
-{
-	pugi::xml_node pos = data.append_child("position2");
-
-	pos.append_attribute("x") = p2.position.x;
-	pos.append_attribute("y") = p2.position.y;
-
-	return true;
-}
-
-void j1Player2::Restart()
-{
-	p2.position.x = p2.initial_position_x;
-	p2.position.y = p2.initial_position_y;
-	player2_alive = true;
+	if (p2.flip == false) //The players will be always teleported directly in front of one another. 
+	{
+		App->player1->p1.position.x = p2.position.x + p2.collider->collider.w;
+		App->player1->p1.position.y = p2.position.y;
+	}
+	else
+	{
+		App->player1->p1.position.x = p2.position.x - p2.collider->collider.w / 2;
+		App->player1->p1.position.y = p2.position.y;
+	}
 }
 
 //Collision Handling
@@ -353,22 +347,49 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 	}
 
 }
+
+bool j1Player2::Load(pugi::xml_node& data)
+{
+	p2.position.x = data.child("position2").attribute("x").as_int();
+	p2.position.y = data.child("position2").attribute("y").as_int();
+
+	return true;
+}
+
+// Save Game State
+bool j1Player2::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node pos = data.append_child("position2");
+
+	pos.append_attribute("x") = p2.position.x;
+	pos.append_attribute("y") = p2.position.y;
+
+	return true;
+}
+
+void j1Player2::Restart()
+{
+	p2.position.x = p2.initial_position.x;
+	p2.position.y = p2.initial_position.y;
+	player2_alive = true;
+}
+
 void j1Player2::GodModeInput()
 {
 	if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT)
 	{
-		p2.position.x += 10;
+		p2.position.x += GOD_MODE_SPEED;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_KP_4) == KEY_REPEAT)
 	{
-		p2.position.x -= 10;
+		p2.position.x -= GOD_MODE_SPEED;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_KP_8) == KEY_REPEAT)
 	{
-		p2.position.y -= 10;
+		p2.position.y -= GOD_MODE_SPEED;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_REPEAT)
 	{
-		p2.position.y += 10;
+		p2.position.y += GOD_MODE_SPEED;
 	}
 }
