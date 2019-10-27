@@ -559,6 +559,8 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			{
 				//Death logic
 				p1.lives--;
+
+				p1.state = dying_P1;
 				
 				//Antes la animacion de muerte tiene que haber finalizado
 				RespawnP1ToP2();

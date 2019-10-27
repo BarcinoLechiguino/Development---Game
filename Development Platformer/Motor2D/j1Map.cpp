@@ -334,9 +334,6 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	}
 	else
 	{
-		/*p2SString debug = folder.GetString();
-		debug += image.attribute("source").as_string();
-		set->texture = App->tex->Load(debug.GetString());*/
 		set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
 		int w, h;
 		SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
@@ -484,7 +481,7 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 	return ret;
 }
 
-bool j1Map::SwitchMaps(p2SString* new_map)
+bool j1Map::SwitchMaps(p2SString* new_map) // switch map function that passes the number of map defined in config.xml
 {
 	CleanUp();
 	App->scene->to_end = false; // we put this in false so there are no repetitions
@@ -494,7 +491,7 @@ bool j1Map::SwitchMaps(p2SString* new_map)
 	return true;
 }
 
-void j1Map::Restart_Cam()
+void j1Map::Restart_Cam() // function that resets the camera
 {
 	App->render->camera.x = spawn_position_cam.x;
 	App->render->camera.y = spawn_position_cam.y;
@@ -502,6 +499,5 @@ void j1Map::Restart_Cam()
 
 MapLayer::~MapLayer()
 {
-	/*delete[] gid;*/ //New comment
 	RELEASE(gid); //New
 }

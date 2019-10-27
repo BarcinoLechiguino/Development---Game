@@ -46,7 +46,7 @@ F10: Activate/Deactivate God Mode.
 
 # Work distribuation
 - Ángel González: Input, collider & camera module imlpementation, animations & gameplay logic, players implementation.
-- Gerard Romeu: Audio & FX, Map, Design of the levels, Debug Keys, animations & gameplay logic, parallax.
+- Gerard Romeu: Audio & FX, Map, Design of the levels, Debug Keys, animations & gameplay logic.
 
 # Credits
 https://rvros.itch.io/animated-pixel-hero
