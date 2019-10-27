@@ -29,6 +29,8 @@ bool j1Map::Awake(pugi::xml_node& config)
 	bool ret = true;
 
 	folder.create(config.child("folder").child_value());
+	spawn_position_cam.x = config.child("renderer").child("cam").attribute("x").as_float();
+	spawn_position_cam.x = config.child("renderer").child("cam").attribute("y").as_float();
 
 	return ret;
 }
@@ -490,6 +492,12 @@ bool j1Map::SwitchMaps(p2SString* new_map)
 	App->audio->PlayMusic(App->map->data.music_File.GetString());
 
 	return true;
+}
+
+void j1Map::Restart_Cam()
+{
+	App->render->camera.x = spawn_position_cam.x;
+	App->render->camera.y = spawn_position_cam.y;
 }
 
 MapLayer::~MapLayer()

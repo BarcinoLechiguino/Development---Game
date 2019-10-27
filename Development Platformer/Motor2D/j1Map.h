@@ -158,6 +158,7 @@ public:
 	// Load new map
 	iPoint MapToWorld(int x, int y) const; //Ya hay un map to world en TileSet
 
+	void Restart_Cam();
 private:
 
 	bool LoadMap();
@@ -172,6 +173,7 @@ public:
 
 	bool activated = false; //Bool for the deactivable colliders.
 	MapData data;
+	p2Point<float>	spawn_position_cam;
 
 private:
 	pugi::xml_document	map_file;

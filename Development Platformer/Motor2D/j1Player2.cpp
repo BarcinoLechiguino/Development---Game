@@ -552,10 +552,12 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 				if (C1->collider.y > GOAL_Y && C1->collider.y < GOAL_HEIGHT)
 				{
 					App->fadescene->FadeToBlack("1st_Level.tmx");
+					App->map->Restart_Cam();
 				}
 				else
 				{
 					App->fadescene->FadeToBlack("Tutorial_Level.tmx");
+					App->map->Restart_Cam();
 				}
 
 				//Assign Fx --> A teleporting or warping sound.

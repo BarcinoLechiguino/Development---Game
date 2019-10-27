@@ -586,10 +586,12 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 				if (C1->collider.y > GOAL_Y && C1->collider.y < GOAL_HEIGHT)	//Dirty way to know which portal goal has been reached.
 				{
 					App->fadescene->FadeToBlack("1st_Level.tmx");				//Loads the 1st level.
+					App->map->Restart_Cam();
 				}
 				else
 				{
 					App->fadescene->FadeToBlack("Tutorial_Level.tmx");			//Loads the 2nd level.
+					App->map->Restart_Cam();
 				}
 
 				App->audio->PlayFx(6, 0);										//Sound effect of the Goal / Protal.							

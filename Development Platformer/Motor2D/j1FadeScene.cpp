@@ -97,7 +97,7 @@ bool j1Fade_Scene ::FadeToBlack(const char* mapname, float time)
 
 	App->player1->Restart();					//Returns P1 to the starting position of the map.
 	App->player2->Restart();					//Returns P2 to the starting position of the map.
-
+	
 	return ret;
 }
 

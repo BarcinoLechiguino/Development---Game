@@ -9,6 +9,7 @@
   <renderer>
     <vsync value="true"/>
     <camera x ="0" y ="-570" smoothing_speed ="0.01"/>
+    <spawn_cam x ="0" y ="-570"/>
   </renderer>
   
   <window>
