@@ -123,7 +123,9 @@
   <ItemGroup>
     <None Include="..\Game\maps\1st Screen2.tmx" />
     <None Include="..\Game\maps\Tutorial Screen2.tmx" />
-    <None Include="..\Game\save_file" />
+    <None Include="..\Game\save_file">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml">

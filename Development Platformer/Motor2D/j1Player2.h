@@ -25,12 +25,18 @@ enum P2_State
 struct Player2
 {
 	p2Point<float>	position;			//Point with the position of P2 on the world.
+	p2Point<float>	previous_position;	//Keeps track of the last position of P2 at all moments.
 	p2Point<float>	last_grounded;		//Keeps record of the last position(x, y) that P2 was grounded.
-	p2Point<float>	spawn_position;	//Keeps record of the first position(x, y) of P2 when spawns in the map.
+	p2Point<float>	spawn_position;		//Keeps record of the first position(x, y) of P2 when spawns in the map.
 	p2Point<float>	speed;				//P2's Speed Vector Variable. (Not actually declared as a vector but that is irrelevant to us right now)
 	p2Point<float>	max_speed;			//P2's Cruiser Speed for both axis.
 	p2Point<float>	acceleration;		//Sets how much time it takes P2 to reach Cruiser Speed horizontally and/or vertically.
+	p2Point<float>	boost_jump;			//Sets how much vertical or horizontal impulse will P2 get.
 	float			gravity;			//Acceleration variable for jumps. Gravitational Pull.
+	int				sprite_width;		//Sets the width of the collider taking  into account the measures of P2's sprite. / Make center pos: mid_pos = p1.position.x +/- (p1.hitbox.width / 2). +/- depending on which side P1 is facing.
+	int				sprite_height;		//Sets the height of the collider taking  into account the measures of P2's sprite.
+	int				lives;				//Number of lives P2 has. It just defines how many times P2 can get impaled with spikes before having to restart the whole level over.
+	int				max_lives;			//Maximum number of lives a player can have.
 
 	bool			grounded;			//Keeps track of P1 and returns true when P2 is not jumping or falling.
 	bool			flip;				//Keeps track of which direction P2's is looking at. Changes the sprite orientation when returns true.
@@ -38,28 +44,23 @@ struct Player2
 	bool			isJumping;			//Keeps track of the action P2 is performing. In this case jumping.
 	bool			isBoostJumping;		//Keeps track of the action P2 is performing. In this case boost jumping.
 	bool			item_activated;		//Keeps track of the items P2 interacts with.
-	bool			isDying;
+	bool			isGoingRight;		//Keeps track of whether or not P2 is going to the right.
+	bool			isGoingLeft;		//Keeps track of whether or not P2 is going to the left.
+	bool			isAlive;			//If the P2 runs out of lives, then this bool returns false.
+	bool			isDying;			//If the P2 runs out of lives, then this bool returns true.
+	bool			fading;				//Fade P2 when changing scenes.
+	bool			GodMode;			//Defines whether GodMode is active or not for P2.
+	bool			switch_sprites;		//Defines which sprite will P2 have.
 
 	//Changes the state of the player depending on the given argument. Also if true it records the position from where the player jumped.
 	void isGrounded(bool status)
 	{
 		if (grounded == true)
 		{
-			last_grounded = position;	//Tracks P1's position as long as P1's is not jumping or falling.
+			last_grounded = position;	//Tracks P2's position as long as P2's is not jumping or falling.
 		}
 
 		grounded = status;
-	};
-
-	//Changes the state of the player depending on the given argument. Also if true it records the position from where the player jumped.
-	void p2_isGrounded(bool yesnt)
-	{
-		if (grounded == true)
-		{
-			last_grounded = position;
-		}
-
-		grounded = yesnt;
 	};
 
 	//Animation Variables
@@ -69,26 +70,28 @@ struct Player2
 	Animation	running;			//Running animation.
 	Animation	crouching;			//Crouching animation.
 	Animation	jumping;			//Jumping animation.
+	Animation	frontflip;			//Frontflip  animation.
 	Animation	falling;			//Falling animation.
 	Animation	boosted_jump;		//Boosted Jump Animation.
 	Animation	death;				//Death animation.
+	Animation*	current_animation;	//P1's current animation.
 
-	Animation*	current_animation;	//P2's current animation.
-
-	bool moving_right = false;
-	bool moving_left = false;
-
-	SDL_Rect	HitBox;					//Rectangle that represents P2.
-	P2_State	state;					//Adds the state enum to P2's variables.
-	Collider*	collider;				//Collider that will be assigned to P2 
-
-	uint duojump_fx, jump_fx, death_fx;
+	//Sound Variables
+	uint		jumpFX;				//Jump sfx.
+	uint		deathFX;			//Death sfx.
+	uint		duoFX;				//Boost Jump sfx.
+	uint		goalFX;				//Goal Reached sfx.
+	uint		tpFX;				//Teleport sfx.
+	uint		activateFX;			//Item Activation sfx.
 
 
-	//Temporal Variables
-	int sprite_width = /*20*/ 38;
-	int sprite_height = /*30*/58;
-	float floor = 0.0f;
+	SDL_Rect	HitBox;				//Rectangle that represents P2.
+	P2_State	state;				//Adds the state enum to P2's variables.
+	Collider*	collider;			//Collider that will be assigned to P2. 
+
+	/*p2SString		jumpFX;
+	p2SString		deathFX;
+	p2SString		duoFX;*/
 };
 
 class j1Player2 : public j1Module
@@ -117,24 +120,19 @@ public: //P1 Variables
 
 	Player2 p2;
 
-	void TeleportP1ToP2();
-	void RespawnP2ToP1();
+	void TeleportP1ToP2();							//Moves P1 directly in front of P2. It takes into account where P1 is looking at.
+	void RespawnP2ToP1();							//Moves P1 directly behind P2 on death.
 	void OnCollision(Collider* C1, Collider* C2);	//Collision Logic Handling.
 
 	bool Load(pugi::xml_node &node);				//Loading from xml file.
 	bool Save(pugi::xml_node &node) const;			//Saving to xml file.
 	bool LoadPlayer2();								//Loads P2 on screen.
+	//bool LoadPlayer2Textures();						//Loads P2's textures on screen.
 	void Restart();									//Resets P2's position to where P2 started the level. 
 	void GodModeInput();							//Enables / Disables the God Mode.
 
-	bool player2_alive = false;
-	bool GodMode = false;
-	bool fading = false; // fade character when changing scenes
-
 private:
-	float p2_frames = 0;
-	//bool runFrames = false;
-	float p2_startFrame = 0;
+
 };
 
 #endif __j1Player_1_H__

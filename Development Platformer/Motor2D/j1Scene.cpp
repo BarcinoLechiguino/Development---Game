@@ -79,6 +79,21 @@ bool j1Scene::Update(float dt)
 		App->render->camera.y -= 10;
 	}
 	
+	//A spritesheet switch button just for the flavour. Not functional at the moment.
+	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+	{
+		if (App->player1->p1.switch_sprites == false || App->player2->p2.switch_sprites == false)
+		{
+			App->player1->p1.switch_sprites == true;
+			App->player2->p2.switch_sprites == true;
+		}
+		else
+		{
+			App->player1->p1.switch_sprites == false;
+			App->player2->p2.switch_sprites == false;
+		}
+	}
+
 	//Debug Keys
 	//Load First Level Key
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
@@ -136,15 +151,15 @@ bool j1Scene::Update(float dt)
 	//GodMode Activation Key
 	else if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
-		if (App->player1->GodMode)
+		if (App->player1->p1.GodMode)
 		{
-			App->player1->GodMode = false;
-			App->player2->GodMode = false;
+			App->player1->p1.GodMode = false;
+			App->player2->p2.GodMode = false;
 		}
 		else 
 		{
-			App->player1->GodMode = true;
-			App->player2->GodMode = true;
+			App->player1->p1.GodMode = true;
+			App->player2->p2.GodMode = true;
 		}
 
 		//Deactivable bool activation deactivation

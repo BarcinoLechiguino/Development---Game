@@ -131,6 +131,12 @@ bool j1Player1::Awake(pugi::xml_node& config)
 	p1.boost_jump.x = config.child("player_1").child("boost_jump").attribute("x").as_float();
 	p1.boost_jump.y = config.child("player_1").child("boost_jump").attribute("y").as_float();
 
+	p1.sprite_width = config.child("player_1").child("sprite_measures").attribute("w").as_int();
+	p1.sprite_height = config.child("player_1").child("sprite_measures").attribute("h").as_int();
+
+	p1.lives = config.child("player_1").child("lives").attribute("lives").as_int();
+	p1.max_lives = config.child("player_1").child("lives").attribute("lives").as_int();
+
 	/*p1.jumpFX = config.child("jumpFX").attribute("name").as_string();
 	p1.deathFX = config.child("deathFX").attribute("name").as_string();
 	p1.duoFX = config.child("landFX").attribute("name").as_string();*/
@@ -144,21 +150,22 @@ bool j1Player1::Awake(pugi::xml_node& config)
 
 bool j1Player1::Start() 
 {
-	LoadPlayer1();
+	LoadPlayer1();				//Loads P1 in game.
+	//LoadPlayer1Textures();		//Loads P1's textures in game.
 
-	jumpFX = App->audio->LoadFx("audio/fx/Jump.wav");
-	deathFX = App->audio->LoadFx("audio/fx/Death.wav");
-	duoFX = App->audio->LoadFx("audio/fx/Jump_Duo.wav");
-	activateFX = App->audio->LoadFx("audio/fx/Activate.wav");
-	tpFX = App->audio->LoadFx("audio/fx/TP.wav");
-	passFX = App->audio->LoadFx("audio/fx/Pass.wav");
+	p1.jumpFX = App->audio->LoadFx("audio/fx/Jump.wav");
+	p1.deathFX = App->audio->LoadFx("audio/fx/Death.wav");
+	p1.duoFX = App->audio->LoadFx("audio/fx/Jump_Duo.wav");
+	p1.activateFX = App->audio->LoadFx("audio/fx/Activate.wav");
+	p1.tpFX = App->audio->LoadFx("audio/fx/TP.wav");
+	p1.goalFX = App->audio->LoadFx("audio/fx/Pass.wav");
 
 	p1.isGrounded(true);
 	p1.item_activated = false;
 
 	p1.state = idle_P1;
 
-	player1_alive = true;
+	p1.isAlive = true;
 
 	return true;
 };
@@ -172,10 +179,10 @@ bool j1Player1::PreUpdate()
 		p1.state = idle_P1;
 		p1.grounded = true;
 	}*/
-	
+
 	p1.state = idle_P1;
 
-	if (!GodMode)
+	if (p1.GodMode == false)
 	{
 
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
@@ -217,13 +224,19 @@ bool j1Player1::PreUpdate()
 	{
 		GodModeInput();
 	}
+
+	//Switch Sprites Method Call
+	/*if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+	{
+		App->tex->UnLoad(p1.texture);
+		LoadPlayer1Textures();
+	}*/
+
 	return true;
 };
 
 bool j1Player1::Update(float dt) 
 {
-	p1_frames++;
-
 	p1.previous_position = p1.position;
 	
 	switch (p1.state)
@@ -251,7 +264,7 @@ bool j1Player1::Update(float dt)
 
 		p1.flip = false;
 		p1.current_animation = &p1.running;
-		p1.moving_right = true;
+		p1.isGoingRight = true;
 	
 		LOG("P1 Position %d %d", p1.position.x, p1.position.y);
 	
@@ -269,7 +282,7 @@ bool j1Player1::Update(float dt)
 
 		p1.flip = true;
 		p1.current_animation = &p1.running;
-		p1.moving_left = true;
+		p1.isGoingLeft = true;
 	
 		break;
 	
@@ -378,21 +391,18 @@ bool j1Player1::Update(float dt)
 	}
 
 	//If player dies:
-	if (lives == 0)
+	if (p1.lives == 0)
 	{
-		player1_alive = false;
-		App->player2->player2_alive = false;
+		p1.isAlive = false;
+		App->player2->p2.isAlive = false;
 
-		if (player1_alive == false && App->player2->player2_alive == false)
+		if (p1.isAlive == false && App->player2->p2.isAlive == false)
 		{
 			Restart();
 			App->player2->Restart();
-			lives = 3;
+			p1.lives = p1.max_lives;
 		}
 	}
-
-	//Draws the HitBox on-screen.
-	//App->render->DrawQuad(p1.HitBox_Alpha, 255, 0, 0, 200);
 
 	return true;
 };
@@ -405,6 +415,8 @@ bool j1Player1::PostUpdate()
 bool j1Player1::CleanUp() 
 {
 	App->tex->UnLoad(p1.texture);
+	App->player1->Disable();
+
 	return true;
 };
 
@@ -439,7 +451,7 @@ void j1Player1::RespawnP1ToP2()		//Method that, on death, will respawn P1 behind
 //Collision Handling ---------------------------------------
 void j1Player1::OnCollision(Collider* C1, Collider* C2)
 {
-	if (GodMode == false)
+	if (p1.GodMode == false)
 	{
 		if (C2->type == PLAYER)
 		{
@@ -536,7 +548,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			if (C1->collider.x + C1->collider.w > C2->collider.x || C1->collider.x < C2->collider.x + C2->collider.w || C1->collider.y < C2->collider.y + C2->collider.h || C1->collider.y + C1->collider.h > C2->collider.y)
 			{
 				//Death logic
-				lives--;
+				p1.lives--;
 				//Antes la animacion de muerte tiene que haber finalizado
 				RespawnP1ToP2();
 			}
@@ -653,22 +665,62 @@ bool j1Player1::Save(pugi::xml_node&  data) const
 
 bool j1Player1::LoadPlayer1()		//Loads P1 on screen.
 {
-	//Loads the textures of P1
+	//Loads the textures of P1. Switches them according to switch_sprites
 	p1.texture = App->tex->Load("textures/Spritesheets/Character 1/character_spritesheet_I_Buena.png");
 	
-	//Loads the data and colliders of P1
-	p1.position = { p1.position.x, p1.position.y };												//Loads the position of P1 from the xml.
-	p1.spawn_position = p1.position;													//Sets the respawn position to the first position the player was in the map. 
-	p1.HitBox = { (int)p1.position.x,(int)p1.position.y, p1.sprite_width, p1.sprite_height };	//Casked to int as the values passed by p2.position are floats.
-	p1.collider = App->collisions->AddCollider(p1.HitBox, PLAYER, this);						//Adds a collider for the player.
+	//--------------------------------------------Loading the data and colliders of P1--------------------------------------------
+	//Loads the position of P1 from the xml.
+	p1.position.x = p1.position.x;
+	p1.position.y = p1.position.y;
+
+	p1.spawn_position = p1.position;	//Sets the respawn position to the first position the player was in the map. 
+
+	//Loads the data of the rectangle that contains P1.
+	p1.HitBox.x = p1.position.x;
+	p1.HitBox.y = p1.position.y;
+	p1.HitBox.w = p1.sprite_width;
+	p1.HitBox.h = p1.sprite_height;
+
+	//Adds a collider for the player.
+	p1.collider = App->collisions->AddCollider(p1.HitBox, PLAYER, this);
+
+	//Boolean resetting
+	p1.grounded = false;
+	p1.flip = false;
+	p1.isCrouching = false;
+	p1.isJumping = false;
+	p1.isBoostJumping = false;
+	p1.item_activated = false;
+	p1.isGoingRight = false;
+	p1.isGoingLeft = false;
+	p1.fading = false;
+	p1.isAlive = true;
+	p1.isDying = false;
+	p1.GodMode = false;
+	p1.switch_sprites = false;
 
 	return true;
 }
 
+/*bool j1Player1::LoadPlayer1Textures()
+{
+	//Loads the textures of P1. Switches them according to switch_sprites
+	if (p1.switch_sprites == true)
+	{
+		p1.texture = App->tex->Load("textures/Spritesheets/Character 1/character_spritesheet_I_Buena.png");
+	}
+	else
+	{
+		p1.texture = App->tex->Load("textures/Spritesheets/Character 2/Character_Spritesheet2_Buena.png");
+	}
+
+	return true;
+}*/
+
 void j1Player1::Restart()
 {
 	p1.position = p1.spawn_position;
-	player1_alive = true;
+	p1.isAlive = true;
 }
 
 void j1Player1::GodModeInput()

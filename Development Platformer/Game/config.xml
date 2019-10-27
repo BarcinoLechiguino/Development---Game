@@ -48,6 +48,8 @@
       <acceleration x="1" y="14"/>
       <gravity value="1"/>
       <boost_jump x="0"  y="20"/>
+      <sprite_measures w="38" h="58"/>
+      <lives lives="3"/>
       <jumpFX name ="Jump.wav"/>
       <DuoJumpFX name ="Jump_Duo.wav"/>
       <DeathFX name ="Death.wav"/>
@@ -65,6 +67,8 @@
       <acceleration x="1" y="14"/>
       <gravity value="1"/>
       <boost_jump x="0"  y="20"/>
+      <sprite_measures w="38" h="58"/>
+      <lives lives="3"/>
       <jumpFX name ="Jump.wav"/>
       <DuoJumpFX name ="Jump_Duo.wav"/>
       <DeathFX name ="Death.wav"/>

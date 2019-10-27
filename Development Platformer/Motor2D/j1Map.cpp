@@ -123,10 +123,17 @@ bool j1Map::CleanUp()
 		RELEASE(map_layer_item->data);
 		map_layer_item = map_layer_item->next;
 	}
-
-	//Clean Colliders
 	data.layers.clear();
 
+	//Removing all Objects
+	p2List_item<ObjectGroup*>* object_iterator = data.objectGroups.start;
+	while (object_iterator != NULL)
+	{
+		RELEASE(object_iterator->data);				//RELEASE deletes all elements in a list (deletes a buffer).
+		object_iterator = object_iterator->next;
+	}
+	data.objectGroups.clear();
+	
 	// Clean up the pugui tree
 	map_file.reset();
 
@@ -191,13 +198,13 @@ bool j1Map::Load(const char* file_name)
 	pugi::xml_node objectgroup;
 	for (objectgroup = map_file.child("map").child("objectgroup"); objectgroup && ret; objectgroup = objectgroup.next_sibling("objectgroup"))
 	{
-		ObjectGroup* new_objectgroup = new ObjectGroup(); //Allocates memory for the objectgroup being iterated.
+		ObjectGroup* new_objectgroup = new ObjectGroup();			//Allocates memory for the objectgroup being iterated.
 
 		if (ret == true)
 		{
-			ret = LoadObjectLayers(objectgroup, new_objectgroup);  //Loads the data members of the objectgroup that is being iterated.
+			ret = LoadObjectLayers(objectgroup, new_objectgroup);	//Loads the data members of the objectgroup that is being iterated.
 		}
-		data.objectGroups.add(new_objectgroup);
+		data.objectGroups.add(new_objectgroup);						//Adds the object group being iterated to the list.
 	}
 
 	if(ret == true)
@@ -423,7 +430,7 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 		objectgroup->object[index].id = object_iterator.attribute("id").as_int();			//Gets the id of the object being loaded from tmx and sets it to the corresponding object in the world.
 		objectgroup->object[index].name = object_iterator.attribute("name").as_string();	//Gets the name of the object being loaded from tmx and sets it to the corresponding object in the world.
 
-		SDL_Rect* collider = new SDL_Rect;			//Allocates memory for the buffer rect(x,y,w,z) that will receive the data members of an object from the objectgroup being iterated.
+		SDL_Rect* collider = new SDL_Rect;					//Allocates memory for the buffer rect(x,y,w,z) that will receive the data members of an object from the objectgroup being iterated.
 
 		collider->x = object_iterator.attribute("x").as_int();			//Sets the buffer rect's x position to the x position of the object given by the tmx map this iteration.
 		collider->y = object_iterator.attribute("y").as_int();			//Sets the buffer rect's y position to the y position of the object given by the tmx map this iteration.
