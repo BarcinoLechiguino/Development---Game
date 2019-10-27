@@ -171,8 +171,7 @@ private:
 public:
 
 	bool activated = false; //Bool for the deactivable colliders.
-	MapData data; 
-
+	MapData data;
 
 private:
 	pugi::xml_document	map_file;

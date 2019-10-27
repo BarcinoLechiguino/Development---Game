@@ -155,6 +155,8 @@ bool j1Scene::Update(float dt)
 		{
 			App->player1->p1.GodMode = false;
 			App->player2->p2.GodMode = false;
+			App->player1->p1.airborne = true;
+			App->player2->p2.airborne = true;
 		}
 		else 
 		{
