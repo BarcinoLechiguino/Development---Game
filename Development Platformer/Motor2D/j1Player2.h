@@ -48,7 +48,6 @@ struct Player2
 	bool			isGoingRight;			//Keeps track of whether or not P2 is going to the right.
 	bool			isGoingLeft;			//Keeps track of whether or not P2 is going to the left.
 	bool			platformDrop;			//Keeps track of whether or  not P2 wants to drop from a plaform.
-	bool			onPlatform;				//Keeps track whether or not P2 is on a platform.
 	bool			isAlive;				//If P2 runs out of lives, then this bool returns false.
 	bool			isDying;				//If P2 runs out of lives, then this bool returns true.
 	bool			againstRightWall;		//If P2 is against a right wall then this is true.
@@ -122,7 +121,7 @@ public: //P1 Variables
 	bool Load(pugi::xml_node &node);				//Loading from xml file.
 	bool Save(pugi::xml_node &node) const;			//Saving to xml file.
 	bool LoadPlayer2();								//Loads P2 on screen.
-	bool LoadPlayer2Properties(pugi::xml_node&);
+	bool LoadPlayer2Properties(pugi::xml_node&);	//Loads P2's data from the config xml file.
 	//bool LoadPlayer2Textures();					//Loads P2's textures on screen.
 	void Restart();									//Resets P2's position to where P2 started the level. 
 	void GodModeInput();							//Enables / Disables the God Mode.

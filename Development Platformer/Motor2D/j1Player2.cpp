@@ -4,12 +4,13 @@
 #include "j1Module.h"
 #include "p2Point.h"
 #include "j1Render.h"
-#include "j1Textures.h"
 #include "j1Input.h"
+#include "p2Log.h"
 #include "j1Map.h"
+#include "j1Scene.h"
+#include "j1Textures.h"
 #include "j1Collisions.h"
 #include "j1FadeScene.h"
-#include "p2Log.h"
 #include "j1Audio.h"
 
 j1Player2::j1Player2() //Constructor. Called at the first frame.
@@ -117,6 +118,7 @@ bool j1Player2::Awake(pugi::xml_node& config)
 	p1.deathFX = config.child("deathFX").attribute("name").as_string();
 	p1.duoFX = config.child("landFX").attribute("name").as_string();*/
 
+	//Sets the first cycle of animations to the idle set.
 	p2.current_animation = &p2.idle;
 
 	return true;
@@ -141,19 +143,16 @@ bool j1Player2::PreUpdate()
 	{
 		p2.state = idle_P2;
 
-		if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT)
+		if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT)			//Move Right
 		{
+			
 			if (p2.againstLeftWall == false)
 			{
 				p2.state = goingRight_P2;
 			}
-			else
-			{
-				p2.state = idle_P2;
-			}
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_KP_4) == KEY_REPEAT)
+		if (App->input->GetKey(SDL_SCANCODE_KP_4) == KEY_REPEAT)			//Move Left
 		{
 			if (p2.againstRightWall == false)
 			{
@@ -165,18 +164,18 @@ bool j1Player2::PreUpdate()
 			}
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_REPEAT)
+		if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_REPEAT)			//Crouch
 		{
 			p2.state = crouching_P2;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_KP_0) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_KP_0) == KEY_DOWN)				//Jump
 		{
 			p2.state = jumping_P2;
 			App->audio->PlayFx(7, 0);
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_5) == KEY_REPEAT)
+		if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_REPEAT)				//Drop from platform
 		{
 			p2.platformDrop = true;
 		}
@@ -185,15 +184,14 @@ bool j1Player2::PreUpdate()
 			p2.platformDrop = false;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_KP_7) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_KP_7) == KEY_DOWN)				//Teleport
 		{
 			p2.state = teleporting_P2;
 			App->audio->PlayFx(1, 0);
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_N) == KEY_REPEAT)
+		if (App->input->GetKey(SDL_SCANCODE_N) == KEY_REPEAT)				//Suicide Button
 		{
-
 			p2.state = dying_P2;
 			App->audio->PlayFx(2, 0);
 		}
@@ -211,7 +209,6 @@ bool j1Player2::PreUpdate()
 	}*/
 
 	return true;
-
 };
 
 bool j1Player2::Update(float dt)
@@ -297,7 +294,7 @@ bool j1Player2::Update(float dt)
 
 	p2.position.x += p2.speed.x; //Refreshes the vector speed of P2 in the X axis
 
-	//If the p2 is in the air then this function brings him/her back down to the floor.
+	//If P2 is in the air then this function brings him/her back down to the floor.
 	if (p2.airborne == true)
 	{
 		p2.speed.y += p2.gravity;
@@ -396,12 +393,12 @@ void j1Player2::TeleportP1ToP2()
 	if (p2.flip == false) //The players will be always teleported directly in front of one another. 
 	{
 		App->player1->p1.position.x = p2.position.x + p2.collider->collider.w;
-		App->player1->p1.position.y = p2.position.y;
+		App->player1->p1.position.y = p2.position.y - 20;
 	}
 	else
 	{
 		App->player1->p1.position.x = p2.position.x - p2.collider->collider.w / 2;
-		App->player1->p1.position.y = p2.position.y;
+		App->player1->p1.position.y = p2.position.y - 20;
 	}
 }
 
@@ -410,12 +407,12 @@ void j1Player2::RespawnP2ToP1()		//Method that, on death, will respawn P2 behind
 	if (p2.flip == true)			//The players will be always respawned directly behind of one another. 
 	{
 		p2.position.x = App->player1->p1.position.x + App->player1->p1.collider->collider.w;
-		p2.position.y = App->player1->p1.position.y;
+		p2.position.y = App->player1->p1.position.y - 20;
 	}
 	else
 	{
 		p2.position.x = App->player1->p1.position.x + App->player1->p1.collider->collider.w/2;
-		p2.position.y = App->player1->p1.position.y;
+		p2.position.y = App->player1->p1.position.y - 20;
 	}
 }
 
@@ -480,7 +477,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 						p2.speed.y = 0;
 						p2.position.y = C2->collider.y + C2->collider.h;
 						p2.againstCeiling = true;
-						LOG("P1 IS COLLIDING WITH SOLID FROM BELOW");
+						LOG("P2 IS COLLIDING WITH SOLID FROM BELOW");
 					}
 				}
 			}
@@ -488,7 +485,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 			//Player is colliding from the sides. The first part checks if C1 is contained in  the Y axis of C2.
 			if (C1->collider.y + C1->collider.h > C2->collider.y + p2.collision_tolerance && C1->collider.y < C2->collider.y + C2->collider.h)
 			{
-				LOG("P1 IS COLLIDING WITH SOLID FROM THE SIDES");
+				LOG("P2 IS COLLIDING WITH SOLID FROM THE SIDES");
 
 				//Player is colliding from left (going right). This second part checks if C1 is actually colliding from the left side of the collider. Additionally it checks whether or not P1 has collided against the ceiling.
 				if (C1->collider.x + C1->collider.w > C2->collider.x && C1->collider.x < C2->collider.x && p2.againstCeiling == false)
@@ -498,7 +495,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 					{
 						p2.againstLeftWall = true;
 						p2.position.x = C2->collider.x - C2->collider.w - 1;
-						LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
+						LOG("P2 IS COLLIDING WITH SOLID FROM THE LEFT");
 					}
 				}
 
@@ -510,7 +507,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 					{
 						p2.againstRightWall = true;
 						p2.position.x = C2->collider.x + C2->collider.w - p2.collision_tolerance;
-						LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
+						LOG("P2 IS COLLIDING WITH SOLID FROM THE LEFT");
 					}
 				}
 			}
@@ -529,9 +526,8 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 						p2.position.y = C2->collider.y - C1->collider.h;
 						p2.isJumping = false;
 						p2.isBoostJumping = false;
-						p2.onPlatform = true;
 						p2.grounded = true;
-						LOG("P1 IS COLLIDING WITH SOLID FROM ABOVE");
+						LOG("P2 IS COLLIDING WITH PLATFORM FROM ABOVE");
 					}
 				}
 			}
@@ -695,6 +691,7 @@ bool j1Player2::LoadPlayer2()		//Loads P2 on screen.
 
 	//Boolean resetting
 	p2.grounded = false;
+	p2.airborne = false;
 	p2.flip = false;
 	p2.isCrouching = false;
 	p2.isJumping = false;
@@ -702,7 +699,6 @@ bool j1Player2::LoadPlayer2()		//Loads P2 on screen.
 	p2.item_activated = false;
 	p2.isGoingRight = false;
 	p2.isGoingLeft = false;
-	p2.onPlatform = false;
 	p2.platformDrop = false;
 	p2.fading = false;
 	p2.isAlive = true;

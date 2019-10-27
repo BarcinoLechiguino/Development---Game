@@ -105,21 +105,20 @@ bool j1Fade_Scene::ChangeMap(const char* newMap)
 {
 	bool ret = true;
 
-	App->map->CleanUp();						//Deletes everything related with the map from memory. (Tilesets, Layers and ObjectGroups)
+
 	App->collisions->collider_list.clear();		//Deletes all colliders from memory.
 	App->player1->CleanUp();					//Deletes all data related to P1. 
 	App->player2->CleanUp();					//Deletes all data related to P2.
 	//App->audio->CleanUp();
 
+	App->map->CleanUp();						//Deletes everything related with the map from memory. (Tilesets, Layers and ObjectGroups)
+
 	App->map->Load(newMap);						//Loads a specified map
 	App->collisions->LoadColliderFromMap();		//Load Collisions
 	App->player1->LoadPlayer1();				//Load / Reset P1
-	
-	//App->player1->LoadPlayer1Textures();		//Load / Reset P1's textures.
 	App->player2->LoadPlayer2();				//Load / Reset P2
+	//App->player1->LoadPlayer1Textures();		//Load / Reset P1's textures.
 	//App->player1->LoadPlayer1Textures();		//Load / Reset P2's textures.
-	//App->audio->
-	
 
 	return ret;
 }
