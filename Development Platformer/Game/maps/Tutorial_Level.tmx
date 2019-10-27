@@ -2224,6 +2224,9 @@
   </data>
  </layer>
  <layer id="8" name="Floor" width="52" height="42">
+  <properties>
+   <property name="Speed" type="float" value="0.5"/>
+  </properties>
   <data>
    <tile gid="936"/>
    <tile gid="936"/>
