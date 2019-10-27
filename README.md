@@ -11,7 +11,7 @@ jump, have dual moves and teleport.
 Download the game file in 
 which you will find the executable. 
 
-#Controls
+# Controls
 ## Player 1
 - W,A,S,D: Player movement
 - Space Bar: Jump
@@ -32,13 +32,13 @@ whenever they are close enough. Also a player can
 teleport the other player to his actual position.
 
 # Debug Keys
-F1: Load the first level. 
-F2: Load the second level. 
-F3: Restart the current level. 
-F5: Load the saved game. 
-F6: Save the current game. 
-F9: View collider logic. 
-F10: Activate/Deactivate God Mode. 
+- F1: Load the first level. 
+- F2: Load the second level. 
+- F3: Restart the current level. 
+- F5: Load the saved game. 
+- F6: Save the current game. 
+- F9: View collider logic. 
+- F10: Activate/Deactivate God Mode. 
 
 # Team Members
 - Gerard Romeu: https://github.com/Gromeu2000
@@ -49,13 +49,13 @@ F10: Activate/Deactivate God Mode.
 - Gerard Romeu: Audio & FX, Map, Design of the levels, Debug Keys, animations & gameplay logic.
 
 # Credits
-https://rvros.itch.io/animated-pixel-hero
-https://edermunizz.itch.io/free-pixel-art-forest
-https://0x72.itch.io/16x16-industrial-tileset
-https://0x72.itch.io/16x16-robot-tileset
-https://szadiart.itch.io/pixel-dark-forest
-https://anokolisa.itch.io/forest-game-assets-20
-https://northgames.itch.io/dirtbrick
+- https://rvros.itch.io/animated-pixel-hero
+- https://edermunizz.itch.io/free-pixel-art-forest
+- https://0x72.itch.io/16x16-industrial-tileset
+- https://0x72.itch.io/16x16-robot-tileset
+- https://szadiart.itch.io/pixel-dark-forest
+- https://anokolisa.itch.io/forest-game-assets-20
+- https://northgames.itch.io/dirtbrick
 
 # Link to repository
 https://github.com/BarcinoLechiguino/Development---Game
