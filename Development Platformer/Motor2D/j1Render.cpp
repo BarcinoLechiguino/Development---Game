@@ -74,7 +74,7 @@ bool j1Render::PreUpdate()
 
 bool j1Render::Update(float dt)
 {
-	App->win->GetWindowSize(cam.WinWidth, cam.WinHeight);
+	App->win->GetWindowSize(cam.WinWidth, cam.WinHeight);		//Last pixel of window is the 0,0 of the window we see. So we need to add + cam.WinWidth or + cam.WinHeight to set it where we want it to be.
 
 	//Positions of the camera if it was centered around only one player. Used a p2Point<float> to translate all those long and convoluted expressions to a much more readable state.
 	cam.p1.x = -App->player1->p1.position.x + cam.WinWidth / 2 - App->player1->p1.sprite_measures.x;
@@ -123,7 +123,7 @@ bool j1Render::Update(float dt)
 	{
 		camera.y = 0;
 	}
-	else if (camera.y < cam.mapLimit.y)		//Camera is at the lowest part of the map.
+	else if (camera.y < cam.mapLimit.y)							//Camera is at the lowest part of the map.
 	{
 		camera.y = cam.mapLimit.y;
 	}

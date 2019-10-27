@@ -35,8 +35,6 @@ j1Player1::j1Player1() //Constructor. Called at the first frame.
 	p1.running.speed = 0.2f;
 
 	//P1 Crouching animation.
-	/*p1.crouching.PushBack({ 30, 172, 39, 47 });
-	p1.crouching.PushBack({ 130, 176, 39, 43 });*/
 	p1.crouching.PushBack({ 432, 10, 37, 61 }); //20 Pixels of margin vertically up.
 	p1.crouching.PushBack({ 530, 8, 39, 63 });
 	p1.crouching.PushBack({ 630, 8, 37, 63 });
@@ -129,7 +127,7 @@ bool j1Player1::Awake(pugi::xml_node& config)
 
 bool j1Player1::Start() 
 {
-	LoadPlayer1();				//Loads P1 in game.
+	LoadPlayer1();					//Loads P1 in game.
 	//LoadPlayer1Textures();		//Loads P1's textures in game.
 
 	p1.jumpFX = App->audio->LoadFx("audio/fx/Jump.wav");
@@ -202,7 +200,6 @@ bool j1Player1::PreUpdate()
 
 		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT)				//Suicide Button
 		{
-
 			p1.state = dying_P1;
 			App->audio->PlayFx(2, 0);
 		}
@@ -293,7 +290,6 @@ bool j1Player1::Update(float dt)
 
 		TeleportP2ToP1();
 		
-
 		break;
 
 	case dying_P1:
@@ -305,14 +301,8 @@ bool j1Player1::Update(float dt)
 	}
 
 	p1.position.x += p1.speed.x;		//Refreshes the vector speed of P1 in the X axis
-	
-	
-	/*if (p1.grounded == true)
-	{
-		p1.airborne = false;
-	}*/
 								 
-	//If the p1 is in the air then this function brings him/her back down to the floor.
+	//If P1 is in the air then this function brings him/her back down to the floor.
 	if (p1.airborne == true)
 	{	
 		p1.speed.y += p1.gravity;
@@ -412,12 +402,12 @@ void j1Player1::TeleportP2ToP1()	//Method that teleports P2 directly in front of
 	if (p1.flip == false)			//The players will be always teleported directly in front of one another. 
 	{
 		App->player2->p2.position.x = p1.position.x + p1.collider->collider.w;
-		App->player2->p2.position.y = p1.position.y;
+		App->player2->p2.position.y = p1.position.y - 20;
 	}
 	else
 	{
 		App->player2->p2.position.x = p1.position.x - p1.collider->collider.w / 2;
-		App->player2->p2.position.y = p1.position.y;
+		App->player2->p2.position.y = p1.position.y - 20;
 	}
 }
 
@@ -426,12 +416,12 @@ void j1Player1::RespawnP1ToP2()		//Method that, on death, will respawn P1 behind
 	if (p1.flip == true)			//The players will be always respawned directly behind of one another. 
 	{
 		p1.position.x = App->player2->p2.position.x + App->player2->p2.collider->collider.w;
-		p1.position.y = App->player2->p2.position.y;
+		p1.position.y = App->player2->p2.position.y - 20;
 	}
 	else
 	{
 		p1.position.x = App->player2->p2.position.x + App->player2->p2.collider->collider.w / 2;
-		p1.position.y = App->player2->p2.position.y;
+		p1.position.y = App->player2->p2.position.y - 20;
 	}
 }
 
@@ -545,9 +535,8 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 						p1.position.y = C2->collider.y - C1->collider.h;
 						p1.isJumping = false;
 						p1.isBoostJumping = false;
-						p1.onPlatform = true;
 						p1.grounded = true;
-						LOG("P1 IS COLLIDING WITH SOLID FROM ABOVE");
+						LOG("P1 IS COLLIDING WITH PLATFORM FROM ABOVE");
 					}
 				}
 			}
@@ -582,14 +571,61 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 		{
 			if (p1.item_activated == false || App->player2->p2.item_activated == false)
 			{
-				if (C1->collider.y + C1->collider.h > C2->collider.y && C1->collider.x < C2->collider.x + C2->collider.w && C1->collider.x + C1->collider.w > C2->collider.x)
+				//Player Colliding vertically against the Solid. The first part checks if C1 is contained in the X axis of C2. 
+				if (C1->collider.x + C1->collider.w > C2->collider.x + p1.collision_tolerance && C1->collider.x + p1.collision_tolerance < C2->collider.x + C2->collider.w)
 				{
-					p1.speed.y = 0;
-					p1.position.y = C2->collider.y - C1->collider.h;
-					p1.isJumping = false;
-					p1.isBoostJumping = false;
-					p1.grounded = true;
-					LOG("P1 IS COLLIDING WITH SOLID FROM AVOBE");
+					//Player Colliding from Above the Solid, ergo colliding with the ground. This second part checks if C1 is actually colliding vertically down.
+					if (C1->collider.y + C1->collider.h > C2->collider.y && C1->collider.y < C2->collider.y)
+					{
+						p1.speed.y = 0;
+						p1.position.y = C2->collider.y - C1->collider.h;
+						p1.isJumping = false;
+						p1.isBoostJumping = false;
+						p1.grounded = true;
+						LOG("P1 IS COLLIDING WITH SOLID FROM ABOVE");
+					}
+
+					//Player Colliding from Below the Solid. ergo colliding with the ceiling. This second part checks if C1 is actually colliding vertically down.
+					else
+					{
+						if (C1->collider.y < C2->collider.y + C2->collider.h && C1->collider.y + (C1->collider.h * half) > C2->collider.y + C2->collider.h && p1.speed.y < 0)
+						{
+							p1.speed.y = 0;
+							p1.position.y = C2->collider.y + C2->collider.h;
+							p1.againstCeiling = true;
+							LOG("P1 IS COLLIDING WITH SOLID FROM BELOW");
+						}
+					}
+				}
+
+				//Player is colliding from the sides. The first part checks if C1 is contained in  the Y axis of C2.
+				if (C1->collider.y + C1->collider.h > C2->collider.y + p1.collision_tolerance && C1->collider.y < C2->collider.y + C2->collider.h)
+				{
+					LOG("P1 IS COLLIDING WITH SOLID FROM THE SIDES");
+
+					//Player is colliding from left (going right). This second part checks if C1 is actually colliding from the left side of the collider. Additionally it checks whether or not P1 has collided against the ceiling.
+					if (C1->collider.x + C1->collider.w > C2->collider.x && C1->collider.x < C2->collider.x && p1.againstCeiling == false)
+					{
+						//This third part checks whether P1 is at a certain distance in the collider. It checks if three fourths of P1's width is not actually colliding.    
+						if (C1->collider.x + (C1->collider.w * threeFourths) < C2->collider.x)
+						{
+							p1.againstLeftWall = true;
+							p1.position.x = C2->collider.x - C2->collider.w - 1;
+							LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
+						}
+					}
+
+					//Player is colliding from right (going left). This second part checks if  C1 is actually colliding from the right side of the collider.
+					if (C1->collider.x < C2->collider.x + C2->collider.w && C1->collider.x + C1->collider.w > C2->collider.x + C2->collider.w && p1.againstCeiling == false)
+					{
+						//This third part checks whether P1 is at a certain distance in the collider. It checks if a quarter of P1's width is still colliding. 
+						if (C1->collider.x + (C1->collider.w * quarter) > C2->collider.x + C2->collider.w)
+						{
+							p1.againstRightWall = true;
+							p1.position.x = C2->collider.x + C2->collider.w - p1.collision_tolerance;
+							LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
+						}
+					}
 				}
 			}
 		}
@@ -663,7 +699,6 @@ bool j1Player1::LoadPlayer1()		//Loads P1 on screen.
 	p1.item_activated = false;
 	p1.isGoingRight = false;
 	p1.isGoingLeft = false;
-	p1.onPlatform = false;
 	p1.platformDrop = false;
 	p1.fading = false;
 	p1.isAlive = true;

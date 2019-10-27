@@ -136,6 +136,10 @@ bool j1Map::CleanUp()
 	}
 	data.objectGroups.clear();
 	
+	//Removing all data of all layers from memory.
+	data.layers.clear();		//Deletes from memory all the items inside the layers list.
+	data = { 0 };				//Frees all  memory allocated to the data struct.
+
 	// Clean up the pugui tree
 	map_file.reset();
 

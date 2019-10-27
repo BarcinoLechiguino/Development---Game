@@ -47,7 +47,6 @@ struct Player1
 	bool			item_activated;			//Keeps track of the items P1 interacts with.
 	bool			isGoingRight;			//Keeps track of whether or not P1 is going to the right.
 	bool			isGoingLeft;			//Keeps track of whether or not P1 is going to the left.
-	bool			onPlatform;				//Keeps track whether or not P1 is on a platform.
 	bool			platformDrop;			//Keeps track whether or not P1 wants to drop from a platform.
 	bool			isAlive;				//If P1 runs out of lives, then this bool returns false.
 	bool			isDying;				//If P1 runs out of lives, then this bool returns true.
@@ -122,7 +121,7 @@ public: //P1 Variables
 	bool Load(pugi::xml_node &node);				//Loading from xml file.
 	bool Save(pugi::xml_node &node) const;			//Saving to xml file.
 	bool LoadPlayer1();								//Loads P1 on screen (Position, Colliders...)
-	bool LoadPlayer1Properties(pugi::xml_node&);
+	bool LoadPlayer1Properties(pugi::xml_node&);	//Loads P2's data from the config xml file.
 	//bool LoadPlayer1Textures();					//Loads P1's textures on screen.
 	void Restart();									//Resets P1's position to where P1 started the level. 
 	void GodModeInput();							//Enables / Disables the God Mode.
