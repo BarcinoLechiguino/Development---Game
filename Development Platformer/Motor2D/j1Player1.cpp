@@ -402,12 +402,12 @@ void j1Player1::TeleportP2ToP1()	//Method that teleports P2 directly in front of
 	if (p1.flip == false)			//The players will be always teleported directly in front of one another. 
 	{
 		App->player2->p2.position.x = p1.position.x + p1.collider->collider.w;
-		App->player2->p2.position.y = p1.position.y - 20;
+		App->player2->p2.position.y = p1.position.y - 60;
 	}
 	else
 	{
 		App->player2->p2.position.x = p1.position.x - p1.collider->collider.w / 2;
-		App->player2->p2.position.y = p1.position.y - 20;
+		App->player2->p2.position.y = p1.position.y - 60;
 	}
 }
 
@@ -416,12 +416,12 @@ void j1Player1::RespawnP1ToP2()		//Method that, on death, will respawn P1 behind
 	if (p1.flip == true)			//The players will be always respawned directly behind of one another. 
 	{
 		p1.position.x = App->player2->p2.position.x + App->player2->p2.collider->collider.w;
-		p1.position.y = App->player2->p2.position.y - 20;
+		p1.position.y = App->player2->p2.position.y - 40;
 	}
 	else
 	{
 		p1.position.x = App->player2->p2.position.x + App->player2->p2.collider->collider.w / 2;
-		p1.position.y = App->player2->p2.position.y - 20;
+		p1.position.y = App->player2->p2.position.y - 40;
 	}
 }
 
