@@ -47,6 +47,7 @@ struct Player1
 	bool			item_activated;			//Keeps track of the items P1 interacts with.
 	bool			isGoingRight;			//Keeps track of whether or not P1 is going to the right.
 	bool			isGoingLeft;			//Keeps track of whether or not P1 is going to the left.
+	bool			onPlatform;				//Keeps track whether or not P1 is on a platform.
 	bool			platformDrop;			//Keeps track whether or not P1 wants to drop from a platform.
 	bool			isAlive;				//If P1 runs out of lives, then this bool returns false.
 	bool			isDying;				//If P1 runs out of lives, then this bool returns true.

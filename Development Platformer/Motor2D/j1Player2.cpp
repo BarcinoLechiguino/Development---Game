@@ -176,7 +176,7 @@ bool j1Player2::PreUpdate()
 			App->audio->PlayFx(7, 0);
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_5) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_0) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_5) == KEY_REPEAT)
 		{
 			p2.platformDrop = true;
 		}
@@ -518,7 +518,23 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 
 		if (C1->type == PLAYER && C2->type == PLATFORM)
 		{
-
+			if (p2.platformDrop == false)
+			{
+				if (C1->collider.x + C1->collider.w > C2->collider.x + p2.collision_tolerance && C1->collider.x + p2.collision_tolerance < C2->collider.x + C2->collider.w)
+				{
+					//Player Colliding from Above the Platform, ergo colliding with the ground. This second part checks if C1 is actually colliding vertically down.
+					if (C1->collider.y + C1->collider.h > C2->collider.y && C1->collider.y < C2->collider.y)
+					{
+						p2.speed.y = 0;
+						p2.position.y = C2->collider.y - C1->collider.h;
+						p2.isJumping = false;
+						p2.isBoostJumping = false;
+						p2.onPlatform = true;
+						p2.grounded = true;
+						LOG("P1 IS COLLIDING WITH SOLID FROM ABOVE");
+					}
+				}
+			}
 		}
 
 		if (C1->type == PLAYER && C2->type == HAZARD)
@@ -686,6 +702,7 @@ bool j1Player2::LoadPlayer2()		//Loads P2 on screen.
 	p2.item_activated = false;
 	p2.isGoingRight = false;
 	p2.isGoingLeft = false;
+	p2.onPlatform = false;
 	p2.platformDrop = false;
 	p2.fading = false;
 	p2.isAlive = true;

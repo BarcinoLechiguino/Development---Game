@@ -153,7 +153,7 @@ bool j1Player1::PreUpdate()
 	{
 		p1.state = idle_P1;
 		
-		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)				//Move Right
 		{
 			if (p1.againstLeftWall == false)
 			{
@@ -162,7 +162,7 @@ bool j1Player1::PreUpdate()
 
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)				//Move Left
 		{
 			if (p1.againstRightWall == false)
 			{
@@ -174,18 +174,18 @@ bool j1Player1::PreUpdate()
 			}
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)				//Crouch
 		{
 			p1.state = crouching_P1;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)				//Jump
 		{
 			p1.state = jumping_P1;
 			App->audio->PlayFx(5, 0);
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)				//Drop from platform
 		{
 			p1.platformDrop = true;
 		}
@@ -194,13 +194,13 @@ bool j1Player1::PreUpdate()
 			p1.platformDrop = false;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)					//Teleport
 		{
 			p1.state = teleporting_P1;
 			App->audio->PlayFx(1, 0);
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT)
+		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT)				//Suicide Button
 		{
 
 			p1.state = dying_P1;
@@ -209,7 +209,7 @@ bool j1Player1::PreUpdate()
 	}
 	else
 	{
-		GodModeInput();
+		GodModeInput();														//GodMode 
 	}
 
 	//Switch Sprites Method Call
@@ -534,7 +534,23 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 
 		if (C1->type == PLAYER && C2->type == PLATFORM)
 		{
-
+			if (p1.platformDrop == false)
+			{
+				if (C1->collider.x + C1->collider.w > C2->collider.x + p1.collision_tolerance && C1->collider.x + p1.collision_tolerance < C2->collider.x + C2->collider.w)
+				{
+					//Player Colliding from Above the Platform, ergo colliding with the ground. This second part checks if C1 is actually colliding vertically down.
+					if (C1->collider.y + C1->collider.h > C2->collider.y && C1->collider.y < C2->collider.y)
+					{
+						p1.speed.y = 0;
+						p1.position.y = C2->collider.y - C1->collider.h;
+						p1.isJumping = false;
+						p1.isBoostJumping = false;
+						p1.onPlatform = true;
+						p1.grounded = true;
+						LOG("P1 IS COLLIDING WITH SOLID FROM ABOVE");
+					}
+				}
+			}
 		}
 
 		if (C1->type == PLAYER && C2->type == HAZARD)
@@ -647,6 +663,7 @@ bool j1Player1::LoadPlayer1()		//Loads P1 on screen.
 	p1.item_activated = false;
 	p1.isGoingRight = false;
 	p1.isGoingLeft = false;
+	p1.onPlatform = false;
 	p1.platformDrop = false;
 	p1.fading = false;
 	p1.isAlive = true;

@@ -48,6 +48,7 @@ struct Player2
 	bool			isGoingRight;			//Keeps track of whether or not P2 is going to the right.
 	bool			isGoingLeft;			//Keeps track of whether or not P2 is going to the left.
 	bool			platformDrop;			//Keeps track of whether or  not P2 wants to drop from a plaform.
+	bool			onPlatform;				//Keeps track whether or not P2 is on a platform.
 	bool			isAlive;				//If P2 runs out of lives, then this bool returns false.
 	bool			isDying;				//If P2 runs out of lives, then this bool returns true.
 	bool			againstRightWall;		//If P2 is against a right wall then this is true.
