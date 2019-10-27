@@ -504,26 +504,26 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 				LOG("P1 IS COLLIDING WITH SOLID FROM BELOW");
 			}
 
-			////Player is colliding from the sides. The first part checks if C1 is contained in C2.
-			//if (C1->collider.y + (C1->collider.h * (1.0f / 4.0f)) < C2->collider.y + C2->collider.h && C1->collider.y + (C1->collider.h * (3.0f/4.0f)) > C2->collider.y)
-			//{
-			//	p1.speed.x = 0;
-			//	LOG("P1 IS COLLIDING WITH SOLID FROM THE RIGHT");
+			//Player is colliding from the sides. The first part checks if C1 is contained in C2.
+			if (C1->collider.y + (C1->collider.h * (1.0f / 4.0f)) < C2->collider.y + C2->collider.h && C1->collider.y + (C1->collider.h * (3.0f/4.0f)) > C2->collider.y)
+			{
+				p1.speed.x = 0;
+				LOG("P1 IS COLLIDING WITH SOLID FROM THE RIGHT");
 
-			//	//Player is colliding from left (going right)
-			//	if (C1->collider.x > (C2->collider.x + C2->collider.w))
-			//	{
-			//		p1.position.x = C2->collider.x - C1->collider.w;
-			//		LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
-			//	}
+				////Player is colliding from left (going right)
+				//if ((C1->collider.x + C1->collider.w) > (C2->collider.x + C2->collider.w))
+				//{
+				//	p1.position.x = C2->collider.x - C2->collider.w;
+				//	LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
+				//}
 
-			//	//Player is colliding from right (going left)
-			//	if (C1->collider.x < C2->collider.x + C2->collider.w /*C1->collider.x > (C2->collider.x + C2->collider.w * 3 / 4)*/)
-			//	{
-			//		p1.position.x = C2->collider.x - C2->collider.w;
-			//		LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
-			//	}
-			//}
+				//Player is colliding from right (going left)
+				if (C1->collider.x < C2->collider.x + C2->collider.w /*C1->collider.x > (C2->collider.x + C2->collider.w * 3 / 4)*/)
+				{
+					p1.position.x = C2->collider.x + C2->collider.w - 10;
+					LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
+				}
+			}
 		}
 
 		if (C1->type == PLAYER && C2->type == PLATFORM)
