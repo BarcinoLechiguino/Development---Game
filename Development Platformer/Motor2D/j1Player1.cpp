@@ -237,7 +237,7 @@ bool j1Player1::PreUpdate()
 
 bool j1Player1::Update(float dt) 
 {
-	p1.previous_position = p1.position;
+	//p1.previous_position = p1.position;
 	
 	switch (p1.state)
 	{
@@ -372,14 +372,6 @@ bool j1Player1::Update(float dt)
 		
 	}
 
-	//We move the character according the position value after the state has been run.
-	p1.HitBox.x = p1.position.x; 
-	p1.HitBox.y = p1.position.y;
-
-	p1.HitBox = p1.current_animation->GetCurrentFrame();
-	
-	App->render->Blit(p1.texture, p1.position.x, p1.position.y, &p1.HitBox, p1.flip);
-	
 	//Makes P1's collider follow P1. If there is a flip in spritesheet it is taken into account.
 	if (p1.flip == false)
 	{
@@ -387,7 +379,7 @@ bool j1Player1::Update(float dt)
 	}
 	else
 	{
-		p1.collider->Set_Position(p1.position.x + 22, p1.position.y);
+		p1.collider->Set_Position(p1.position.x + FLIP_MARGIN, p1.position.y);
 	}
 
 	//If player dies:
@@ -403,7 +395,15 @@ bool j1Player1::Update(float dt)
 			p1.lives = p1.max_lives;
 		}
 	}
+	
+	//We move the character according the position value after the state has been run.
+	p1.HitBox.x = p1.position.x; 
+	p1.HitBox.y = p1.position.y;
 
+	p1.HitBox = p1.current_animation->GetCurrentFrame();
+	
+	App->render->Blit(p1.texture, p1.position.x, p1.position.y, &p1.HitBox, p1.flip);
+	
 	return true;
 };
 
@@ -644,7 +644,6 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			}
 		}
 	}
-	
 }
 
 bool j1Player1::Load(pugi::xml_node& data)

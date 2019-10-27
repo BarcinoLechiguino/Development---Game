@@ -18,6 +18,7 @@ enum P2_State
 	crouching_P2,
 	jumping_P2,
 	boost_jump_P2,
+	falling_P2,
 	teleporting_P2,
 	dying_P2
 };
