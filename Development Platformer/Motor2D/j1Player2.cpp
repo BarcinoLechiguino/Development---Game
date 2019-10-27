@@ -74,11 +74,11 @@ j1Player2::j1Player2() //Constructor. Called at the first frame.
 	p2.falling.speed = 0.2f;
 
 	//P2 Death Animation
-	p2.death.PushBack({ 10,1074,58,86 });
-	p2.death.PushBack({ 10,1074,58,86 });
-	p2.death.PushBack({ 10,1074,58,86 });
-	p2.death.PushBack({ 10,1074,58,86 });
-	p2.death.PushBack({ 10,1074,58,86 });
+	p2.death.PushBack({ 10,1094,58,66 });
+	p2.death.PushBack({ 10,1094,58,66 });
+	p2.death.PushBack({ 10,1094,58,66 });
+	p2.death.PushBack({ 10,1094,58,66 });
+	p2.death.PushBack({ 10,1074,58,66 });
 	p2.death.PushBack({ 68,1074,58,86 });
 	p2.death.PushBack({ 68,1074,58,86 });
 	p2.death.PushBack({ 68,1074,58,86 });
@@ -95,7 +95,7 @@ j1Player2::j1Player2() //Constructor. Called at the first frame.
 	p2.death.PushBack({ 193,1074,58,86 });
 	p2.death.PushBack({ 193,1074,58,86 });
 	p2.death.PushBack({ 193,1074,58,86 });
-	p2.death.PushBack({ 193,1074,58,86 });
+	p2.death.PushBack({ 193,1074,58,66 });
 	p2.death.speed = 0.2f;
 };
 
@@ -365,6 +365,7 @@ bool j1Player2::Update(float dt)
 
 		if (p2.isAlive == false && App->player1->p1.isAlive == false)
 		{
+			App->audio->PlayFx(2, 0);
 			Restart();
 			App->player1->Restart();
 			p2.lives = p2.max_lives;
@@ -451,6 +452,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 						p2.isBoostJumping = true;
 						p2.airborne = true;
 						p2.grounded = false;
+						App->audio->PlayFx(3, 0);
 					}
 				}
 				LOG("P2 IS COLLIDING WITH P1");

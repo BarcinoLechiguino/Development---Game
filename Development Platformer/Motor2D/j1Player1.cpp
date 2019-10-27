@@ -81,24 +81,24 @@ j1Player1::j1Player1() //Constructor. Called at the first frame.
 	p1.death.PushBack({ 10,1094,58,66 });
 	p1.death.PushBack({ 10,1094,58,66 });
 	p1.death.PushBack({ 10,1094,58,66 });
-	p1.death.PushBack({ 10,1094,58,66 });
-	p1.death.PushBack({ 68,1094,58,66 });
-	p1.death.PushBack({ 68,1094,58,66 });
-	p1.death.PushBack({ 68,1094,58,66 });
-	p1.death.PushBack({ 68,1094,58,66 });
-	p1.death.PushBack({ 68,1094,58,66 });
-	p1.death.PushBack({ 68,1094,58,66 });
-	p1.death.PushBack({ 68,1094,58,66 });
-	p1.death.PushBack({ 136,1094,58,66 });
-	p1.death.PushBack({ 136,1094,58,66 });
-	p1.death.PushBack({ 136,1094,58,66 });
-	p1.death.PushBack({ 136,1094,58,66 });
-	p1.death.PushBack({ 136,1094,58,66 });
-	p1.death.PushBack({ 136,1094,58,66 });
-	p1.death.PushBack({ 193,1094,58,66 });
-	p1.death.PushBack({ 193,1094,58,66 });
-	p1.death.PushBack({ 193,1094,58,66 });
-	p1.death.PushBack({ 193,1094,58,66 });
+	p1.death.PushBack({ 10,1074,58,66 });
+	p1.death.PushBack({ 68,1074,58,86 });
+	p1.death.PushBack({ 68,1074,58,86 });
+	p1.death.PushBack({ 68,1074,58,86 });
+	p1.death.PushBack({ 68,1074,58,86 });
+	p1.death.PushBack({ 68,1074,58,86 });
+	p1.death.PushBack({ 68,1074,58,86 });
+	p1.death.PushBack({ 68,1074,58,86 });
+	p1.death.PushBack({ 136,1074,58,86 });
+	p1.death.PushBack({ 136,1074,58,86 });
+	p1.death.PushBack({ 136,1074,58,86 });
+	p1.death.PushBack({ 136,1074,58,86 });
+	p1.death.PushBack({ 136,1074,58,86 });
+	p1.death.PushBack({ 136,1074,58,86 });
+	p1.death.PushBack({ 193,1074,58,86 });
+	p1.death.PushBack({ 193,1074,58,86 });
+	p1.death.PushBack({ 193,1074,58,86 });
+	p1.death.PushBack({ 193,1074,58,66 });
 	p1.death.speed = 0.2f;
 };
 
@@ -385,6 +385,7 @@ bool j1Player1::Update(float dt)
 
 		if (p1.isAlive == false && App->player2->p2.isAlive == false)
 		{
+			App->audio->PlayFx(2, 0);
 			Restart();
 			App->player2->Restart();
 			p1.lives = p1.max_lives;
@@ -472,6 +473,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 						p1.isBoostJumping = true;
 						p1.airborne = true;
 						p1.grounded = false;
+						App->audio->PlayFx(3, 0);
 					}
 				}
 				LOG("P1 IS COLLIDING WITH P2 FROM THE LEFT");
@@ -537,8 +539,13 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			{
 				//Death logic
 				p1.lives--;
+				
 				//Antes la animacion de muerte tiene que haber finalizado
 				RespawnP1ToP2();
+					
+					
+				
+				
 			}
 		}
 
