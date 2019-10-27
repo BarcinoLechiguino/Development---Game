@@ -123,7 +123,7 @@ bool j1Render::Update(float dt)
 	{
 		camera.y = 0;
 	}
-	else if (camera.y < cam.mapLimit.y /*&& camera.y < 0*/)		//Camera is at the lowest part of the map.
+	else if (camera.y < cam.mapLimit.y)		//Camera is at the lowest part of the map.
 	{
 		camera.y = cam.mapLimit.y;
 	}

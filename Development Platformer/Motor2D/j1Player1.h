@@ -40,6 +40,7 @@ struct Player1
 	int				max_lives;			//Maximum number of lives a player can have.
 
 	bool			grounded;			//Keeps track of P1 and returns true when P1 is not jumping or falling.
+	bool			airborne;			//Keeps track whether the player is on the air ir not.
 	bool			flip;				//Keeps track of which direction P1's is looking at. Changes the sprite orientation when returns true.
 	bool			isCrouching;		//Keeps track of the action P1 is performing. In this case crouching.
 	bool			isJumping;			//Keeps track of the action P1 is performing. In this case jumping.
@@ -47,22 +48,13 @@ struct Player1
 	bool			item_activated;		//Keeps track of the items P1 interacts with.
 	bool			isGoingRight;		//Keeps track of whether or not P1 is going to the right.
 	bool			isGoingLeft;		//Keeps track of whether or not P1 is going to the left.
-	bool			isAlive;			//If the player runs out of lives, then this bool returns false.
-	bool			isDying;			//If the player runs out of lives, then this bool returns true.
+	bool			platformDrop;		//Keeps track whether or not P1 wants to drop from a platform.
+	bool			isAlive;			//If P1 runs out of lives, then this bool returns false.
+	bool			isDying;			//If P1 runs out of lives, then this bool returns true.
+	bool			againstWall;		//If P1 is against a wall then this is true.
 	bool			fading;				//Fade character when changing scenes.
 	bool			GodMode;			//Defines whether GodMode is active or not.
 	bool			switch_sprites;		//Defines which sprite will P1 have.
-
-	//Changes the state of the player depending on the given argument. Also if true it records the position from where the player jumped.
-	void isGrounded(bool status)
-	{
-		if (grounded == true)
-		{
-			last_grounded = position;	//Tracks P1's position as long as P1's is not jumping or falling.
-		}
-
-		grounded = status;
-	};
 	
 	//Animation Variables
 	SDL_Texture* texture = nullptr;
