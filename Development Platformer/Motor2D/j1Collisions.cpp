@@ -8,7 +8,7 @@
 j1Collisions::j1Collisions() : j1Module()
 {
 	name.create("collisions");
-	collider_debug = true;		//F9 key sets it to true or false.
+	collider_debug = false;		//F9 key sets it to true or false.
 }
 
 bool j1Collisions::Init()

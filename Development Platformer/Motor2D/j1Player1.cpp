@@ -114,31 +114,8 @@ bool j1Player1::Init()
 
 bool j1Player1::Awake(pugi::xml_node& config) 
 {	
-
-	//Gets all the required player variables from the config xml file
-	p1.position.x = config.child("player_1").child("position").attribute("x").as_float();
-	p1.position.y = config.child("player_1").child("position").attribute("y").as_float();
-	p1.spawn_position.x = config.child("player_1").child("position").attribute("x").as_float();
-	p1.spawn_position.y = config.child("player_1").child("position").attribute("y").as_float();
-
-	p1.speed.x = config.child("player_1").child("speed").attribute("x").as_float();
-	p1.speed.y = config.child("player_1").child("speed").attribute("y").as_float();
-	p1.max_speed.x = config.child("player_1").child("max_speed").attribute("x").as_float();
-	p1.max_speed.y = config.child("player_1").child("max_speed").attribute("y").as_float();
-
-	p1.acceleration.x = config.child("player_1").child("acceleration").attribute("x").as_float();
-	p1.acceleration.y = config.child("player_1").child("acceleration").attribute("y").as_float();
-	p1.gravity = config.child("player_1").child("gravity").attribute("value").as_float();
-
-	p1.boost_jump.x = config.child("player_1").child("boost_jump").attribute("x").as_float();
-	p1.boost_jump.y = config.child("player_1").child("boost_jump").attribute("y").as_float();
-
-	p1.sprite_width = config.child("player_1").child("sprite_measures").attribute("w").as_int();
-	p1.sprite_height = config.child("player_1").child("sprite_measures").attribute("h").as_int();
-
-	p1.lives = config.child("player_1").child("lives").attribute("lives").as_int();
-	p1.max_lives = config.child("player_1").child("lives").attribute("lives").as_int();
-
+	LoadPlayer1Properties(config);
+	
 	/*p1.jumpFX = config.child("jumpFX").attribute("name").as_string();
 	p1.deathFX = config.child("deathFX").attribute("name").as_string();
 	p1.duoFX = config.child("landFX").attribute("name").as_string();*/
@@ -178,12 +155,23 @@ bool j1Player1::PreUpdate()
 		
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		{
-			p1.state = goingRight_P1;
+			if (p1.againstLeftWall == false)
+			{
+				p1.state = goingRight_P1;
+			}	
+
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
-			p1.state = goingLeft_P1;
+			if (p1.againstRightWall == false)
+			{
+				p1.state = goingLeft_P1;
+			}
+			else
+			{
+				p1.state = idle_P1;
+			}
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
@@ -236,8 +224,6 @@ bool j1Player1::PreUpdate()
 
 bool j1Player1::Update(float dt) 
 {
-	p1.previous_position = p1.position;			//Keeps track of the last position before the current one.
-	
 	switch (p1.state)
 	{
 	
@@ -405,6 +391,11 @@ bool j1Player1::Update(float dt)
 
 bool j1Player1::PostUpdate() 
 {
+	//Resetting the collider related bools after the collision has happened.
+	p1.againstCeiling = false;
+	p1.againstRightWall = false;
+	p1.againstLeftWall = false;
+	
 	return true;
 };
 
@@ -463,7 +454,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 		//Player Colliding Against Another Player
 		if (C1->type == PLAYER && C2->type == PLAYER)
 		{
-			if (C1->collider.x + C1->collider.w > C2->collider.x || C1->collider.x < C2->collider.x + C2->collider.w  /*&& p1.speed.x == p1.max_speed.x*/) //As the boost can be done even if P1 is static, this allows for more precise jumps... hopefully.
+			if (C1->collider.x + C1->collider.w > C2->collider.x || C1->collider.x < C2->collider.x + C2->collider.w ) //As the boost can be done even if P1 is static, this allows for more precise jumps... hopefully.
 			{
 				if (App->player2->p2.state == crouching_P2 /*App->player2->p2.isCrouching == true*/)
 				{
@@ -483,11 +474,11 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 		//Player colliding against solids
 		if (C1->type == PLAYER && C2->type == SOLID)
 		{
-			//Player Colliding from Above the Solid. The first part checks if C1 is contained  in C2 in the X axis. 
-			if (C1->collider.x < C2->collider.x + C2->collider.w && C1->collider.x + C1->collider.w > C2->collider.x)
+			//Player Colliding vertically against the Solid. The first part checks if C1 is contained in the X axis of C2. 
+			if (C1->collider.x + C1->collider.w > C2->collider.x + p1.collision_tolerance && C1->collider.x + p1.collision_tolerance < C2->collider.x + C2->collider.w)
 			{
-				//This second  part check if C1 is actually colliding vertically down.
-				if (C1->collider.y + C1->collider.h > C2->collider.y)
+				//Player Colliding from Above the Solid, ergo colliding with the ground. This second part checks if C1 is actually colliding vertically down.
+				if (C1->collider.y + C1->collider.h > C2->collider.y && C1->collider.y < C2->collider.y)
 				{
 					p1.speed.y = 0;
 					p1.position.y = C2->collider.y - C1->collider.h;
@@ -496,34 +487,47 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 					p1.grounded = true;
 					LOG("P1 IS COLLIDING WITH SOLID FROM ABOVE");
 				}
-			}
-			
-			//Player Colliding from below the Solid
-			if (p1.previous_position.y > C2->collider.y + C2->collider.h)
-			{
-				p1.speed.y = 0;
-				p1.position.y = C2->collider.y + C2->collider.h;
-				LOG("P1 IS COLLIDING WITH SOLID FROM BELOW");
-			}
 
-			//Player is colliding from the sides. The first part checks if C1 is contained in C2.
-			if (C1->collider.y + (C1->collider.h * (1.0f / 4.0f)) < C2->collider.y + C2->collider.h && C1->collider.y + (C1->collider.h * (3.0f/4.0f)) > C2->collider.y)
-			{
-				p1.speed.x = 0;
-				LOG("P1 IS COLLIDING WITH SOLID FROM THE RIGHT");
-
-				////Player is colliding from left (going right)
-				//if ((C1->collider.x + C1->collider.w) > (C2->collider.x + C2->collider.w))
-				//{
-				//	p1.position.x = C2->collider.x - C2->collider.w;
-				//	LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
-				//}
-
-				//Player is colliding from right (going left)
-				if (C1->collider.x < C2->collider.x + C2->collider.w /*C1->collider.x > (C2->collider.x + C2->collider.w * 3 / 4)*/)
+				//Player Colliding from Below the Solid. ergo colliding with the ceiling. This second part checks if C1 is actually colliding vertically down.
+				else
 				{
-					p1.position.x = C2->collider.x + C2->collider.w - 10;
-					LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
+					if (C1->collider.y < C2->collider.y + C2->collider.h && C1->collider.y + (C1->collider.h * half) > C2->collider.y + C2->collider.h && p1.speed.y < 0)
+					{
+						p1.speed.y = 0;
+						p1.position.y = C2->collider.y + C2->collider.h;
+						p1.againstCeiling = true;
+						LOG("P1 IS COLLIDING WITH SOLID FROM BELOW");
+					}
+				}
+			}
+
+			//Player is colliding from the sides. The first part checks if C1 is contained in  the Y axis of C2.
+			if (C1->collider.y + C1->collider.h > C2->collider.y + p1.collision_tolerance && C1->collider.y  < C2->collider.y + C2->collider.h)
+			{
+				LOG("P1 IS COLLIDING WITH SOLID FROM THE SIDES");
+
+				//Player is colliding from left (going right). This second part checks if C1 is actually colliding from the left side of the collider. Additionally it checks whether or not P1 has collided against the ceiling.
+				if (C1->collider.x + C1->collider.w > C2->collider.x && C1->collider.x < C2->collider.x && p1.againstCeiling == false)
+				{
+					//This third part checks whether P1 is at a certain distance in the collider. It checks if three fourths of P1's width is not actually colliding.    
+					if (C1->collider.x + (C1->collider.w * threeFourths) < C2->collider.x)
+					{
+						p1.againstLeftWall = true;
+						p1.position.x = C2->collider.x - C2->collider.w - 1;
+						LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
+					}
+				}
+
+				//Player is colliding from right (going left). This second part checks if  C1 is actually colliding from the right side of the collider.
+				if (C1->collider.x < C2->collider.x + C2->collider.w && C1->collider.x + C1->collider.w > C2->collider.x + C2->collider.w && p1.againstCeiling == false)
+				{
+					//This third part checks whether P1 is at a certain distance in the collider. It checks if a quarter of P1's width is still colliding. 
+					if (C1->collider.x + (C1->collider.w * quarter) > C2->collider.x + C2->collider.w)
+					{
+						p1.againstRightWall = true;
+						p1.position.x = C2->collider.x + C2->collider.w - p1.collision_tolerance;
+						LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
+					}
 				}
 			}
 		}
@@ -542,10 +546,6 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 				
 				//Antes la animacion de muerte tiene que haber finalizado
 				RespawnP1ToP2();
-					
-					
-				
-				
 			}
 		}
 
@@ -629,10 +629,10 @@ bool j1Player1::LoadPlayer1()		//Loads P1 on screen.
 	//p1.spawn_position = p1.position;	//Sets the respawn position to the first position the player was in the map. 
 
 	//Loads the data of the rectangle that contains P1.
-	p1.HitBox.x = p1.position.x;
-	p1.HitBox.y = p1.position.y;
-	p1.HitBox.w = p1.sprite_width;
-	p1.HitBox.h = p1.sprite_height;
+	p1.HitBox.x = p1.position.x;		//Represents the position in the X axis of P1.
+	p1.HitBox.y = p1.position.y;		//Represents the position in the Y axis of P1.
+	p1.HitBox.w = p1.sprite_measures.x;		//Represents the width of P1.
+	p1.HitBox.h = p1.sprite_measures.y;		//Represents the height of P1.
 
 	//Adds a collider for the player.
 	p1.collider = App->collisions->AddCollider(p1.HitBox, PLAYER, this);
@@ -651,8 +651,45 @@ bool j1Player1::LoadPlayer1()		//Loads P1 on screen.
 	p1.fading = false;
 	p1.isAlive = true;
 	p1.isDying = false;
+	p1.againstRightWall = false;
+	p1.againstLeftWall = false;
+	p1.againstCeiling = false;
 	p1.GodMode = false;
 	p1.switch_sprites = false;
+
+	return true;
+}
+
+bool j1Player1::LoadPlayer1Properties(pugi::xml_node& config)
+{
+	//Gets all the required player variables from the config xml file
+	p1.position.x = config.child("player_1").child("position").attribute("x").as_float();
+	p1.position.y = config.child("player_1").child("position").attribute("y").as_float();
+	p1.spawn_position.x = config.child("player_1").child("position").attribute("x").as_float();
+	p1.spawn_position.y = config.child("player_1").child("position").attribute("y").as_float();
+
+	p1.speed.x = config.child("player_1").child("speed").attribute("x").as_float();
+	p1.speed.y = config.child("player_1").child("speed").attribute("y").as_float();
+	p1.max_speed.x = config.child("player_1").child("max_speed").attribute("x").as_float();
+	p1.max_speed.y = config.child("player_1").child("max_speed").attribute("y").as_float();
+
+	p1.acceleration.x = config.child("player_1").child("acceleration").attribute("x").as_float();
+	p1.acceleration.y = config.child("player_1").child("acceleration").attribute("y").as_float();
+	p1.gravity = config.child("player_1").child("gravity").attribute("value").as_float();
+
+	p1.boost_jump.x = config.child("player_1").child("boost_jump").attribute("x").as_float();
+	p1.boost_jump.y = config.child("player_1").child("boost_jump").attribute("y").as_float();
+
+	p1.sprite_measures.x = config.child("player_1").child("sprite_measures").attribute("w").as_int();
+	p1.sprite_measures.y = config.child("player_1").child("sprite_measures").attribute("h").as_int();
+
+	p1.lives = config.child("player_1").child("lives").attribute("lives").as_int();
+	p1.max_lives = config.child("player_1").child("lives").attribute("lives").as_int();
+
+	p1.body_margin.x = config.child("player_1").child("body_margin").attribute("x").as_int();
+	p1.body_margin.y = config.child("player_1").child("body_margin").attribute("y").as_int();
+
+	p1.collision_tolerance = config.child("player_1").child("collider_tolerance").attribute("tolerance").as_int();
 
 	return true;
 }
@@ -699,4 +736,3 @@ void j1Player1::GodModeInput()
 		p1.position.y += GOD_MODE_SPEED;
 	}
 }
-

@@ -19748,7 +19748,7 @@
   <object id="330" name="Floor" type="solid" x="544" y="1184" width="32" height="159.996"/>
   <object id="331" name="Floor" type="solid" x="768" y="1216" width="32" height="128"/>
   <object id="332" name="Floor" type="solid" x="768" y="1184" width="608" height="32"/>
-  <object id="333" name="Floor" type="solid" x="736" y="224" width="32.004" height="128.004"/>
+  <object id="333" name="Floor" type="solid" x="736" y="256" width="32.004" height="128.004"/>
   <object id="334" name="Floor" type="solid" x="768" y="288" width="32" height="128.005"/>
   <object id="335" name="Floor" type="solid" x="32" y="96" width="32.0026" height="64"/>
   <object id="336" name="Floor" type="solid" x="64" y="128" width="32" height="32"/>
@@ -19776,8 +19776,8 @@
  </objectgroup>
  <objectgroup id="17" name="Hazards">
   <object id="258" name="Spikes" type="hazard" x="33.2573" y="1178" width="59.6875" height="5.97222"/>
-  <object id="259" name="Spikes" type="hazard" x="416.002" y="1186.96" width="5.94192" height="120.919"/>
-  <object id="260" name="Spikes" type="hazard" x="474.02" y="1186.07" width="5.98237" height="121.87"/>
+  <object id="259" name="Spikes" type="hazard" x="416.002" y="1204" width="6" height="104"/>
+  <object id="260" name="Spikes" type="hazard" x="474" y="1202" width="6" height="106"/>
   <object id="261" name="Spikes" type="hazard" x="416.007" y="1337.96" width="64" height="6.04348"/>
   <object id="262" name="Spikes" type="hazard" x="575.996" y="1220.01" width="5.99899" height="89.998"/>
   <object id="263" name="Spikes" type="hazard" x="667.007" y="1217.5" width="5" height="94"/>
@@ -19785,37 +19785,37 @@
   <object id="265" name="Spikes" type="hazard" x="704.016" y="1338.04" width="63.9918" height="5.97826"/>
   <object id="266" name="Spikes" type="hazard" x="575.998" y="1337.01" width="96.0078" height="7"/>
   <object id="267" name="Spikes" type="hazard" x="762.01" y="1218" width="5.99034" height="90.0203"/>
-  <object id="268" name="Spikes" type="hazard" x="898.05" y="1177.94" width="123.913" height="6.07233"/>
+  <object id="268" name="Spikes" type="hazard" x="900" y="1178.92" width="121.963" height="5.09455"/>
   <object id="269" name="Spikes" type="hazard" x="1056" y="608" width="5.99858" height="25.9873"/>
   <object id="270" name="Spikes" type="hazard" x="931.993" y="602.008" width="58.0062" height="5.99066"/>
   <object id="271" name="Spikes" type="hazard" x="922.001" y="609.996" width="6.00043" height="58.0064"/>
-  <object id="272" name="Spikes" type="hazard" x="1092" y="410.008" width="26" height="5.99168"/>
+  <object id="272" name="Spikes" type="hazard" x="1093.09" y="410.008" width="23.8696" height="5.99168"/>
   <object id="273" name="Spikes" type="hazard" x="1251.99" y="537.988" width="26.0078" height="6.01563"/>
-  <object id="274" name="Spikes" type="hazard" x="1017.99" y="418.007" width="6.0034" height="25.995"/>
+  <object id="274" name="Spikes" type="hazard" x="1017.99" y="419.007" width="6.0034" height="24.995"/>
   <object id="275" name="Spikes" type="hazard" x="931.996" y="314.008" width="26.0097" height="5.99219"/>
   <object id="276" name="Spikes" type="hazard" x="164.995" y="186.006" width="23.9979" height="5.99219"/>
-  <object id="277" name="Spikes" type="hazard" x="569.993" y="258.008" width="6.00713" height="26.0083"/>
-  <object id="278" name="Spikes" type="hazard" x="729.996" y="256" width="6" height="92.0029"/>
-  <object id="279" name="Spikes" type="hazard" x="416.001" y="292.019" width="5.99432" height="26.0057"/>
-  <object id="281" name="Spikes" type="hazard" x="515.994" y="345.999" width="26.0009" height="6.00224"/>
+  <object id="277" name="Spikes" type="hazard" x="569.993" y="259.051" width="6.00713" height="23.9648"/>
+  <object id="278" name="Spikes" type="hazard" x="729.996" y="259.938" width="6" height="86.0654"/>
+  <object id="279" name="Spikes" type="hazard" x="416.001" y="292.988" width="5.99432" height="24.0369"/>
+  <object id="281" name="Spikes" type="hazard" x="517.025" y="345.999" width="23.9262" height="6.00224"/>
   <object id="282" name="Spikes" type="hazard" x="544" y="355.996" width="5.99648" height="26.0021"/>
   <object id="283" name="Spikes" type="hazard" x="960.008" y="324" width="5.98438" height="90.0012"/>
   <object id="284" name="Spikes" type="hazard" x="1177.99" y="545.996" width="6.01007" height="26.0069"/>
-  <object id="285" name="Spikes" type="hazard" x="986" y="162" width="6.00955" height="25.9959"/>
-  <object id="286" name="Spikes" type="hazard" x="1088" y="164" width="6" height="25.9961"/>
-  <object id="287" name="Spikes" type="hazard" x="1146" y="130" width="6" height="26.0156"/>
-  <object id="288" name="Spikes" type="hazard" x="1248" y="131" width="6.01528" height="27.0039"/>
-  <object id="289" name="Spikes" type="hazard" x="1408" y="252" width="29.9878" height="4.00139"/>
-  <object id="290" name="Spikes" type="hazard" x="1441.99" y="412" width="28.9978" height="3.99609"/>
-  <object id="291" name="Spikes" type="hazard" x="1442" y="636.008" width="29.0078" height="3.98438"/>
-  <object id="292" name="Spikes" type="hazard" x="1506" y="252" width="27.9795" height="3.97656"/>
-  <object id="293" name="Spikes" type="hazard" x="1602" y="252" width="29.9901" height="3.95858"/>
-  <object id="294" name="Spikes" type="hazard" x="1570" y="348" width="29" height="4.00817"/>
-  <object id="295" name="Spikes" type="hazard" x="1570" y="540" width="29.0181" height="3.99592"/>
-  <object id="296" name="Spikes" type="hazard" x="1408" y="956" width="29.9966" height="3.99507"/>
-  <object id="297" name="Spikes" type="hazard" x="1506" y="988" width="27.9989" height="3.99851"/>
-  <object id="298" name="Spikes" type="hazard" x="1602" y="956" width="29.9901" height="4.00284"/>
-  <object id="299" name="Spikes" type="hazard" x="1474" y="764" width="91.9849" height="4.00366"/>
+  <object id="285" name="Spikes" type="hazard" x="986" y="163.938" width="6.00955" height="24.0584"/>
+  <object id="286" name="Spikes" type="hazard" x="1088" y="165.044" width="6" height="24.9517"/>
+  <object id="287" name="Spikes" type="hazard" x="1146" y="131" width="6" height="24.8852"/>
+  <object id="288" name="Spikes" type="hazard" x="1248" y="133" width="6.01528" height="23.8221"/>
+  <object id="289" name="Spikes" type="hazard" x="1408" y="252" width="29.01" height="4.00139"/>
+  <object id="290" name="Spikes" type="hazard" x="1442.99" y="412" width="27.0413" height="3.99609"/>
+  <object id="291" name="Spikes" type="hazard" x="1443.09" y="636.008" width="26.9169" height="3.98438"/>
+  <object id="292" name="Spikes" type="hazard" x="1507" y="252" width="26.042" height="3.97656"/>
+  <object id="293" name="Spikes" type="hazard" x="1604" y="252" width="27.9901" height="3.95858"/>
+  <object id="294" name="Spikes" type="hazard" x="1570.91" y="348" width="27.0557" height="4.00817"/>
+  <object id="295" name="Spikes" type="hazard" x="1571" y="540" width="27.0806" height="3.99592"/>
+  <object id="296" name="Spikes" type="hazard" x="1408" y="956" width="27.9966" height="3.99507"/>
+  <object id="297" name="Spikes" type="hazard" x="1507" y="988" width="26.0113" height="3.99851"/>
+  <object id="298" name="Spikes" type="hazard" x="1603" y="956" width="28.9901" height="4.00284"/>
+  <object id="299" name="Spikes" type="hazard" x="1475" y="764" width="89.9849" height="4.00366"/>
   <object id="301" name="Spikes" type="hazard" x="515.989" y="1338" width="26.0042" height="5.99219"/>
   <object id="302" name="Spikes" type="hazard " x="1408" y="1306" width="29.9988" height="6"/>
   <object id="303" name="Spikes" type="hazard" x="1602" y="1308" width="29.9995" height="3.99807"/>

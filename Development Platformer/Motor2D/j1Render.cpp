@@ -77,10 +77,10 @@ bool j1Render::Update(float dt)
 	App->win->GetWindowSize(cam.WinWidth, cam.WinHeight);
 
 	//Positions of the camera if it was centered around only one player. Used a p2Point<float> to translate all those long and convoluted expressions to a much more readable state.
-	cam.p1.x = -App->player1->p1.position.x + cam.WinWidth / 2 - App->player1->p1.sprite_width;
-	cam.p1.y = -App->player1->p1.position.y + (cam.WinHeight / 2) - App->player1->p1.sprite_height / 2;
-	cam.p2.x = -App->player2->p2.position.x + cam.WinWidth / 2 - App->player2->p2.sprite_width;
-	cam.p2.y = -App->player2->p2.position.y + (cam.WinHeight / 2) - App->player2->p2.sprite_height / 2;
+	cam.p1.x = -App->player1->p1.position.x + cam.WinWidth / 2 - App->player1->p1.sprite_measures.x;
+	cam.p1.y = -App->player1->p1.position.y + (cam.WinHeight / 2) - App->player1->p1.sprite_measures.y / 2;
+	cam.p2.x = -App->player2->p2.position.x + cam.WinWidth / 2 - App->player2->p2.sprite_measures.x;
+	cam.p2.y = -App->player2->p2.position.y + (cam.WinHeight / 2) - App->player2->p2.sprite_measures.y / 2;
 	
 	//Calculating the central position. 
 	if (App->player2->p2.position.x > App->player1->p1.position.x)

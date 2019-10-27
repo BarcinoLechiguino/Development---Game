@@ -114,6 +114,7 @@ bool j1Fade_Scene::ChangeMap(const char* newMap)
 	App->map->Load(newMap);						//Loads a specified map
 	App->collisions->LoadColliderFromMap();		//Load Collisions
 	App->player1->LoadPlayer1();				//Load / Reset P1
+	
 	//App->player1->LoadPlayer1Textures();		//Load / Reset P1's textures.
 	App->player2->LoadPlayer2();				//Load / Reset P2
 	//App->player1->LoadPlayer1Textures();		//Load / Reset P2's textures.
