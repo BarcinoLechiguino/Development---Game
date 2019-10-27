@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Render.h"
+#include "j1Map.h"
 #include "j1Player1.h"
 #include "j1Player2.h"
 
@@ -50,6 +51,8 @@ bool j1Render::Awake(pugi::xml_node& config)
 		camera.y = config.child("camera").attribute("y").as_float();
 	}
 
+	cam.smoothingSpeed = config.child("camera").attribute("smoothing_speed").as_float();
+
 	return ret;
 }
 
@@ -73,7 +76,7 @@ bool j1Render::Update(float dt)
 {
 	App->win->GetWindowSize(cam.WinWidth, cam.WinHeight);
 
-	//Positions of the camera if it was centered around only one player:
+	//Positions of the camera if it was centered around only one player. Used a p2Point<float> to translate all those long and convoluted expressions to a much more readable state.
 	cam.p1.x = -App->player1->p1.position.x + cam.WinWidth / 2 - App->player1->p1.sprite_width;
 	cam.p1.y = -App->player1->p1.position.y + (cam.WinHeight / 2) - App->player1->p1.sprite_height / 2;
 	cam.p2.x = -App->player2->p2.position.x + cam.WinWidth / 2 - App->player2->p2.sprite_width;
@@ -100,15 +103,29 @@ bool j1Render::Update(float dt)
 
 	//We set the camera position according to the mid positions.
 	camera.x = cam.MidPos.x;
+	camera.y = cam.MidPos.y;
 	
+	//Camera limits
+	//We calculate the delimitations of the map making use of the map data we already have.
+	cam.mapLimit.x = - (App->map->data.tile_width * App->map->data.width) + cam.WinWidth;		//data.tile_width refers to the tile's width in pixels and data.width refers to the map's total width in tiles
+	cam.mapLimit.y = - (App->map->data.tile_height * App->map->data.height) + cam.WinHeight;	//data.tile_height refers to the tile's height in pixels and data.height refers to the map's total height in tiles.
 	
-	if (camera.x >= 0)
+	if (camera.x >= 0)											//Camera is at the leftmost part of the map in the x axis.
 	{
 		camera.x = 0;
 	}
-	if (camera.y > 0)
+	else if (camera.x <= cam.mapLimit.x)						//Camera is at the rightmost part of the map in the x axis.
+	{
+		camera.x = cam.mapLimit.x;
+	}
+
+	if (camera.y > 0)											//Camera is at the highest part of the map in the y axis.
 	{
 		camera.y = 0;
+	}
+	else if (camera.y < cam.mapLimit.y /*&& camera.y < 0*/)		//Camera is at the lowest part of the map.
+	{
+		camera.y = cam.mapLimit.y;
 	}
 
 	return true;
@@ -116,7 +133,8 @@ bool j1Render::Update(float dt)
 
 bool j1Render::PostUpdate()
 {
-	if (App->player2->p2.position.x > App->player1->p1.position.x)
+	//Trying to implement lerping on the y axis of the camera.
+	/*if (App->player2->p2.position.x > App->player1->p1.position.x)
 	{
 		cam.MidPosPostMovement.y = cam.p2.y - ((cam.p2.y - cam.p1.y) / 2);
 	}
@@ -125,10 +143,7 @@ bool j1Render::PostUpdate()
 		cam.MidPosPostMovement.y = cam.p1.y - ((cam.p1.y - cam.p2.y) / 2);
 	}
 
-	if (cam.MidPosPostMovement.y != cam.MidPos.y)
-	{
-		camera.y = cam.lerp(cam.MidPos.y, cam.MidPosPostMovement.y, 0.001f);
-	}
+	camera.y = cam.lerp(cam.MidPos.y, cam.MidPosPostMovement.y, cam.smoothingSpeed);*/
 	
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
