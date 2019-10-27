@@ -7,8 +7,19 @@
 
 struct fixedCamera
 {
-	int midPosX;
-	int midPosY;
+	p2Point<float>	MidPos;
+	p2Point<float>	MidPosPostMovement;
+	p2Point<float>	p1;
+	p2Point<float>	p2;
+	uint			WinWidth;
+	uint			WinHeight;
+
+	float lerp(float position, float target, float amount)
+	{
+		float trail = (target - position) * amount;
+
+		return position + trail;
+	}
 };
 
 class j1Render : public j1Module
@@ -51,7 +62,7 @@ public:
 
 public:
 	fixedCamera cam;
-	
+
 	SDL_Renderer*	renderer;
 	SDL_Rect		camera;
 	SDL_Rect		viewport;

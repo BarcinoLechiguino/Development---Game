@@ -71,44 +71,65 @@ bool j1Render::PreUpdate()
 
 bool j1Render::Update(float dt)
 {
-	/*if (App->player1->p1.position.x < App->player2->p2.position.x)
+	App->win->GetWindowSize(cam.WinWidth, cam.WinHeight);
 
-	uint winWidth, winHeight;
-	App->win->GetWindowSize(winWidth, winHeight);
-
-
-	if (App->player1->p1.position.x < App->player2->p2.position.x)
-	{
-		cam.midPosX = App->player1->p1.position.x + ((App->player2->p2.position.x - App->player1->p1.position.x) / 2);
-	}
-	else
-	{
-		cam.midPosX = App->player2->p2.position.x + ((App->player1->p1.position.x - App->player2->p2.position.x) / 2);
-	}
-
-	if (App->player1->p1.position.y > App->player2->p2.position.y)
-	{
-		cam.midPosY = App->player2->p2.position.y + ((App->player2->p2.position.y - App->player1->p1.position.y) / 2);
-	}
-	else
-	{
-		cam.midPosY = App->player1->p1.position.x + ((App->player1->p1.position.y - App->player2->p2.position.y) / 2);
-	}*/
+	//Positions of the camera if it was centered around only one player:
+	cam.p1.x = -App->player1->p1.position.x + cam.WinWidth / 2 - App->player1->p1.sprite_width;
+	cam.p1.y = -App->player1->p1.position.y + (cam.WinHeight / 2) - App->player1->p1.sprite_height / 2;
+	cam.p2.x = -App->player2->p2.position.x + cam.WinWidth / 2 - App->player2->p2.sprite_width;
+	cam.p2.y = -App->player2->p2.position.y + (cam.WinHeight / 2) - App->player2->p2.sprite_height / 2;
 	
-	//camera.x = cam.midPosX;
-	//camera.y = cam.midPosY;
+	//Calculating the central position. 
+	if (App->player2->p2.position.x > App->player1->p1.position.x)
+	{
+		cam.MidPos.x = cam.p2.x - ((cam.p2.x - cam.p1.x) / 2);
+	}
+	else
+	{
+		cam.MidPos.x = cam.p1.x - ((cam.p1.x - cam.p2.x) / 2);
+	}
 
-	/*uint winWidth, winHeight;
-	App->win->GetWindowSize(winWidth, winHeight);
+	if(App->player2->p2.position.x > App->player1->p1.position.x)
+	{
+		cam.MidPos.y = cam.p2.y - ((cam.p2.y - cam.p1.y) / 2);
+	}
+	else
+	{
+		cam.MidPos.y = cam.p1.y - ((cam.p1.y - cam.p2.y) / 2);
+	}
 
-	camera.x = App->player1->p1.position.x + winWidth / 2 - App->player1->p1.sprite_width;
-	camera.y = App->player1->p1.position.y + (winHeight / 2) - App->player1->p1.sprite_height / 2;*/
+	//We set the camera position according to the mid positions.
+	camera.x = cam.MidPos.x;
+	
+	
+	if (camera.x >= 0)
+	{
+		camera.x = 0;
+	}
+	if (camera.y > 0)
+	{
+		camera.y = 0;
+	}
 
 	return true;
 }
 
 bool j1Render::PostUpdate()
 {
+	if (App->player2->p2.position.x > App->player1->p1.position.x)
+	{
+		cam.MidPosPostMovement.y = cam.p2.y - ((cam.p2.y - cam.p1.y) / 2);
+	}
+	else
+	{
+		cam.MidPosPostMovement.y = cam.p1.y - ((cam.p1.y - cam.p2.y) / 2);
+	}
+
+	if (cam.MidPosPostMovement.y != cam.MidPos.y)
+	{
+		camera.y = cam.lerp(cam.MidPos.y, cam.MidPosPostMovement.y, 0.001f);
+	}
+	
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
 	return true;
@@ -163,38 +184,38 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	bool ret = true;
 	uint scale = App->win->GetScale();
 
-	SDL_Rect sprite;
+	SDL_Rect rect;
 	if (flip)
 	{
-		sprite.x = (int)(camera.x * speed) + x * scale + 60; //Add players sprite width.
-		sprite.y = (int)(camera.y * speed) + y * scale;
+		rect.x = (int)(camera.x * speed) + x * scale + 60; //Add players sprite width.
+		rect.y = (int)(camera.y * speed) + y * scale;
 	}
 	else
 	{
-		sprite.x = (int)(camera.x * speed) + x * scale;
-		sprite.y = (int)(camera.y * speed) + y * scale;
+		rect.x = (int)(camera.x * speed) + x * scale;
+		rect.y = (int)(camera.y * speed) + y * scale;
 	}
 	
 	if(section != NULL)
 	{
 		if (flip)
 		{
-			sprite.w = -section->w; //Sprite will be printed from top right to left down instead of top left right down.
-			sprite.h = section->h;
+			rect.w = -section->w; //Sprite will be printed from top right to left down instead of top left right down.
+			rect.h = section->h;
 		}
 		else
 		{
-			sprite.w = section->w;
-			sprite.h = section->h;
+			rect.w = section->w;
+			rect.h = section->h;
 		}
 	}
 	else
 	{
-		SDL_QueryTexture(texture, NULL, NULL, &sprite.w, &sprite.h);
+		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
 	}
 
-	sprite.w *= scale;
-	sprite.h *= scale;
+	rect.w *= scale;
+	rect.h *= scale;
 
 	SDL_Point* p = NULL;
 	SDL_Point pivot;
@@ -206,7 +227,7 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 		p = &pivot;
 	}
 
-	if(SDL_RenderCopyEx(renderer, texture, section, &sprite, angle, p, SDL_FLIP_NONE) != 0)
+	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, SDL_FLIP_NONE) != 0)
 	{
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;
