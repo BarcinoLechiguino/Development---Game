@@ -172,7 +172,7 @@ bool j1Player2::PreUpdate()
 		if (App->input->GetKey(SDL_SCANCODE_KP_0) == KEY_DOWN)				//Jump
 		{
 			p2.state = jumping_P2;
-			App->audio->PlayFx(7, 0);
+			App->audio->PlayFx(5, 0);
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_REPEAT)				//Drop from platform
@@ -255,6 +255,7 @@ bool j1Player2::Update(float dt)
 	case crouching_P2:
 
 		p2.current_animation = &p2.crouching;
+		p2.speed.x = 0;
 		p2.isCrouching = true;
 
 		break;

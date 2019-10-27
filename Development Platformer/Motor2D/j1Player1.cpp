@@ -263,6 +263,7 @@ bool j1Player1::Update(float dt)
 	case crouching_P1:
 
 		p1.current_animation = &p1.crouching;
+		p1.speed.x = 0;
 		p1.isCrouching = true;
 
 		break;
