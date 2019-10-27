@@ -77,13 +77,28 @@ j1Player1::j1Player1() //Constructor. Called at the first frame.
 	p1.falling.speed = 0.2f;
 
 	//P1 Death Animation
-	p1.death.PushBack({ 0,0,70,64 });
-	p1.death.PushBack({ 70,0,70,64 });
-	p1.death.PushBack({ 140,0,70,64 });
-	p1.death.PushBack({ 210,0,70,64 });
-	p1.death.PushBack({ 280,0,70,64 });
-	p1.death.PushBack({ 350,0,70,64 });
-	p1.death.PushBack({ 420,0,70,64 });
+	p1.death.PushBack({ 10,1094,58,66 });
+	p1.death.PushBack({ 10,1094,58,66 });
+	p1.death.PushBack({ 10,1094,58,66 });
+	p1.death.PushBack({ 10,1094,58,66 });
+	p1.death.PushBack({ 10,1094,58,66 });
+	p1.death.PushBack({ 68,1094,58,66 });
+	p1.death.PushBack({ 68,1094,58,66 });
+	p1.death.PushBack({ 68,1094,58,66 });
+	p1.death.PushBack({ 68,1094,58,66 });
+	p1.death.PushBack({ 68,1094,58,66 });
+	p1.death.PushBack({ 68,1094,58,66 });
+	p1.death.PushBack({ 68,1094,58,66 });
+	p1.death.PushBack({ 136,1094,58,66 });
+	p1.death.PushBack({ 136,1094,58,66 });
+	p1.death.PushBack({ 136,1094,58,66 });
+	p1.death.PushBack({ 136,1094,58,66 });
+	p1.death.PushBack({ 136,1094,58,66 });
+	p1.death.PushBack({ 136,1094,58,66 });
+	p1.death.PushBack({ 193,1094,58,66 });
+	p1.death.PushBack({ 193,1094,58,66 });
+	p1.death.PushBack({ 193,1094,58,66 });
+	p1.death.PushBack({ 193,1094,58,66 });
 	p1.death.speed = 0.2f;
 };
 
@@ -181,42 +196,22 @@ bool j1Player1::PreUpdate()
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
 			p1.state = jumping_P1;
-			App->audio->PlayFx(1, 0);
+			App->audio->PlayFx(5, 0);
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
 		{
 			p1.state = teleporting_P1;
-			App->audio->PlayFx(5, 0);
+			App->audio->PlayFx(1, 0);
 		}
 
-		//if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN ) //first player dies
-		//{
-		//	//Death logic
-		//	lives--;
-		//	//Antes la animacion de muerte tiene que haber finalizado
-		//	RespawnP1ToP2();
-		//	
-		//}
-		//if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN) //second player dies
-		//{
-		//	//Death logic
-		//	lives--;
-		//	TeleportP2ToP1();
-		//}
-
-		/*if (lives == 0) 
+		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT)
 		{
-			player1_alive = false;
-			App->player2->player2_alive = false;
 
-			if (player1_alive == false && App->player2->player2_alive == false) 
-			{
-				Restart();
-				App->player2->Restart();
-				lives = 3;
-			}
-		}*/
+			p1.state = dying_P1;
+			App->audio->PlayFx(2, 0);
+		}
+
 	}
 	else
 	{
@@ -291,7 +286,6 @@ bool j1Player1::Update(float dt)
 		if (p1.grounded == true )
 		{
 			p1.speed.y = -p1.acceleration.y;
-			App->audio->PlayFx(jumpFX);
 			p1.isJumping = true;
 			p1.isGrounded(false);
 		}
@@ -308,6 +302,13 @@ bool j1Player1::Update(float dt)
 
 		TeleportP2ToP1();
 		
+
+		break;
+
+	case dying_P1:
+			
+		p1.current_animation = &p1.death;
+		p1.isDying = true;
 
 		break;
 	}
@@ -654,7 +655,6 @@ bool j1Player1::LoadPlayer1()		//Loads P1 on screen.
 {
 	//Loads the textures of P1
 	p1.texture = App->tex->Load("textures/Spritesheets/Character 1/character_spritesheet_I_Buena.png");
-	p1.texture2 = App->tex->Load("textures/Spritesheets/Character 1/adventurer-hand-combat-Sheet.png");
 	
 	//Loads the data and colliders of P1
 	p1.position = { p1.position.x, p1.position.y };												//Loads the position of P1 from the xml.

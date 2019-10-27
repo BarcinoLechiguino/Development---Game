@@ -64,14 +64,31 @@ j1Player2::j1Player2() //Constructor. Called at the first frame.
 	p2.falling.PushBack({ 236, 226, 33, 59 });
 	p2.falling.speed = 0.2f;
 
-	//P1 Death Animation
-	p2.death.PushBack({ 0,0,70,64 });
-	p2.death.PushBack({ 70,0,70,64 });
-	p2.death.PushBack({ 140,0,70,64 });
-	p2.death.PushBack({ 210,0,70,64 });
-	p2.death.PushBack({ 280,0,70,64 });
-	p2.death.PushBack({ 350,0,70,64 });
-	p2.death.PushBack({ 420,0,70,64 });
+	
+
+	//P2 Death Animation
+	p2.death.PushBack({ 10,1094,58,66 });
+	p2.death.PushBack({ 10,1094,58,66 });
+	p2.death.PushBack({ 10,1094,58,66 });
+	p2.death.PushBack({ 10,1094,58,66 });
+	p2.death.PushBack({ 10,1094,58,66 });
+	p2.death.PushBack({ 68,1094,58,66 });
+	p2.death.PushBack({ 68,1094,58,66 });
+	p2.death.PushBack({ 68,1094,58,66 });
+	p2.death.PushBack({ 68,1094,58,66 });
+	p2.death.PushBack({ 68,1094,58,66 });
+	p2.death.PushBack({ 68,1094,58,66 });
+	p2.death.PushBack({ 68,1094,58,66 });
+	p2.death.PushBack({ 136,1094,58,66 });
+	p2.death.PushBack({ 136,1094,58,66 });
+	p2.death.PushBack({ 136,1094,58,66 });
+	p2.death.PushBack({ 136,1094,58,66 });
+	p2.death.PushBack({ 136,1094,58,66 });
+	p2.death.PushBack({ 136,1094,58,66 });
+	p2.death.PushBack({ 193,1094,58,66 });
+	p2.death.PushBack({ 193,1094,58,66 });
+	p2.death.PushBack({ 193,1094,58,66 });
+	p2.death.PushBack({ 193,1094,58,66 });
 	p2.death.speed = 0.2f;
 };
 
@@ -144,13 +161,20 @@ bool j1Player2::PreUpdate()
 		if (App->input->GetKey(SDL_SCANCODE_KP_0) == KEY_DOWN)
 		{
 			p2.state = jumping_P2;
-			App->audio->PlayFx(1, 0);
+			App->audio->PlayFx(7, 0);
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_KP_7) == KEY_DOWN)
 		{
 			p2.state = teleporting_P2;
-			App->audio->PlayFx(5, 0);
+			App->audio->PlayFx(1, 0);
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_N) == KEY_REPEAT)
+		{
+
+			p2.state = dying_P2;
+			App->audio->PlayFx(2, 0);
 		}
 	}
 	else
@@ -233,6 +257,13 @@ bool j1Player2::Update(float dt)
 	case teleporting_P2:
 
 		TeleportP1ToP2();
+
+		break;
+
+	case dying_P1:
+
+		p2.current_animation = &p2.death;
+		p2.isDying = true;
 
 		break;
 	}
@@ -381,7 +412,6 @@ bool j1Player2::Save(pugi::xml_node& data) const
 bool j1Player2::LoadPlayer2()
 {
 	p2.texture = App->tex->Load("textures/Spritesheets/Character 2/Character_Spritesheet2_Buena.png");
-	p2.texture2 = App->tex->Load("textures/Spritesheets/Character 2/adventurer-hand-combat-Sheet2.png");
 
 	p2.position = { p2.position.x, p2.position.y};
 	p2.spawn_position = p2.position;

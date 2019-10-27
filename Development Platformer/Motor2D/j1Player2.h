@@ -18,7 +18,8 @@ enum P2_State
 	crouching_P2,
 	jumping_P2,
 	boost_jump_P2,
-	teleporting_P2
+	teleporting_P2,
+	dying_P2
 };
 
 struct Player2
@@ -37,6 +38,7 @@ struct Player2
 	bool			isJumping;			//Keeps track of the action P2 is performing. In this case jumping.
 	bool			isBoostJumping;		//Keeps track of the action P2 is performing. In this case boost jumping.
 	bool			item_activated;		//Keeps track of the items P2 interacts with.
+	bool			isDying;
 
 	//Changes the state of the player depending on the given argument. Also if true it records the position from where the player jumped.
 	void isGrounded(bool status)
@@ -62,7 +64,6 @@ struct Player2
 
 	//Animation Variables
 	SDL_Texture* texture = nullptr;
-	SDL_Texture* texture2 = nullptr;
 
 	Animation	idle;				//Idle animation.
 	Animation	running;			//Running animation.
