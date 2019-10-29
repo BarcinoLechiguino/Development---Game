@@ -113,10 +113,6 @@ bool j1Player1::Init()
 bool j1Player1::Awake(pugi::xml_node& config) 
 {	
 	LoadPlayer1Properties(config);
-	
-	/*p1.jumpFX = config.child("jumpFX").attribute("name").as_string();
-	p1.deathFX = config.child("deathFX").attribute("name").as_string();
-	p1.duoFX = config.child("landFX").attribute("name").as_string();*/
 
 	//Sets the first cycle of animations to the idle set.
 	p1.current_animation = &p1.idle;
