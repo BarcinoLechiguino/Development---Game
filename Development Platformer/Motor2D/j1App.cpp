@@ -33,6 +33,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	player2 = new j1Player2();
 	collisions = new j1Collisions();
 	fadescene = new j1Fade_Scene();
+
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 	AddModule(input);

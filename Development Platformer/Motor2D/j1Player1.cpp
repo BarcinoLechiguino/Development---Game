@@ -501,7 +501,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 				if (C1->collider.x + C1->collider.w > C2->collider.x && C1->collider.x < C2->collider.x && p1.againstCeiling == false)
 				{
 					//This third part checks whether P1 is at a certain distance in the collider. It checks if three fourths of P1's width is not actually colliding.    
-					if (C1->collider.x + (C1->collider.w * threeFourths) < C2->collider.x)
+					if (C1->collider.x + (C1->collider.w * half) < C2->collider.x)
 					{
 						p1.againstLeftWall = true;
 						p1.position.x = C2->collider.x - C2->collider.w - 1;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="52" height="42" tilewidth="32" tileheight="32" infinite="0" nextlayerid="22" nextobjectid="360">
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="52" height="42" tilewidth="32" tileheight="32" infinite="0" nextlayerid="22" nextobjectid="361">
  <tileset firstgid="1" name="1st Level" tilewidth="32" tileheight="32" tilecount="1147" columns="31">
   <image source="1st Level.png" width="1000" height="1200"/>
   <tile id="290">
@@ -19717,7 +19717,6 @@
   <object id="28" name="Platform" type="platform" x="0" y="416" width="159.999" height="15"/>
   <object id="29" name="Platform " type="platform" x="0" y="672" width="224" height="15"/>
   <object id="30" name="Platform" type="platform" x="0" y="928" width="288" height="15"/>
-  <object id="32" name="Floor" type="solid" x="672" y="448" width="64" height="15"/>
   <object id="40" name="Floor" type="solid" x="800" y="544" width="64" height="15"/>
   <object id="41" name="Platform" type="platform" x="800" y="384" width="160.003" height="12"/>
   <object id="42" name="Platform" type="platform" x="800" y="320" width="160" height="11.9974"/>
@@ -19771,6 +19770,7 @@
   <object id="356" name="Floor" type="solid" x="1664" y="-32" width="32" height="192"/>
   <object id="357" name="Floor" type="solid" x="-32" y="1344" width="1696" height="32"/>
   <object id="358" name="Floor" type="solid" x="0" y="1184" width="416" height="160"/>
+  <object id="360" name="Floor" type="solid" x="672" y="448" width="64" height="15"/>
  </objectgroup>
  <objectgroup id="17" name="Hazards">
   <object id="258" name="Spikes" type="hazard" x="33.2573" y="1178" width="59.6875" height="5.97222"/>
