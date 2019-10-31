@@ -680,8 +680,8 @@ bool j1Player1::LoadPlayer1()		//Loads P1 on screen.
 	//p1.spawn_position = p1.position;	//Sets the respawn position to the first position the player was in the map. 
 
 	//Loads the data of the rectangle that contains P1.
-	p1.HitBox.x = p1.position.x;		//Represents the position in the X axis of P1.
-	p1.HitBox.y = p1.position.y;		//Represents the position in the Y axis of P1.
+	p1.HitBox.x = p1.position.x;			//Represents the position in the X axis of P1.
+	p1.HitBox.y = p1.position.y;			//Represents the position in the Y axis of P1.
 	p1.HitBox.w = p1.sprite_measures.x;		//Represents the width of P1.
 	p1.HitBox.h = p1.sprite_measures.y;		//Represents the height of P1.
 
