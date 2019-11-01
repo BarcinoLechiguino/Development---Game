@@ -18,86 +18,8 @@ j1Player2::j1Player2() //Constructor. Called at the first frame.
 	//String that will be given to the different functions (Awake(), Load()...) to generate the handler node.
 	name.create("player"); //The string has to be the same as the name of the node in the xml file.
 
-	//P2 Idle animation.
-	p2.idle.PushBack({ 28, 14, 37, 57 });
-	p2.idle.PushBack({ 132, 12, 33, 59 });
-	p2.idle.PushBack({ 230, 12, 37, 59 });
-	p2.idle.PushBack({ 326, 14, 39, 57 });
-	p2.idle.speed = 0.1f;
-
-	//P2 Running animation.
-	p2.running.PushBack({ 134, 90, 39, 55 });
-	p2.running.PushBack({ 232, 92, 39, 53 });
-	p2.running.PushBack({ 332, 96, 39, 49 });
-	p2.running.PushBack({ 434, 90, 45, 55 });
-	p2.running.PushBack({ 532, 92, 39, 53 });
-	p2.running.PushBack({ 632, 96, 39, 49 });
-	p2.running.speed = 0.2f;
-
-	//P2 Crouching animation.
-	p2.crouching.PushBack({ 432, 10, 37, 61 }); //20 Pixels of margin vertically up.
-	p2.crouching.PushBack({ 530, 8, 39, 63 });
-	p2.crouching.PushBack({ 630, 8, 37, 63 });
-	p2.crouching.PushBack({ 34, 84, 33, 61 });
-	p2.crouching.speed = 0.1f;
-
-	//P2 Jumping Animation
-	p2.jumping.PushBack({ 30, 172, 39, 47 });
-	p2.jumping.PushBack({ 130, 176, 39, 43 });
-	p2.jumping.PushBack({ 234, 162, 37, 53 });
-	p2.jumping.PushBack({ 328, 158, 41, 45 });
-	//p2.jumping.PushBack({ 436, 162, 29, 41 });
-	p2.jumping.speed = 0.25f;
-
-	//P2 Frontflip Animation
-	p2.frontflip.PushBack({ 528, 168, 47, 33 });
-	p2.frontflip.PushBack({ 528, 168, 47, 33 });
-	p2.frontflip.PushBack({ 640, 168, 35, 41 });
-	p2.frontflip.PushBack({ 640, 168, 35, 41 });
-	p2.frontflip.PushBack({ 22, 248, 51, 33 });
-	p2.frontflip.PushBack({ 22, 248, 51, 33 });
-	p2.frontflip.speed = 0.2f;
-	
-	//P2 Boosted Jump Animation
-	p2.boosted_jump.PushBack({ 30, 172, 39, 47 });
-	p2.boosted_jump.PushBack({ 130, 176, 39, 43 });
-	p2.boosted_jump.PushBack({ 234, 162, 37, 53 });
-	p2.boosted_jump.PushBack({ 328, 158, 41, 45 });
-	p2.boosted_jump.PushBack({ 436, 162, 29, 41 });
-	p2.boosted_jump.PushBack({ 528, 168, 47, 33 });
-	p2.boosted_jump.PushBack({ 640, 168, 35, 41 });
-	p2.boosted_jump.PushBack({ 22, 248, 51, 33 });
-	p2.boosted_jump.speed = 0.2f;
-
-	//P2 Falling Animation
-	p2.falling.PushBack({ 136, 224, 33, 61 });
-	p2.falling.PushBack({ 236, 226, 33, 59 });
-	p2.falling.speed = 0.2f;
-
-	//P2 Death Animation
-	p2.death.PushBack({ 10,1094,58,66 });
-	p2.death.PushBack({ 10,1094,58,66 });
-	p2.death.PushBack({ 10,1094,58,66 });
-	p2.death.PushBack({ 10,1094,58,66 });
-	p2.death.PushBack({ 10,1074,58,66 });
-	p2.death.PushBack({ 68,1074,58,86 });
-	p2.death.PushBack({ 68,1074,58,86 });
-	p2.death.PushBack({ 68,1074,58,86 });
-	p2.death.PushBack({ 68,1074,58,86 });
-	p2.death.PushBack({ 68,1074,58,86 });
-	p2.death.PushBack({ 68,1074,58,86 });
-	p2.death.PushBack({ 68,1074,58,86 });
-	p2.death.PushBack({ 136,1074,58,86 });
-	p2.death.PushBack({ 136,1074,58,86 });
-	p2.death.PushBack({ 136,1074,58,86 });
-	p2.death.PushBack({ 136,1074,58,86 });
-	p2.death.PushBack({ 136,1074,58,86 });
-	p2.death.PushBack({ 136,1074,58,86 });
-	p2.death.PushBack({ 193,1074,58,86 });
-	p2.death.PushBack({ 193,1074,58,86 });
-	p2.death.PushBack({ 193,1074,58,86 });
-	p2.death.PushBack({ 193,1074,58,66 });
-	p2.death.speed = 0.2f;
+	//Adds P2's animation pushback.
+	AddAnimationPushbacks();
 };
 
 j1Player2::~j1Player2()  //Destructor. Called at the last frame.
@@ -745,6 +667,90 @@ bool j1Player2::LoadPlayer2Properties(pugi::xml_node& config)
 	p2.collision_tolerance = config.child("player_2").child("collider_tolerance").attribute("tolerance").as_int();
 
 	return true;
+}
+
+bool j1Player2::AddAnimationPushbacks()
+{
+	//P2 Idle animation.
+	p2.idle.PushBack({ 28, 14, 37, 57 });
+	p2.idle.PushBack({ 132, 12, 33, 59 });
+	p2.idle.PushBack({ 230, 12, 37, 59 });
+	p2.idle.PushBack({ 326, 14, 39, 57 });
+	p2.idle.speed = 0.1f;
+
+	//P2 Running animation.
+	p2.running.PushBack({ 134, 90, 39, 55 });
+	p2.running.PushBack({ 232, 92, 39, 53 });
+	p2.running.PushBack({ 332, 96, 39, 49 });
+	p2.running.PushBack({ 434, 90, 45, 55 });
+	p2.running.PushBack({ 532, 92, 39, 53 });
+	p2.running.PushBack({ 632, 96, 39, 49 });
+	p2.running.speed = 0.2f;
+
+	//P2 Crouching animation.
+	p2.crouching.PushBack({ 432, 10, 37, 61 }); //20 Pixels of margin vertically up.
+	p2.crouching.PushBack({ 530, 8, 39, 63 });
+	p2.crouching.PushBack({ 630, 8, 37, 63 });
+	p2.crouching.PushBack({ 34, 84, 33, 61 });
+	p2.crouching.speed = 0.1f;
+
+	//P2 Jumping Animation
+	p2.jumping.PushBack({ 30, 172, 39, 47 });
+	p2.jumping.PushBack({ 130, 176, 39, 43 });
+	p2.jumping.PushBack({ 234, 162, 37, 53 });
+	p2.jumping.PushBack({ 328, 158, 41, 45 });
+	//p2.jumping.PushBack({ 436, 162, 29, 41 });
+	p2.jumping.speed = 0.25f;
+
+	//P2 Frontflip Animation
+	p2.frontflip.PushBack({ 528, 168, 47, 33 });
+	p2.frontflip.PushBack({ 528, 168, 47, 33 });
+	p2.frontflip.PushBack({ 640, 168, 35, 41 });
+	p2.frontflip.PushBack({ 640, 168, 35, 41 });
+	p2.frontflip.PushBack({ 22, 248, 51, 33 });
+	p2.frontflip.PushBack({ 22, 248, 51, 33 });
+	p2.frontflip.speed = 0.2f;
+
+	//P2 Boosted Jump Animation
+	p2.boosted_jump.PushBack({ 30, 172, 39, 47 });
+	p2.boosted_jump.PushBack({ 130, 176, 39, 43 });
+	p2.boosted_jump.PushBack({ 234, 162, 37, 53 });
+	p2.boosted_jump.PushBack({ 328, 158, 41, 45 });
+	p2.boosted_jump.PushBack({ 436, 162, 29, 41 });
+	p2.boosted_jump.PushBack({ 528, 168, 47, 33 });
+	p2.boosted_jump.PushBack({ 640, 168, 35, 41 });
+	p2.boosted_jump.PushBack({ 22, 248, 51, 33 });
+	p2.boosted_jump.speed = 0.2f;
+
+	//P2 Falling Animation
+	p2.falling.PushBack({ 136, 224, 33, 61 });
+	p2.falling.PushBack({ 236, 226, 33, 59 });
+	p2.falling.speed = 0.2f;
+
+	//P2 Death Animation
+	p2.death.PushBack({ 10,1094,58,66 });
+	p2.death.PushBack({ 10,1094,58,66 });
+	p2.death.PushBack({ 10,1094,58,66 });
+	p2.death.PushBack({ 10,1094,58,66 });
+	p2.death.PushBack({ 10,1074,58,66 });
+	p2.death.PushBack({ 68,1074,58,86 });
+	p2.death.PushBack({ 68,1074,58,86 });
+	p2.death.PushBack({ 68,1074,58,86 });
+	p2.death.PushBack({ 68,1074,58,86 });
+	p2.death.PushBack({ 68,1074,58,86 });
+	p2.death.PushBack({ 68,1074,58,86 });
+	p2.death.PushBack({ 68,1074,58,86 });
+	p2.death.PushBack({ 136,1074,58,86 });
+	p2.death.PushBack({ 136,1074,58,86 });
+	p2.death.PushBack({ 136,1074,58,86 });
+	p2.death.PushBack({ 136,1074,58,86 });
+	p2.death.PushBack({ 136,1074,58,86 });
+	p2.death.PushBack({ 136,1074,58,86 });
+	p2.death.PushBack({ 193,1074,58,86 });
+	p2.death.PushBack({ 193,1074,58,86 });
+	p2.death.PushBack({ 193,1074,58,86 });
+	p2.death.PushBack({ 193,1074,58,66 });
+	p2.death.speed = 0.2f;
 }
 
 /*bool j1Player2::LoadPlayer2Textures()

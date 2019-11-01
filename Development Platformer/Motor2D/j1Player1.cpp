@@ -18,86 +18,7 @@ j1Player1::j1Player1() //Constructor. Called at the first frame.
 	//String that will be given to the different functions (Awake(), Load()...) to generate the handler node.
 	name.create("player"); //The string has to be the same as the name of the node in the xml file.
 	
-	//P1 Idle animation.
-	p1.idle.PushBack({ 28, 14, 37, 57 });
-	p1.idle.PushBack({ 132, 12, 33, 59 });
-	p1.idle.PushBack({ 230, 12, 37, 59 });
-	p1.idle.PushBack({ 326, 14, 39, 57 });
-	p1.idle.speed = 0.1f;
-	
-	//P1 Running animation.
-	p1.running.PushBack({ 134, 90, 39, 55 });
-	p1.running.PushBack({ 232, 92, 39, 53 });
-	p1.running.PushBack({ 332, 96, 39, 49 });
-	p1.running.PushBack({ 434, 90, 45, 55 });
-	p1.running.PushBack({ 532, 92, 39, 53 });
-	p1.running.PushBack({ 632, 96, 39, 49 });
-	p1.running.speed = 0.2f;
-
-	//P1 Crouching animation.
-	p1.crouching.PushBack({ 432, 10, 37, 61 }); //20 Pixels of margin vertically up.
-	p1.crouching.PushBack({ 530, 8, 39, 63 });
-	p1.crouching.PushBack({ 630, 8, 37, 63 });
-	p1.crouching.PushBack({ 34, 84, 33, 61 });
-	p1.crouching.speed = 0.1f;
-
-	//P1 Jumping Animation
-	p1.jumping.PushBack({ 30, 172, 39, 47 });
-	p1.jumping.PushBack({ 130, 176, 39, 43 });
-	p1.jumping.PushBack({ 234, 162, 37, 53 });
-	p1.jumping.PushBack({ 328, 158, 41, 45 });
-	/*p1.jumping.PushBack({ 436, 162, 29, 41 });*/ //Cape coiling up a bit before falling. A bit glitchy.
-	p1.jumping.speed = 0.25f;
-
-	//P1 Frontflip Animation
-	p1.frontflip.PushBack({ 528, 168, 47, 33 });
-	p1.frontflip.PushBack({ 528, 168, 47, 33 });
-	p1.frontflip.PushBack({ 640, 168, 35, 41 });
-	p1.frontflip.PushBack({ 640, 168, 35, 41 });
-	p1.frontflip.PushBack({ 22, 248, 51, 33 });
-	p1.frontflip.PushBack({ 22, 248, 51, 33 });
-	p1.frontflip.speed = 0.2f;
-
-	//P1 Boosted Jump Animation
-	p1.boosted_jump.PushBack({ 30, 172, 39, 47 });
-	p1.boosted_jump.PushBack({ 130, 176, 39, 43 });
-	p1.boosted_jump.PushBack({ 234, 162, 37, 53 });
-	p1.boosted_jump.PushBack({ 328, 158, 41, 45 });
-	p1.boosted_jump.PushBack({ 436, 162, 29, 41 });
-	p1.boosted_jump.PushBack({ 528, 168, 47, 33 });
-	p1.boosted_jump.PushBack({ 640, 168, 35, 41 });
-	p1.boosted_jump.PushBack({ 22, 248, 51, 33 });
-	p1.boosted_jump.speed = 0.2f;
-
-	//P1 Falling Animation
-	p1.falling.PushBack({ 136, 224, 33, 61 });
-	p1.falling.PushBack({ 236, 226, 33, 59 });
-	p1.falling.speed = 0.2f;
-
-	//P1 Death Animation
-	p1.death.PushBack({ 10,1094,58,66 });
-	p1.death.PushBack({ 10,1094,58,66 });
-	p1.death.PushBack({ 10,1094,58,66 });
-	p1.death.PushBack({ 10,1094,58,66 });
-	p1.death.PushBack({ 10,1074,58,66 });
-	p1.death.PushBack({ 68,1074,58,86 });
-	p1.death.PushBack({ 68,1074,58,86 });
-	p1.death.PushBack({ 68,1074,58,86 });
-	p1.death.PushBack({ 68,1074,58,86 });
-	p1.death.PushBack({ 68,1074,58,86 });
-	p1.death.PushBack({ 68,1074,58,86 });
-	p1.death.PushBack({ 68,1074,58,86 });
-	p1.death.PushBack({ 136,1074,58,86 });
-	p1.death.PushBack({ 136,1074,58,86 });
-	p1.death.PushBack({ 136,1074,58,86 });
-	p1.death.PushBack({ 136,1074,58,86 });
-	p1.death.PushBack({ 136,1074,58,86 });
-	p1.death.PushBack({ 136,1074,58,86 });
-	p1.death.PushBack({ 193,1074,58,86 });
-	p1.death.PushBack({ 193,1074,58,86 });
-	p1.death.PushBack({ 193,1074,58,86 });
-	p1.death.PushBack({ 193,1074,58,66 });
-	p1.death.speed = 0.2f;
+	AddAnimationPushbacks();
 };
 
 j1Player1::~j1Player1()  //Destructor. Called at the last frame.
@@ -709,6 +630,90 @@ bool j1Player1::LoadPlayer1()		//Loads P1 on screen.
 	p1.switch_sprites = false;
 
 	return true;
+}
+
+bool j1Player1::AddAnimationPushbacks()
+{
+	//P1 Idle animation.
+	p1.idle.PushBack({ 28, 14, 37, 57 });
+	p1.idle.PushBack({ 132, 12, 33, 59 });
+	p1.idle.PushBack({ 230, 12, 37, 59 });
+	p1.idle.PushBack({ 326, 14, 39, 57 });
+	p1.idle.speed = 0.1f;
+
+	//P1 Running animation.
+	p1.running.PushBack({ 134, 90, 39, 55 });
+	p1.running.PushBack({ 232, 92, 39, 53 });
+	p1.running.PushBack({ 332, 96, 39, 49 });
+	p1.running.PushBack({ 434, 90, 45, 55 });
+	p1.running.PushBack({ 532, 92, 39, 53 });
+	p1.running.PushBack({ 632, 96, 39, 49 });
+	p1.running.speed = 0.2f;
+
+	//P1 Crouching animation.
+	p1.crouching.PushBack({ 432, 10, 37, 61 }); //20 Pixels of margin vertically up.
+	p1.crouching.PushBack({ 530, 8, 39, 63 });
+	p1.crouching.PushBack({ 630, 8, 37, 63 });
+	p1.crouching.PushBack({ 34, 84, 33, 61 });
+	p1.crouching.speed = 0.1f;
+
+	//P1 Jumping Animation
+	p1.jumping.PushBack({ 30, 172, 39, 47 });
+	p1.jumping.PushBack({ 130, 176, 39, 43 });
+	p1.jumping.PushBack({ 234, 162, 37, 53 });
+	p1.jumping.PushBack({ 328, 158, 41, 45 });
+	/*p1.jumping.PushBack({ 436, 162, 29, 41 });*/ //Cape coiling up a bit before falling. A bit glitchy.
+	p1.jumping.speed = 0.25f;
+
+	//P1 Frontflip Animation
+	p1.frontflip.PushBack({ 528, 168, 47, 33 });
+	p1.frontflip.PushBack({ 528, 168, 47, 33 });
+	p1.frontflip.PushBack({ 640, 168, 35, 41 });
+	p1.frontflip.PushBack({ 640, 168, 35, 41 });
+	p1.frontflip.PushBack({ 22, 248, 51, 33 });
+	p1.frontflip.PushBack({ 22, 248, 51, 33 });
+	p1.frontflip.speed = 0.2f;
+
+	//P1 Boosted Jump Animation
+	p1.boosted_jump.PushBack({ 30, 172, 39, 47 });
+	p1.boosted_jump.PushBack({ 130, 176, 39, 43 });
+	p1.boosted_jump.PushBack({ 234, 162, 37, 53 });
+	p1.boosted_jump.PushBack({ 328, 158, 41, 45 });
+	p1.boosted_jump.PushBack({ 436, 162, 29, 41 });
+	p1.boosted_jump.PushBack({ 528, 168, 47, 33 });
+	p1.boosted_jump.PushBack({ 640, 168, 35, 41 });
+	p1.boosted_jump.PushBack({ 22, 248, 51, 33 });
+	p1.boosted_jump.speed = 0.2f;
+
+	//P1 Falling Animation
+	p1.falling.PushBack({ 136, 224, 33, 61 });
+	p1.falling.PushBack({ 236, 226, 33, 59 });
+	p1.falling.speed = 0.2f;
+
+	//P1 Death Animation
+	p1.death.PushBack({ 10,1094,58,66 });
+	p1.death.PushBack({ 10,1094,58,66 });
+	p1.death.PushBack({ 10,1094,58,66 });
+	p1.death.PushBack({ 10,1094,58,66 });
+	p1.death.PushBack({ 10,1074,58,66 });
+	p1.death.PushBack({ 68,1074,58,86 });
+	p1.death.PushBack({ 68,1074,58,86 });
+	p1.death.PushBack({ 68,1074,58,86 });
+	p1.death.PushBack({ 68,1074,58,86 });
+	p1.death.PushBack({ 68,1074,58,86 });
+	p1.death.PushBack({ 68,1074,58,86 });
+	p1.death.PushBack({ 68,1074,58,86 });
+	p1.death.PushBack({ 136,1074,58,86 });
+	p1.death.PushBack({ 136,1074,58,86 });
+	p1.death.PushBack({ 136,1074,58,86 });
+	p1.death.PushBack({ 136,1074,58,86 });
+	p1.death.PushBack({ 136,1074,58,86 });
+	p1.death.PushBack({ 136,1074,58,86 });
+	p1.death.PushBack({ 193,1074,58,86 });
+	p1.death.PushBack({ 193,1074,58,86 });
+	p1.death.PushBack({ 193,1074,58,86 });
+	p1.death.PushBack({ 193,1074,58,66 });
+	p1.death.speed = 0.2f;
 }
 
 bool j1Player1::LoadPlayer1Properties(pugi::xml_node& config)

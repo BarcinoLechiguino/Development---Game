@@ -122,7 +122,9 @@ public: //P1 Variables
 	bool Save(pugi::xml_node &node) const;			//Saving to xml file.
 	bool LoadPlayer2();								//Loads P2 on screen.
 	bool LoadPlayer2Properties(pugi::xml_node&);	//Loads P2's data from the config xml file.
+	bool AddAnimationPushbacks();					//Adds P2's animation pushbacks.
 	//bool LoadPlayer2Textures();					//Loads P2's textures on screen.
+
 	void Restart();									//Resets P2's position to where P2 started the level. 
 	void GodModeInput();							//Enables / Disables the God Mode.
 
