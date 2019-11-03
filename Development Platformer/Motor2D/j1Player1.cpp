@@ -47,14 +47,14 @@ bool j1Player1::Start()
 	LoadPlayer1();					//Loads P1 in game.
 	//LoadPlayer1Textures();		//Loads P1's textures in game.
 
-	p1.jumpFX = App->audio->LoadFx("audio/fx/Jump.wav");
-	p1.deathFX = App->audio->LoadFx("audio/fx/Death.wav");
-	p1.duoFX = App->audio->LoadFx("audio/fx/Jump_Duo.wav");
-	p1.activateFX = App->audio->LoadFx("audio/fx/Activate.wav");
-	p1.tpFX = App->audio->LoadFx("audio/fx/TP.wav");
-	p1.goalFX = App->audio->LoadFx("audio/fx/Pass.wav");
+	p1.jumpFX		= App->audio->LoadFx("audio/fx/Jump.wav");
+	p1.deathFX		= App->audio->LoadFx("audio/fx/Death.wav");
+	p1.duoFX		= App->audio->LoadFx("audio/fx/Jump_Duo.wav");
+	p1.activateFX	= App->audio->LoadFx("audio/fx/Activate.wav");
+	p1.tpFX			= App->audio->LoadFx("audio/fx/TP.wav");
+	p1.goalFX		= App->audio->LoadFx("audio/fx/Pass.wav");
 
-	p1.airborne = true;
+	p1.airborne	= true;
 	p1.item_activated = false;
 
 	p1.state = idle_P1;
