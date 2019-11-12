@@ -714,6 +714,8 @@ bool j1Player1::AddAnimationPushbacks()
 	p1.death.PushBack({ 193,1074,58,86 });
 	p1.death.PushBack({ 193,1074,58,66 });
 	p1.death.speed = 0.2f;
+
+	return true;
 }
 
 bool j1Player1::LoadPlayer1Properties(pugi::xml_node& config)

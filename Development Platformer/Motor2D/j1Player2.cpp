@@ -751,6 +751,8 @@ bool j1Player2::AddAnimationPushbacks()
 	p2.death.PushBack({ 193,1074,58,86 });
 	p2.death.PushBack({ 193,1074,58,66 });
 	p2.death.speed = 0.2f;
+
+	return true;
 }
 
 /*bool j1Player2::LoadPlayer2Textures()
