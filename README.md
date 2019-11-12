@@ -3,7 +3,7 @@ Mutual Cooperation is a 2D platformer game made by two second year
 students of the Videogame Design and Development degree. 
 
 # Versions
-- 1.0: Two levels designed with two 
+- 0.1: Two levels designed with two 
 players implemented. Players can move, 
 jump, have dual moves and teleport. 
 
