@@ -421,7 +421,8 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 					if (C1->collider.x + (C1->collider.w * half) < C2->collider.x)
 					{
 						p1.againstLeftWall = true;
-						p1.position.x = C2->collider.x - C2->collider.w - 1;
+						//p1.position.x = C2->collider.x - C2->collider.w - 1;
+						p1.position.x = C2->collider.x - p1.HitBox.w;
 						LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
 					}
 				}
@@ -434,6 +435,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 					{
 						p1.againstRightWall = true;
 						p1.position.x = C2->collider.x + C2->collider.w - p1.collision_tolerance;
+						//p1.position.x = C2->collider.x + C2->collider.w - p1.HitBox.w + 20;
 						LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
 					}
 				}
@@ -779,18 +781,18 @@ void j1Player1::GodModeInput()
 	
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		p1.position.x += GOD_MODE_SPEED;
+		p1.position.x += GOD_MODE_SPEED * App->dt;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		p1.position.x -= GOD_MODE_SPEED;
+		p1.position.x -= GOD_MODE_SPEED * App->dt;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
-		p1.position.y -= GOD_MODE_SPEED;
+		p1.position.y -= GOD_MODE_SPEED * App->dt;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
-		p1.position.y += GOD_MODE_SPEED;
+		p1.position.y += GOD_MODE_SPEED * App->dt;
 	}
 }

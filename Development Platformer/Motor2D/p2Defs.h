@@ -37,6 +37,8 @@
 #define TO_BOOL( a )  ( (a != 0) ? true : false )
 
 typedef unsigned int uint;
+typedef unsigned __int32 uint32;
+typedef unsigned __int64 uint64;
 typedef unsigned char uchar;
 
 template <class VALUE_TYPE> void SWAP(VALUE_TYPE& a, VALUE_TYPE& b)
@@ -59,9 +61,13 @@ inline const char* const PATH(const char* folder, const char* file)
 	return path;
 }
 
+// Performance macros
+#define PERF_START(timer) timer.Start();
+#define PERF_PEEK(timer) LOG("%s took %f ms", __FUNCTION__, timer.ReadMs())
+
 //Own Definitions
 #define ALPHA 80
-#define GOD_MODE_SPEED 10
+#define GOD_MODE_SPEED 250
 #define HALF 2;
 #define FOURTH 4;
 #define FLIP_MARGIN 22

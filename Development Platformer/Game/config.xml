@@ -1,13 +1,13 @@
 <!-- Config file for the game -->
 
 <config>
-  <app>
+  <app framerate_cap="30">
     <title>Mutual Cooperation</title>
     <organization>UPC</organization>
   </app>
 	
   <renderer>
-    <vsync value="true"/>
+    <vsync value="false"/>
     <camera x ="0" y ="-570" smoothing_speed ="0.01"/>
     <spawn_cam x ="0" y ="-570"/>
   </renderer>
@@ -20,9 +20,6 @@
     <fullscreen_window value="false"/>
   </window>
 
- 
-
-  
   <audio>
     <default_volume value="100"/>
     <music>
