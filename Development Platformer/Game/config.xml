@@ -42,8 +42,8 @@
     <player_1>
       <position x="225" y="1126"/>
       <speed x="0" y="0"/>
-      <max_speed x="8" y="14"/>
-      <acceleration x="1" y="14"/>
+      <max_speed x="80" y="14"/>
+      <acceleration x="10" y="14"/>
       <gravity value="1"/>
       <boost_jump x="0"  y="20"/>
       <sprite_measures w="38" h="58"/>
@@ -63,8 +63,8 @@
       <previous_position x="0" y="0"/>
       <last_grounded x="0" y="0"/>
       <speed x="0" y="0"/>
-      <max_speed x="8" y="14"/>
-      <acceleration x="1" y="14"/>
+      <max_speed x="800" y="14"/>
+      <acceleration x="100" y="14"/>
       <gravity value="1"/>
       <boost_jump x="0"  y="20"/>
       <sprite_measures w="38" h="58"/>

@@ -152,9 +152,16 @@ bool j1Player1::Update(float dt)
 	case goingRight_P1:
 
 		//As long as D is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
-		while (p1.speed.x != p1.max_speed.x)
+		/*while (p1.speed.x != p1.max_speed.x * dt)
 		{
-			p1.speed.x += p1.acceleration.x;
+			p1.speed.x += p1.acceleration.x * dt;
+		}*/
+
+		p1.speed.x += ceil(p1.acceleration.x * dt);
+
+		if (p1.speed.x > ceil(p1.max_speed.x * dt))
+		{
+			p1.speed.x = ceil(p1.max_speed.x * dt);
 		}
 
 		p1.flip = false;
@@ -166,9 +173,16 @@ bool j1Player1::Update(float dt)
 	case goingLeft_P1:
 	
 		//As long as W is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
-		while (p1.speed.x != -p1.max_speed.x)
+		/*while (p1.speed.x != -p1.max_speed.x * dt)
 		{
-			p1.speed.x -= p1.acceleration.x;
+			p1.speed.x -= p1.acceleration.x * dt;
+		}*/
+
+		p1.speed.x -= ceil(p1.acceleration.x * dt);
+
+		if (p1.speed.x < ceil(-p1.max_speed.x * dt))
+		{
+			p1.speed.x = ceil(-p1.max_speed.x * dt);
 		}
 
 		p1.flip = true;
@@ -189,8 +203,8 @@ bool j1Player1::Update(float dt)
 	
 		if (p1.grounded == true)
 		{
-			p1.speed.y = -p1.acceleration.y;
-			p1.isJumping = true;				//Boolean for animations
+			p1.speed.y = -p1.acceleration.y * dt;
+			p1.isJumping = true;					//Boolean for animations
 			p1.airborne = true;	
 			p1.grounded = false;
 		}
@@ -223,11 +237,11 @@ bool j1Player1::Update(float dt)
 	//If P1 is in the air then this function brings him/her back down to the floor.
 	if (p1.airborne == true)
 	{	
-		p1.speed.y += p1.gravity;
+		p1.speed.y += p1.gravity * dt;
 		
-		if (p1.speed.y > p1.max_speed.y)
+		if (p1.speed.y > p1.max_speed.y * dt)
 		{
-			p1.speed.y = p1.max_speed.y;
+			p1.speed.y = p1.max_speed.y * dt;
 		}
 	
 		p1.position.y += p1.speed.y;				//Refreshes the vector speed of P1 in the Y axis.
@@ -368,7 +382,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 				{
 					if (p1.grounded == true)
 					{
-						p1.speed.y -= p1.boost_jump.y;
+						p1.speed.y -= p1.boost_jump.y * App->dt;
 						p1.isBoostJumping = true;
 						p1.airborne = true;
 						p1.grounded = false;
