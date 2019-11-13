@@ -152,7 +152,7 @@ bool j1Scene::Update(float dt)									//Receives dt as an argument.
 	else if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
 		if (App->player1->p1.GodMode)
-		{
+		{	
 			App->player1->p1.GodMode = false;
 			App->player2->p2.GodMode = false;
 			App->player1->p1.airborne = true;

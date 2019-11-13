@@ -7,18 +7,19 @@
 		<volume />
 	</audio>
 	<map />
+	<pathfinding />
 	<scene>
 		<currentMap num="0" />
 	</scene>
 	<collisions />
 	<player>
-		<position1 x="876" y="775" />
+		<position1 x="1061" y="3177.65454" />
 	</player>
 	<player>
-		<position2 x="775" y="775" />
+		<position2 x="200" y="1128" />
 	</player>
 	<:anonymous />
 	<renderer>
-		<camera x="-351" y="-420" />
+		<camera x="-156" y="-576" />
 	</renderer>
 </game_state>

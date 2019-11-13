@@ -52,6 +52,15 @@
     <ClCompile Include="j1PerfTimer.cpp">
       <Filter>Desenvolupament  ========\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Desenvolupament  ========\Modules\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityManager.cpp">
+      <Filter>Desenvolupament  ========\Modules\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Pathfinding.cpp">
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -126,6 +135,15 @@
     <ClInclude Include="j1PerfTimer.h">
       <Filter>Desenvolupament  ========\Tools</Filter>
     </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Desenvolupament  ========\Modules\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityManager.h">
+      <Filter>Desenvolupament  ========\Modules\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Pathfinding.h">
+      <Filter>Desenvolupament  ========\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -145,6 +163,15 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Tools\PuguiXML">
       <UniqueIdentifier>{7cb78d67-17cc-45eb-af97-e2106becce7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Entities">
+      <UniqueIdentifier>{be0b39a0-0ecc-453d-9084-032f91da96c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Entities\Player">
+      <UniqueIdentifier>{23a77ddc-0e9e-4975-9740-c7f663d75462}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Entities\Enemies">
+      <UniqueIdentifier>{1c2ea70d-f549-4e40-ab63-ddfe849e59f3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

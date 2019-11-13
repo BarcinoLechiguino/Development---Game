@@ -157,14 +157,18 @@ bool j1Player1::Update(float dt)
 			p1.speed.x += p1.acceleration.x * dt;
 		}*/
 
-		p1.speed.x += ceil(p1.acceleration.x * dt);
-
-		if (p1.speed.x > ceil(p1.max_speed.x * dt))
+		if (!p1.againstLeftWall)
 		{
-			p1.speed.x = ceil(p1.max_speed.x * dt);
-		}
+			p1.speed.x += ceil(p1.acceleration.x * dt);
 
-		p1.flip = false;
+			if (p1.speed.x > ceil(p1.max_speed.x * dt))
+			{
+				p1.speed.x = ceil(p1.max_speed.x * dt);
+			}
+
+			p1.flip = false;
+		}
+		
 		p1.current_animation = &p1.running;
 		p1.isGoingRight = true;
 	
@@ -177,15 +181,19 @@ bool j1Player1::Update(float dt)
 		{
 			p1.speed.x -= p1.acceleration.x * dt;
 		}*/
-
-		p1.speed.x -= ceil(p1.acceleration.x * dt);
-
-		if (p1.speed.x < ceil(-p1.max_speed.x * dt))
+		
+		if (!p1.againstRightWall)
 		{
-			p1.speed.x = ceil(-p1.max_speed.x * dt);
-		}
+			p1.speed.x -= ceil(p1.acceleration.x * dt);
 
-		p1.flip = true;
+			if (p1.speed.x < ceil(-p1.max_speed.x * dt))
+			{
+				p1.speed.x = ceil(-p1.max_speed.x * dt);
+			}
+
+			p1.flip = true;
+		}
+		
 		p1.current_animation = &p1.running;
 		p1.isGoingLeft = true;
 	
@@ -282,7 +290,7 @@ bool j1Player1::Update(float dt)
 	}
 	else
 	{
-		p1.collider->Set_Position(p1.position.x + FLIP_MARGIN, p1.position.y);
+		p1.collider->Set_Position(p1.position.x /*+ FLIP_MARGIN*/, p1.position.y);		//Revise
 	}
 
 	// If P1 empties the lives pool then both players die and reset their positions to the spawn point.
@@ -313,7 +321,7 @@ bool j1Player1::Update(float dt)
 
 bool j1Player1::PostUpdate() 
 {
-	//Resetting the collider related bools after the collision has happened.
+	//Resetting the collider related bools after the collision happened in Update() so it can be checked the next update/frame.
 	p1.againstCeiling = false;
 	p1.againstRightWall = false;
 	p1.againstLeftWall = false;
@@ -373,203 +381,168 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			return;
 		}
 
-		//Player Colliding Against Another Player
-		if (C1->type == PLAYER && C2->type == PLAYER)
+		if (C1->type == PLAYER)
 		{
-			if (C1->collider.x + C1->collider.w > C2->collider.x || C1->collider.x < C2->collider.x + C2->collider.w ) //As the boost can be done even if P1 is static, this allows for more precise jumps... hopefully.
+			//Player Colliding Against Another Player
+			if (C2->type == PLAYER)
 			{
-				if (App->player2->p2.state == crouching_P2 /*App->player2->p2.isCrouching == true*/)
+				if (C1->collider.x + C1->collider.w > C2->collider.x || C1->collider.x < C2->collider.x + C2->collider.w) //As the boost can be done even if P1 is static, this allows for more precise jumps... hopefully.
 				{
-					if (p1.grounded == true)
+					if (App->player2->p2.state == crouching_P2 /*App->player2->p2.isCrouching == true*/)
 					{
-						p1.speed.y -= p1.boost_jump.y * App->dt;
-						p1.isBoostJumping = true;
-						p1.airborne = true;
-						p1.grounded = false;
-						App->audio->PlayFx(3, 0);
+						if (p1.grounded == true)
+						{
+							p1.speed.y -= p1.boost_jump.y * App->dt;
+							p1.isBoostJumping = true;
+							p1.airborne = true;
+							p1.grounded = false;
+							App->audio->PlayFx(3, 0);
+						}
 					}
+					LOG("P1 IS COLLIDING WITH P2 FROM THE LEFT");
 				}
-				LOG("P1 IS COLLIDING WITH P2 FROM THE LEFT");
 			}
-		}
-		
-		//Player colliding against solids
-		if (C1->type == PLAYER && C2->type == SOLID)
-		{
-			//Player Colliding vertically against the Solid. The first part checks if C1 is contained in the X axis of C2. 
-			if (C1->collider.x + C1->collider.w > C2->collider.x + p1.collision_tolerance && C1->collider.x + p1.collision_tolerance < C2->collider.x + C2->collider.w)
-			{
-				//Player Colliding from Above the Solid, ergo colliding with the ground. This second part checks if C1 is actually colliding vertically down.
-				if (C1->collider.y + C1->collider.h > C2->collider.y && C1->collider.y < C2->collider.y)
-				{
-					p1.speed.y = 0;
-					p1.position.y = C2->collider.y - C1->collider.h;
-					p1.isJumping = false;
-					p1.isBoostJumping = false;
-					p1.grounded = true;
-					LOG("P1 IS COLLIDING WITH SOLID FROM ABOVE");
-				}
 
-				//Player Colliding from Below the Solid. ergo colliding with the ceiling. This second part checks if C1 is actually colliding vertically down.
-				else
+			//Player colliding against solids
+			if (C2->type == SOLID)
+			{
+				//Player Colliding vertically against the Solid. The first part checks if C1 is contained in the X axis of C2. 
+				if (C1->collider.x + C1->collider.w >= C2->collider.x + 4 && C1->collider.x + 4 <= C2->collider.x + C2->collider.y)
 				{
-					if (C1->collider.y < C2->collider.y + C2->collider.h && C1->collider.y + (C1->collider.h * half) > C2->collider.y + C2->collider.h && p1.speed.y < 0)
+					//Player Colliding from Above the Solid, ergo colliding with the ground. This second part checks if C1 is actually colliding vertically down.
+					if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y)
 					{
 						p1.speed.y = 0;
-						p1.position.y = C2->collider.y + C2->collider.h;
-						p1.againstCeiling = true;
-						LOG("P1 IS COLLIDING WITH SOLID FROM BELOW");
-					}
-				}
-			}
-
-			//Player is colliding from the sides. The first part checks if C1 is contained in  the Y axis of C2.
-			if (C1->collider.y + C1->collider.h > C2->collider.y + p1.collision_tolerance && C1->collider.y  < C2->collider.y + C2->collider.h)
-			{
-				LOG("P1 IS COLLIDING WITH SOLID FROM THE SIDES");
-
-				//Player is colliding from left (going right). This second part checks if C1 is actually colliding from the left side of the collider. Additionally it checks whether or not P1 has collided against the ceiling.
-				if (C1->collider.x + C1->collider.w > C2->collider.x && C1->collider.x < C2->collider.x && p1.againstCeiling == false)
-				{
-					//This third part checks whether P1 is at a certain distance in the collider. It checks if three fourths of P1's width is not actually colliding.    
-					if (C1->collider.x + (C1->collider.w * half) < C2->collider.x)
-					{
-						p1.againstLeftWall = true;
-						//p1.position.x = C2->collider.x - C2->collider.w - 1;
-						p1.position.x = C2->collider.x - p1.HitBox.w;
-						LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
-					}
-				}
-
-				//Player is colliding from right (going left). This second part checks if  C1 is actually colliding from the right side of the collider.
-				if (C1->collider.x < C2->collider.x + C2->collider.w && C1->collider.x + C1->collider.w > C2->collider.x + C2->collider.w && p1.againstCeiling == false)
-				{
-					//This third part checks whether P1 is at a certain distance in the collider. It checks if a quarter of P1's width is still colliding. 
-					if (C1->collider.x + (C1->collider.w * quarter) > C2->collider.x + C2->collider.w)
-					{
-						p1.againstRightWall = true;
-						p1.position.x = C2->collider.x + C2->collider.w - p1.collision_tolerance;
-						//p1.position.x = C2->collider.x + C2->collider.w - p1.HitBox.w + 20;
-						LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
-					}
-				}
-			}
-		}
-
-		if (C1->type == PLAYER && C2->type == PLATFORM)
-		{
-			if (p1.platformDrop == false)
-			{
-				if (C1->collider.x + C1->collider.w > C2->collider.x + p1.collision_tolerance && C1->collider.x + p1.collision_tolerance < C2->collider.x + C2->collider.w)
-				{
-					//Player Colliding from Above the Platform, ergo colliding with the ground. This second part checks if C1 is actually colliding vertically down.
-					if (C1->collider.y + C1->collider.h > C2->collider.y && C1->collider.y < C2->collider.y)
-					{
-						p1.speed.y = 0;
-						p1.position.y = C2->collider.y - C1->collider.h;
+						p1.position.y = C2->collider.y - C1->collider.h + 1;
 						p1.isJumping = false;
 						p1.isBoostJumping = false;
-						p1.grounded = true;
-						LOG("P1 IS COLLIDING WITH PLATFORM FROM ABOVE");
+						p1.grounded	= true;
+						LOG("P1 IS COLLIDING WITH A SOLID FROM ABOVE");
+					}
+
+					//Player Colliding from Below the Solid. ergo colliding with the ceiling. This second part checks if C1 is actually colliding vertically down.
+					else if (C1->collider.y < C2->collider.y + C2->collider.h && C1->collider.y > C2->collider.y)
+					{
+						p1.speed.y = 0;
+						//p1.position.y = C2->collider.y + C2->collider.h + 1;	//Revise. Sometimes a collision from below is detected and it sends the player below the stage.
+						p1.againstCeiling = true;
+						LOG("P1 IS COLLIDING WITH A SOLID FROM BELOW");
+					}
+				}
+
+				//Player is colliding from LEFT or RIGHT. The first part checks if C1 is contained in the Y axis of C2.
+				if (C1->collider.y <= C2->collider.y + C2->collider.h && C1->collider.y + C1->collider.h - 4 >= C2->collider.y)
+				{
+					//Player is colliding from left (going right). This second part checks if C1 is actually colliding from the left side of the collider.
+					if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x)
+					{
+						p1.againstLeftWall = true;
+						p1.againstRightWall = false;
+						LOG("P1 IS COLLIDING WITH A SOLID FROM THE LEFT");
+					}
+					
+					//Player is colliding from right (going left). This second part checks if  C1 is actually colliding from the right side of the collider.
+					if (C1->collider.x <= C2->collider.x + C2->collider.w && C1->collider.x >= C2->collider.x)
+					{
+						p1.againstRightWall = true;
+						p1.againstLeftWall = false;
+						LOG("P1 IS COLLIDING WITH A SOLID FROM THE RIGHT");
 					}
 				}
 			}
-		}
 
-		if (C1->type == PLAYER && C2->type == HAZARD)
-		{
-			if (C1->collider.x + C1->collider.w > C2->collider.x || C1->collider.x < C2->collider.x + C2->collider.w || C1->collider.y < C2->collider.y + C2->collider.h || C1->collider.y + C1->collider.h > C2->collider.y)
+			if (C2->type == PLATFORM)
+			{
+				if (p1.platformDrop == false)
+				{
+					if (C1->collider.x >= C2->collider.x && C1->collider.x + C1->collider.w <= C2->collider.x + C2->collider.y)
+					{
+						//Player Colliding from Above the Solid, ergo colliding with the ground. This second part checks if C1 is actually colliding vertically down.
+						if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y)
+						{
+							p1.speed.y = 0;
+							p1.position.y = C2->collider.y - C1->collider.h + 1;
+							p1.isJumping = false;
+							p1.isBoostJumping = false;
+							p1.grounded = true;
+							LOG("P1 IS COLLIDING WITH A SOLID FROM ABOVE");
+						}
+					}
+				}
+			}
+
+			if (C2->type == HAZARD)
 			{
 				//Death logic
 				p1.lives--;
-
 				p1.state = dying_P1;
-				
-				//Antes la animacion de muerte tiene que haber finalizado
+
+				//Antes la animacion de muerte tiene que haber finalizado - Gerard
 				RespawnP1ToP2();
 			}
-		}
 
-		//Player Colliding against an Activable Item
-		if (C1->type == PLAYER && C2->type == ITEM)
-		{
-			if (C1->collider.x + C1->collider.w > C2->collider.x || C1->collider.x < C2->collider.x + C2->collider.w) //Just a general detection of collisions, as what only matters is that it activates.
+			//Player Colliding against an Activable Item
+			if (C2->type == ITEM)
 			{
 				p1.item_activated = true;					//Records that P1 (or P2) has activated the item.
 				App->player2->p2.item_activated = true;		//Activates P2's boolean as well.
 
 				App->audio->PlayFx(4, 1);					//Item Activation sfx.
 			}
-		}
 
-		//Player colliding against Deactivable surfaces. 
-		if (C1->type == PLAYER && C2->type == DEACTIVABLE)
-		{
-			if (p1.item_activated == false || App->player2->p2.item_activated == false)
-			{
-				//Player Colliding vertically against the Solid. The first part checks if C1 is contained in the X axis of C2. 
-				if (C1->collider.x + C1->collider.w > C2->collider.x + p1.collision_tolerance && C1->collider.x + p1.collision_tolerance < C2->collider.x + C2->collider.w)
+			//Player colliding against Deactivable surfaces. 
+			if (C2->type == DEACTIVABLE)
+			{	
+				if (p1.item_activated == false || App->player2->p2.item_activated == false)
 				{
-					//Player Colliding from Above the Solid, ergo colliding with the ground. This second part checks if C1 is actually colliding vertically down.
-					if (C1->collider.y + C1->collider.h > C2->collider.y && C1->collider.y < C2->collider.y)
+					//Player Colliding vertically against the Solid. The first part checks if C1 is contained in the X axis of C2. 
+					if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x + C2->collider.y)
 					{
-						p1.speed.y = 0;
-						p1.position.y = C2->collider.y - C1->collider.h;
-						p1.isJumping = false;
-						p1.isBoostJumping = false;
-						p1.grounded = true;
-						LOG("P1 IS COLLIDING WITH SOLID FROM ABOVE");
-					}
-
-					//Player Colliding from Below the Solid. ergo colliding with the ceiling. This second part checks if C1 is actually colliding vertically down.
-					else
-					{
-						if (C1->collider.y < C2->collider.y + C2->collider.h && C1->collider.y + (C1->collider.h * half) > C2->collider.y + C2->collider.h && p1.speed.y < 0)
+						//Player Colliding from Above the Solid, ergo colliding with the ground. This second part checks if C1 is actually colliding vertically down.
+						if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y)
 						{
 							p1.speed.y = 0;
-							p1.position.y = C2->collider.y + C2->collider.h;
+							p1.position.y = C2->collider.y - C1->collider.h + 1;
+							p1.isJumping = false;
+							p1.isBoostJumping = false;
+							p1.grounded = true;
+							LOG("P1 IS COLLIDING WITH A SOLID FROM ABOVE");
+						}
+
+						//Player Colliding from Below the Solid. ergo colliding with the ceiling. This second part checks if C1 is actually colliding vertically down.
+						else if (C1->collider.y < C2->collider.y + C2->collider.h && C1->collider.y > C2->collider.y)
+						{
+							p1.speed.y = 0;
+							p1.position.y = C2->collider.y + C2->collider.h + 1;
 							p1.againstCeiling = true;
-							LOG("P1 IS COLLIDING WITH SOLID FROM BELOW");
+							LOG("P1 IS COLLIDING WITH A SOLID FROM BELOW");
 						}
 					}
-				}
 
-				//Player is colliding from the sides. The first part checks if C1 is contained in  the Y axis of C2.
-				if (C1->collider.y + C1->collider.h > C2->collider.y + p1.collision_tolerance && C1->collider.y < C2->collider.y + C2->collider.h)
-				{
-					LOG("P1 IS COLLIDING WITH SOLID FROM THE SIDES");
-
-					//Player is colliding from left (going right). This second part checks if C1 is actually colliding from the left side of the collider. Additionally it checks whether or not P1 has collided against the ceiling.
-					if (C1->collider.x + C1->collider.w > C2->collider.x && C1->collider.x < C2->collider.x && p1.againstCeiling == false)
+					//Player is colliding from the sides. The first part checks if C1 is contained in the Y axis of C2.
+					if (C1->collider.y <= C2->collider.y + C2->collider.h && C1->collider.y + C1->collider.h - 4 >= C2->collider.y)
 					{
-						//This third part checks whether P1 is at a certain distance in the collider. It checks if three fourths of P1's width is not actually colliding.    
-						if (C1->collider.x + (C1->collider.w * threeFourths) < C2->collider.x)
+						//Player is colliding from left (going right). This second part checks if C1 is actually colliding from the left side of the collider.
+						if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x < C2->collider.x)
 						{
 							p1.againstLeftWall = true;
-							p1.position.x = C2->collider.x - C2->collider.w - 1;
-							LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
+							p1.againstRightWall = false;
+							LOG("P1 IS COLLIDING WITH A SOLID FROM THE LEFT");
 						}
-					}
 
-					//Player is colliding from right (going left). This second part checks if  C1 is actually colliding from the right side of the collider.
-					if (C1->collider.x < C2->collider.x + C2->collider.w && C1->collider.x + C1->collider.w > C2->collider.x + C2->collider.w && p1.againstCeiling == false)
-					{
-						//This third part checks whether P1 is at a certain distance in the collider. It checks if a quarter of P1's width is still colliding. 
-						if (C1->collider.x + (C1->collider.w * quarter) > C2->collider.x + C2->collider.w)
+						//Player is colliding from right (going left). This second part checks if  C1 is actually colliding from the right side of the collider.
+						if (C1->collider.x <= C2->collider.x + C2->collider.w && C1->collider.x > C2->collider.x)
 						{
 							p1.againstRightWall = true;
-							p1.position.x = C2->collider.x + C2->collider.w - p1.collision_tolerance;
-							LOG("P1 IS COLLIDING WITH SOLID FROM THE LEFT");
+							p1.againstLeftWall = false;
+							LOG("P1 IS COLLIDING WITH A SOLID FROM THE RIGHT");
 						}
 					}
 				}
 			}
-		}
 
-		//Player colliding against the Goal
-		if (C1->type == PLAYER && C2->type == GOAL)
-		{
-			if (C1->collider.x + C1->collider.w > C2->collider.x || C1->collider.x < C2->collider.x + C2->collider.w)	//Just a general detection of collisionss, as what only matters is that it activates.
+			//Player colliding against the Goal
+			if (C2->type == GOAL)
 			{
 				if (C1->collider.y > GOAL_Y && C1->collider.y < GOAL_HEIGHT)	//Dirty way to know which portal goal has been reached.
 				{
@@ -582,7 +555,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 					App->map->Restart_Cam();
 				}
 
-				App->audio->PlayFx(6, 0);										//Sound effect of the Goal / Protal.							
+				App->audio->PlayFx(6, 0);										//Sound effect of the Goal / Protal.
 			}
 		}
 	}

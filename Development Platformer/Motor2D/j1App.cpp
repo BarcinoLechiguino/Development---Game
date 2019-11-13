@@ -10,6 +10,7 @@
 #include "j1Audio.h"
 #include "j1Scene.h"
 #include "j1Map.h"
+#include "j1Pathfinding.h"
 #include "j1Collisions.h"
 #include "j1Player1.h"
 #include "j1Player2.h"
@@ -30,6 +31,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new j1Audio();
 	scene = new j1Scene();
 	map = new j1Map();
+	pathfinding = new j1PathFinding();
 	player1 = new j1Player1();
 	player2 = new j1Player2();
 	collisions = new j1Collisions();
@@ -42,6 +44,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(map);
+	AddModule(pathfinding);
 	AddModule(scene);
 	AddModule(collisions);
 	AddModule(player1);

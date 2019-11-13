@@ -202,7 +202,7 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	SDL_Rect rect;
 	if (flip)
 	{
-		rect.x = (int)(camera.x * speed) + x * scale + 60; //Add players sprite width.
+		rect.x = (int)(camera.x * speed) + x * scale + 38; //Add players sprite width.
 		rect.y = (int)(camera.y * speed) + y * scale;
 	}
 	else
