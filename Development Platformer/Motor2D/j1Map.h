@@ -5,9 +5,10 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "j1Module.h"
+#include "SDL/include/SDL.h"
 
 //Kinds of colliders we are working with
-enum Object_Type //Cuidado con el class. If enum class-> Object_Type::HAZARD and not just HAZARD
+enum Object_Type //Cuidado con el class. If enum class-> Object_Type::HAZARD and not just HAZARD (i.e)
 {
 	PLAYER,
 	SOLID,
@@ -16,6 +17,7 @@ enum Object_Type //Cuidado con el class. If enum class-> Object_Type::HAZARD and
 	ITEM,
 	DEACTIVABLE,
 	RESPAWN,
+	CHECKPOINT,
 	GOAL,
 	UNKNOWN = -1
 };

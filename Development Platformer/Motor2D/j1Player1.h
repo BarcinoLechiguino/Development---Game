@@ -34,6 +34,8 @@ struct Player1
 	p2Point<int>	body_margin;			//Collider adjustment to the body of P1.
 	p2Point<int>	sprite_measures;		//Sprite measurements (w, h), sets the width and height of the collider.. / Make center pos: mid_pos = p1.position.x +/- (p1.hitbox.width / 2). +/- depending on which side P1 is facing.
 	float			gravity;				//Acceleration variable for jumps. Gravitational Pull.
+	float			tpCdCount;				//Keeps track of how much time has passed since tp was last used.
+	float			tpCdTime;				//Amount of cooldown time the tp skill has.
 	int				lives;					//Number of lives P1 has. It just defines how many times P1 can get impaled with spikes before having to restart the whole level over.
 	int				max_lives;				//Maximum number of lives a player can have.
 	int				collision_tolerance;	//Maximum tolerance that OnCollision will have with collisions.
@@ -48,6 +50,7 @@ struct Player1
 	bool			isGoingRight;			//Keeps track of whether or not P1 is going to the right.
 	bool			isGoingLeft;			//Keeps track of whether or not P1 is going to the left.
 	bool			platformDrop;			//Keeps track whether or not P1 wants to drop from a platform.
+	bool			tpInCd;					//Keeps track whether or not P1's tp is on cooldown.
 	bool			isAlive;				//If P1 runs out of lives, then this bool returns false.
 	bool			isDying;				//If P1 runs out of lives, then this bool returns true.
 	bool			againstRightWall;		//If P1 is against a right wall then this is true.
@@ -114,18 +117,23 @@ public: //P1 Variables
 	
 	Player1 p1;
 
-	void TeleportP2ToP1();							//Moves P2 directly in front of P1. It takes into account where P1 is looking at.
-	void RespawnP1ToP2();							//Moves P1 directly behind P2 on death.
-	void OnCollision(Collider* C1, Collider* C2);	//Collision Logic Handling.
+	void TeleportP2ToP1();										//Moves P2 directly in front of P1. It takes into account where P1 is looking at.
+	void RespawnP1ToP2();										//Moves P1 directly behind P2 on death.
+	void LivesCheck(int lives);
+	void TpCooldownCheck(float dt);								//Keeps track of the tp skill cooldown.
+	void OnCollision(Collider* C1, Collider* C2);				//Collision Logic Handling.
 
-	bool Load(pugi::xml_node &node);				//Loading from xml file.
-	bool Save(pugi::xml_node &node) const;			//Saving to xml file.
-	bool LoadPlayer1();								//Loads P1 on screen (Position, Colliders...)
-	bool LoadPlayer1Properties(pugi::xml_node&);	//Loads P2's data from the config xml file.
-	bool AddAnimationPushbacks();					//Adds P1's animation pushbacks.
-	//bool LoadPlayer1Textures();					//Loads P1's textures on screen.
-	void Restart();									//Resets P1's position to where P1 started the level. 
-	void GodModeInput();							//Enables / Disables the God Mode.
+	bool Load(pugi::xml_node &node);							//Loading from xml file.
+	bool Save(pugi::xml_node &node) const;						//Saving to xml file.
+	bool LoadPlayer1();											//Loads P1 on screen (Position, Colliders...)
+	bool LoadPlayer1Properties(pugi::xml_node&);				//Loads P2's data from the config xml file.
+	bool AddAnimationPushbacks();								//Adds P1's animation pushbacks.
+	//bool LoadPlayer1Textures();								//Loads P1's textures on screen.
+	void Restart();												//Resets P1's position to where P1 started the level. 
+	void GodModeInput();										//Enables / Disables the God Mode.
+
+	bool SkillCooldown(bool inCd, float cdCounter, float cdTime);		//Keeps track of any skill's cooldown.
+	
 
 private:
 	float half = 0.5f;

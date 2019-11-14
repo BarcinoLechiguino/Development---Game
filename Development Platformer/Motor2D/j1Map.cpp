@@ -413,8 +413,8 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 {
 	bool ret = true;
 
-	objectgroup->id = node.attribute("id").as_int();			//Sets the id of a given objectgroup to the id loaded from the tmx map.
-	objectgroup->name = node.attribute("name").as_string();		//Sets the name of a given objectgroup to the name loaded from the tmx map.
+	objectgroup->id = node.attribute("id").as_int();					//Sets the id of a given objectgroup to the id loaded from the tmx map.
+	objectgroup->name = node.attribute("name").as_string();				//Sets the name of a given objectgroup to the name loaded from the tmx map.
 
 	int object_count = 0;
 	//This loop iterates all the childs with the object tag, with each iteration of the loop one object is added to the count. Used to reduce memory space waste.
@@ -433,14 +433,14 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 		objectgroup->object[index].id = object_iterator.attribute("id").as_int();			//Gets the id of the object being loaded from tmx and sets it to the corresponding object in the world.
 		objectgroup->object[index].name = object_iterator.attribute("name").as_string();	//Gets the name of the object being loaded from tmx and sets it to the corresponding object in the world.
 
-		SDL_Rect* collider = new SDL_Rect;					//Allocates memory for the buffer rect(x,y,w,z) that will receive the data members of an object from the objectgroup being iterated.
+		SDL_Rect* collider = new SDL_Rect;								//Allocates memory for the buffer rect(x,y,w,z) that will receive the data members of an object from the objectgroup being iterated.
 
 		collider->x = object_iterator.attribute("x").as_int();			//Sets the buffer rect's x position to the x position of the object given by the tmx map this iteration.
 		collider->y = object_iterator.attribute("y").as_int();			//Sets the buffer rect's y position to the y position of the object given by the tmx map this iteration.
 		collider->w = object_iterator.attribute("width").as_int();		//Sets the buffer rect's width to the width of the object given by the tmx map this iteration.
 		collider->h = object_iterator.attribute("height").as_int();		//Sets the buffer rect's height to the height of the object given by the tmx map this iteration.
 
-		objectgroup->object[index].collider = collider;		//Passes the buffer rect's data members to the object in this index position. Need to use a buffer due to objectgroup only accepting a class expression.
+		objectgroup->object[index].collider = collider;					//Passes the buffer rect's data members to the object in this index position. Need to use a buffer due to objectgroup only accepting a class expression.
 
 
 		p2SString object_type(object_iterator.attribute("type").as_string());		//Buffer string that improves readability of the code.
@@ -448,35 +448,39 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 		//Checking the object type string being loaded from the tmx file. It's a string that's abitrarily set on Tiled, so it should be known exactly which type strings will be passed. 
 		if (object_type == "solid")
 		{
-			objectgroup->object[index].type = SOLID;			//As the object type string matches "solid" the object's type will be set to SOLID.
+			objectgroup->object[index].type = SOLID;					//As the object type string matches "solid" the object's type will be set to SOLID.
 		}
 		else if (object_type == "platform")
 		{
-			objectgroup->object[index].type = PLATFORM;			//As the object type string matches "platform" the object's type will be set to PLATFORM.
+			objectgroup->object[index].type = PLATFORM;					//As the object type string matches "platform" the object's type will be set to PLATFORM.
 		}
 		else if (object_type == "hazard")
 		{
-			objectgroup->object[index].type = HAZARD;			//As the object type string matches "hazard" the object's type will be set to HAZARD.
+			objectgroup->object[index].type = HAZARD;					//As the object type string matches "hazard" the object's type will be set to HAZARD.
 		}
 		else if (object_type == "item")
 		{
-			objectgroup->object[index].type = ITEM;				//As the object type string matches "item" the object's type will be set to ITEM.
+			objectgroup->object[index].type = ITEM;						//As the object type string matches "item" the object's type will be set to ITEM.
 		}
 		else if (object_type == "desactivable")
 		{
-			objectgroup->object[index].type = DEACTIVABLE;		//As the object type string matches "desactivable" the object's type will be set to DESACTIVABLE.
+			objectgroup->object[index].type = DEACTIVABLE;				//As the object type string matches "desactivable" the object's type will be set to DESACTIVABLE.
 		}
 		else if (object_type == "respawn")
 		{
-			objectgroup->object[index].type = RESPAWN;			//As the object type string matches "respawn" the object's type will be set to RESPAWN.
+			objectgroup->object[index].type = RESPAWN;					//As the object type string matches "respawn" the object's type will be set to RESPAWN.
+		}
+		else if (object_type == "checkpoint")
+		{
+			objectgroup->object[index].type = CHECKPOINT;				//As the object type string matches "checkpoint", the object's type will be set to CHECKPOINT.
 		}
 		else if (object_type == "goal")
 		{
-			objectgroup->object[index].type = GOAL;				//As the object type string matches "goal" the object's type will be set to GOAL.
+			objectgroup->object[index].type = GOAL;						//As the object type string matches "goal" the object's type will be set to GOAL.
 		}
 		else
 		{
-			objectgroup->object[index].type = UNKNOWN;			//If the object type string does not match any type, the object will be assigned the UKNOWN type.
+			objectgroup->object[index].type = UNKNOWN;					//If the object type string does not match any type, the object will be assigned the UKNOWN type.
 		}
 
 		index++;	//index is increased in one so the next object is iterated.

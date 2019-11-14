@@ -287,7 +287,7 @@ bool j1Player2::Update(float dt)
 	p2.HitBox.x = p2.position.x;
 	p2.HitBox.y = p2.position.y;
 
-	p2.HitBox = p2.current_animation->GetCurrentFrame();
+	p2.HitBox = p2.current_animation->GetCurrentFrame(dt);
 
 	App->render->Blit(p2.texture, p2.position.x, p2.position.y, &p2.HitBox, p2.flip);
 
@@ -313,7 +313,7 @@ bool j1Player2::CleanUp()
 
 void j1Player2::TeleportP1ToP2()
 {
-	if (p2.flip == false) //The players will be always teleported directly in front of one another. 
+	if (p2.flip == false)			//The players will be always teleported directly in front of one another. 
 	{
 		App->player1->p1.position.x = p2.position.x + p2.collider->collider.w;
 		App->player1->p1.position.y = p2.position.y - 60;

@@ -132,6 +132,9 @@ void j1Collisions::Collider_Debug()
 				App->render->DrawQuad(collider_iterator->data->collider, 255, 0, 255, ALPHA);
 				break;
 
+			case CHECKPOINT:	//CHECKPOINT collider wil be BLACK
+				App->render->DrawQuad(collider_iterator->data->collider, 0, 0, 0, ALPHA);
+
 			case GOAL:			//GOAL collider will be PINK
 				App->render->DrawQuad(collider_iterator->data->collider, 255, 0, 150, ALPHA);
 				break;

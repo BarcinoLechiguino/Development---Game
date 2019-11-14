@@ -63,7 +63,7 @@ bool j1Player1::Start()
 };
 
 bool j1Player1::PreUpdate() 
-{
+{	
 	if (p1.GodMode == false)
 	{
 		p1.state = idle_P1;
@@ -74,7 +74,6 @@ bool j1Player1::PreUpdate()
 			{
 				p1.state = goingRight_P1;
 			}	
-
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)				//Move Left
@@ -82,10 +81,6 @@ bool j1Player1::PreUpdate()
 			if (p1.againstRightWall == false)
 			{
 				p1.state = goingLeft_P1;
-			}
-			else
-			{
-				p1.state = idle_P1;
 			}
 		}
 
@@ -97,7 +92,6 @@ bool j1Player1::PreUpdate()
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)				//Jump
 		{
 			p1.state = jumping_P1;
-			App->audio->PlayFx(5, 0);
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)				//Drop from platform
@@ -112,13 +106,11 @@ bool j1Player1::PreUpdate()
 		if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)					//Teleport
 		{
 			p1.state = teleporting_P1;
-			App->audio->PlayFx(1, 0);
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT)				//Suicide Button
 		{
 			p1.state = dying_P1;
-			App->audio->PlayFx(2, 0);
 		}
 	}
 	else
@@ -140,35 +132,18 @@ bool j1Player1::Update(float dt)
 {
 	switch (p1.state)
 	{
-	
 	case idle_P1:
-	
-		p1.speed.x = 0;
+
 		p1.current_animation = &p1.idle;
 		p1.isCrouching = false;
 
 		break;
 	
 	case goingRight_P1:
-
-		//As long as D is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
-		/*while (p1.speed.x != p1.max_speed.x * dt)
-		{
-			p1.speed.x += p1.acceleration.x * dt;
-		}*/
-
-		if (!p1.againstLeftWall)
-		{
-			p1.speed.x += ceil(p1.acceleration.x * dt);
-
-			if (p1.speed.x > ceil(p1.max_speed.x * dt))
-			{
-				p1.speed.x = ceil(p1.max_speed.x * dt);
-			}
-
-			p1.flip = false;
-		}
 		
+		p1.position.x += p1.speed.x * dt;
+
+		p1.flip = false;
 		p1.current_animation = &p1.running;
 		p1.isGoingRight = true;
 	
@@ -176,24 +151,9 @@ bool j1Player1::Update(float dt)
 	
 	case goingLeft_P1:
 	
-		//As long as W is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
-		/*while (p1.speed.x != -p1.max_speed.x * dt)
-		{
-			p1.speed.x -= p1.acceleration.x * dt;
-		}*/
-		
-		if (!p1.againstRightWall)
-		{
-			p1.speed.x -= ceil(p1.acceleration.x * dt);
+		p1.position.x -= p1.speed.x * dt;
 
-			if (p1.speed.x < ceil(-p1.max_speed.x * dt))
-			{
-				p1.speed.x = ceil(-p1.max_speed.x * dt);
-			}
-
-			p1.flip = true;
-		}
-		
+		p1.flip = true;
 		p1.current_animation = &p1.running;
 		p1.isGoingLeft = true;
 	
@@ -202,7 +162,6 @@ bool j1Player1::Update(float dt)
 	case crouching_P1:
 
 		p1.current_animation = &p1.crouching;
-		p1.speed.x = 0;
 		p1.isCrouching = true;
 
 		break;
@@ -211,6 +170,7 @@ bool j1Player1::Update(float dt)
 	
 		if (p1.grounded == true)
 		{
+			App->audio->PlayFx(5, 0);
 			p1.speed.y = -p1.acceleration.y * dt;
 			p1.isJumping = true;					//Boolean for animations
 			p1.airborne = true;	
@@ -234,13 +194,12 @@ bool j1Player1::Update(float dt)
 
 	case dying_P1:
 			
+		App->audio->PlayFx(2, 0);
 		p1.current_animation = &p1.death;
 		p1.isDying = true;
 
 		break;
 	}
-
-	p1.position.x += p1.speed.x;		//Refreshes the vector speed of P1 in the X axis
 								 
 	//If P1 is in the air then this function brings him/her back down to the floor.
 	if (p1.airborne == true)
@@ -283,37 +242,18 @@ bool j1Player1::Update(float dt)
 		}	
 	}
 
-	//Makes P1's collider follow P1. If there is a flip in spritesheet it is taken into account.
-	if (p1.flip == false)
-	{
-		p1.collider->Set_Position(p1.position.x, p1.position.y);
-	}
-	else
-	{
-		p1.collider->Set_Position(p1.position.x /*+ FLIP_MARGIN*/, p1.position.y);		//Revise
-	}
+	//--------------------------------------- Miscelaneous Checks ---------------------------------------
+	LivesCheck(p1.lives);																	// If P1 empties the lives pool then both players die and reset their positions to the spawn point.
 
-	// If P1 empties the lives pool then both players die and reset their positions to the spawn point.
-	if (p1.lives == 0)
+	//--------------------------------------- Tp skill Cooldown ---------------------------------------
+	if (p1.tpInCd == true)
 	{
-		p1.isAlive = false;
-		App->player2->p2.isAlive = false;
-
-		if (p1.isAlive == false && App->player2->p2.isAlive == false)
-		{
-			App->audio->PlayFx(2, 0);
-			Restart();
-			App->player2->Restart();
-			p1.lives = p1.max_lives;
-		}
+		TpCooldownCheck(dt);
 	}
 	
-	//We move the character according the position value after the state has been run.
-	p1.HitBox.x = p1.position.x;															//Sets the position X of the Rect that represents P1 in game.
-	p1.HitBox.y = p1.position.y;															//Sets the position Y of the Rect that represents P2 in game.
+	p1.HitBox = p1.current_animation->GetCurrentFrame(dt);									//Sets the animation cycle that P1 will have. 
+	p1.collider->Set_Position(p1.position.x, p1.position.y);								//Makes P1's collider follow P1.
 
-	p1.HitBox = p1.current_animation->GetCurrentFrame();									//Sets the animation cycle that P1 will have. 
-	
 	App->render->Blit(p1.texture, p1.position.x, p1.position.y, &p1.HitBox, p1.flip);		//Blits the player on screen with the data we have given the Blit() function.
 	
 	return true;
@@ -336,34 +276,6 @@ bool j1Player1::CleanUp()
 
 	return true;
 };
-
-void j1Player1::TeleportP2ToP1()	//Method that teleports P2 directly in front of P1. Takes into account which direction P1 is facing. Can trigger some fun interactions between players :)
-{
-	if (p1.flip == false)			//The players will be always teleported directly in front of one another. 
-	{
-		App->player2->p2.position.x = p1.position.x + p1.collider->collider.w;
-		App->player2->p2.position.y = p1.position.y - 60;
-	}
-	else
-	{
-		App->player2->p2.position.x = p1.position.x - p1.collider->collider.w / 2;
-		App->player2->p2.position.y = p1.position.y - 60;
-	}
-}
-
-void j1Player1::RespawnP1ToP2()		//Method that, on death, will respawn P1 behind P2.
-{
-	if (p1.flip == true)			//The players will be always respawned directly behind of one another. 
-	{
-		p1.position.x = App->player2->p2.position.x + App->player2->p2.collider->collider.w;
-		p1.position.y = App->player2->p2.position.y - 40;
-	}
-	else
-	{
-		p1.position.x = App->player2->p2.position.x + App->player2->p2.collider->collider.w / 2;
-		p1.position.y = App->player2->p2.position.y - 40;
-	}
-}
 
 //Collision Handling ---------------------------------------
 void j1Player1::OnCollision(Collider* C1, Collider* C2)
@@ -406,43 +318,44 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			//Player colliding against solids
 			if (C2->type == SOLID)
 			{
-				//Player Colliding vertically against the Solid. The first part checks if C1 is contained in the X axis of C2. 
-				if (C1->collider.x + C1->collider.w >= C2->collider.x + 4 && C1->collider.x + 4 <= C2->collider.x + C2->collider.y)
+				//Player Colliding from TOP or BOTTOM. 
+				if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x + C2->collider.y)		//The first part checks if C1 is contained in the X axis of C2. 
 				{
-					//Player Colliding from Above the Solid, ergo colliding with the ground. This second part checks if C1 is actually colliding vertically down.
-					if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y)
+					//Player Colliding from TOP.
+					if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y && p1.speed.y > 0)			//This second part checks if C1 is actually colliding vertically down.
 					{
 						p1.speed.y = 0;
 						p1.position.y = C2->collider.y - C1->collider.h + 1;
 						p1.isJumping = false;
 						p1.isBoostJumping = false;
-						p1.grounded	= true;
+						p1.grounded = true;
 						LOG("P1 IS COLLIDING WITH A SOLID FROM ABOVE");
 					}
 
-					//Player Colliding from Below the Solid. ergo colliding with the ceiling. This second part checks if C1 is actually colliding vertically down.
-					else if (C1->collider.y < C2->collider.y + C2->collider.h && C1->collider.y > C2->collider.y)
+					//Player Colliding from BOTTOM.
+					else if (C1->collider.y < C2->collider.y + C2->collider.h && C1->collider.y + 4 > C2->collider.y + C2->collider.h && C1->collider.y > C2->collider.y)	//This second part checks if C1 is actually colliding vertically down.
 					{
 						p1.speed.y = 0;
-						//p1.position.y = C2->collider.y + C2->collider.h + 1;	//Revise. Sometimes a collision from below is detected and it sends the player below the stage.
+						p1.position.y = C2->collider.y + C2->collider.h + 1;
+
 						p1.againstCeiling = true;
 						LOG("P1 IS COLLIDING WITH A SOLID FROM BELOW");
 					}
 				}
-
-				//Player is colliding from LEFT or RIGHT. The first part checks if C1 is contained in the Y axis of C2.
-				if (C1->collider.y <= C2->collider.y + C2->collider.h && C1->collider.y + C1->collider.h - 4 >= C2->collider.y)
+				
+				//Player is colliding from LEFT or RIGHT.
+				if (C1->collider.y <= C2->collider.y + C2->collider.h && C1->collider.y + C1->collider.h - 4 >= C2->collider.y)		//The first part checks if C1 is contained in the Y axis of C2.
 				{
-					//Player is colliding from left (going right). This second part checks if C1 is actually colliding from the left side of the collider.
-					if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x)
+					//Player is colliding from LEFT.
+					if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x)						//This second part checks if C1 is actually colliding from the left side of the collider.
 					{
 						p1.againstLeftWall = true;
 						p1.againstRightWall = false;
 						LOG("P1 IS COLLIDING WITH A SOLID FROM THE LEFT");
 					}
 					
-					//Player is colliding from right (going left). This second part checks if  C1 is actually colliding from the right side of the collider.
-					if (C1->collider.x <= C2->collider.x + C2->collider.w && C1->collider.x >= C2->collider.x)
+					//Player is colliding from RIGHT.
+					if (C1->collider.x <= C2->collider.x + C2->collider.w && C1->collider.x >= C2->collider.x)						// This second part checks if C1 is actually colliding from the right side of the collider.
 					{
 						p1.againstRightWall = true;
 						p1.againstLeftWall = false;
@@ -502,7 +415,6 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 						if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y)
 						{
 							p1.speed.y = 0;
-							p1.position.y = C2->collider.y - C1->collider.h + 1;
 							p1.isJumping = false;
 							p1.isBoostJumping = false;
 							p1.grounded = true;
@@ -539,6 +451,11 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 						}
 					}
 				}
+			}
+
+			if (C2->type == CHECKPOINT)
+			{
+				LOG("P1 HAS REACHED A CHECKPOINT");															//Call Safe() method here.
 			}
 
 			//Player colliding against the Goal
@@ -609,6 +526,7 @@ bool j1Player1::LoadPlayer1()		//Loads P1 on screen.
 	p1.isGoingRight = false;
 	p1.isGoingLeft = false;
 	p1.platformDrop = false;
+	p1.tpInCd = false;
 	p1.fading = false;
 	p1.isAlive = true;
 	p1.isDying = false;
@@ -628,7 +546,7 @@ bool j1Player1::AddAnimationPushbacks()
 	p1.idle.PushBack({ 132, 12, 33, 59 });
 	p1.idle.PushBack({ 230, 12, 37, 59 });
 	p1.idle.PushBack({ 326, 14, 39, 57 });
-	p1.idle.speed = 0.1f;
+	p1.idle.speed = 4.0f;
 
 	//P1 Running animation.
 	p1.running.PushBack({ 134, 90, 39, 55 });
@@ -637,14 +555,14 @@ bool j1Player1::AddAnimationPushbacks()
 	p1.running.PushBack({ 434, 90, 45, 55 });
 	p1.running.PushBack({ 532, 92, 39, 53 });
 	p1.running.PushBack({ 632, 96, 39, 49 });
-	p1.running.speed = 0.2f;
+	p1.running.speed = 8.0f;
 
 	//P1 Crouching animation.
 	p1.crouching.PushBack({ 432, 10, 37, 61 }); //20 Pixels of margin vertically up.
 	p1.crouching.PushBack({ 530, 8, 39, 63 });
 	p1.crouching.PushBack({ 630, 8, 37, 63 });
 	p1.crouching.PushBack({ 34, 84, 33, 61 });
-	p1.crouching.speed = 0.1f;
+	p1.crouching.speed = 4.0f;
 
 	//P1 Jumping Animation
 	p1.jumping.PushBack({ 30, 172, 39, 47 });
@@ -652,7 +570,7 @@ bool j1Player1::AddAnimationPushbacks()
 	p1.jumping.PushBack({ 234, 162, 37, 53 });
 	p1.jumping.PushBack({ 328, 158, 41, 45 });
 	/*p1.jumping.PushBack({ 436, 162, 29, 41 });*/ //Cape coiling up a bit before falling. A bit glitchy.
-	p1.jumping.speed = 0.25f;
+	p1.jumping.speed = 10.0f;
 
 	//P1 Frontflip Animation
 	p1.frontflip.PushBack({ 528, 168, 47, 33 });
@@ -661,7 +579,7 @@ bool j1Player1::AddAnimationPushbacks()
 	p1.frontflip.PushBack({ 640, 168, 35, 41 });
 	p1.frontflip.PushBack({ 22, 248, 51, 33 });
 	p1.frontflip.PushBack({ 22, 248, 51, 33 });
-	p1.frontflip.speed = 0.2f;
+	p1.frontflip.speed = 8.0f;
 
 	//P1 Boosted Jump Animation
 	p1.boosted_jump.PushBack({ 30, 172, 39, 47 });
@@ -672,12 +590,12 @@ bool j1Player1::AddAnimationPushbacks()
 	p1.boosted_jump.PushBack({ 528, 168, 47, 33 });
 	p1.boosted_jump.PushBack({ 640, 168, 35, 41 });
 	p1.boosted_jump.PushBack({ 22, 248, 51, 33 });
-	p1.boosted_jump.speed = 0.2f;
+	p1.boosted_jump.speed = 8.0f;
 
 	//P1 Falling Animation
 	p1.falling.PushBack({ 136, 224, 33, 61 });
 	p1.falling.PushBack({ 236, 226, 33, 59 });
-	p1.falling.speed = 0.2f;
+	p1.falling.speed = 8.0f;
 
 	//P1 Death Animation
 	p1.death.PushBack({ 10,1094,58,66 });
@@ -702,7 +620,7 @@ bool j1Player1::AddAnimationPushbacks()
 	p1.death.PushBack({ 193,1074,58,86 });
 	p1.death.PushBack({ 193,1074,58,86 });
 	p1.death.PushBack({ 193,1074,58,66 });
-	p1.death.speed = 0.2f;
+	p1.death.speed = 8.0f;
 
 	return true;
 }
@@ -733,10 +651,14 @@ bool j1Player1::LoadPlayer1Properties(pugi::xml_node& config)
 	p1.lives = config.child("player_1").child("lives").attribute("lives").as_int();
 	p1.max_lives = config.child("player_1").child("lives").attribute("lives").as_int();
 
+	p1.tpCdTime = config.child("player_1").child("tpCooldown").attribute("cd").as_float();
+
 	p1.body_margin.x = config.child("player_1").child("body_margin").attribute("x").as_int();
 	p1.body_margin.y = config.child("player_1").child("body_margin").attribute("y").as_int();
 
 	p1.collision_tolerance = config.child("player_1").child("collider_tolerance").attribute("tolerance").as_int();
+
+	LOG("Speed.x = %f", p1.speed.x);
 
 	return true;
 }
@@ -755,6 +677,97 @@ bool j1Player1::LoadPlayer1Properties(pugi::xml_node& config)
 
 	return true;
 }*/
+
+void j1Player1::TeleportP2ToP1()	//Method that teleports P2 directly in front of P1. Takes into account which direction P1 is facing. Can trigger some fun interactions between players :)
+{
+	if (!p1.tpInCd)
+	{
+		if (p1.flip == false)			//The players will be always teleported directly in front of one another. 
+		{
+			App->player2->p2.position.x = p1.position.x + p1.collider->collider.w;
+			App->player2->p2.position.y = p1.position.y - 60;
+		}
+		else
+		{
+			App->player2->p2.position.x = p1.position.x - p1.collider->collider.w / 2;
+			App->player2->p2.position.y = p1.position.y - 60;
+		}
+
+		App->audio->PlayFx(1, 0);
+		p1.tpInCd = true;
+	}
+}
+
+void j1Player1::RespawnP1ToP2()		//Method that, on death, will respawn P1 behind P2.
+{
+	if (p1.flip == true)			//The players will be always respawned directly behind of one another. 
+	{
+		p1.position.x = App->player2->p2.position.x + App->player2->p2.collider->collider.w;
+		p1.position.y = App->player2->p2.position.y - 40;
+	}
+	else
+	{
+		p1.position.x = App->player2->p2.position.x + App->player2->p2.collider->collider.w / 2;
+		p1.position.y = App->player2->p2.position.y - 40;
+	}
+}
+
+bool j1Player1::SkillCooldown(bool inCd, float cdCounter, float cdTime)		//Revise. Try and make it work for any skill;
+{
+	//-------------------------- Method I --------------------------
+	cdCounter += App->GetDt();
+
+	if (cdCounter > cdTime)
+	{
+		inCd = true;
+		cdCounter = 0;
+	}
+
+	//-------------------------- Method II --------------------------
+	float counter;
+	counter = App->GetDt();
+	//LOG("cdCounter is: %f", App->GetDt());
+
+	if (counter > cdTime)
+	{
+		return true;
+	}
+
+	return false;
+}
+ 
+//---------------------------------------------- General Checks ----------------------------------------------
+void j1Player1::LivesCheck(int lives)
+{
+	if (lives == 0)
+	{
+		p1.isAlive = false;
+		App->player2->p2.isAlive = false;
+
+		if (p1.isAlive == false && App->player2->p2.isAlive == false)
+		{
+			App->audio->PlayFx(2, 0);
+			Restart();
+			App->player2->Restart();
+			p1.lives = p1.max_lives;
+		}
+	}
+	else
+	{
+		return;
+	}
+}
+
+void j1Player1::TpCooldownCheck(float dt)
+{
+	p1.tpCdCount += dt;						//Adds the time elapsed in a frame to a count.
+
+	if (p1.tpCdCount > p1.tpCdTime)			//Checks if the cd Count has reached the required amount of time.
+	{
+		p1.tpInCd = false;					//Resets the bool so tp can be used again.
+		p1.tpCdCount = 0;					//Resets the count so it can be used the next time tp is in cd.
+	}
+}
 
 void j1Player1::Restart()
 {

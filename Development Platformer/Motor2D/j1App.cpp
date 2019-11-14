@@ -345,6 +345,12 @@ const char* j1App::GetOrganization() const
 	return organization.GetString();
 }
 
+float j1App::GetDt()
+{
+	LOG("dt is: %f", dt);
+	return dt;
+}
+
 // Load / Save
 void j1App::LoadGame()
 {

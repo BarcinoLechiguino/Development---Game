@@ -41,13 +41,14 @@
   <player>
     <player_1>
       <position x="225" y="1126"/>
-      <speed x="0" y="0"/>
-      <max_speed x="220" y="425"/>
-      <acceleration x="40" y="425"/>
-      <gravity value="30"/>
+      <speed x="240.0f" y="0"/>
+      <max_speed x="240" y="500"/>
+      <acceleration x="60" y="500"/>
+      <gravity value="40"/>
       <boost_jump x="0"  y="600"/>
       <sprite_measures w="38" h="58"/>
       <lives lives="3"/>
+      <tpCooldown cd="1.0f"/>
       <body_margin x="5" y="5"/>
       <collider_tolerance tolerance="3"/>
       <jumpFX name ="Jump.wav"/>
@@ -69,6 +70,7 @@
       <boost_jump x="0"  y="20"/>
       <sprite_measures w="38" h="58"/>
       <lives lives="3"/>
+      <tpCooldown cd="1"/>
       <body_margin x="5" y="5"/>
       <collider_tolerance tolerance="3"/>
       <jumpFX name ="Jump.wav"/>
