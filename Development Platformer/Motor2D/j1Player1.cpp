@@ -248,7 +248,8 @@ bool j1Player1::Update(float dt)
 	//--------------------------------------- Tp skill Cooldown ---------------------------------------
 	if (p1.tpInCd == true)
 	{
-		TpCooldownCheck(dt);
+		//TpCooldownCheck(dt);
+		SkillCooldown(p1.tpInCd, p1.tpCdCount, p1.tpCdTime);
 	}
 	
 	p1.HitBox = p1.current_animation->GetCurrentFrame(dt);									//Sets the animation cycle that P1 will have. 
@@ -678,7 +679,7 @@ bool j1Player1::LoadPlayer1Properties(pugi::xml_node& config)
 	return true;
 }*/
 
-void j1Player1::TeleportP2ToP1()	//Method that teleports P2 directly in front of P1. Takes into account which direction P1 is facing. Can trigger some fun interactions between players :)
+void j1Player1::TeleportP2ToP1()		//Method that teleports P2 directly in front of P1. Takes into account which direction P1 is facing. Can trigger some fun interactions between players :)
 {
 	if (!p1.tpInCd)
 	{
@@ -712,30 +713,6 @@ void j1Player1::RespawnP1ToP2()		//Method that, on death, will respawn P1 behind
 	}
 }
 
-bool j1Player1::SkillCooldown(bool inCd, float cdCounter, float cdTime)		//Revise. Try and make it work for any skill;
-{
-	//-------------------------- Method I --------------------------
-	cdCounter += App->GetDt();
-
-	if (cdCounter > cdTime)
-	{
-		inCd = true;
-		cdCounter = 0;
-	}
-
-	//-------------------------- Method II --------------------------
-	float counter;
-	counter = App->GetDt();
-	//LOG("cdCounter is: %f", App->GetDt());
-
-	if (counter > cdTime)
-	{
-		return true;
-	}
-
-	return false;
-}
- 
 //---------------------------------------------- General Checks ----------------------------------------------
 void j1Player1::LivesCheck(int lives)
 {
@@ -755,6 +732,17 @@ void j1Player1::LivesCheck(int lives)
 	else
 	{
 		return;
+	}
+}
+
+void j1Player1::SkillCooldown(bool& inCd, float& cdCounter, float& cdTime)		//Revise. Try and make it work for any skill;
+{
+	cdCounter += App->GetDt();
+
+	if (cdCounter > cdTime)
+	{
+		inCd = false;
+		cdCounter = 0;
 	}
 }
 
