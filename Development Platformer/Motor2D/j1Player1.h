@@ -132,7 +132,7 @@ public: //P1 Variables
 	void Restart();												//Resets P1's position to where P1 started the level. 
 	void GodModeInput();										//Enables / Disables the God Mode.
 
-	bool SkillCooldown(bool inCd, float cdCounter, float cdTime);		//Keeps track of any skill's cooldown.
+	void SkillCooldown(bool& inCd, float& cdCounter, float& cdTime);		//Keeps track of any skill's cooldown.
 	
 
 private:
