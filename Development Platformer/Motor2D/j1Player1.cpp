@@ -265,7 +265,7 @@ bool j1Player1::PostUpdate()
 	p1.againstCeiling = false;
 	p1.againstRightWall = false;
 	p1.againstLeftWall = false;
-	
+
 	return true;
 };
 
