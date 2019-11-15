@@ -1,0 +1,32 @@
+<animations>
+  <player1>
+    <idle loop="true" speed="4.0f">
+      <pushback x="28" y="14" w="37" h="57"/>
+      <pushback x="132" y="12" w="33" h="59"/>
+      <pushback x="230" y="12" w="37" h="59"/>
+      <pushback x="326" y="14" w="39" h="57"/>
+    </idle>
+
+    <running loop="true" speed="8.0f">
+      <pushback x="134" y="90" w="39" h="55"/>
+      <pushback x="232" y="92" w="39" h="53"/>
+      <pushback x="332" y="96" w="39" h="49"/>
+      <pushback x="434" y="90" w="45" h="55"/>
+      <pushback x="532" y="92" w="39" h="53"/>
+      <pushback x="632" y="96" w="39" h="49"/>
+    </running>
+  </player1>
+
+  <player2>
+    
+  </player2>
+
+  <enemy1>
+    
+  </enemy1>
+
+  <enemy2>
+    
+  </enemy2>
+  
+</animations>    

@@ -83,12 +83,10 @@ struct Player1
 	
 
 	SDL_Rect	HitBox;				//Rectangle that represents P1.
+	SDL_Rect	atkHitBox;			//Rectangle that represents P1's attack reach / range.
 	P1_State	state;				//Adds the state enum to P1's variables.
 	Collider*	collider;			//Collider that will be assigned to P1. 
-
-	/*p2SString		jumpFX;
-	p2SString		deathFX;
-	p2SString		duoFX;*/
+	Collider*	atkCollider;		//Collider that  will be assigned to P1 as it's attack reach.
 };
 
 class j1Player1 : public j1Module 
@@ -132,8 +130,7 @@ public: //P1 Variables
 	void Restart();												//Resets P1's position to where P1 started the level. 
 	void GodModeInput();										//Enables / Disables the God Mode.
 
-	void SkillCooldown(bool& inCd, float& cdCounter, float& cdTime);		//Keeps track of any skill's cooldown.
-	
+	void SkillCooldown(bool& inCd, float& cdCounter, float& cdTime);		//Keeps track of any skill's cooldown. Revise --> Pass dt as an argument?
 
 private:
 	float half = 0.5f;

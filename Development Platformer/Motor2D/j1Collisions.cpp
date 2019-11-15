@@ -104,15 +104,18 @@ void j1Collisions::Collider_Debug()
 			{
 			//Declaring a DrawQuad() with a set colour depending of the type of the object/collider that is being iterated at that moment. ALPHA is the transparency value.
 
-			case PLAYER:		//PLAYER collider will be GREEN.
+			case PLAYER:		//PLAYER collider will be GREEN
 				App->render->DrawQuad(collider_iterator->data->collider, 0, 255, 0, ALPHA);
 				break;
 
-			case SOLID:			//SOLID collider will be BLUE.
+			case ATTACK:		//ATTACK collider will be CYAN
+				App->render->DrawQuad(collider_iterator->data->collider, 0, 255, 255, ALPHA);
+
+			case SOLID:			//SOLID collider will be BLUE
 				App->render->DrawQuad(collider_iterator->data->collider, 0, 0, 255, ALPHA);
 				break;
 
-			case PLATFORM:		//PLATFORM collider will be WHITE.
+			case PLATFORM:		//PLATFORM collider will be WHITE
 				App->render->DrawQuad(collider_iterator->data->collider, 255, 255, 255, ALPHA);
 				break;
 
@@ -171,14 +174,14 @@ Collider* j1Collisions::AddCollider(SDL_Rect collider, Object_Type type, j1Modul
 //Loads all the objects that are in the tmx map file and iterates through them generating a new collider for each one of them.
 void j1Collisions::LoadColliderFromMap() // Remember to put in fade to black.
 {
-	p2List_item<ObjectGroup*>* object_iterator = App->map->data.objectGroups.start; //Declares a list item pointer that iterates through the ObjectGroup list and sets it starting position to the first objectgroup in the list.  
+	p2List_item<ObjectGroup*>* object_iterator = App->map->data.objectGroups.start;									//Declares a list item pointer that iterates through the ObjectGroup list and sets it starting position to the first objectgroup in the list.  
 	while (object_iterator != NULL)
 	{
-		for (int i = 0; i < object_iterator->data->num_objects; i++)	//This loop will iterate as many times as objects the objectgroup being iterated has. Done like this to avoid wasting memory.
+		for (int i = 0; i < object_iterator->data->num_objects; i++)												//This loop will iterate as many times as objects the objectgroup being iterated has. Done like this to avoid wasting memory.
 		{
-			AddCollider(*object_iterator->data->object[i].collider, object_iterator->data->object[i].type, NULL); //Adds a new collider for each object that is iterated.
+			AddCollider(*object_iterator->data->object[i].collider, object_iterator->data->object[i].type, NULL);	//Adds a new collider for each object that is iterated.
 		}
-		object_iterator = object_iterator->next;	//Gets the next objectGroup that will be iterated through to load all its objects.
+		object_iterator = object_iterator->next;																	//Gets the next objectGroup that will be iterated through to load all its objects.
 	}
 }
 

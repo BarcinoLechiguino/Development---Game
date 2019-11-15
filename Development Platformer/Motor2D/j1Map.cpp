@@ -41,7 +41,7 @@ void j1Map::Draw()
 	{
 		return;
 	}
-	
+
 	MapLayer* layer = data.layers[0];
 
 	p2List_item<MapLayer*>* item = data.layers.start;
@@ -53,7 +53,7 @@ void j1Map::Draw()
 		for (uint y = 0; y < data.height; ++y)
 		{
 			for (uint x = 0; x < data.width; ++x)
-			{
+			{	
 				App->render->Blit(data.tilesets[0]->texture,
 					MapToWorld(x, y).x, MapToWorld(x, y).y,
 					data.tilesets[0]->GetTileRect(gid[i]));
