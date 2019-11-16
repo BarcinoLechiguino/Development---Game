@@ -64,19 +64,19 @@ bool j1Scene::Update(float dt)									//Receives dt as an argument.
 	//Camera Movement With Arrow Keys
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
-		App->render->camera.x += ceil(10 * dt);					//As the value is multiplied by dt, camera movement will be adjusted to the framerate.  (100 * 0.033s (30fps), 100 * 0.066s (60fps)...)
+		App->render->camera.x += ceil(300 * dt);					//As the value is multiplied by dt, camera movement will be adjusted to the framerate.  (100 * 0.033s (30fps), 100 * 0.066s (60fps)...)
 	}
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
-		App->render->camera.x -= ceil(10 * dt);					//Ceil rounds up all the decimal values, returning the smallest integral value not less than the given value. 
+		App->render->camera.x -= ceil(300 * dt);					//Ceil rounds up all the decimal values, returning the smallest integral value not less than the given value. 
 	}
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
-		App->render->camera.y += ceil(10 * dt);
+		App->render->camera.y += ceil(300 * dt);
 	}	
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 	{
-		App->render->camera.y -= ceil(10 * dt);
+		App->render->camera.y -= ceil(300 * dt);
 	}
 	
 	//A spritesheet switch button just for the flavour. Not functional at the moment.
@@ -133,6 +133,19 @@ bool j1Scene::Update(float dt)									//Receives dt as an argument.
 	else if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 	{
 		App->LoadGame();
+	}
+
+	//Enable / Diable free camera movement Key
+	else if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+	{
+		if (App->render->cam.camera_debug == true)
+		{
+			App->render->cam.camera_debug = false;
+		}
+		else
+		{
+			App->render->cam.camera_debug = true;
+		}
 	}
 
 	//Colliders Debug Draw Activation Key

@@ -189,7 +189,7 @@
     <Xml Include="..\Game\config.xml">
       <Filter>Desenvolupament  ========</Filter>
     </Xml>
-    <Xml Include="animations.xml">
+    <Xml Include="..\Game\animations.xml">
       <Filter>Desenvolupament  ========</Filter>
     </Xml>
   </ItemGroup>

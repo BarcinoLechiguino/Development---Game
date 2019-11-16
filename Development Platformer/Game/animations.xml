@@ -1,0 +1,91 @@
+<!-- Animations file for the game -->
+
+<animations>
+  <player1>
+    <idle speed ="4.0f" loop ="true">
+      <pushback x="28" y="14" w="37" h="57"/>
+      <pushback x="132" y="12" w="33" h="59"/>
+      <pushback x="230" y="12" w="37" h="59"/>
+      <pushback x="326" y="14" w="39" h="57"/>
+    </idle>
+
+    <running speed ="8.0f" loop ="true">
+      <pushback x="134" y="90" w="39" h="55"/>
+      <pushback x="232" y="92" w="39" h="53"/>
+      <pushback x="332" y="96" w="39" h="49"/>
+      <pushback x="434" y="90" w="45" h="55"/>
+      <pushback x="532" y="92" w="39" h="53"/>
+      <pushback x="632" y="96" w="39" h="49"/>
+    </running>
+
+    <crouching speed ="4.0f" loop ="true">
+      <pushback x="432" y="10" w="37" h="61"/>  <!-- 20 pixels of margin vertically up -->
+      <pushback x="530" y="8" w="39" h="63"/>
+      <pushback x="630" y="8" w="37" h="63"/>
+      <pushback x="34" y="84" w="33" h="61"/>
+    </crouching>
+
+    <jumping speed ="10.0f" loop ="true">
+      <pushback x="30" y="172" w="39" h="47"/>
+      <pushback x="130" y="176" w="39" h="43"/>
+      <pushback x="234" y="162" w="37" h="53"/>
+      <pushback x="328" y="158" w="41" h="45"/>
+      <!-- <pushback x="436" y="162" w="29" h="41"/> Cape coiling up a bit before falling -->
+    </jumping>
+
+    <frontflip speed ="8.0f" loop ="true">
+      <pushback x="528" y="168" w="47" h="33"/>
+      <pushback x="528" y="168" w="47" h="33"/>
+      <pushback x="640" y="168" w="35" h="41"/>
+      <pushback x="640" y="168" w="35" h="41"/>
+      <pushback x="22" y="248" w="51" h="33"/>
+      <pushback x="22" y="248" w="51" h="33"/>
+    </frontflip>
+
+    <boosted_jump speed ="8.0f" loop ="true">
+      <pushback x="30" y="172" w="39" h="47"/>
+      <pushback x="130" y="176" w="39" h="43"/>
+      <pushback x="234" y="162" w="37" h="53"/>
+      <pushback x="328" y="158" w="41" h="45"/>
+      <pushback x="436" y="162" w="29" h="41"/>
+      <pushback x="528" y="168" w="47" h="33"/>
+      <pushback x="640" y="168" w="35" h="41"/>
+      <pushback x="22" y="248" w="51" h="33"/>
+    </boosted_jump>
+
+    <falling speed ="8.0f" loop ="true">
+      <pushback x="136" y="224" w="33" h="61"/>
+      <pushback x="236" y="226" w="33" h="59"/>
+    </falling>
+
+    <death speed ="8.0f" loop ="true">
+      <pushback x="10" y="1094" w="58" h="66"/>
+      <pushback x="10" y="1094" w="58" h="66"/>
+      <pushback x="10" y="1094" w="58" h="66"/>
+      <pushback x="10" y="1094" w="58" h="66"/>
+      <pushback x="10" y="1094" w="58" h="66"/>
+      <pushback x="68" y="1074" w="58" h="86"/>
+      <pushback x="68" y="1074" w="58" h="86"/>
+      <pushback x="68" y="1074" w="58" h="86"/>
+      <pushback x="68" y="1074" w="58" h="86"/>
+      <pushback x="68" y="1074" w="58" h="86"/>
+      <pushback x="68" y="1074" w="58" h="86"/>
+      <pushback x="68" y="1074" w="58" h="86"/>
+      <pushback x="136" y="1074" w="58" h="86"/>
+      <pushback x="136" y="1074" w="58" h="86"/>
+      <pushback x="136" y="1074" w="58" h="86"/>
+      <pushback x="136" y="1074" w="58" h="86"/>
+      <pushback x="136" y="1074" w="58" h="86"/>
+      <pushback x="193" y="1074" w="58" h="86"/>
+      <pushback x="193" y="1074" w="58" h="86"/>
+      <pushback x="193" y="1074" w="58" h="86"/>
+      <pushback x="193" y="1074" w="58" h="86"/>
+    </death>
+  </player1>
+
+  <player2> </player2>
+  
+  <enemy1> </enemy1>
+  
+  <enemy2> </enemy2>
+</animations>

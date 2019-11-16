@@ -496,15 +496,15 @@ bool j1Player1::Save(pugi::xml_node&  data) const
 	return true;
 }
 
-bool j1Player1::LoadPlayer1()		//Loads P1 on screen.
+bool j1Player1::LoadPlayer1()								//Loads P1 on screen.
 {
 	//Loads the textures of P1. Switches them according to switch_sprites
 	p1.texture = App->tex->Load("textures/Spritesheets/Character 1/character_spritesheet_I_Buena.png");
 	
 	//--------------------------------------------Loading the data and colliders of P1--------------------------------------------
 	//Loads the position of P1 from the xml.
-	p1.position.x = p1.position.x;
-	p1.position.y = p1.position.y;
+	/*p1.position.x = p1.position.x;
+	p1.position.y = p1.position.y;*/
 
 	//p1.spawn_position = p1.position;						//Sets the respawn position to the first position the player was in the map. 
 
@@ -549,88 +549,14 @@ bool j1Player1::LoadPlayer1()		//Loads P1 on screen.
 
 bool j1Player1::AddAnimationPushbacks()
 {
-	//P1 Idle animation.
-	p1.idle.PushBack({ 28, 14, 37, 57 });
-	p1.idle.PushBack({ 132, 12, 33, 59 });
-	p1.idle.PushBack({ 230, 12, 37, 59 });
-	p1.idle.PushBack({ 326, 14, 39, 57 });
-	p1.idle.speed = 4.0f;
-	
-	//p1.idle.LoadAnimation("idle");
-
-	//P1 Running animation.
-	p1.running.PushBack({ 134, 90, 39, 55 });
-	p1.running.PushBack({ 232, 92, 39, 53 });
-	p1.running.PushBack({ 332, 96, 39, 49 });
-	p1.running.PushBack({ 434, 90, 45, 55 });
-	p1.running.PushBack({ 532, 92, 39, 53 });
-	p1.running.PushBack({ 632, 96, 39, 49 });
-	p1.running.speed = 8.0f;
-
-	//P1 Crouching animation.
-	p1.crouching.PushBack({ 432, 10, 37, 61 }); //20 Pixels of margin vertically up.
-	p1.crouching.PushBack({ 530, 8, 39, 63 });
-	p1.crouching.PushBack({ 630, 8, 37, 63 });
-	p1.crouching.PushBack({ 34, 84, 33, 61 });
-	p1.crouching.speed = 4.0f;
-
-	//P1 Jumping Animation
-	p1.jumping.PushBack({ 30, 172, 39, 47 });
-	p1.jumping.PushBack({ 130, 176, 39, 43 });
-	p1.jumping.PushBack({ 234, 162, 37, 53 });
-	p1.jumping.PushBack({ 328, 158, 41, 45 });
-	/*p1.jumping.PushBack({ 436, 162, 29, 41 });*/ //Cape coiling up a bit before falling. A bit glitchy.
-	p1.jumping.speed = 10.0f;
-
-	//P1 Frontflip Animation
-	p1.frontflip.PushBack({ 528, 168, 47, 33 });
-	p1.frontflip.PushBack({ 528, 168, 47, 33 });
-	p1.frontflip.PushBack({ 640, 168, 35, 41 });
-	p1.frontflip.PushBack({ 640, 168, 35, 41 });
-	p1.frontflip.PushBack({ 22, 248, 51, 33 });
-	p1.frontflip.PushBack({ 22, 248, 51, 33 });
-	p1.frontflip.speed = 8.0f;
-
-	//P1 Boosted Jump Animation
-	p1.boosted_jump.PushBack({ 30, 172, 39, 47 });
-	p1.boosted_jump.PushBack({ 130, 176, 39, 43 });
-	p1.boosted_jump.PushBack({ 234, 162, 37, 53 });
-	p1.boosted_jump.PushBack({ 328, 158, 41, 45 });
-	p1.boosted_jump.PushBack({ 436, 162, 29, 41 });
-	p1.boosted_jump.PushBack({ 528, 168, 47, 33 });
-	p1.boosted_jump.PushBack({ 640, 168, 35, 41 });
-	p1.boosted_jump.PushBack({ 22, 248, 51, 33 });
-	p1.boosted_jump.speed = 8.0f;
-
-	//P1 Falling Animation
-	p1.falling.PushBack({ 136, 224, 33, 61 });
-	p1.falling.PushBack({ 236, 226, 33, 59 });
-	p1.falling.speed = 8.0f;
-
-	//P1 Death Animation
-	p1.death.PushBack({ 10,1094,58,66 });
-	p1.death.PushBack({ 10,1094,58,66 });
-	p1.death.PushBack({ 10,1094,58,66 });
-	p1.death.PushBack({ 10,1094,58,66 });
-	p1.death.PushBack({ 10,1074,58,66 });
-	p1.death.PushBack({ 68,1074,58,86 });
-	p1.death.PushBack({ 68,1074,58,86 });
-	p1.death.PushBack({ 68,1074,58,86 });
-	p1.death.PushBack({ 68,1074,58,86 });
-	p1.death.PushBack({ 68,1074,58,86 });
-	p1.death.PushBack({ 68,1074,58,86 });
-	p1.death.PushBack({ 68,1074,58,86 });
-	p1.death.PushBack({ 136,1074,58,86 });
-	p1.death.PushBack({ 136,1074,58,86 });
-	p1.death.PushBack({ 136,1074,58,86 });
-	p1.death.PushBack({ 136,1074,58,86 });
-	p1.death.PushBack({ 136,1074,58,86 });
-	p1.death.PushBack({ 136,1074,58,86 });
-	p1.death.PushBack({ 193,1074,58,86 });
-	p1.death.PushBack({ 193,1074,58,86 });
-	p1.death.PushBack({ 193,1074,58,86 });
-	p1.death.PushBack({ 193,1074,58,66 });
-	p1.death.speed = 8.0f;
+	p1.idle.LoadAnimation("idle");					//P1's Idle animation.
+	p1.running.LoadAnimation("running");			//P1's Running animation.
+	p1.crouching.LoadAnimation("crouching");		//P1's Crouching animation.	
+	p1.jumping.LoadAnimation("jumping");			//P1's Jumping Animation.
+	p1.frontflip.LoadAnimation("frontflip");		//P1's Frontflip Animation.
+	p1.boosted_jump.LoadAnimation("boosted_jump");	//P1's Boosted Jump Animation.
+	p1.falling.LoadAnimation("falling");			//P1's Falling Animation.
+	p1.death.LoadAnimation("death");				//P1's Death Animation.
 
 	return true;
 }
@@ -661,12 +587,10 @@ bool j1Player1::LoadPlayer1Properties(pugi::xml_node& config)
 	p1.lives = config.child("player_1").child("lives").attribute("lives").as_int();
 	p1.max_lives = config.child("player_1").child("lives").attribute("lives").as_int();
 
+	p1.tpCdCount = config.child("player_1").child("tpCooldown").attribute("timer").as_float();
 	p1.tpCdTime = config.child("player_1").child("tpCooldown").attribute("cd").as_float();
 
-	p1.body_margin.x = config.child("player_1").child("body_margin").attribute("x").as_int();
-	p1.body_margin.y = config.child("player_1").child("body_margin").attribute("y").as_int();
-
-	p1.collision_tolerance = config.child("player_1").child("collider_tolerance").attribute("tolerance").as_int();
+	p1.godModeSpeed = config.child("player_1").child("godspeed").attribute("gspeed").as_float();
 
 	LOG("Speed.x = %f", p1.speed.x);
 
@@ -755,7 +679,7 @@ void j1Player1::SkillCooldown(bool& inCd, float& cdCounter, float& cdTime)			//A
 	}
 }
 
-void j1Player1::TpCooldownCheck(float dt)
+void j1Player1::TpCooldownCheck(float dt)	//Revise if it is needed.
 {
 	p1.tpCdCount += dt;						//Adds the time elapsed in a frame to a count.
 
@@ -778,18 +702,18 @@ void j1Player1::GodModeInput()
 	
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		p1.position.x += GOD_MODE_SPEED * App->dt;
+		p1.position.x += p1.godModeSpeed * App->dt;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		p1.position.x -= GOD_MODE_SPEED * App->dt;
+		p1.position.x -= p1.godModeSpeed * App->dt;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
-		p1.position.y -= GOD_MODE_SPEED * App->dt;
+		p1.position.y -= p1.godModeSpeed * App->dt;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
-		p1.position.y += GOD_MODE_SPEED * App->dt;
+		p1.position.y += p1.godModeSpeed * App->dt;
 	}
 }

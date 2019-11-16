@@ -10,6 +10,7 @@
     <vsync value="false"/>
     <camera x ="0" y ="-570" smoothing_speed ="0.01"/>
     <spawn_cam x ="0" y ="-570"/>
+    <camera_debug value="true"/>
   </renderer>
   
   <window>
@@ -48,9 +49,8 @@
       <boost_jump x="0"  y="600"/>
       <sprite_measures w="38" h="58"/>
       <lives lives="3"/>
-      <tpCooldown cd="1.0f"/>
-      <body_margin x="5" y="5"/>
-      <collider_tolerance tolerance="3"/>
+      <tpCooldown timer="0.0f" cd="1.0f"/>
+      <godspeed gspeed ="250.0f"/>
       <jumpFX name ="Jump.wav"/>
       <DuoJumpFX name ="Jump_Duo.wav"/>
       <DeathFX name ="Death.wav"/>
@@ -80,7 +80,7 @@
   </player>
   
   <scene>
-    <map_name name="Test Map.tmx"></map_name>
+    <map_name name="Tutorial_Level.tmx"></map_name>
     <map_name name="1st_Level.tmx"></map_name>
     <fade_time value="1"/>
   </scene>

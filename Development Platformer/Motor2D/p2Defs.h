@@ -65,7 +65,7 @@ inline const char* const PATH(const char* folder, const char* file)
 #define PERF_START(timer) timer.Start();
 #define PERF_PEEK(timer) LOG("%s took %f ms", __FUNCTION__, timer.ReadMs())
 
-//Own Definitions
+//Own Definitions --> Revise which are needed.
 #define ALPHA 80
 #define GOD_MODE_SPEED 250
 #define HALF 2;

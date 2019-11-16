@@ -49,9 +49,10 @@ bool j1Render::Awake(pugi::xml_node& config)									//Renderer VSync --> Flags 
 		camera.h = App->win->screen_surface->h;
 		camera.x = config.child("camera").attribute("x").as_float();
 		camera.y = config.child("camera").attribute("y").as_float();
-	}
 
-	cam.smoothingSpeed = config.child("camera").attribute("smoothing_speed").as_float();
+		cam.camera_debug = config.child("camera_debug").attribute("value").as_bool();				//Loads the cameraLimit bool state from the config xml file.
+		cam.smoothingSpeed = config.child("camera").attribute("smoothing_speed").as_float();		//Loads the camera smoothing speed value from the config xml file.
+	}
 
 	return ret;
 }
@@ -81,7 +82,7 @@ bool j1Render::Update(float dt)
 	cam.p1.y = -App->player1->p1.position.y + (cam.WinHeight / 2) - App->player1->p1.sprite_measures.y / 2;
 	cam.p2.x = -App->player2->p2.position.x + cam.WinWidth / 2 - App->player2->p2.sprite_measures.x;
 	cam.p2.y = -App->player2->p2.position.y + (cam.WinHeight / 2) - App->player2->p2.sprite_measures.y / 2;
-	
+
 	//Calculating the central position. 
 	if (App->player2->p2.position.x > App->player1->p1.position.x)
 	{
@@ -92,7 +93,7 @@ bool j1Render::Update(float dt)
 		cam.MidPos.x = cam.p1.x - ((cam.p1.x - cam.p2.x) / 2);
 	}
 
-	if(App->player2->p2.position.x > App->player1->p1.position.x)
+	if (App->player2->p2.position.x > App->player1->p1.position.x)
 	{
 		cam.MidPos.y = cam.p2.y - ((cam.p2.y - cam.p1.y) / 2);
 	}
@@ -100,34 +101,37 @@ bool j1Render::Update(float dt)
 	{
 		cam.MidPos.y = cam.p1.y - ((cam.p1.y - cam.p2.y) / 2);
 	}
-
-	//We set the camera position according to the mid positions.
-	camera.x = cam.MidPos.x;
-	camera.y = cam.MidPos.y;
 	
-	//Camera limits
 	//We calculate the delimitations of the map making use of the map data we already have.
-	cam.mapLimit.x = - (App->map->data.tile_width * App->map->data.width) + cam.WinWidth;		//data.tile_width refers to the tile's width in pixels and data.width refers to the map's total width in tiles
-	cam.mapLimit.y = - (App->map->data.tile_height * App->map->data.height) + cam.WinHeight;	//data.tile_height refers to the tile's height in pixels and data.height refers to the map's total height in tiles.
+	cam.mapLimit.x = -(App->map->data.tile_width * App->map->data.width) + cam.WinWidth;		//data.tile_width refers to the tile's width in pixels and data.width refers to the map's total width in tiles
+	cam.mapLimit.y = -(App->map->data.tile_height * App->map->data.height) + cam.WinHeight;		//data.tile_height refers to the tile's height in pixels and data.height refers to the map's total height in tiles.
 	
-	if (camera.x >= 0)											//Camera is at the leftmost part of the map in the x axis.
+	if (cam.camera_debug == true)									//
 	{
-		camera.x = 0;
-	}
-	else if (camera.x <= cam.mapLimit.x)						//Camera is at the rightmost part of the map in the x axis.
-	{
-		camera.x = cam.mapLimit.x;
-	}
+		//We set the camera position according to the mid positions.
+		camera.x = cam.MidPos.x;
+		camera.y = cam.MidPos.y;
 
-	if (camera.y > 0)											//Camera is at the highest part of the map in the y axis.
-	{
-		camera.y = 0;
-	}
-	else if (camera.y < cam.mapLimit.y)							//Camera is at the lowest part of the map.
-	{
-		camera.y = cam.mapLimit.y;
-	}
+		//Camera limits
+		if (camera.x >= 0)											//Camera is at the leftmost part of the map in the x axis.
+		{
+			camera.x = 0;
+		}
+		else if (camera.x <= cam.mapLimit.x)						//Camera is at the rightmost part of the map in the x axis.
+		{
+			camera.x = cam.mapLimit.x;
+		}
 
+		if (camera.y > 0)											//Camera is at the highest part of the map in the y axis.
+		{
+			camera.y = 0;
+		}
+		else if (camera.y < cam.mapLimit.y)							//Camera is at the lowest part of the map.
+		{
+			camera.y = cam.mapLimit.y;
+		}
+	}
+	
 	return true;
 }
 

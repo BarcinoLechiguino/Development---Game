@@ -36,9 +36,10 @@ struct Player1
 	float			gravity;				//Acceleration variable for jumps. Gravitational Pull.
 	float			tpCdCount;				//Keeps track of how much time has passed since tp was last used.
 	float			tpCdTime;				//Amount of cooldown time the tp skill has.
+	float			godModeSpeed;			//P1's speed while in God Mode.
 	int				lives;					//Number of lives P1 has. It just defines how many times P1 can get impaled with spikes before having to restart the whole level over.
 	int				max_lives;				//Maximum number of lives a player can have.
-	int				collision_tolerance;	//Maximum tolerance that OnCollision will have with collisions.
+
 
 	bool			grounded;				//Keeps track of P1 and returns true when P1 is not jumping or falling.
 	bool			airborne;				//Keeps track whether the player is on the air ir not.

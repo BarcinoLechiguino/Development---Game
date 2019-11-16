@@ -138,10 +138,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="..\Game\animations.xml" />
     <Xml Include="..\Game\config.xml">
-      <SubType>Designer</SubType>
-    </Xml>
-    <Xml Include="animations.xml">
       <SubType>Designer</SubType>
     </Xml>
   </ItemGroup>

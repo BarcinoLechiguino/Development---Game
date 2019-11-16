@@ -19,6 +19,8 @@ struct fixedCamera
 	uint			WinHeight;				//Height of the executing window.
 	float			smoothingSpeed;			//Value that defines how much time it takes the camera to reach its destination. Should be kept between 0 and 1 (Closer to 0 slower, closer to 1 faster). Related to lerp.
 
+	bool			camera_debug;			//Will enable or disable camera limits
+
 	//Lerp Method. Takes the position where, for example, P1 is at, the position  P1 wants to go to and the smoothingSpeed.
 	float lerp(float position, float target, float amount) 
 	{
