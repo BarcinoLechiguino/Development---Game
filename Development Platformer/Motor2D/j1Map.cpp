@@ -54,10 +54,16 @@ void j1Map::Draw()
 		{
 			for (uint x = 0; x < data.width; ++x)
 			{	
-				App->render->Blit(data.tilesets[0]->texture,
-					MapToWorld(x, y).x, MapToWorld(x, y).y,
-					data.tilesets[0]->GetTileRect(gid[i]));
-				i++;
+				iPoint tile_pos = MapToWorld(x, y);
+				SDL_Rect camera_pos = { -App->render->camera.x, -App->render->camera.y, App->win->width, App->win->height };
+
+				if (tile_pos.x > camera_pos.x && tile_pos.x < camera_pos.x + camera_pos.w && tile_pos.y > camera_pos.y && tile_pos.y < camera_pos.y + camera_pos.h)
+				{
+					App->render->Blit(data.tilesets[0]->texture,
+						MapToWorld(x, y).x, MapToWorld(x, y).y,
+						data.tilesets[0]->GetTileRect(gid[i]));
+					i++;
+				}
 			}
 		}
 
