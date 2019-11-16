@@ -80,7 +80,7 @@
   </player>
   
   <scene>
-    <map_name name="Tutorial_Level.tmx"></map_name>
+    <map_name name="Test Map.tmx"></map_name>
     <map_name name="1st_Level.tmx"></map_name>
     <fade_time value="1"/>
   </scene>
