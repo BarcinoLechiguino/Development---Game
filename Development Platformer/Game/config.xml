@@ -40,7 +40,7 @@
 
   <player>
     <player_1>
-      <position x="225" y="1126"/>
+      <position x="225" y="1125"/>
       <speed x="240.0f" y="0"/>
       <max_speed x="240" y="500"/>
       <acceleration x="60" y="500"/>

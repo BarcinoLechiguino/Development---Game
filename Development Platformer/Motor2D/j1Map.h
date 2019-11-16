@@ -11,6 +11,7 @@
 enum Object_Type //Cuidado con el class. If enum class-> Object_Type::HAZARD and not just HAZARD (i.e)
 {
 	PLAYER,
+	ATTACK,
 	SOLID,
 	PLATFORM,
 	HAZARD,
@@ -173,7 +174,7 @@ private:
 
 public:
 
-	bool activated = false; //Bool for the deactivable colliders.
+	bool activated = false;					//Bool for the deactivable colliders.
 	MapData data;
 	p2Point<float>	spawn_position_cam;
 

@@ -254,6 +254,7 @@ bool j1Player1::Update(float dt)
 	
 	p1.HitBox = p1.current_animation->GetCurrentFrame(dt);									//Sets the animation cycle that P1 will have. 
 	p1.collider->Set_Position(p1.position.x, p1.position.y);								//Makes P1's collider follow P1.
+	p1.atkCollider->Set_Position(p1.position.x + p1.sprite_measures.x, p1.position.y);		//Makes P1's attack collider follow P1.
 
 	App->render->Blit(p1.texture, p1.position.x, p1.position.y, &p1.HitBox, p1.flip);		//Blits the player on screen with the data we have given the Blit() function.
 	
@@ -505,16 +506,22 @@ bool j1Player1::LoadPlayer1()		//Loads P1 on screen.
 	p1.position.x = p1.position.x;
 	p1.position.y = p1.position.y;
 
-	//p1.spawn_position = p1.position;	//Sets the respawn position to the first position the player was in the map. 
+	//p1.spawn_position = p1.position;						//Sets the respawn position to the first position the player was in the map. 
 
 	//Loads the data of the rectangle that contains P1.
-	p1.HitBox.x = p1.position.x;			//Represents the position in the X axis of P1.
-	p1.HitBox.y = p1.position.y;			//Represents the position in the Y axis of P1.
-	p1.HitBox.w = p1.sprite_measures.x;		//Represents the width of P1.
-	p1.HitBox.h = p1.sprite_measures.y;		//Represents the height of P1.
+	p1.HitBox.x = p1.position.x;							//Represents the position in the X axis of P1.
+	p1.HitBox.y = p1.position.y;							//Represents the position in the Y axis of P1.
+	p1.HitBox.w = p1.sprite_measures.x;						//Represents the width of P1.
+	p1.HitBox.h = p1.sprite_measures.y;						//Represents the height of P1.
+
+	p1.atkHitBox.x = p1.position.x + p1.sprite_measures.x;	//Position in the X axis of P1's attack collider.
+	p1.atkHitBox.y = p1.position.y;							//Position in the Y axis of P1's attack collider.
+	p1.atkHitBox.w = p1.sprite_measures.x;					//Width of P1's attack collider.
+	p1.atkHitBox.y = p1.sprite_measures.y;					//Height of P1's attack collider.
 
 	//Adds a collider for the player.
 	p1.collider = App->collisions->AddCollider(p1.HitBox, PLAYER, this);
+	p1.atkCollider = App->collisions->AddCollider(p1.atkHitBox, ATTACK, this);
 
 	//Boolean resetting
 	p1.grounded = false;
@@ -548,6 +555,8 @@ bool j1Player1::AddAnimationPushbacks()
 	p1.idle.PushBack({ 230, 12, 37, 59 });
 	p1.idle.PushBack({ 326, 14, 39, 57 });
 	p1.idle.speed = 4.0f;
+	
+	//p1.idle.LoadAnimation("idle");
 
 	//P1 Running animation.
 	p1.running.PushBack({ 134, 90, 39, 55 });
@@ -735,14 +744,14 @@ void j1Player1::LivesCheck(int lives)
 	}
 }
 
-void j1Player1::SkillCooldown(bool& inCd, float& cdCounter, float& cdTime)		//Revise. Try and make it work for any skill;
+void j1Player1::SkillCooldown(bool& inCd, float& cdCounter, float& cdTime)			//Arguments need to be passed as reference (&) so the method can modify the actual variable instead of a copy.
 {
-	cdCounter += App->GetDt();
+	cdCounter += App->GetDt();				//Adds the time elapsed in a frame to a count.
 
-	if (cdCounter > cdTime)
+	if (cdCounter > cdTime)					//Checks if the cd Count has reached the required amount of time.
 	{
-		inCd = false;
-		cdCounter = 0;
+		inCd = false;						//Resets the bool so tp can be used again.
+		cdCounter = 0;						//Resets the count so it can be used the next time tp is in cd.
 	}
 }
 
