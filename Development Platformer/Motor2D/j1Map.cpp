@@ -42,66 +42,81 @@ void j1Map::Draw()
 		return;
 	}
 
-	//MapLayer* layer = data.layers[0];
+	App->win->GetWindowSize(winWidth, winHeight);
+
+	camera_collider.collider = { -App->render->camera.x, -App->render->camera.y, (int)winWidth, (int)winHeight };
 
 	p2List_item<MapLayer*>* layer = data.layers.start;
 
-	for (layer; layer != NULL; layer = layer->next) {
-
-		//uint* gid = item->data->gid;
-		//int i = 0;
+	for (layer; layer != NULL; layer = layer->next) 
+	{
 		int tile_index = 0;
 		for (uint y = 0; y < data.height; ++y)
 		{
 			for (uint x = 0; x < data.width; ++x)
 			{	
-				
-
-
 				int tile_id = layer->data->gid[tile_index];
 				if (tile_id > 0)
 				{
 					TileSet* tileset = GetTilesetFromTileId(tile_id);
 					if (tileset != NULL)
 					{
-						SDL_Rect* tile_rect = tileset->GetTileRect(tile_id); //Revise the pointer part
+						SDL_Rect tile_rect = tileset->GetTileRect(tile_id);
 						iPoint pos = MapToWorld(x, y);
+						SDL_Rect tile_hitBox = {pos.x, pos.y, data.tile_width, data.tile_height};
 
-						if (layer->data->name == "Background")
+						if (camera_collider.Check_Collision(tile_hitBox))
 						{
-							App->render->Blit(tileset->texture, pos.x, pos.y, tile_rect);
-						}
-						else if (layer->data->name == "Parallax")
-						{
-							App->render->Blit(tileset->texture, pos.x, pos.y, tile_rect, false, 0.5f);
-						}
-						else if (layer->data->name == "Floor")
-						{
-							App->render->Blit(tileset->texture, pos.x, pos.y, tile_rect);
-						}
-						else if (layer->data->name == "Hazards")
-						{
-							App->render->Blit(tileset->texture, pos.x, pos.y, tile_rect);
-						}
-						else if (layer->data->name == "Desactivable")
-						{
-							App->render->Blit(tileset->texture, pos.x, pos.y, tile_rect);
-						}
-						else if (layer->data->name == "Portal")
-						{
-							App->render->Blit(tileset->texture, pos.x, pos.y, tile_rect);
-						}
-						else  if (layer->data->name == "Activable")
-						{
-							App->render->Blit(tileset->texture, pos.x, pos.y, tile_rect);
-						}
-						else if (layer->data->name == "Letters")
-						{
-							App->render->Blit(tileset->texture, pos.x, pos.y, tile_rect);
-						}
-						else if (layer->data->name == "Platforms")
-						{
-							App->render->Blit(tileset->texture, pos.x, pos.y, tile_rect);
+							if (layer->data->name == "Background")
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							}
+							else if (layer->data->name == "Parallax")
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect, false, 0.5f);
+							}
+							else if (layer->data->name == "ParallaxDecor")
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect, false, 0.75f);
+							}
+							else if (layer->data->name == "Ground")
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							}
+							if (layer->data->name == "Platforms")
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							}
+							else if (layer->data->name == "Hazards")
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							}
+							else if (layer->data->name == "Desactivable")
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							}
+							else  if (layer->data->name == "Activable")
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							}
+							else if (layer->data->name == "Autosave")
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							}
+							else if (layer->data->name == "Portal")
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							}
+
+							//---------------------------TUTORIAL MAP LAYERS----------------------
+							else if (layer->data->name == "Floor")
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							}
+							else if (layer->data->name == "Letters")
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							}
 						}
 					}
 				}
@@ -113,15 +128,35 @@ void j1Map::Draw()
 
 iPoint j1Map::MapToWorld(int x, int y) const 
 {
-	iPoint ret(0, 0);
+	iPoint ret(0, 0);																//Position of the tile on the world.
 
-	if (data.type == MAPTYPE_ORTHOGONAL)
+	if (data.type == MAPTYPE_ORTHOGONAL)											//Position calculus for orhogonal maps
 	{
-		ret.x = x * data.tile_width;
-		ret.y = y * data.tile_height;
+		ret.x = x * data.tile_width;												//Position in the X axis of the tile on the world in pixels. For tile_width = 32 --> Tile 1: x = 0, Tile 2: x = 32.
+		ret.y = y * data.tile_height;												//Position in the Y axis of the tile on the world in pixels. For tile_height = 32 --> Tile 1: y = 0, Tile 2: y = 32.
+	}
+
+	if (data.type == MAPTYPE_ISOMETRIC)												//Position calculus for isometric maps
+	{
+		ret.x = (x / (data.tile_width / 2) + y / (data.tile_height / 2)) / 2;
+		ret.y = (y / (data.tile_height / 2) - x / (data.tile_width / 2)) / 2;
 	}
 
 	return ret;
+}
+
+SDL_Rect TileSet::GetTileRect(uint tile_id) const
+{
+	SDL_Rect tile_rect;						//Declares a SDL_Rect where the tile's rect data members will be stored.
+
+	int relative_id = tile_id - firstgid;	//Calculates the relative position of the tile_id respect the  first initial global id.
+
+	tile_rect.w = tile_width;				//Sets the width of the Rect holding the tile to the width of the tile in pixels.
+	tile_rect.h = tile_height;				//Sets the width of the Rect holding the tile to the height of the tile in pixels.
+	tile_rect.x = margin + ((tile_rect.w + spacing) * (relative_id % num_tiles_width));
+	tile_rect.y = margin + ((tile_rect.h + spacing) * (relative_id / num_tiles_width));
+
+	return tile_rect;
 }
 
 //From Handout 5
@@ -260,6 +295,7 @@ bool j1Map::Load(const char* file_name)
 		data.objectGroups.add(new_objectgroup);						//Adds the object group being iterated to the list.
 	}
 
+	//--------------------------- LOGS ----------------------------
 	if(ret == true)
 	{
 		LOG("Successfully parsed map XML file: %s", file_name);
@@ -411,7 +447,7 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 
 bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 {
-	bool ret = true;
+	/*bool ret = true;
 
 	layer->name = node.attribute("name").as_string();
 	layer->width = node.attribute("width").as_int();
@@ -438,21 +474,48 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	}
 	else
 	{
-		layer->gid = new uint[layer->width*layer->height]; // New
-		memset(layer->gid, 0, layer->width*layer->height); // New
+		//layer->gid = new uint[layer->width*layer->height]; // New
+		//memset(layer->gid, 0, layer->width*layer->height * sizeof(uint)); // New
 		
 		int i = 0;
 		for (pugi::xml_node tileset = node.child("data").child("tile"); tileset; tileset = tileset.next_sibling("tile"))
 		{
 			layer->gid[i] = tileset.attribute("gid").as_uint();
 
-			LOG("%u", layer->gid[i]);
+			//LOG("%u", layer->gid[i]);
 			++i;
 		}
 		return true;
 	}
 
-	return true;
+	return true;*/
+
+	bool ret = true;										//LOAD NEEDS TO BE REVISED
+
+	layer->name = node.attribute("name").as_string();
+	layer->width = node.attribute("width").as_int();
+	layer->height = node.attribute("height").as_int();
+	pugi::xml_node layer_data = node.child("data");
+
+	if (layer_data == NULL)
+	{
+		LOG("Error parsing map xml file: Cannot find 'layer/data' tag.");
+		ret = false;
+		RELEASE(layer);
+	}
+	else
+	{
+		layer->gid = new uint[layer->width*layer->height];
+		memset(layer->gid, 0, layer->width*layer->height);
+
+		int i = 0;
+		for (pugi::xml_node tile = layer_data.child("tile"); tile; tile = tile.next_sibling("tile"))
+		{
+			layer->gid[i++] = tile.attribute("gid").as_int(0);
+		}
+	}
+
+	return ret;
 }
 
 //Loads the object layers (colliders) from the xml map. It iterates through  a specific object layer (in the load() it is iterated through to get all the object info).
