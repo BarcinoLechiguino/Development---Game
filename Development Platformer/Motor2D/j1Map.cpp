@@ -42,33 +42,72 @@ void j1Map::Draw()
 		return;
 	}
 
-	MapLayer* layer = data.layers[0];
+	//MapLayer* layer = data.layers[0];
 
-	p2List_item<MapLayer*>* item = data.layers.start;
+	p2List_item<MapLayer*>* layer = data.layers.start;
 
-	for (item; item != nullptr; item = item->next) {
+	for (layer; layer != NULL; layer = layer->next) {
 
-		uint* gid = item->data->gid;
-		int i = 0;
+		//uint* gid = item->data->gid;
+		//int i = 0;
+		int tile_index = 0;
 		for (uint y = 0; y < data.height; ++y)
 		{
 			for (uint x = 0; x < data.width; ++x)
 			{	
-				iPoint tile_pos = MapToWorld(x, y);
-				SDL_Rect camera_pos = { -App->render->camera.x, -App->render->camera.y, App->win->width, App->win->height };
+				
 
-				/*if (tile_pos.x > camera_pos.x && tile_pos.x < camera_pos.x + camera_pos.w && tile_pos.y > camera_pos.y && tile_pos.y < camera_pos.y + camera_pos.h)
+
+				int tile_id = layer->data->gid[tile_index];
+				if (tile_id > 0)
 				{
-					
-				}*/
+					TileSet* tileset = GetTilesetFromTileId(tile_id);
+					if (tileset != NULL)
+					{
+						SDL_Rect* tile_rect = tileset->GetTileRect(tile_id); //Revise the pointer part
+						iPoint pos = MapToWorld(x, y);
 
-				App->render->Blit(data.tilesets[0]->texture,
-					MapToWorld(x, y).x, MapToWorld(x, y).y,
-					data.tilesets[0]->GetTileRect(gid[i]));
-				i++;
+						if (layer->data->name == "Background")
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, tile_rect);
+						}
+						else if (layer->data->name == "Parallax")
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, tile_rect, false, 0.5f);
+						}
+						else if (layer->data->name == "Floor")
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, tile_rect);
+						}
+						else if (layer->data->name == "Hazards")
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, tile_rect);
+						}
+						else if (layer->data->name == "Desactivable")
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, tile_rect);
+						}
+						else if (layer->data->name == "Portal")
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, tile_rect);
+						}
+						else  if (layer->data->name == "Activable")
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, tile_rect);
+						}
+						else if (layer->data->name == "Letters")
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, tile_rect);
+						}
+						else if (layer->data->name == "Platforms")
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, tile_rect);
+						}
+					}
+				}
+				tile_index++;
 			}
 		}
-
 	}
 }
 
