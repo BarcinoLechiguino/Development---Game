@@ -51,6 +51,7 @@ bool j1Render::Awake(pugi::xml_node& config)									//Renderer VSync --> Flags 
 		camera.y = config.child("camera").attribute("y").as_float();
 
 		cam.camera_debug = config.child("camera_debug").attribute("value").as_bool();				//Loads the cameraLimit bool state from the config xml file.
+		cam.camera_debug_speed = config.child("camera_debug").attribute("speed").as_float();		//Loads the camera's movement speed value while in debug mode  from the config xml file.
 		cam.smoothingSpeed = config.child("camera").attribute("smoothing_speed").as_float();		//Loads the camera smoothing speed value from the config xml file.
 	}
 

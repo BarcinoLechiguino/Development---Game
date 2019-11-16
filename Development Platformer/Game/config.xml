@@ -10,7 +10,7 @@
     <vsync value="false"/>
     <camera x ="0" y ="-570" smoothing_speed ="0.01"/>
     <spawn_cam x ="0" y ="-570"/>
-    <camera_debug value="true"/>
+    <camera_debug value="true" speed="300.0f"/>
   </renderer>
   
   <window>

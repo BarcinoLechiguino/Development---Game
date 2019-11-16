@@ -43,6 +43,7 @@ public:
 
 	bool Load_lvl(int time);
 private:
+	float cam_debug_speed;						//Will store the movement speed for the camera while in debug mode. Done for readability
 
 public:
 	int currentMap;

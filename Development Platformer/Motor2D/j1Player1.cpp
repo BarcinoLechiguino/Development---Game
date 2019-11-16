@@ -677,6 +677,11 @@ void j1Player1::SkillCooldown(bool& inCd, float& cdCounter, float& cdTime)			//A
 		inCd = false;						//Resets the bool so tp can be used again.
 		cdCounter = 0;						//Resets the count so it can be used the next time tp is in cd.
 	}
+
+	//if (inCd == p1.tpInCd)					//Specific cooldown release sound for the tp. bool name needs to be passed as a string. Revise
+	//{
+
+	//}
 }
 
 void j1Player1::TpCooldownCheck(float dt)	//Revise if it is needed.
