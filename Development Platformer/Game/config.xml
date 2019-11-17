@@ -37,6 +37,11 @@
 
   <map>
     <folder>maps/</folder>
+    <layers>
+      <bg_parallax_speed speed="0.05f"/>
+      <first_parallax_speed speed ="0.1f"/>
+      <decor_parallax_speed speed ="0.25f"/>
+    </layers>
   </map>
 
   <entities>

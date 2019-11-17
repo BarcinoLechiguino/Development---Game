@@ -29,6 +29,11 @@ bool j1Map::Awake(pugi::xml_node& config)
 	bool ret = true;
 
 	folder.create(config.child("folder").child_value());
+
+	bg_parallax_spd = config.child("layers").child("bg_parallax_speed").attribute("speed").as_float();
+	first_parallax_spd = config.child("layers").child("first_parallax_speed").attribute("speed").as_float();
+	decor_parallax_spd = config.child("layers").child("decor_parallax_speed").attribute("speed").as_float();
+
 	/*spawn_position_cam.x = config.child("renderer").child("cam").attribute("x").as_float();
 	spawn_position_cam.x = config.child("renderer").child("cam").attribute("y").as_float();*/
 
@@ -37,7 +42,7 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 void j1Map::Draw()
 {
-	if (map_loaded == false)																						//
+	if (map_loaded == false)																						//If no map was loaded, return.
 	{
 		return;
 	}
@@ -69,11 +74,11 @@ void j1Map::Draw()
 					//Revise how to make the camera culling not erase the parallax elements	
 					if (layer->data->name == "Parallax")
 					{
-						App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect, false, 0.5f);			//As we need to add parallax to this layer, we pass a value as speed argument.
+						App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect, false, first_parallax_spd);	//As we need to add parallax to this layer, we pass a value as speed argument.
 					}
 					else if (layer->data->name == "ParallaxDecor")
 					{
-						App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect, false, 0.75f);
+						App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect, false, decor_parallax_spd);
 					}
 						
 						if (camera_collider.Check_Collision(tile_hitBox))											//Checks if the tile is inside or outside the camera boundaries by checking if there  has been a collision between the camera rect and the tile rect. 
