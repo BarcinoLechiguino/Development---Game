@@ -7,7 +7,7 @@
 #include "j1App.h"
 #include "j1Collisions.h"
 #include "j1Input.h"
-#include "j1Player1.h"
+#include "j1Player.h"
 #include "j1Window.h"
 
 j1EntityManager::j1EntityManager()
@@ -25,9 +25,10 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 
 	cycle_length = config.child("enemies").child("update_cycles_sec").attribute("seconds").as_float();
 
-	for (p2List_item<Entity*>* entity = entities.start; entity; entity = entity->next)
+	//Iterates all entities and calls their Awake() methods.
+	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator; entity_iterator = entity_iterator->next)
 	{
-		entity->data->Awake(config.child(entity->data->name.GetString()));
+		entity_iterator->data->Awake(config.child(entity_iterator->data->name.GetString()));
 	}
 
 	return true;
@@ -35,7 +36,19 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 
 bool j1EntityManager::Start()
 {
-	//
+	//Iterates all entities in the entities list and calls their Start() method.
+	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
+	{
+		entity_iterator->data->Start();
+	}
+
+	return true;
+}
+
+bool j1EntityManager::PreUpdate()
+{
+	//Enemies PreUpdate()
+
 	return true;
 }
 
@@ -43,87 +56,130 @@ bool j1EntityManager::Update(float dt)
 {
 	accumulated_time += dt;
 
-	if (accumulated_time >= cycle_length)
+	if (accumulated_time >= cycle_length) //Timer that will set doLogic to true 10 times per second (cycle_length = 0.1 sec).
 	{
 		doLogic = true;
 	}
 
+	//Calls the Update method of all entities. Passes dt and doLogic as arguments (mainly for pathfinding enemies).
+	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
+	{
+		entity_iterator->data->Update(dt, doLogic);
+	}
 
-
+	if (doLogic == true)				//Resets the doLogic timer.
+	{
+		doLogic = false;
+		accumulated_time = 0;
+	}
 
 	return true;
 }
 
 bool j1EntityManager::PostUpdate()
 {
-	//
+	//Iterates all entities and calls their PostUpdate() methods.
+	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
+	{
+		entity_iterator->data->PostUpdate();
+	}
+
 	return true;
 }
 
 bool j1EntityManager::CleanUp()
 {
-	Entity* player = getPlayer();
-	if (player)
-		getPlayer()->CleanUp();
+	//j1Entity* player = GetPlayer();
+	//if (player)
+	//	GetPlayer()->CleanUp();
 
-	p2List_item<Entity*>* item;
-	item = entities.start; //Skips first entity. The .next was eliminated because it crashed the game 
+	//p2List_item<j1Entity*>* item;
+	//item = entities.start; //Skips first entity. The .next was eliminated because it crashed the game.
 
-	while (item != NULL)
+	//while (item != NULL)
+	//{
+	//	RELEASE(item->data);
+	//	item = item->next;
+	//}
+
+	//Iterates all entities in the entities list and calls their CleanUp() method.
+	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
 	{
-		RELEASE(item->data);
-		item = item->next;
+		entity_iterator->data->CleanUp();
 	}
-	entities.clear();
-	entities.add(player);
+	
+	entities.clear();									//Deletes all items in the entities list and frees all allocated memory.
+
+	player = NULL;										//Sets the j1Player* player pointer to NULL.
 
 	return true;
 }
 
-void j1EntityManager::DestroyEntity(Entity* entity)
+void j1EntityManager::DestroyEntity(j1Entity* entity)
 {
-	p2List_item<Entity*>* finder = entities.start;
-	while (finder != NULL)
+	//Iterates all entities in the entities list and searches for the entity passed as argument, if it is inside the list and is found, it is then destroyed.
+	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
 	{
-		if (finder->data == entity)
+		if (entity_iterator->data == entity)
 		{
-			if (finder->data == getPlayer())
-				getPlayer()->CleanUp();
-			entities.del(finder);
-			RELEASE(finder->data);
+			if (entity_iterator->data == GetPlayer())		//Revise. Should this be here?
+			{
+				GetPlayer()->CleanUp();
+			}
+				
+			entities.del(entity_iterator);
+			RELEASE(entity_iterator->data);
 			break;
 		}
-		finder = finder->next;
 	}
 }
 
-Entity* j1EntityManager::CreateEntity(entityType type, int x, int y)
+j1Entity* j1EntityManager::CreateEntity(int x, int y, ENTITY_TYPE type)
 {
-	Entity* ret = nullptr;
+	//static_assert?
+	
+	j1Entity* ret = nullptr;
 
 	switch (type)
 	{
-	case LAND_ENEMY:
+	case ENTITY_TYPE::PLAYER:								//If the ENTITT_TYPE passed as argument is PLAYER.
+		ret = new j1Player(x, y, type);						//Allocates memory for an entity from the j1Player module.
+		break;
+	
+	case ENTITY_TYPE::LAND_ENEMY:							//If the ENTITT_TYPE passed as argument is LAND_ENEMY.
 		//
 		break;
-	case FLYING_ENEMY:
+	case ENTITY_TYPE::FLYING_ENEMY:							//If the ENTITT_TYPE passed as argument is FLYING_ENEMY.
 		//
 		break;
 	}
-	ret->type = type;
+	//ret->type = type;
 
-	entities.add(ret);
+	if (ret != nullptr)										//If the j1Entity* pointer is not NULL.
+	{
+		entities.add(ret);									//Adds the generated entity to the entities list.
+	}
 
 	return ret;
 }
 
-Entity* j1EntityManager::getPlayer() const
+void j1EntityManager::CreatePlayer()
 {
-	Entity* ret = nullptr;
+	player = (j1Player*)CreateEntity(0, 0, ENTITY_TYPE::PLAYER);	//Revise 0, 0. Maybe default x and y of the CreateEntity method to 0.
+}
 
-	for (p2List_item<Entity*>* entity = entities.start; entity; entity = entity->next)
+void j1EntityManager::SpawnEnemy()
+{
+
+}
+
+j1Entity* j1EntityManager::GetPlayer() const
+{
+	j1Entity* ret = nullptr;
+
+	for (p2List_item<j1Entity*>* entity = entities.start; entity; entity = entity->next)
 	{
-		if (entity->data->type == PLAYER)
+		if (entity->data->type == ENTITY_TYPE::PLAYER)
 		{
 			ret = entity->data;
 			break;
@@ -135,8 +191,8 @@ Entity* j1EntityManager::getPlayer() const
 
 bool j1EntityManager::Save(pugi::xml_node& data) const
 {
-	getPlayer()->Save(data.append_child("player"));
-	for (p2List_item<Entity*>* entity = entities.start; entity; entity = entity->next)
+	GetPlayer()->Save(data.append_child("player"));
+	for (p2List_item<j1Entity*>* entity = entities.start; entity; entity = entity->next)
 	{
 		pugi::xml_node child = data.append_child(entity->data->name.GetString());
 		child.append_attribute("position_x") = entity->data->position.x;
@@ -149,15 +205,15 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 bool j1EntityManager::Load(pugi::xml_node& data)
 {
 	CleanUp();
-	getPlayer()->Load(data.child("player"));
+	GetPlayer()->Load(data.child("player"));
 	for (pugi::xml_node land_enemy = data.child("land_enemy"); land_enemy; land_enemy = land_enemy.next_sibling("land_enemy"))
 	{
-		CreateEntity(LAND_ENEMY, land_enemy.attribute("position_x").as_int(), land_enemy.attribute("position_y").as_int());
-	}
-
+		CreateEntity(land_enemy.attribute("position_x").as_int(), land_enemy.attribute("position_y").as_int(), ENTITY_TYPE::LAND_ENEMY);
+	}  
+	 
 	for (pugi::xml_node flying_enemy = data.child("bat"); flying_enemy; flying_enemy = flying_enemy.next_sibling("flying_enemy"))
 	{
-		CreateEntity(FLYING_ENEMY, flying_enemy.attribute("position_x").as_int(), flying_enemy.attribute("position_y").as_int());
+		CreateEntity(flying_enemy.attribute("position_x").as_int(), flying_enemy.attribute("position_y").as_int(), ENTITY_TYPE::FLYING_ENEMY);
 	}
 
 	return true;

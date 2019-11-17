@@ -33,7 +33,7 @@
       <!-- <pushback x="436" y="162" w="29" h="41"/> Cape coiling up a bit before falling -->
     </jumping>
 
-    <frontflip speed ="8.0f" loop ="true">
+    <frontflip speed ="20.0f" loop ="true">
       <pushback x="528" y="168" w="47" h="33"/>
       <pushback x="528" y="168" w="47" h="33"/>
       <pushback x="640" y="168" w="35" h="41"/>

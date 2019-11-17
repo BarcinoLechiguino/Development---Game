@@ -8,7 +8,7 @@
 	
   <renderer>
     <vsync value="false"/>
-    <camera x ="0" y ="-570" smoothing_speed ="0.01"/>
+    <camera x ="0" y ="-570" smoothing_speed ="0.01f"/>
     <spawn_cam x ="0" y ="-570"/>
     <camera_debug value="true" speed="300.0f"/>
   </renderer>
@@ -45,7 +45,7 @@
   </map>
 
   <entities>
-    <player_1>
+    <player>
       <!-- <position x="225" y="1125"/> -->
       <position x="192" y="400"/>
       <speed x="350.0f" y="0"/>
@@ -53,6 +53,7 @@
       <acceleration x="60.0f" y="450.0f"/>
       <gravity value="40.0f"/>
       <boost_jump x="0"  y="700.0f"/>
+      <frontflip start="-6.0f" end="6.0f"/>
       <sprite_measures w="38" h="58"/>
       <lives lives="3"/>
       <tpCooldown timer="0.0f" cd="1.0f"/>
@@ -63,7 +64,7 @@
       <ActivateFX name = "Activate.wav"/>
       <TPFX name = "TP.wav"/>
       <PassFX name = "Pass.wav"/>
-    </player_1>
+    </player>
 
     <player_2>
       <!-- <position x="200" y="1150"/> -->

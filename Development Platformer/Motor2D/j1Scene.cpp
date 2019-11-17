@@ -10,6 +10,7 @@
 #include "j1FadeScene.h"
 #include "j1Scene.h"
 #include "j1Collisions.h"
+#include "j1EntityManager.h"
 #include "j1Player1.h"
 #include "j1Player2.h"
 
@@ -48,6 +49,8 @@ bool j1Scene::Start()
 	bool ret = App->map->Load(map_names.start->data->GetString());
 	App->audio->PlayMusic(App->map->data.music_File.GetString());
 	LOG("Boi: %s", map_names.start->data->GetString());
+
+	//App->entityManager->CreatePlayer();
 
 	cam_debug_speed = App->render->cam.camera_debug_speed;
 
