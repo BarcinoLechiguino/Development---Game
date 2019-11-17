@@ -32,7 +32,10 @@ public:
 	Entity* getPlayer() const;
 
 public:
-	pugi::xml_node config;
+	pugi::xml_node	config;
+	float			accumulated_time;	//Accumulates dt as time goes on.
+	float			cycle_length;		//How much time needs to pass / be accumulated before running a cycle. 
+	bool			doLogic;			//Keeps track  whether or not the entity needs to do it's logic (pathfinding...)
 };
 
 #endif // !__j1ENTITY_MANAGER_H__

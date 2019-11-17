@@ -16,7 +16,7 @@
 j1Player2::j1Player2() //Constructor. Called at the first frame.
 {
 	//String that will be given to the different functions (Awake(), Load()...) to generate the handler node.
-	name.create("player"); //The string has to be the same as the name of the node in the xml file.
+	name.create("entities"); //The string has to be the same as the name of the node in the xml file.
 
 	//Adds P2's animation pushback.
 	AddAnimationPushbacks();

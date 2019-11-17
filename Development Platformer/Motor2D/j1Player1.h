@@ -32,7 +32,7 @@ struct Player1
 	p2Point<float>	acceleration;			//Sets how much time it takes P1 to reach Cruiser Speed horizontally and/or vertically.
 	p2Point<float>	boost_jump;				//Sets how much vertical or horizontal impulse will P1 get.
 	p2Point<int>	body_margin;			//Collider adjustment to the body of P1.
-	p2Point<int>	sprite_measures;		//Sprite measurements (w, h), sets the width and height of the collider.. / Make center pos: mid_pos = p1.position.x +/- (p1.hitbox.width / 2). +/- depending on which side P1 is facing.
+	p2Point<int>	sprite_measures;		//Sprite measurements (w, h), sets the width and height of the collider.. / Calculate center pos: mid_pos = p1.position.x +/- (p1.hitbox.width / 2). +/- depending on which side P1 is facing.
 	float			gravity;				//Acceleration variable for jumps. Gravitational Pull.
 	float			tpCdCount;				//Keeps track of how much time has passed since tp was last used.
 	float			tpCdTime;				//Amount of cooldown time the tp skill has.

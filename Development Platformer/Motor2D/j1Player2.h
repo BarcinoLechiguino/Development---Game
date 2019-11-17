@@ -32,7 +32,7 @@ struct Player2
 	p2Point<float>	acceleration;			//Sets how much time it takes P2 to reach Cruiser Speed horizontally and/or vertically.
 	p2Point<float>	boost_jump;				//Sets how much vertical or horizontal impulse will P2 get.
 	p2Point<int>	body_margin;			//Collider adjustment to the body of P2
-	p2Point<int>	sprite_measures;			//Sprite measurements (w, h), sets the width and height of the collider. / Make center pos: mid_pos = p1.position.x +/- (p1.hitbox.width / 2). +/- depending on which side P1 is facing.
+	p2Point<int>	sprite_measures;		//Sprite measurements (w, h), sets the width and height of the collider. / Calculate center pos: mid_pos = p1.position.x +/- (p1.hitbox.width / 2). +/- depending on which side P1 is facing.
 	float			gravity;				//Acceleration variable for jumps. Gravitational Pull.
 	int				lives;					//Number of lives P2 has. It just defines how many times P2 can get impaled with spikes before having to restart the whole level over.
 	int				max_lives;				//Maximum number of lives a player can have.

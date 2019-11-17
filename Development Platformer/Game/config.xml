@@ -39,7 +39,7 @@
     <folder>maps/</folder>
   </map>
 
-  <player>
+  <entities>
     <player_1>
       <!-- <position x="225" y="1125"/> -->
       <position x="192" y="400"/>
@@ -79,7 +79,11 @@
       <DuoJumpFX name ="Jump_Duo.wav"/>
       <DeathFX name ="Death.wav"/>
     </player_2>
-  </player>
+  </entities>
+
+  <enemies>
+    <update_cycles_sec seconds="0.1f"/>
+  </enemies>
   
   <scene>
     <map_name name="Test_Map.tmx"></map_name>

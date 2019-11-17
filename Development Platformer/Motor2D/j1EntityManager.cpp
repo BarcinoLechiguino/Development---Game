@@ -12,7 +12,7 @@
 
 j1EntityManager::j1EntityManager()
 {
-//
+	name.create("entities");
 }
 
 j1EntityManager::~j1EntityManager()
@@ -22,6 +22,8 @@ j1EntityManager::~j1EntityManager()
 bool j1EntityManager::Awake(pugi::xml_node& config)
 {
 	this->config = config;
+
+	cycle_length = config.child("enemies").child("update_cycles_sec").attribute("seconds").as_float();
 
 	for (p2List_item<Entity*>* entity = entities.start; entity; entity = entity->next)
 	{
@@ -39,7 +41,16 @@ bool j1EntityManager::Start()
 
 bool j1EntityManager::Update(float dt)
 {
-	//
+	accumulated_time += dt;
+
+	if (accumulated_time >= cycle_length)
+	{
+		doLogic = true;
+	}
+
+
+
+
 	return true;
 }
 
