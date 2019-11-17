@@ -41,8 +41,9 @@
 
   <player>
     <player_1>
-      <position x="225" y="1125"/>
-      <speed x="240.0f" y="0"/>
+      <!-- <position x="225" y="1125"/> -->
+      <position x="192" y="400"/>
+      <speed x="350.0f" y="0"/>
       <max_speed x="240" y="500"/>
       <acceleration x="60" y="500"/>
       <gravity value="40"/>
@@ -60,7 +61,8 @@
     </player_1>
 
     <player_2>
-      <position x="200" y="1150"/>
+      <!-- <position x="200" y="1150"/> -->
+      <position x="182" y="400"/>
       <previous_position x="0" y="0"/>
       <last_grounded x="0" y="0"/>
       <speed x="0" y="0"/>
@@ -80,7 +82,7 @@
   </player>
   
   <scene>
-    <map_name name="Tutorial_Level.tmx"></map_name>
+    <map_name name="Test_Map.tmx"></map_name>
     <map_name name="1st_Level.tmx"></map_name>
     <fade_time value="1"/>
   </scene>

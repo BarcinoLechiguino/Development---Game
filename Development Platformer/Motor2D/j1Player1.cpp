@@ -67,6 +67,11 @@ bool j1Player1::PreUpdate()
 	if (p1.GodMode == false)
 	{
 		p1.state = idle_P1;
+
+		if (p1.speed.y > 0)
+		{
+			p1.state = falling_P1;
+		}
 		
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)				//Move Right
 		{
@@ -183,6 +188,7 @@ bool j1Player1::Update(float dt)
 		
 		p1.airborne = true;
 		p1.grounded = true; //No jumping
+		p1.current_animation = &p1.falling;
 
 		break;
 

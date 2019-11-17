@@ -5,7 +5,10 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "j1Module.h"
+#include "j1Collisions.h"
 #include "SDL/include/SDL.h"
+
+struct Collider;
 
 //Kinds of colliders we are working with
 enum Object_Type //Cuidado con el class. If enum class-> Object_Type::HAZARD and not just HAZARD (i.e)
@@ -65,34 +68,9 @@ struct MapLayer
 
 // ----------------------------------------------------
 struct TileSet
-{
-	SDL_Rect* TileRect = new SDL_Rect; //Allocates memory for TileRect.
-	
+{	
 	//This method calculates the position of each tile when given a tile id. 
-	SDL_Rect* GetTileRect(uint tile_id) 
-	{
-		SDL_Rect* tile_rect = TileRect; //The memory allocated for TileRect is now allocated to tile_rect. (?)
-
-		int relative_id = tile_id - firstgid;  //Calculates the relative position of the tile_id respect the  first initial global id.
-		
-		tile_rect->w = tile_width;			//Sets the width of the Rect holding the tile to the width of the tile in pixels.
-		tile_rect->h = tile_height;			//Sets the width of the Rect holding the tile to the height of the tile in pixels.
-		tile_rect->x =  margin + ((tile_rect->w + spacing) * (relative_id % num_tiles_width));
-		tile_rect->y =  margin + ((tile_rect->h + spacing) * (relative_id / num_tiles_width));
-
-		return tile_rect;
-	}
-
-	//This method translates the position of the tile on the map to its equivalent position on screen.
-	p2Point<uint> MapToWorld(uint x, uint y)
-	{
-		p2Point<uint> position;				//Position of the tile on the world.
-
-		position.x = x * tile_width;		//Position x of the tile on the map in pixels. For tile_width = 32 --> Tile 1: x = 0, Tile 2: x = 32.
-		position.y = y * tile_height;		//Position y of the tile on the map in pixels. For tile_height = 32 --> Tile 1: y = 0, Tile 2: y = 32.
-
-		return position;
-	}
+	SDL_Rect GetTileRect(uint tile_id) const;
 
 	p2SString			name;				//Tileset name.
 	int					firstgid;			//First global tile id. Maps to the first id in the tileset.
@@ -158,8 +136,8 @@ public:
 	//Unloads the map and changes by another one. 
 	bool SwitchMaps(p2SString* new_map);
 
-	// Load new map
-	iPoint MapToWorld(int x, int y) const; //Ya hay un map to world en TileSet
+	// Load new map. This method translates the position of the tile on the map to its equivalent position on screen.
+	iPoint MapToWorld(int x, int y) const;
 
 	void Restart_Cam();
 private:
@@ -177,6 +155,9 @@ public:
 	bool activated = false;					//Bool for the deactivable colliders.
 	MapData data;
 	p2Point<float>	spawn_position_cam;
+	Collider camera_collider;				//Collider that will have the same position and dimensions as the camera. Will be used for camera culling.
+	uint winWidth;							//Declared to store the window's width.
+	uint winHeight;							//Declared to store the window's height.
 
 private:
 	pugi::xml_document	map_file;
