@@ -67,7 +67,7 @@ bool j1EntityManager::CleanUp()
 		getPlayer()->CleanUp();
 
 	p2List_item<Entity*>* item;
-	item = entities.start->next; //Skips first entity
+	item = entities.start; //Skips first entity. The .next was eliminated because it crashed the game 
 
 	while (item != NULL)
 	{
@@ -97,7 +97,7 @@ void j1EntityManager::DestroyEntity(Entity* entity)
 	}
 }
 
-Entity* j1EntityManager::createEntity(entityType type, int x, int y)
+Entity* j1EntityManager::CreateEntity(entityType type, int x, int y)
 {
 	Entity* ret = nullptr;
 
@@ -152,12 +152,12 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 	getPlayer()->Load(data.child("player"));
 	for (pugi::xml_node land_enemy = data.child("land_enemy"); land_enemy; land_enemy = land_enemy.next_sibling("land_enemy"))
 	{
-		createEntity(LAND_ENEMY, land_enemy.attribute("position_x").as_int(), land_enemy.attribute("position_y").as_int());
+		CreateEntity(LAND_ENEMY, land_enemy.attribute("position_x").as_int(), land_enemy.attribute("position_y").as_int());
 	}
 
 	for (pugi::xml_node flying_enemy = data.child("bat"); flying_enemy; flying_enemy = flying_enemy.next_sibling("flying_enemy"))
 	{
-		createEntity(FLYING_ENEMY, flying_enemy.attribute("position_x").as_int(), flying_enemy.attribute("position_y").as_int());
+		CreateEntity(FLYING_ENEMY, flying_enemy.attribute("position_x").as_int(), flying_enemy.attribute("position_y").as_int());
 	}
 
 	return true;

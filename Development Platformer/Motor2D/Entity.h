@@ -9,7 +9,7 @@
 
 enum entityType
 {
-	NO_TYPE,
+	UNKNOWN_TYPE,
 	PLAYER1,
 	PLAYER2,
 	FLYING_ENEMY,

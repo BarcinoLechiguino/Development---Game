@@ -29,86 +29,101 @@ bool j1Map::Awake(pugi::xml_node& config)
 	bool ret = true;
 
 	folder.create(config.child("folder").child_value());
-	spawn_position_cam.x = config.child("renderer").child("cam").attribute("x").as_float();
-	spawn_position_cam.x = config.child("renderer").child("cam").attribute("y").as_float();
+	/*spawn_position_cam.x = config.child("renderer").child("cam").attribute("x").as_float();
+	spawn_position_cam.x = config.child("renderer").child("cam").attribute("y").as_float();*/
 
 	return ret;
 }
 
 void j1Map::Draw()
 {
-	if (map_loaded == false)
+	if (map_loaded == false)																						//
 	{
 		return;
 	}
 
-	App->win->GetWindowSize(winWidth, winHeight);
+	App->win->GetWindowSize(winWidth, winHeight);																	//Gets the window size so it can be added to the camera collider as parameters.
 
-	camera_collider.collider = { -App->render->camera.x, -App->render->camera.y, (int)winWidth, (int)winHeight };
+	camera_collider.collider = { -App->render->camera.x, -App->render->camera.y, (int)winWidth, (int)winHeight };	//Sets the dimensions and position of the camera collider.
 
-	p2List_item<MapLayer*>* layer = data.layers.start;
+	p2List_item<MapLayer*>* layer = data.layers.start;																//List_item that will iterate all layers.
 
-	for (layer; layer != NULL; layer = layer->next) 
+	for (layer; layer != NULL; layer = layer->next)																	//As long as the item is not null.
 	{
-		int tile_index = 0;
-		for (uint y = 0; y < data.height; ++y)
+		int tile_index = 0;																							//Will store tile number so the correct tile is loaded.
+		for (uint y = 0; y < data.height; ++y)																		//While y is less than the map's height in  tiles
 		{
-			for (uint x = 0; x < data.width; ++x)
+			for (uint x = 0; x < data.width; ++x)																	//While x is less than the map's width in tiles.
 			{	
-				int tile_id = layer->data->gid[tile_index];
-				if (tile_id > 0)
+				int tile_id = layer->data->gid[tile_index];															//Gets the tile id from the tile index.
+				if (tile_id > 0)																					//If tile_id is not 0
 				{
-					TileSet* tileset = GetTilesetFromTileId(tile_id);
-					if (tileset != NULL)
+					TileSet* tileset = GetTilesetFromTileId(tile_id);												//Gets the tileset corresponding with the tile_id. If tile id is 34 and the current tileset first gid is 35, that means that the current  tile belongs to the previous tileset. 
+					if (tileset != NULL)																			//While the tileset pointer is not null.
 					{
-						SDL_Rect tile_rect = tileset->GetTileRect(tile_id);
-						iPoint pos = MapToWorld(x, y);
-						SDL_Rect tile_hitBox = {pos.x, pos.y, data.tile_width, data.tile_height};
+						SDL_Rect tile_rect = tileset->GetTileRect(tile_id);											//Gets the position on the world and the dimensions of the rect of the given tile_id 
+						iPoint pos = MapToWorld(x, y);																//Gets the position on the world (in pixels) of a specific point (in tiles). In the case of orthogonal maps the x and y are multiplied by the tile's width  or height. If 32x32, Map pos: x = 1 --> World pos: x = 32...
+						SDL_Rect tile_hitBox = {pos.x, pos.y, data.tile_width, data.tile_height};					//Sets a rectangle that will act as hitbox when the cameraCulling on collision checks if the tile is inside or outside the camera boundaries. 
 
-						if (camera_collider.Check_Collision(tile_hitBox))
+					
+					//Revise how to make the camera culling not erase the parallax elements	
+					if (layer->data->name == "Parallax")
+					{
+						App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect, false, 0.5f);			//As we need to add parallax to this layer, we pass a value as speed argument.
+					}
+					else if (layer->data->name == "ParallaxDecor")
+					{
+						App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect, false, 0.75f);
+					}
+						
+						if (camera_collider.Check_Collision(tile_hitBox))											//Checks if the tile is inside or outside the camera boundaries by checking if there  has been a collision between the camera rect and the tile rect. 
 						{
-							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							//App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
 							
-							//if (layer->data->name == "Background")
-							//{
-							//	App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							//}
+							if (layer->data->name == "Background")													//If the name of the layer  is "Background" its elements will be blitted with the specified parameters.
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							}
 							//else if (layer->data->name == "Parallax")
 							//{
-							//	App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect, false, 0.5f);
+							//	App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect, false, 0.5f);			//As we need to add parallax to this layer, we pass a value as speed argument.
 							//}
 							//else if (layer->data->name == "ParallaxDecor")
 							//{
 							//	App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect, false, 0.75f);
 							//}
-							//else if (layer->data->name == "Ground")
-							//{
-							//	App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							//}
-							//if (layer->data->name == "Platforms")
-							//{
-							//	App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							//}
-							//else if (layer->data->name == "Hazards")
-							//{
-							//	App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							//}
-							//else if (layer->data->name == "Desactivable")
-							//{
-							//	App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							//}
-							//else  if (layer->data->name == "Activable")
-							//{
-							//	App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							//}
-							//else if (layer->data->name == "Autosave")
-							//{
-							//	App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							//}
-							//else if (layer->data->name == "Portal")
-							//{
-							//	App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							//}
+							else if (layer->data->name == "Decor")
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							}
+							else if (layer->data->name == "Ground")
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							}
+							if (layer->data->name == "Platforms")
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							}
+							else if (layer->data->name == "Hazards")
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							}
+							else if (layer->data->name == "Desactivable")
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							}
+							else  if (layer->data->name == "Activable")
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							}
+							else if (layer->data->name == "Autosave")
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							}
+							else if (layer->data->name == "Portal")
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							}
 
 							////---------------------------TUTORIAL MAP LAYERS----------------------
 							//else if (layer->data->name == "Floor")
@@ -161,24 +176,21 @@ SDL_Rect TileSet::GetTileRect(uint tile_id) const
 	return tile_rect;
 }
 
-//From Handout 5
-TileSet* j1Map::GetTilesetFromTileId(int id) const
+TileSet* j1Map::GetTilesetFromTileId(int id) const				//Revise. Its possible that it should do id < tilesetIter->data->firstgid.
 {
 	p2List_item<TileSet*>* tilesetIter = data.tilesets.start;
-
 	TileSet* ret = NULL;
 
 	while (tilesetIter != NULL)
 	{
 		if (id >= tilesetIter->data->firstgid)
 		{
-
 			ret = tilesetIter->data;
+			break;
 		}
-
 		tilesetIter = tilesetIter->next;
 	}
-
+	
 	return ret;
 }
 

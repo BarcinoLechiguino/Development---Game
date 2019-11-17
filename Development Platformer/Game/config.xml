@@ -44,10 +44,10 @@
       <!-- <position x="225" y="1125"/> -->
       <position x="192" y="400"/>
       <speed x="350.0f" y="0"/>
-      <max_speed x="240" y="500"/>
-      <acceleration x="60" y="500"/>
-      <gravity value="40"/>
-      <boost_jump x="0"  y="600"/>
+      <max_speed x="240.0f" y="500.0f"/>
+      <acceleration x="60.0f" y="450.0f"/>
+      <gravity value="40.0f"/>
+      <boost_jump x="0"  y="700.0f"/>
       <sprite_measures w="38" h="58"/>
       <lives lives="3"/>
       <tpCooldown timer="0.0f" cd="1.0f"/>

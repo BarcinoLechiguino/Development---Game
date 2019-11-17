@@ -96,7 +96,10 @@ bool j1Player1::PreUpdate()
 
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)				//Jump
 		{
-			p1.state = jumping_P1;
+			if (p1.grounded == true)
+			{
+				p1.state = jumping_P1;
+			}
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)				//Drop from platform
@@ -173,21 +176,18 @@ bool j1Player1::Update(float dt)
 
 	case jumping_P1:
 	
-		if (p1.grounded == true)
-		{
-			App->audio->PlayFx(5, 0);
-			p1.speed.y = -p1.acceleration.y * dt;
-			p1.isJumping = true;					//Boolean for animations
-			p1.airborne = true;	
-			p1.grounded = false;
-		}
+		App->audio->PlayFx(5, 0);
+		p1.speed.y = -p1.acceleration.y * dt;
+		p1.isJumping = true;					//Boolean for animations
+		p1.airborne = true;
+		p1.grounded = false;
 
 		break;
 
 	case falling_P1:		//When dropping from platforms
 		
 		p1.airborne = true;
-		p1.grounded = true; //No jumping
+		p1.grounded = false; //No jumping
 		p1.current_animation = &p1.falling;
 
 		break;
@@ -316,6 +316,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 							p1.isBoostJumping = true;
 							p1.airborne = true;
 							p1.grounded = false;
+							p1.platformDrop = false;
 							App->audio->PlayFx(3, 0);
 						}
 					}
@@ -330,7 +331,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 				if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x + C2->collider.y)		//The first part checks if C1 is contained in the X axis of C2. 
 				{
 					//Player Colliding from TOP.
-					if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y && p1.speed.y > 0)			//This second part checks if C1 is actually colliding vertically down.
+					if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y && p1.speed.y != 0)			//This second part checks if C1 is actually colliding vertically down.
 					{
 						p1.speed.y = 0;
 						p1.position.y = C2->collider.y - C1->collider.h + 1;
@@ -341,7 +342,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 					}
 
 					//Player Colliding from BOTTOM.
-					else if (C1->collider.y < C2->collider.y + C2->collider.h && C1->collider.y + 4 > C2->collider.y + C2->collider.h && C1->collider.y > C2->collider.y)	//This second part checks if C1 is actually colliding vertically down.
+					else if (C1->collider.y < C2->collider.y + C2->collider.h && C1->collider.y + 20 > C2->collider.y + C2->collider.h && C1->collider.y > C2->collider.y)	//This second part checks if C1 is actually colliding vertically down.
 					{
 						p1.speed.y = 0;
 						p1.position.y = C2->collider.y + C2->collider.h + 1;
@@ -376,7 +377,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			{
 				if (p1.platformDrop == false)
 				{
-					if (C1->collider.x >= C2->collider.x && C1->collider.x + C1->collider.w <= C2->collider.x + C2->collider.y)
+					if (C1->collider.x >= C2->collider.x && C1->collider.x + C1->collider.w <= C2->collider.x + C2->collider.w)
 					{
 						//Player Colliding from Above the Solid, ergo colliding with the ground. This second part checks if C1 is actually colliding vertically down.
 						if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y)

@@ -15,7 +15,8 @@ public:
 
 public:
 
-	Entity* createEntity(entityType type, int x, int y);
+	Entity* CreateEntity(entityType type, int x, int y);
+	Entity* EntityFactory();
 	void DestroyEntity(Entity* entity);
 	j1EntityManager();
 	~j1EntityManager();
