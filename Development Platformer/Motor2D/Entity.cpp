@@ -1,4 +1,4 @@
-#include "EntityManager.h"
+#include "j1EntityManager.h"
 #include "Entity.h"
 #include "p2Defs.h"
 #include "p2Log.h"

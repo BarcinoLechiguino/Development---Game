@@ -18,6 +18,7 @@ class j1Map;
 class j1PathFinding;
 class j1Fade_Scene;
 class j1Collisions;
+class j1EntityManager;
 class j1Player1;
 class j1Player2;
 
@@ -92,6 +93,7 @@ public:
 	j1Scene*			scene;
 	j1Map*				map;
 	j1PathFinding*		pathfinding;
+	j1EntityManager*	entityManager;
 	j1Collisions*		collisions;
 	j1Player1*			player1;
 	j1Player2*			player2;

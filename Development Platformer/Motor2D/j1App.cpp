@@ -10,6 +10,7 @@
 #include "j1Audio.h"
 #include "j1Scene.h"
 #include "j1Map.h"
+#include "j1EntityManager.h"
 #include "j1Pathfinding.h"
 #include "j1Collisions.h"
 #include "j1Player1.h"
@@ -35,6 +36,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	player1 = new j1Player1();
 	player2 = new j1Player2();
 	collisions = new j1Collisions();
+	entityManager = new j1EntityManager();
 	fadescene = new j1Fade_Scene();
 
 	// Ordered for awake / Start / Update
@@ -45,6 +47,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(map);
 	AddModule(pathfinding);
+	AddModule(entityManager);
 	AddModule(scene);
 	AddModule(collisions);
 	AddModule(player1);

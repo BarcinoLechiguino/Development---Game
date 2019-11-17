@@ -1,0 +1,38 @@
+#ifndef __j1ENTITY_MANAGER_H__
+#define __j1ENTITY_MANAGER_H__
+
+#include "j1Module.h"
+#include "p2List.h"
+#include "Entity.h"
+
+struct SDL_Texture;
+
+class j1EntityManager : public j1Module
+{
+public:
+
+	p2List<Entity*> entities;
+
+public:
+
+	Entity* createEntity(entityType type, int x, int y);
+	void DestroyEntity(Entity* entity);
+	j1EntityManager();
+	~j1EntityManager();
+
+	bool Awake(pugi::xml_node&);
+	bool Start();
+	bool Update(float dt);
+	bool PostUpdate();
+	bool CleanUp();
+
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+
+	Entity* getPlayer() const;
+
+public:
+	pugi::xml_node config;
+};
+
+#endif // !__j1ENTITY_MANAGER_H__
