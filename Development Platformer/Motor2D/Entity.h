@@ -22,6 +22,7 @@ class Entity:public j1Module
 {
 public:
 	
+	entityType type;
 	iPoint position; 
 	fPoint velocity; 
 	SDL_Texture* graphics = nullptr;
@@ -31,7 +32,7 @@ public:
 public:
 	Entity();
 	Entity(entityType type); // here we will set initial position
-	~Entity();
+//	~Entity();
 	virtual bool LoadEntity();
 	virtual bool LoadEntityProperties(pugi::xml_node& conﬁg);
 	virtual bool AddAnimationPushbacks();
