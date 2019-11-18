@@ -24,11 +24,27 @@ public:
 
 	void Normal_Path();
 	void Chasing_Path();
-	void AddAnimationPushbacks();
+	bool Load_Entity();
+	bool AddAnimationPushbacks();
+	bool LoadMechaProperties(pugi::xml_node& config);
 
 public:
+	p2Point<float>	spawn_position;
+	bool grounded = false;
+	bool airborne = false;
+	bool flip = false;
+	bool isGoingRight = false;
+	bool isGoingLeft = false;
+	bool fading = false;
+	bool isAlive = true;
+	bool isDying = false;
+	bool againstRightWall = false;
+	bool againstLeftWall = false;
 
-	SDL_Texture* graphics = nullptr;
+public:
+	Animation	idle;				//Idle animation.
+	Animation	running;			//Running animation.
+
 
 };
 

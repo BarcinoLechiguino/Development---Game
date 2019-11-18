@@ -85,14 +85,22 @@
       <DuoJumpFX name ="Jump_Duo.wav"/>
       <DeathFX name ="Death.wav"/>
     </player_2>
+
+    <mecha>
+      <position x="192" y="400"/>
+      <speed x="350.0f" y="0"/>
+      <max_speed x="240.0f" y="500.0f"/>
+      <acceleration x="60.0f" y="450.0f"/>
+      <gravity value="40.0f"/>
+      <sprite_measures w="38" h="58"/>
+      <lives lives="1"/>
+    </mecha>
+    
   </entities>
 
-  <enemies>
-    <update_cycles_sec seconds="0.1f"/>
-  </enemies>
   
   <scene>
-    <map_name name="Test_Map_2.tmx"></map_name>
+    <map_name name="Test_Map.tmx"></map_name>
     <map_name name="1st_Level.tmx"></map_name>
     <fade_time value="1"/>
   </scene>

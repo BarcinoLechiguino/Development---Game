@@ -85,7 +85,23 @@
 
   <player2> </player2>
   
-  <enemy1> </enemy1>
+  <mecha>
+    <idle speed =" 1.0f" loop="true">
+      <pushback x="20" y="16" w="47" h="64"/>
+    </idle>
+    <running speed ="7.0f" loop ="true">
+      <pushback x="20" y="16" w="47" h="64"/>
+      <pushback x="113" y="14" w="53" h="66"/>
+      <pushback x="208" y="15" w="59" h="65"/>
+      <pushback x="303" y="18" w="60" h="62"/>
+      <pushback x="400" y="19" w="59" h="60"/>
+      <pushback x="498" y="16" w="49" h="64"/>
+      <pushback x="596" y="14" w="46" h="66"/>
+      <pushback x="694" y="15" w="49" h="64"/>
+      <pushback x="791" y="18" w="46" h="62"/>
+      <pushback x="887" y="19" w="44" h="61"/>
+    </running>
+  </mecha>
   
   <enemy2> </enemy2>
 </animations>

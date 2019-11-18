@@ -2,7 +2,7 @@
 #define __j1ENTITY_MANAGER_H__
 
 #include "j1Module.h"
-#include "j1Entity.h"		//Not really needed, check how to get rid of it
+#include "j1Entity.h"		
 #include "p2List.h"
 
 struct SDL_Texture;

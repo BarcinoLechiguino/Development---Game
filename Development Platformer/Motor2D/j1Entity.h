@@ -11,10 +11,21 @@ struct Collider;
 class Animation;
 struct SDL_Texture;
 
+enum entity_state
+{
+	IDLE = 0,
+	RIGHT,
+	LEFT,
+	JUMPING,
+	FALLING,
+	DEAD,
+	HURTED
+};
+
 enum class ENTITY_TYPE
 {
 	UNKNOWN_TYPE,
-	PLAYER,
+	PLAYER = 0,
 	PLAYER2,
 	MECHA,
 	ALIEN,
@@ -54,12 +65,20 @@ public:
 
 	//Entity Variables
 	ENTITY_TYPE type;
-	fPoint position; 
-	fPoint velocity;				
+	p2Point<float>	position;
+	p2Point<float>	velocity;
+	p2Point<float>	spawn_position;
+	p2Point<float>	max_speed;
+	p2Point<float>	acceleration;
+	p2Point<int>	sprite_measures;
+	float			gravity;
+	int				lives;
 
 	SDL_Texture* entity_sprite = nullptr;
 	Collider* collider = nullptr;
-	Animation* animation = nullptr;
+	Animation* current_animation = nullptr;
+	entity_state state;
+	SDL_Rect	HitBox;
 	
 	//p2DynArray<iPoint> entityPath;		//Only for enemies
 
