@@ -17,6 +17,17 @@ j1Entity::j1Entity(int x, int y, ENTITY_TYPE type) : position(x, y), type(type)
 	return;
 }
 
+j1Entity::~j1Entity()
+{
+	App->tex->UnLoad(entity_sprite);
+	entity_sprite = nullptr;
+	if (collider != nullptr)
+	{
+		collider->delete_collider = true;
+	}
+
+}
+
 bool j1Entity::Awake(pugi::xml_node& config)
 {
 	return true;
@@ -71,7 +82,7 @@ void j1Entity::BlitEntity(int x, int y, SDL_Rect entity_rect, bool flip)
 	//App->render->Blit(entity_sprite, x, y, &entity_rect, flip, SDL_FLIP_HORIZONTAL);	//Check out how to use the flip integrated in the Blit.
 }
 
-void j1Entity::OnCollision(Collider* C1, Collider* C2)
+void j1Entity::Entity_OnCollision(Collider* C1, Collider* C2)
 {
 	return;
 }

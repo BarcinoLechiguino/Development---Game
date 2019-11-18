@@ -25,6 +25,8 @@ class j1Entity : public j1Module
 public:  //Set to private later.
 	j1Entity(int x, int y, ENTITY_TYPE type); // here we will set initial position
 
+	virtual ~j1Entity();
+
 	bool Awake(pugi::xml_node&);
 
 	bool Start();
@@ -47,12 +49,13 @@ public:
 	virtual void Restart();								//Maybe not needed
 
 	virtual void BlitEntity(int x, int y, SDL_Rect entity_rect, bool flip);
-	virtual void OnCollision(Collider* c1, Collider* c2); /*{};*/				//If {} are used then the OnCollision on the entity.cpp needs to be erased.
-	
+	virtual void Entity_OnCollision(Collider* c1, Collider* c2); /*{};*/				//If {} are used then the OnCollision on the entity.cpp needs to be erased.
+	bool Calculate_Path();
+
 	//Entity Variables
 	ENTITY_TYPE type;
 	fPoint position; 
-	//fPoint velocity;						//Only for players and maybe land enemy.
+	fPoint velocity;				
 
 	SDL_Texture* entity_sprite = nullptr;
 	Collider* collider = nullptr;
