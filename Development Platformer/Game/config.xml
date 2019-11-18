@@ -39,7 +39,7 @@
     <folder>maps/</folder>
     <layers>
       <bg_parallax_speed speed="0.05f"/>
-      <first_parallax_speed speed ="0.1f"/>
+      <first_parallax_speed speed ="0.70f"/>
       <decor_parallax_speed speed ="0.25f"/>
     </layers>
   </map>
@@ -92,7 +92,7 @@
   </enemies>
   
   <scene>
-    <map_name name="Test_Map.tmx"></map_name>
+    <map_name name="Test_Map_2.tmx"></map_name>
     <map_name name="1st_Level.tmx"></map_name>
     <fade_time value="1"/>
   </scene>
