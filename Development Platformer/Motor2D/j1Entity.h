@@ -16,8 +16,8 @@ enum class ENTITY_TYPE
 	UNKNOWN_TYPE,
 	PLAYER,
 	PLAYER2,
-	FLYING_ENEMY,
-	LAND_ENEMY,
+	MECHA,
+	ALIEN,
 };
 
 class j1Entity : public j1Module

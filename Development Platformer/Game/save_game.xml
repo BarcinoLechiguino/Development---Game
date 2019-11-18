@@ -7,8 +7,8 @@
 	<:anonymous />
 	<entityManager>
 		<player position_x="225" position_y="1125" />
-    <land_enemy position_x="326" position_y="1136" />
-    <flying_enemy position_x="230" position_y="1122" />
+    <mecha position_x="326" position_y="1136" />
+    <alien position_x="230" position_y="1122" />
 	</entityManager>
 	<map />
 	<scene />

@@ -146,10 +146,10 @@ j1Entity* j1EntityManager::CreateEntity(int x, int y, ENTITY_TYPE type)
 		ret = new j1Player(x, y, type);						//Allocates memory for an entity from the j1Player module.
 		break;
 	
-	case ENTITY_TYPE::LAND_ENEMY:							//If the ENTITT_TYPE passed as argument is LAND_ENEMY.
+	case ENTITY_TYPE::MECHA:							//If the ENTITT_TYPE passed as argument is LAND_ENEMY.
 		//
 		break;
-	case ENTITY_TYPE::FLYING_ENEMY:							//If the ENTITT_TYPE passed as argument is FLYING_ENEMY.
+	case ENTITY_TYPE::ALIEN:							//If the ENTITT_TYPE passed as argument is FLYING_ENEMY.
 		//
 		break;
 	}
@@ -206,14 +206,14 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 {
 	CleanUp();
 	GetPlayer()->Load(data.child("player"));
-	for (pugi::xml_node land_enemy = data.child("land_enemy"); land_enemy; land_enemy = land_enemy.next_sibling("land_enemy"))
+	for (pugi::xml_node mecha = data.child("mecha"); mecha; mecha = mecha.next_sibling("mecha"))
 	{
-		CreateEntity(land_enemy.attribute("position_x").as_int(), land_enemy.attribute("position_y").as_int(), ENTITY_TYPE::LAND_ENEMY);
+		CreateEntity(mecha.attribute("position_x").as_int(), mecha.attribute("position_y").as_int(), ENTITY_TYPE::MECHA);
 	}  
 	 
-	for (pugi::xml_node flying_enemy = data.child("bat"); flying_enemy; flying_enemy = flying_enemy.next_sibling("flying_enemy"))
+	for (pugi::xml_node alien = data.child("alien"); alien; alien = alien.next_sibling("alien"))
 	{
-		CreateEntity(flying_enemy.attribute("position_x").as_int(), flying_enemy.attribute("position_y").as_int(), ENTITY_TYPE::FLYING_ENEMY);
+		CreateEntity(alien.attribute("position_x").as_int(), alien.attribute("position_y").as_int(), ENTITY_TYPE::ALIEN);
 	}
 
 	return true;

@@ -7,6 +7,11 @@ students of the Videogame Design and Development degree.
 players implemented. Players can move, 
 jump, have dual moves and teleport. 
 
+- 0.2: New maps implemented with a capped framerate, 
+an entity system with flying and gounded enemies and a 
+path finder implemented. There is also a cooldown in the 
+teleport and checkpoints.
+
 # Instructions:
 Download the game file in 
 which you will find the executable. 
@@ -39,6 +44,7 @@ teleport the other player to his actual position.
 - F6: Save the current game. 
 - F9: View collider logic. 
 - F10: Activate/Deactivate God Mode. 
+- F11: Enable/Disable FPS cap to 30.
 
 # Team Members
 - Gerard Romeu: https://github.com/Gromeu2000
