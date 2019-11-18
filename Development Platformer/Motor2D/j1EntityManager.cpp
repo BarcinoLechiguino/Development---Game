@@ -89,19 +89,6 @@ bool j1EntityManager::PostUpdate()
 
 bool j1EntityManager::CleanUp()
 {
-	//j1Entity* player = GetPlayer();
-	//if (player)
-	//	GetPlayer()->CleanUp();
-
-	//p2List_item<j1Entity*>* item;
-	//item = entities.start; //Skips first entity. The .next was eliminated because it crashed the game.
-
-	//while (item != NULL)
-	//{
-	//	RELEASE(item->data);
-	//	item = item->next;
-	//}
-
 	//Iterates all entities in the entities list and calls their CleanUp() method.
 	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
 	{
@@ -142,22 +129,22 @@ j1Entity* j1EntityManager::CreateEntity(int x, int y, ENTITY_TYPE type)
 
 	switch (type)
 	{
-	case ENTITY_TYPE::PLAYER:								//If the ENTITT_TYPE passed as argument is PLAYER.
-		ret = new j1Player(x, y, type);						//Allocates memory for an entity from the j1Player module.
+	case ENTITY_TYPE::PLAYER:							//If the ENTITT_TYPE passed as argument is PLAYER.
+		ret = new j1Player(x, y, type);					//Allocates memory for an entity from the j1Player module.
 		break;
 	
-	case ENTITY_TYPE::MECHA:							//If the ENTITT_TYPE passed as argument is LAND_ENEMY.
+	case ENTITY_TYPE::MECHA:							//If the ENTITT_TYPE passed as argument is a MECHA.
 		//
 		break;
-	case ENTITY_TYPE::ALIEN:							//If the ENTITT_TYPE passed as argument is FLYING_ENEMY.
+	case ENTITY_TYPE::ALIEN:							//If the ENTITT_TYPE passed as argument is an ALIEN.
 		//
 		break;
 	}
 	//ret->type = type;
 
-	if (ret != nullptr)										//If the j1Entity* pointer is not NULL.
+	if (ret != nullptr)									//If the j1Entity* pointer is not NULL.
 	{
-		entities.add(ret);									//Adds the generated entity to the entities list.
+		entities.add(ret);								//Adds the generated entity to the entities list.
 	}
 
 	return ret;
