@@ -248,6 +248,8 @@ void j1App::FinishUpdate()
 		frameCapOnOff = "Off";
 	}
 
+	vsyncOnOff = "On";
+
 	if (vsyncIsActive == true)
 	{
 		vsyncOnOff = "On";
@@ -258,7 +260,7 @@ void j1App::FinishUpdate()
 	}
 
 	static char title[256];
-	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %lu Frame cap: %s Vsync: %s",
+	sprintf_s(title, 256, "Av.FPS: %.2f / Last Frame Ms: %02u / Last sec frames: %i / Last dt: %.3f / Time since startup: %.3f / Frame Count: %lu / Frame cap: %s / Vsync: %s",
 		avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count, frameCapOnOff, vsyncOnOff);
 
 	App->win->SetTitle(title);
