@@ -1,5 +1,5 @@
 #include "j1EntityManager.h"
-//
+#include "Alien.h"
 #include "p2Log.h"
 #include "j1Render.h"
 #include "j1Map.h"
