@@ -35,7 +35,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	map = new j1Map();
 	pathfinding = new j1PathFinding();
 	//player1 = new j1Player1();			//There is no module j1Player1 anymore.
-	player2 = new j1Player2();
+	//player2 = new j1Player2();
 	collisions = new j1Collisions();
 	entityManager = new j1EntityManager();
 	fadescene = new j1Fade_Scene();
@@ -52,7 +52,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entityManager);				//entityManager is called after the module scene (where the player is created) is called.
 	AddModule(collisions);
 	//AddModule(player1);					//There is no module j1Player1 anymore.
-	AddModule(player2);
+	//AddModule(player2);
 	AddModule(fadescene);
 
 	// render last to swap buffer
@@ -239,6 +239,8 @@ void j1App::FinishUpdate()
 	uint32 last_frame_ms = frame_timer.Read();						//As it is the end of the update, the frame's ms can be calculated.
 	uint32 frames_on_last_update = prev_sec_frames;					//Keeps track of how many frames were processed the last second.
 
+	static char title[256];
+	
 	if (framesAreCapped == true)
 	{
 		frameCapOnOff = "On";
@@ -259,7 +261,6 @@ void j1App::FinishUpdate()
 		vsyncOnOff = "Off";
 	}
 
-	static char title[256];
 	sprintf_s(title, 256, "Av.FPS: %.2f / Last Frame Ms: %02u / Last sec frames: %i / Last dt: %.3f / Time since startup: %.3f / Frame Count: %lu / Frame cap: %s / Vsync: %s",
 		avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count, frameCapOnOff, vsyncOnOff);
 

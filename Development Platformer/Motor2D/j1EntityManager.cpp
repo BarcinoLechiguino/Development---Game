@@ -8,6 +8,7 @@
 #include "j1Input.h"
 #include "j1Player.h"
 #include "j1Player1.h"
+#include "j1Player2.h"
 #include "Mecha.h"
 #include "j1Window.h"
 #include "Brofiler\Brofiler.h"
@@ -137,7 +138,7 @@ void j1EntityManager::OnCollision(Collider* C1, Collider* C2)		//This OnCollisio
 {
 	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
 	{
-		if (C1 == entity_iterator->data->collider)		//Will be run if there is a collision and any of the colliders are of the type PLAYER.
+		if (C1 == entity_iterator->data->collider)					//Will be run if there is a collision and any of the colliders are of the type PLAYER.
 		{
 			entity_iterator->data->OnCollision(C1, C2);
 			break;
@@ -166,6 +167,9 @@ j1Entity* j1EntityManager::CreateEntity(ENTITY_TYPE type, int x, int y)
 			entities.add(ret);*/
 		break;
 
+	case ENTITY_TYPE::PLAYER2:
+		ret = new j1Player2(x, y, type);				//REVISE THIS HERE. Check if we can pass only j1Player and thats it or if both can be ENTITY_TYPE player
+
 	case ENTITY_TYPE::MECHA:							//If the ENTITT_TYPE passed as argument is a MECHA.
 		//ret = new j1Mecha(x, y, type);
 		break;
@@ -183,10 +187,10 @@ j1Entity* j1EntityManager::CreateEntity(ENTITY_TYPE type, int x, int y)
 	return ret;
 }
 
-void j1EntityManager::CreatePlayer()
+void j1EntityManager::CreatePlayers()
 {
 	player = (j1Player1*)CreateEntity(ENTITY_TYPE::PLAYER);	//Revise 0, 0. Maybe default x and y of the CreateEntity method to 0.
-
+	player2 = (j1Player2*)CreateEntity(ENTITY_TYPE::PLAYER2);//REVISE THIS HERE. Check if we can pass only j1Player and thats it or if both can be ENTITY_TYPE PLAYER
 
 	//Maybe create methods for them?
 	//mecha = (j1Mecha*)CreateEntity(ENTITY_TYPE::MECHA);

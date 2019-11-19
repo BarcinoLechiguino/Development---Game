@@ -14,13 +14,13 @@
 #include "j1Audio.h"
 #include "j1EntityManager.h"
 
-j1Player2::j1Player2() //Constructor. Called at the first frame.
+j1Player2::j1Player2(int x, int y, ENTITY_TYPE type) : j1Player(x, y, type) //Constructor. Called at the first frame.
 {
 	//String that will be given to the different functions (Awake(), Load()...) to generate the handler node.
 	name.create("entities"); //The string has to be the same as the name of the node in the xml file.
 
 	//Adds P2's animation pushback.
-	AddAnimationPushbacks();
+	LoadAnimationPushbacks();
 };
 
 j1Player2::~j1Player2()  //Destructor. Called at the last frame.
@@ -35,88 +35,77 @@ bool j1Player2::Init()
 
 bool j1Player2::Awake(pugi::xml_node& config)
 {
-	LoadPlayer2Properties(config);
-
-	/*p1.jumpFX = config.child("jumpFX").attribute("name").as_string();
-	p1.deathFX = config.child("deathFX").attribute("name").as_string();
-	p1.duoFX = config.child("landFX").attribute("name").as_string();*/
-
-	//Sets the first cycle of animations to the idle set.
-	p2.current_animation = &p2.idle;
-
 	return true;
 };
 
 bool j1Player2::Start()
 {
-	LoadPlayer2();					//Loads P2 in game.
-	//LoadPlayer2Textures();		//Loads P2's textures in game.
+	entity_sprite = App->tex->Load("textures/Spritesheets/Character 2/Character_Spritesheet2_Buena.png");
 
-	p2.airborne = true;
-	p2.item_activated = false;
+	LoadPlayerPosition("player_2", "factoryMap");			//Loads Player 2's position on the map //REVISE THIS HERE For now it is set to the position in the first map, maybe in scene it can be switched? 
+	LoadPlayerProperties();									//Loads the player's properties from the xml file. //THIS HERE
+	InitPlayer();											//Loads P2 in game.
+	LoadPlayerAudio();										//Loads the sfx for player 2.
 
-	p2.state = idle_P2;
+	player.airborne = true;
+	player.item_activated = false;
+
+	player.state = Player_State::Idle;
 
 	return true;
 };
 
 bool j1Player2::PreUpdate()
 {
-	if (p2.GodMode == false)
+	if (player.GodMode == false)
 	{
-		p2.state = idle_P2;
+		player.state = Player_State::Idle;
+
+		if (player.speed.y > 2)				//THIS HERE
+		{
+			player.state = Player_State::Falling;
+		}
 
 		if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT)			//Move Right
 		{
-
-			if (p2.againstLeftWall == false)
-			{
-				p2.state = goingRight_P2;
-			}
+			player.state = Player_State::Going_Right;
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_KP_4) == KEY_REPEAT)			//Move Left
 		{
-			if (p2.againstRightWall == false)
-			{
-				p2.state = goingLeft_P2;
-			}
-			else
-			{
-				p2.state = idle_P2;
-			}
+			player.state = Player_State::Going_Left;
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_REPEAT)			//Crouch
 		{
-			p2.state = crouching_P2;
+			player.state = Player_State::Crouching;
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_KP_0) == KEY_DOWN)				//Jump
 		{
-			p2.state = jumping_P2;
-			App->audio->PlayFx(5, 0);
+			if (player.grounded == true)
+			{
+				player.state = Player_State::Jumping;
+			}
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_REPEAT)				//Drop from platform
 		{
-			p2.platformDrop = true;
+			player.platformDrop = true;
 		}
 		else
 		{
-			p2.platformDrop = false;
+			player.platformDrop = false;
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_KP_7) == KEY_DOWN)				//Teleport
 		{
-			p2.state = teleporting_P2;
-			App->audio->PlayFx(1, 0);
+			player.state = Player_State::Teleporting;
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_N) == KEY_REPEAT)				//Suicide Button
 		{
-			p2.state = dying_P2;
-			App->audio->PlayFx(2, 0);
+			player.state = Player_State::Dying;
 		}
 	}
 	else
@@ -134,295 +123,250 @@ bool j1Player2::PreUpdate()
 	return true;
 };
 
-bool j1Player2::Update(float dt)
+bool j1Player2::Update(float dt, bool doLogic)
 {
-	switch (p2.state)
+	switch (player.state)
 	{
 
-	case idle_P2:
+	case Player_State::Idle:
 
-		p2.speed.x = 0;
-		p2.current_animation = &p2.idle;
-		p2.isCrouching = false;
+		animation = &idle;
+		player.isCrouching = false;
 
 		break;
 
-	case goingRight_P2:
+	case Player_State::Going_Right:
 
-		//As long as D is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
-		while (p2.speed.x != p2.max_speed.x)
+		if (player.againstLeftWall == false)
 		{
-			p2.speed.x += p2.acceleration.x;
-		}
+			position.x += player.speed.x * dt;
 
-		p2.flip = false;
-		p2.current_animation = &p2.running;
-		p2.isGoingRight = true; //rev
-
-		break;
-
-	case goingLeft_P2:
-
-		//As long as W is pressed, speed will increase each loop until it reaches cruiser speed, which then speed will be constant.
-		while (p2.speed.x != -p2.max_speed.x)
-		{
-			p2.speed.x -= p2.acceleration.x;
-		}
-
-		p2.flip = true;
-		p2.current_animation = &p2.running;
-		p2.isGoingLeft = true; //rev
-
-		break;
-
-	case crouching_P2:
-
-		p2.current_animation = &p2.crouching;
-		p2.speed.x = 0;
-		p2.isCrouching = true;
-
-		break;
-
-	case jumping_P2:
-
-		if (p2.grounded == true)
-		{
-			p2.speed.y = -p2.acceleration.y;
-			p2.isJumping = true;
-			p2.airborne = true;
-			p2.grounded = false;
+			player.flip = false;
+			animation = &running;
+			player.isGoingRight = true;
 		}
 
 		break;
 
-	case falling_P2:
+	case Player_State::Going_Left:
 
-		p2.airborne = true;
-		p2.grounded = true; //No jumping
+		if (player.againstRightWall == false)
+		{
+			position.x -= player.speed.x * dt;
+
+			player.flip = true;
+			animation = &running;
+			player.isGoingLeft = true;
+		}
 
 		break;
 
-	case teleporting_P2:
+	case Player_State::Crouching:
+
+		animation = &crouching;
+		player.isCrouching = true;
+
+		break;
+
+	case Player_State::Jumping:
+
+		App->audio->PlayFx(5, 0);
+		player.speed.y = -player.acceleration.y * dt;
+		player.isJumping = true;						//Boolean for animations
+		player.airborne = true;
+		player.grounded = false;
+
+		break;
+
+	case Player_State::Falling:							//When dropping from platforms
+
+		player.airborne = true;
+		//p1.grounded = false;							//With this commented, jumping after falling off platforms is allowed.
+		animation = &falling;
+
+		break;
+
+	case Player_State::Teleporting:
 
 		TeleportP1ToP2();
 
 		break;
 
-	case dying_P1:
+	case Player_State::Dying:
 
-		p2.current_animation = &p2.death;
-		p2.isDying = true;
+		//App->audio->PlayFx(2, 0);
+		animation = &death;
+		player.isDying = true;
 
 		break;
 	}
 
-	p2.position.x += p2.speed.x; //Refreshes the vector speed of P2 in the X axis
-
-	//If P2 is in the air then this function brings him/her back down to the floor.
-	if (p2.airborne == true)
+	//If P2 is in the air then this function brings them back down to the floor.
+	if (player.airborne == true)
 	{
-		p2.speed.y += p2.gravity;
+		player.speed.y += player.gravity * dt;
 
-		if (p2.speed.y > p2.max_speed.y)
+		if (player.speed.y > player.max_speed.y * dt)
 		{
-			p2.speed.y = p2.max_speed.y;
+			player.speed.y = player.max_speed.y * dt;
 		}
 
-		p2.position.y += p2.speed.y;				//Refreshes the vector speed of P2 in the Y axis.
+		position.y += player.speed.y;				//Refreshes the vector speed of P1 in the Y axis.
 
 		//Jump animation modifications.
-		if (p2.isBoostJumping == true)				//If P2 is boost jumping then this set of animations is played.
+		if (player.isBoostJumping == true)				//If P1 is boost jumping then this set of animations is played.
 		{
-			if (p2.speed.y < FRONTFLIP_START)
+			if (player.speed.y < player.frontflipStart)
 			{
-				p2.current_animation = &p2.jumping;
+				animation = &jumping;
 			}
-			else if (p2.speed.y < FRONTFLIP_END)
+			else if (player.speed.y < player.frontflipEnd)
 			{
-				p2.current_animation = &p2.frontflip;
+				animation = &frontflip;
 			}
 			else
 			{
-				p2.current_animation = &p2.falling;
+				animation = &falling;
 			}
 		}
-		else if (p2.isJumping == true)				//If P1 is jumping then this set of animations is played.
+		else if (player.isJumping == true)				//If P1 is jumping then this set of animations is played.
 		{
-			if (p2.speed.y < APEX)
+			if (player.speed.y < 0)
 			{
-				p2.current_animation = &p2.jumping;
+				animation = &jumping;
 			}
 			else
 			{
-				p2.current_animation = &p2.falling;
+				animation = &falling;
 			}
 		}
 	}
 
-	//Makes P2's collider follow P2. If there is a flip in spritesheet it is taken into account.
-	if (p2.flip == false)
+	//--------------------------------------- Miscelaneous Checks ---------------------------------------
+	LivesCheck(player.lives);																// If P1 empties the lives pool then both players die and reset their positions to the spawn point.
+
+
+	//--------------------------------------- Tp skill Cooldown ---------------------------------------
+	if (player.tpInCd == true)
 	{
-		p2.collider->Set_Position(p2.position.x, p2.position.y); //Makes the collider follow the player.
+		SkillCooldown(player.tpInCd, player.tpCdCount, player.tpCdTime);
 	}
-	else
-	{
-		p2.collider->Set_Position(p2.position.x /*+ FLIP_MARGIN*/, p2.position.y);		//Revise
-	}
+	
+	//THIS HERE
+	player.HitBox = animation->GetCurrentFrame(dt);											//THIS HERE //Sets the animation cycle that P1 will have. 
+	collider->Set_Position(position.x, position.y);											//Makes P1's collider follow P1.
+	//p1.atkCollider->Set_Position(position.x + sprite_size.x, sprite_size.y);				//Makes P1's attack collider follow P1.
 
-	//If player dies:
-	if (p2.lives == 0)
-	{
-		p2.isAlive = false;
-		App->player1->p1.isAlive = false;
-
-		if (p2.isAlive == false && App->player1->p1.isAlive == false)
-		{
-			App->audio->PlayFx(2, 0);
-			Restart();
-			App->player1->Restart();
-			p2.lives = p2.max_lives;
-		}
-	}
-
-	//We move the character according the position value after the state has been run.
-	p2.HitBox.x = p2.position.x;
-	p2.HitBox.y = p2.position.y;
-
-	p2.HitBox = p2.current_animation->GetCurrentFrame(dt);
-
-	App->render->Blit(p2.texture, p2.position.x, p2.position.y, &p2.HitBox, p2.flip);
+	BlitEntity(position.x, position.y, player.HitBox, player.flip);							//Blits the player on screen with the data we have given the Blit() function.
 
 	return true;
 };
 
 bool j1Player2::PostUpdate()
 {
-	//Resetting the collider related bools after the collision has happened.
-	p2.againstCeiling = false;
-	p2.againstRightWall = false;
-	p2.againstLeftWall = false;
+	//Resetting the collider related bools after the collision happened in Update() so it can be checked the next update/frame.
+	player.againstCeiling = false;
+	player.againstRightWall = false;
+	player.againstLeftWall = false;
 
 	return true;
 };
 
 bool j1Player2::CleanUp()
 {
-	App->tex->UnLoad(p2.texture);
-	App->player2->Disable();
+	App->tex->UnLoad(entity_sprite);
+	App->entityManager->player2->Disable();
+
+	collider = nullptr;						//THIS HERE
+	animation = nullptr;					//THIS HERE
+
 	return true;
 };
 
-void j1Player2::TeleportP1ToP2()
-{
-	//App->entityManager->player->p1.grounded = false;
-	
-	if (p2.flip == false)			//The players will be always teleported directly in front of one another. 
-	{
-		App->entityManager->player->position.x = p2.position.x + p2.collider->collider.w;
-		App->entityManager->player->position.y = p2.position.y - 60;
-	}
-	else
-	{
-		App->entityManager->player->position.x = p2.position.x - p2.collider->collider.w / 2;	//THIS HERE
-		App->entityManager->player->position.y = p2.position.y - 60;
-	}
-}
-
-void j1Player2::RespawnP2ToP1()		//Method that, on death, will respawn P2 behind P1.
-{
-	if (p2.flip == true)			//The players will be always respawned directly behind of one another. 
-	{
-		p2.position.x = App->entityManager->player->position.x + App->entityManager->player->collider->collider.w;
-		p2.position.y = App->entityManager->player->p1.position.y - 40;
-	}
-	else
-	{
-		p2.position.x = App->entityManager->player->position.x + App->entityManager->player->collider->collider.w / 2;
-		p2.position.y = App->entityManager->player->p1.position.y - 40;
-	}
-}
-
-//Collision Handling
+//Collision Handling ---------------------------------------
 void j1Player2::OnCollision(Collider* C1, Collider* C2)
 {
-	if (C2->type == Object_Type::PLAYER)
+	if (player.GodMode == false)
 	{
-		Collider* temp = C1;
-		C1 = C2;
-		C2 = temp;
-	}
-	if (C1->type != Object_Type::PLAYER)
-	{
-		return;
-	}
-
-	if (p2.GodMode == false)
-	{
+		if (C2->type == Object_Type::PLAYER)
+		{
+			Collider* temp = C1;
+			C1 = C2;
+			C2 = temp;
+		}
+		if (C1->type != Object_Type::PLAYER)
+		{
+			return;
+		}
+		
 		if (C1->type == Object_Type::PLAYER)
 		{
 			//Player Colliding Against Another Player
-			//if (C2->type == Object_Type::PLAYER)
-			//{
-			//	if (C1->collider.x + C1->collider.w > C2->collider.x || C1->collider.x < C2->collider.x + C2->collider.w) //As the boost can be done even if P1 is static, this allows for more precise jumps... hopefully.
-			//	{
-			//		if (App->entityManager->player->p1.state == crouching_P1 /*App->player2->p2.isCrouching == true*/)
-			//		{
-			//			if (p2.grounded == true)
-			//			{
-			//				p2.speed.y -= p2.boost_jump.y * App->dt;
-			//				p2.isBoostJumping = true;
-			//				p2.airborne = true;
-			//				p2.grounded = false;
-			//				App->audio->PlayFx(3, 0);
-			//			}
-			//		}
-			//		LOG("P2 IS COLLIDING WITH P2");
-			//	}
-			//}
+			if (C2->type == Object_Type::PLAYER)
+			{	
+				if (C1->collider.x + C1->collider.w > C2->collider.x || C1->collider.x < C2->collider.x + C2->collider.w) //As the boost can be done even if P1 is static, this allows for more precise jumps... hopefully.
+				{
+					if (App->entityManager->player->player.state == Player_State::Crouching)
+					{	
+						if (player.grounded == true)
+						{
+							player.speed.y -= player.boost_jump.y * App->GetDt();
+							LOG("boost jump speed is");
+							player.isBoostJumping = true;
+							player.airborne = true;
+							player.grounded = false;
+							player.platformDrop = false;
+							App->audio->PlayFx(3, 0);
+						}
+					}
+					LOG("P2 IS COLLIDING WITH P1 FROM THE LEFT");
+				}
+			}
 
 			//Player colliding against solids
 			if (C2->type == Object_Type::SOLID)
 			{
-				//Player Colliding vertically against the Solid. The first part checks if C1 is contained in the X axis of C2. 
-				if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x + C2->collider.y)
+				//Player Colliding from TOP or BOTTOM. 
+				if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x + C2->collider.y)		//The first part checks if C1 is contained in the X axis of C2. 
 				{
-					//Player Colliding from Above the Solid, ergo colliding with the ground. This second part checks if C1 is actually colliding vertically down.
-					if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y)
+					//Player Colliding from TOP.
+					if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y && player.speed.y != 0)			//This second part checks if C1 is actually colliding vertically down.
 					{
-						p2.speed.y = 0;
-						p2.position.y = C2->collider.y - C1->collider.h + 1;
-						p2.isJumping = false;
-						p2.isBoostJumping = false;
-						p2.grounded = true;
+						player.speed.y = 0;
+						position.y = C2->collider.y - C1->collider.h + 1;		//THIS HERE
+						player.isJumping = false;
+						player.isBoostJumping = false;
+						player.grounded = true;
 						LOG("P2 IS COLLIDING WITH A SOLID FROM ABOVE");
 					}
 
-					//Player Colliding from Below the Solid. ergo colliding with the ceiling. This second part checks if C1 is actually colliding vertically down.
-					else if (C1->collider.y < C2->collider.y + C2->collider.h && C1->collider.y > C2->collider.y)
+					//Player Colliding from BOTTOM.
+					else if (C1->collider.y < C2->collider.y + C2->collider.h && C1->collider.y + 20 > C2->collider.y + C2->collider.h && C1->collider.y > C2->collider.y)	//This second part checks if C1 is actually colliding vertically down.
 					{
-						p2.speed.y = 0;
-						p2.position.y = C2->collider.y + C2->collider.h + 1;
-						p2.againstCeiling = true;
+						player.speed.y = 0;
+						position.y = C2->collider.y + C2->collider.h + 1;		//THIS HERE
+
+						player.againstCeiling = true;
 						LOG("P2 IS COLLIDING WITH A SOLID FROM BELOW");
 					}
 				}
 
-				//Player is colliding from the sides. The first part checks if C1 is contained in the Y axis of C2.
-				if (C1->collider.y <= C2->collider.y + C2->collider.h && C1->collider.y + C1->collider.h - 4 >= C2->collider.y)
+				//Player is colliding from LEFT or RIGHT.
+				if (C1->collider.y <= C2->collider.y + C2->collider.h && C1->collider.y + C1->collider.h - 4 >= C2->collider.y)		//The first part checks if C1 is contained in the Y axis of C2.
 				{
-					//Player is colliding from left (going right). This second part checks if C1 is actually colliding from the left side of the collider.
-					if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x < C2->collider.x)
+					//Player is colliding from LEFT.
+					if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x)						//This second part checks if C1 is actually colliding from the left side of the collider.
 					{
-						p2.againstLeftWall = true;
-						p2.againstRightWall = false;
+						player.againstLeftWall = true;
+						player.againstRightWall = false;
 						LOG("P2 IS COLLIDING WITH A SOLID FROM THE LEFT");
 					}
 
-					//Player is colliding from right (going left). This second part checks if  C1 is actually colliding from the right side of the collider.
-					if (C1->collider.x <= C2->collider.x + C2->collider.w && C1->collider.x > C2->collider.x)
+					//Player is colliding from RIGHT.
+					if (C1->collider.x <= C2->collider.x + C2->collider.w && C1->collider.x >= C2->collider.x)						// This second part checks if C1 is actually colliding from the right side of the collider.
 					{
-						p2.againstRightWall = true;
-						p2.againstLeftWall = false;
+						player.againstRightWall = true;
+						player.againstLeftWall = false;
 						LOG("P2 IS COLLIDING WITH A SOLID FROM THE RIGHT");
 					}
 				}
@@ -430,18 +374,18 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 
 			if (C2->type == Object_Type::PLATFORM)
 			{
-				if (p2.platformDrop == false)
+				if (player.platformDrop == false)
 				{
-					if (C1->collider.x >= C2->collider.x && C1->collider.x + C1->collider.w <= C2->collider.x + C2->collider.y)
+					if (C1->collider.x >= C2->collider.x && C1->collider.x + C1->collider.w <= C2->collider.x + C2->collider.w)
 					{
 						//Player Colliding from Above the Solid, ergo colliding with the ground. This second part checks if C1 is actually colliding vertically down.
 						if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y)
 						{
-							p2.speed.y = 0;
-							p2.position.y = C2->collider.y - C1->collider.h + 1;
-							p2.isJumping = false;
-							p2.isBoostJumping = false;
-							p2.grounded = true;
+							player.speed.y = 0;
+							position.y = C2->collider.y - C1->collider.h + 1;
+							player.isJumping = false;
+							player.isBoostJumping = false;
+							player.grounded = true;
 							LOG("P2 IS COLLIDING WITH A SOLID FROM ABOVE");
 						}
 					}
@@ -451,8 +395,8 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 			if (C2->type == Object_Type::HAZARD)
 			{
 				//Death logic
-				p2.lives--;
-				p2.state = dying_P2;
+				player.lives--;
+				player.state = Player_State::Dying;
 
 				//Antes la animacion de muerte tiene que haber finalizado - Gerard
 				RespawnP2ToP1();
@@ -461,16 +405,16 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 			//Player Colliding against an Activable Item
 			if (C2->type == Object_Type::ITEM)
 			{
-				p2.item_activated = true;					//Records that P2 (or P1) has activated the item.
-				App->player1->p1.item_activated = true;		//Activates P2's boolean as well.
+				player.item_activated = true;				//Records that P1 (or P2) has activated the item.
+				App->entityManager->player->player.item_activated = true;		//Activates P2's boolean as well. THIS HERE Change all player2 by App->entitymanager->player2->player.pos...
 
-				App->audio->PlayFx(4, 1);					//Item Activation sfx.
+				App->audio->PlayFx(4, 0);					//Item Activation sfx.
 			}
 
 			//Player colliding against Deactivable surfaces. 
 			if (C2->type == Object_Type::DEACTIVABLE)
 			{
-				if (p2.item_activated == false || App->player1->p1.item_activated == false)
+				if (player.item_activated == false || App->entityManager->player->player.item_activated == false)
 				{
 					//Player Colliding vertically against the Solid. The first part checks if C1 is contained in the X axis of C2. 
 					if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x + C2->collider.y)
@@ -478,21 +422,20 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 						//Player Colliding from Above the Solid, ergo colliding with the ground. This second part checks if C1 is actually colliding vertically down.
 						if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y)
 						{
-							p2.speed.y = 0;
-							p2.position.y = C2->collider.y - C1->collider.h + 1;
-							p2.isJumping = false;
-							p2.isBoostJumping = false;
-							p2.grounded = true;
-							LOG("P1 IS COLLIDING WITH A SOLID FROM ABOVE");
+							player.speed.y = 0;
+							player.isJumping = false;
+							player.isBoostJumping = false;
+							player.grounded = true;
+							LOG("P2 IS COLLIDING WITH A SOLID FROM ABOVE");
 						}
 
 						//Player Colliding from Below the Solid. ergo colliding with the ceiling. This second part checks if C1 is actually colliding vertically down.
 						else if (C1->collider.y < C2->collider.y + C2->collider.h && C1->collider.y > C2->collider.y)
 						{
-							p2.speed.y = 0;
-							p2.position.y = C2->collider.y + C2->collider.h + 1;
-							p2.againstCeiling = true;
-							LOG("P1 IS COLLIDING WITH A SOLID FROM BELOW");
+							player.speed.y = 0;
+							position.y = C2->collider.y + C2->collider.h + 1;
+							player.againstCeiling = true;
+							LOG("P2 IS COLLIDING WITH A SOLID FROM BELOW");
 						}
 					}
 
@@ -502,20 +445,25 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 						//Player is colliding from left (going right). This second part checks if C1 is actually colliding from the left side of the collider.
 						if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x < C2->collider.x)
 						{
-							p2.againstLeftWall = true;
-							p2.againstRightWall = false;
-							LOG("P1 IS COLLIDING WITH A SOLID FROM THE LEFT");
+							player.againstLeftWall = true;
+							player.againstRightWall = false;
+							LOG("P2 IS COLLIDING WITH A SOLID FROM THE LEFT");
 						}
 
 						//Player is colliding from right (going left). This second part checks if  C1 is actually colliding from the right side of the collider.
 						if (C1->collider.x <= C2->collider.x + C2->collider.w && C1->collider.x > C2->collider.x)
 						{
-							p2.againstRightWall = true;
-							p2.againstLeftWall = false;
-							LOG("P1 IS COLLIDING WITH A SOLID FROM THE RIGHT");
+							player.againstRightWall = true;
+							player.againstLeftWall = false;
+							LOG("P2 IS COLLIDING WITH A SOLID FROM THE RIGHT");
 						}
 					}
 				}
+			}
+
+			if (C2->type == Object_Type::CHECKPOINT)
+			{
+				LOG("P2 HAS REACHED A CHECKPOINT");															//Call Safe() method here.
 			}
 
 			//Player colliding against the Goal
@@ -540,8 +488,8 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 
 bool j1Player2::Load(pugi::xml_node& data)
 {
-	p2.position.x = data.child("position2").attribute("x").as_int();
-	p2.position.y = data.child("position2").attribute("y").as_int();
+	position.x = data.child("position2").attribute("x").as_int();
+	position.y = data.child("position2").attribute("y").as_int();
 
 	return true;
 }
@@ -551,174 +499,45 @@ bool j1Player2::Save(pugi::xml_node& data) const
 {
 	pugi::xml_node pos = data.append_child("position2");
 
-	pos.append_attribute("x") = p2.position.x;
-	pos.append_attribute("y") = p2.position.y;
+	pos.append_attribute("x") = position.x;
+	pos.append_attribute("y") = position.y;
 
 	return true;
 }
 
-bool j1Player2::LoadPlayer2()		//Loads P2 on screen.
+void j1Player2::TeleportP1ToP2()
 {
-	//Loads the textures of P2. Switches them according to switch_sprites
-	p2.texture = App->tex->Load("textures/Spritesheets/Character 2/Character_Spritesheet2_Buena.png");
-
-	//--------------------------------------------Loading the data and colliders of P2--------------------------------------------
-	//Loads the position of P2 from the xml.
-	p2.position.x = p2.position.x;
-	p2.position.y = p2.position.y;
-
-	//p2.spawn_position = p2.position;	//Sets the respawn position to the first position the player was in the map. 
-
-	//Loads the data of the rectangle that contains P2.
-	p2.HitBox.x = p2.position.x;		//Represents the position in the X axis of P2.
-	p2.HitBox.y = p2.position.y;		//Represents the position in the Y axis of P2.
-	p2.HitBox.w = p2.sprite_measures.x;		//Represents the width of P2.
-	p2.HitBox.h = p2.sprite_measures.y;		//Represents the height of P2.
-
-	//Adds a collider for the player.
-	p2.collider = App->collisions->AddCollider(p2.HitBox, Object_Type::PLAYER, this);
-
-	//Boolean resetting
-	p2.grounded = false;
-	p2.airborne = false;
-	p2.flip = false;
-	p2.isCrouching = false;
-	p2.isJumping = false;
-	p2.isBoostJumping = false;
-	p2.item_activated = false;
-	p2.isGoingRight = false;
-	p2.isGoingLeft = false;
-	p2.platformDrop = false;
-	p2.fading = false;
-	p2.isAlive = true;
-	p2.isDying = false;
-	p2.againstRightWall = false;
-	p2.againstLeftWall = false;
-	p2.againstCeiling = false;
-	p2.GodMode = false;
-	p2.switch_sprites = false;
-
-	return true;
+	//App->entityManager->player->p1.grounded = false;
+	
+	if (!player.tpInCd)
+	{
+		if (player.flip == false)			//The players will be always teleported directly in front of one another. 
+		{
+			App->entityManager->player->position.x = position.x + collider->collider.w;
+			App->entityManager->player->position.y = position.y - 60;
+		}
+		else
+		{
+			App->entityManager->player->position.x = position.x - collider->collider.w / 2;	//THIS HERE
+			App->entityManager->player->position.y = position.y - 60;
+		}
+		App->audio->PlayFx(1, 0);
+		player.tpInCd = true;
+	}
 }
 
-bool j1Player2::LoadPlayer2Properties(pugi::xml_node& config)
+void j1Player2::RespawnP2ToP1()		//Method that, on death, will respawn P2 behind P1.
 {
-	//Gets all the required player variables from the config xml file
-	p2.position.x = config.child("player_2").child("position").attribute("x").as_float();
-	p2.position.y = config.child("player_2").child("position").attribute("y").as_float();
-	p2.spawn_position.x = config.child("player_2").child("position").attribute("x").as_float();
-	p2.spawn_position.y = config.child("player_2").child("position").attribute("y").as_float();
-
-	p2.speed.x = config.child("player_2").child("speed").attribute("x").as_float();
-	p2.speed.y = config.child("player_2").child("speed").attribute("y").as_float();
-	p2.max_speed.x = config.child("player_2").child("max_speed").attribute("x").as_float();
-	p2.max_speed.y = config.child("player_2").child("max_speed").attribute("y").as_float();
-
-	p2.acceleration.x = config.child("player_2").child("acceleration").attribute("x").as_float();
-	p2.acceleration.y = config.child("player_2").child("acceleration").attribute("y").as_float();
-	p2.gravity = config.child("player_2").child("gravity").attribute("value").as_float();
-
-	p2.boost_jump.x = config.child("player_2").child("boost_jump").attribute("x").as_float();
-	p2.boost_jump.y = config.child("player_2").child("boost_jump").attribute("y").as_float();
-
-	p2.sprite_measures.x = config.child("player_2").child("sprite_measures").attribute("w").as_int();
-	p2.sprite_measures.y = config.child("player_2").child("sprite_measures").attribute("h").as_int();
-
-	p2.lives = config.child("player_2").child("lives").attribute("lives").as_int();
-	p2.max_lives = config.child("player_2").child("lives").attribute("lives").as_int();
-
-	p2.body_margin.x = config.child("player_2").child("body_margin").attribute("x").as_int();
-	p2.body_margin.y = config.child("player_2").child("body_margin").attribute("y").as_int();
-
-	p2.collision_tolerance = config.child("player_2").child("collider_tolerance").attribute("tolerance").as_int();
-
-	return true;
-}
-
-bool j1Player2::AddAnimationPushbacks()
-{
-	//P2 Idle animation.
-	p2.idle.PushBack({ 28, 14, 37, 57 });
-	p2.idle.PushBack({ 132, 12, 33, 59 });
-	p2.idle.PushBack({ 230, 12, 37, 59 });
-	p2.idle.PushBack({ 326, 14, 39, 57 });
-	p2.idle.speed = 0.1f;
-
-	//P2 Running animation.
-	p2.running.PushBack({ 134, 90, 39, 55 });
-	p2.running.PushBack({ 232, 92, 39, 53 });
-	p2.running.PushBack({ 332, 96, 39, 49 });
-	p2.running.PushBack({ 434, 90, 45, 55 });
-	p2.running.PushBack({ 532, 92, 39, 53 });
-	p2.running.PushBack({ 632, 96, 39, 49 });
-	p2.running.speed = 0.2f;
-
-	//P2 Crouching animation.
-	p2.crouching.PushBack({ 432, 10, 37, 61 }); //20 Pixels of margin vertically up.
-	p2.crouching.PushBack({ 530, 8, 39, 63 });
-	p2.crouching.PushBack({ 630, 8, 37, 63 });
-	p2.crouching.PushBack({ 34, 84, 33, 61 });
-	p2.crouching.speed = 0.1f;
-
-	//P2 Jumping Animation
-	p2.jumping.PushBack({ 30, 172, 39, 47 });
-	p2.jumping.PushBack({ 130, 176, 39, 43 });
-	p2.jumping.PushBack({ 234, 162, 37, 53 });
-	p2.jumping.PushBack({ 328, 158, 41, 45 });
-	//p2.jumping.PushBack({ 436, 162, 29, 41 });
-	p2.jumping.speed = 0.25f;
-
-	//P2 Frontflip Animation
-	p2.frontflip.PushBack({ 528, 168, 47, 33 });
-	p2.frontflip.PushBack({ 528, 168, 47, 33 });
-	p2.frontflip.PushBack({ 640, 168, 35, 41 });
-	p2.frontflip.PushBack({ 640, 168, 35, 41 });
-	p2.frontflip.PushBack({ 22, 248, 51, 33 });
-	p2.frontflip.PushBack({ 22, 248, 51, 33 });
-	p2.frontflip.speed = 0.2f;
-
-	//P2 Boosted Jump Animation
-	p2.boosted_jump.PushBack({ 30, 172, 39, 47 });
-	p2.boosted_jump.PushBack({ 130, 176, 39, 43 });
-	p2.boosted_jump.PushBack({ 234, 162, 37, 53 });
-	p2.boosted_jump.PushBack({ 328, 158, 41, 45 });
-	p2.boosted_jump.PushBack({ 436, 162, 29, 41 });
-	p2.boosted_jump.PushBack({ 528, 168, 47, 33 });
-	p2.boosted_jump.PushBack({ 640, 168, 35, 41 });
-	p2.boosted_jump.PushBack({ 22, 248, 51, 33 });
-	p2.boosted_jump.speed = 0.2f;
-
-	//P2 Falling Animation
-	p2.falling.PushBack({ 136, 224, 33, 61 });
-	p2.falling.PushBack({ 236, 226, 33, 59 });
-	p2.falling.speed = 0.2f;
-
-	//P2 Death Animation
-	p2.death.PushBack({ 10,1094,58,66 });
-	p2.death.PushBack({ 10,1094,58,66 });
-	p2.death.PushBack({ 10,1094,58,66 });
-	p2.death.PushBack({ 10,1094,58,66 });
-	p2.death.PushBack({ 10,1074,58,66 });
-	p2.death.PushBack({ 68,1074,58,86 });
-	p2.death.PushBack({ 68,1074,58,86 });
-	p2.death.PushBack({ 68,1074,58,86 });
-	p2.death.PushBack({ 68,1074,58,86 });
-	p2.death.PushBack({ 68,1074,58,86 });
-	p2.death.PushBack({ 68,1074,58,86 });
-	p2.death.PushBack({ 68,1074,58,86 });
-	p2.death.PushBack({ 136,1074,58,86 });
-	p2.death.PushBack({ 136,1074,58,86 });
-	p2.death.PushBack({ 136,1074,58,86 });
-	p2.death.PushBack({ 136,1074,58,86 });
-	p2.death.PushBack({ 136,1074,58,86 });
-	p2.death.PushBack({ 136,1074,58,86 });
-	p2.death.PushBack({ 193,1074,58,86 });
-	p2.death.PushBack({ 193,1074,58,86 });
-	p2.death.PushBack({ 193,1074,58,86 });
-	p2.death.PushBack({ 193,1074,58,66 });
-	p2.death.speed = 0.2f;
-
-	return true;
+	if (player.flip == true)			//The players will be always respawned directly behind of one another. 
+	{
+		position.x = App->entityManager->player->position.x + App->entityManager->player->collider->collider.w;
+		position.y = App->entityManager->player->position.y - 40;
+	}
+	else
+	{
+		position.x = App->entityManager->player->position.x + App->entityManager->player->collider->collider.w / 2;
+		position.y = App->entityManager->player->position.y - 40;
+	}
 }
 
 /*bool j1Player2::LoadPlayer2Textures()
@@ -736,30 +555,50 @@ bool j1Player2::AddAnimationPushbacks()
 	return true;
 }*/
 
+//---------------------------------------------- General Checks ----------------------------------------------
+void j1Player2::LivesCheck(int lives)
+{
+	if (lives == 0)
+	{
+		player.isAlive = false;
+		App->entityManager->player->player.isAlive = false;
+
+		if (player.isAlive == false && App->entityManager->player->player.isAlive == false)
+		{
+			App->audio->PlayFx(2, 0);					//THIS HERE Death sound
+			Restart();
+			App->entityManager->player->Restart();
+			player.lives = player.max_lives;
+		}
+	}
+
+	return;
+}
+
 void j1Player2::Restart()
 {
-	p2.position = p2.spawn_position;
-	p2.isAlive = true;
+	position = player.spawn_position;		//THIS HERE
+	player.isAlive = true;
 }
 
 void j1Player2::GodModeInput()
 {
-	p2.airborne = false;
+	player.airborne = false;
 
-	if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT)		//THIS HERE
 	{
-		p2.position.x += GOD_MODE_SPEED;
+		position.x += player.godModeSpeed * App->GetDt();
 	}
 	if (App->input->GetKey(SDL_SCANCODE_KP_4) == KEY_REPEAT)
 	{
-		p2.position.x -= GOD_MODE_SPEED;
+		position.x -= player.godModeSpeed * App->GetDt();
 	}
 	if (App->input->GetKey(SDL_SCANCODE_KP_8) == KEY_REPEAT)
 	{
-		p2.position.y -= GOD_MODE_SPEED;
+		position.y -= player.godModeSpeed * App->GetDt();
 	}
 	if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_REPEAT)
 	{
-		p2.position.y += GOD_MODE_SPEED;
+		position.y += player.godModeSpeed * App->GetDt();
 	}
 }

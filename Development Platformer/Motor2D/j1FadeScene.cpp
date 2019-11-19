@@ -10,6 +10,7 @@
 #include "j1Audio.h"
 #include "j1Map.h"
 #include "j1Collisions.h"
+#include "j1EntityManager.h"
 
 #include "SDL\include\SDL_render.h"
 #include "SDL\include\SDL_timer.h"
@@ -95,8 +96,8 @@ bool j1Fade_Scene ::FadeToBlack(const char* mapname, float time)
 		ret = true;
 	}
 
-	App->player1->Restart();					//Returns P1 to the starting position of the map.
-	App->player2->Restart();					//Returns P2 to the starting position of the map.
+	App->entityManager->player->Restart();					//Returns P1 to the starting position of the map.
+	App->entityManager->player2->Restart();					//Returns P2 to the starting position of the map.
 	
 	return ret;
 }
@@ -107,16 +108,16 @@ bool j1Fade_Scene::ChangeMap(const char* newMap)
 
 
 	App->collisions->collider_list.clear();		//Deletes all colliders from memory.
-	App->player1->CleanUp();					//Deletes all data related to P1. 
-	App->player2->CleanUp();					//Deletes all data related to P2.
+	App->entityManager->player->CleanUp();					//Deletes all data related to P1. 
+	App->entityManager->player2->CleanUp();					//Deletes all data related to P2.
 	//App->audio->CleanUp();
 
 	App->map->CleanUp();						//Deletes everything related with the map from memory. (Tilesets, Layers and ObjectGroups)
 
 	App->map->Load(newMap);						//Loads a specified map
 	App->collisions->LoadColliderFromMap();		//Load Collisions
-	App->player1->LoadPlayer1();				//Load / Reset P1
-	App->player2->LoadPlayer2();				//Load / Reset P2
+	App->entityManager->player->InitPlayer();	//Load / Reset P1	//THIS HERE
+	App->entityManager->player2->InitPlayer();	//Load / Reset P2
 	//App->player1->LoadPlayer1Textures();		//Load / Reset P1's textures.
 	//App->player1->LoadPlayer1Textures();		//Load / Reset P2's textures.
 

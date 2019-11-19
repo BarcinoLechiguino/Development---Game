@@ -33,7 +33,7 @@ public:
 
 		if (animations_config != NULL)																								//If the animation_data.xml could be loaded.
 		{
-			animations = animations_file.child("animations").child("player1").child(name.GetString());								//Get the set of animations' name (passed as argument).
+			animations = animations_file.child("animations").child("player").child(name.GetString());								//Get the set of animations' name (passed as argument).
 			
 			speed = animations.attribute("speed").as_float();																		//Loads the animations set's speed from the xml file.
 			loop = animations.attribute("loop").as_bool();																			//Loads the loop bool state from the xml file.

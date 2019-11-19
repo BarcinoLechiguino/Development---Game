@@ -46,8 +46,6 @@
 
   <entities>
     <player>
-      <!-- <position x="225" y="1125"/> -->
-      <position x="192" y="400"/>
       <speed x="350.0f" y="0"/>
       <max_speed x="240.0f" y="500.0f"/>
       <acceleration x="60.0f" y="450.0f"/>
@@ -64,27 +62,19 @@
       <ActivateFX name = "Activate.wav"/>
       <TPFX name = "TP.wav"/>
       <PassFX name = "Pass.wav"/>
-    </player>
 
-    <player_2>
-      <!-- <position x="200" y="1150"/> -->
-      <position x="182" y="400"/>
-      <previous_position x="0" y="0"/>
-      <last_grounded x="0" y="0"/>
-      <speed x="0" y="0"/>
-      <max_speed x="10" y="14"/>
-      <acceleration x="1" y="14"/>
-      <gravity value="1"/>
-      <boost_jump x="0"  y="20"/>
-      <sprite_measures w="38" h="58"/>
-      <lives lives="3"/>
-      <tpCooldown cd="1"/>
-      <body_margin x="5" y="5"/>
-      <collider_tolerance tolerance="3"/>
-      <jumpFX name ="Jump.wav"/>
-      <DuoJumpFX name ="Jump_Duo.wav"/>
-      <DeathFX name ="Death.wav"/>
-    </player_2>
+      <player_1>
+        <!-- <position x="225" y="1125"/> -->
+        <factoryMap x="192.0f" y="400.0f"/>
+        <forestMap x="192.0f" y="1088.0f"/>
+      </player_1>
+
+      <player_2>
+        <!-- <position x="200" y="1150"/> -->
+        <factoryMap x="182.0f" y="400.0f"/>
+        <forestMap x="182.0f" y="1088.0f"/>
+      </player_2>
+    </player>
 
     <mecha>
       <position x="192" y="400"/>
@@ -95,7 +85,16 @@
       <sprite_measures w="38" h="58"/>
       <lives lives="1"/>
     </mecha>
-    
+
+    <alien>
+      <position x="192" y="400"/>
+      <speed x="350.0f" y="0"/>
+      <max_speed x="240.0f" y="500.0f"/>
+      <acceleration x="60.0f" y="450.0f"/>
+      <gravity value="40.0f"/>
+      <sprite_measures w="38" h="58"/>
+      <lives lives="1"/>
+    </alien>
   </entities>
 
   

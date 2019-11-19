@@ -1,7 +1,7 @@
 <!-- Animations file for the game -->
 
 <animations>
-  <player1>
+  <player>
     <idle speed ="4.0f" loop ="true">
       <pushback x="28" y="14" w="37" h="57"/>
       <pushback x="132" y="12" w="33" h="59"/>
@@ -81,9 +81,7 @@
       <pushback x="193" y="1074" w="58" h="86"/>
       <pushback x="193" y="1074" w="58" h="86"/>
     </death>
-  </player1>
-
-  <player2> </player2>
+  </player>
   
   <mecha>
     <idle speed =" 1.0f" loop="true">

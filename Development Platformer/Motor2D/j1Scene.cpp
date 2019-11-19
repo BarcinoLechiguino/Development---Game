@@ -51,7 +51,7 @@ bool j1Scene::Start()
 	App->audio->PlayMusic(App->map->data.music_File.GetString());
 	LOG("Boi: %s", map_names.start->data->GetString());
 
-	App->entityManager->CreatePlayer();								//THIS HERE
+	App->entityManager->CreatePlayers();								//THIS HERE
 	//App->entityManager->CreateEntity(ENTITY_TYPE::PLAYER);
 
 	cam_debug_speed = App->render->cam.camera_debug_speed;
@@ -89,19 +89,19 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 	}
 	
 	//A spritesheet switch button just for the flavour. Not functional at the moment.
-	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+	/*if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
-		if (App->player1->p1.switch_sprites == false || App->player2->p2.switch_sprites == false)
+		if (App->player1->player.switch_sprites == false || App->player2->p2.switch_sprites == false)
 		{
-			App->player1->p1.switch_sprites == true;
+			App->player1->player.switch_sprites == true;
 			App->player2->p2.switch_sprites == true;
 		}
 		else
 		{
-			App->player1->p1.switch_sprites == false;
+			App->player1->player.switch_sprites == false;
 			App->player2->p2.switch_sprites == false;
 		}
-	}
+	}*/
 
 	//Debug Keys
 	//Load First Level Key
@@ -170,26 +170,32 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 		}
 	}
 
-	//Enabling / Disabling Vsync
 	else if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 	{
-
+		if (App->collisions->collider_debug == true)
+		{
+			App->collisions->collider_debug = false;
+		}
+		else
+		{
+			App->collisions->collider_debug = true;
+		}
 	}
 
 	//GodMode Activation Key
 	else if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
-		if (App->entityManager->player->p1.GodMode)
+		if (App->entityManager->player->player.GodMode)
 		{
-			App->entityManager->player->p1.GodMode = false;
-			App->player2->p2.GodMode = false;
-			App->entityManager->player->p1.airborne = true;
-			App->player2->p2.airborne = true;
+			App->entityManager->player->player.GodMode = false;
+			App->entityManager->player2->player.GodMode = false;
+			App->entityManager->player->player.airborne = true;
+			App->entityManager->player2->player.airborne = true;
 		}
 		else
 		{
-			App->entityManager->player->p1.GodMode = true;
-			App->player2->p2.GodMode = true;
+			App->entityManager->player->player.GodMode = true;
+			App->entityManager->player2->player.GodMode = true;
 		}
 
 		//Deactivable bool activation deactivation
@@ -201,11 +207,6 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 		{
 			App->map->activated = true;
 		}
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
-	{
-		//Desactivate capped frames
 	}
 
 	//Volume Change

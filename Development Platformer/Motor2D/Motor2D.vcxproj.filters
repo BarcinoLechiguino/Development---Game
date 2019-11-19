@@ -120,9 +120,6 @@
     <ClInclude Include="j1Scene.h">
       <Filter>Desenvolupament  ========\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>Desenvolupament  ========</Filter>
-    </ClInclude>
     <ClInclude Include="j1Map.h">
       <Filter>Desenvolupament  ========</Filter>
     </ClInclude>
@@ -161,6 +158,9 @@
     </ClInclude>
     <ClInclude Include="j1Audio.h">
       <Filter>Desenvolupament  ========\Modules\Multimedia</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Programacio 2 ===========</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -32,10 +32,15 @@ bool j1Render::Awake(pugi::xml_node& config)									//Renderer VSync --> Flags 
 	// load flags
 	Uint32 flags = SDL_RENDERER_ACCELERATED;
 
-	if (config.child("vsync").attribute("value").as_bool(true) == true)
+	if (config.child("vsync").attribute("value").as_bool(true) == true)	//If vsync is true in the xml file.
 	{
 		flags |= SDL_RENDERER_PRESENTVSYNC;
 		LOG("Using vsync");
+		App->vsyncIsActive == true;
+	}
+	else
+	{
+		App->vsyncIsActive == false;
 	}
 
 	renderer = SDL_CreateRenderer(App->win->window, -1, flags);
@@ -84,35 +89,28 @@ bool j1Render::Update(float dt)
 
 	fPoint p1Pos = App->entityManager->player->position;			//Sets an fPoint with the position data members of the player1 player entity. Done for readability.
 	iPoint p1Size = App->entityManager->player->sprite_size;		//Sets an iPoint with the size data members of the playe1 player entity. Done for readability.
-	//fPoint p2Pos	= App->entityManager->player2->position;		//THIS HERE. Change when the player 2 player subclass is created.
-	//iPoint p2Size	= App->entityManager->player2->sprite_size;		//THIS HERE. Change when the player 2 player subclass is created.
+	fPoint p2Pos	= App->entityManager->player2->position;		//THIS HERE. Change when the player 2 player subclass is created.
+	iPoint p2Size	= App->entityManager->player2->sprite_size;		//THIS HERE. Change when the player 2 player subclass is created.
 
 
 	//Positions of the camera if it was centered around only one player. Used a p2Point<float> to translate all those long and convoluted expressions to a much more readable state.
 	cam.p1.x = -p1Pos.x + cam.WinWidth / 2 - p1Size.x;				//Sets the camera p1 point X axis position with the position data members of player 1.
 	cam.p1.y = -p1Pos.y + (cam.WinHeight / 2) - p1Size.y / 2;		//Sets the camera p1 point Y axis position with the position data members of player 2.
-	//cam.p2.x = -p2Pos.x + cam.WinWidth / 2 - p2Size.x;			//THIS HERE. Change when the player 2 player subclass is created.	
-	//cam.p2.y = -p2Pos.y + (cam.WinHeight / 2) - p2Size.y / 2;		//THIS HERE. Change when the player 2 player subclass is created.
+	cam.p2.x = -p2Pos.x + cam.WinWidth / 2 - p2Size.x;				//THIS HERE. Change when the player 2 player subclass is created.	
+	cam.p2.y = -p2Pos.y + (cam.WinHeight / 2) - p2Size.y / 2;		//THIS HERE. Change when the player 2 player subclass is created.
 
 	//Calculating the central position. 
-	if (App->player2->p2.position.x > p1Pos.x)						//THIS HERE. Change when the player 2 player subclass is created.
+	if (p2Pos.x > p1Pos.x)											//THIS HERE. Change when the player 2 player subclass is created.
 	{
 		cam.MidPos.x = cam.p2.x - ((cam.p2.x - cam.p1.x) / 2);
-	}
-	else
-	{
-		cam.MidPos.x = cam.p1.x - ((cam.p1.x - cam.p2.x) / 2);
-	}
-
-	if (App->player2->p2.position.x > p1Pos.x)						//THIS HERE. Change when the player 2 player subclass is created.
-	{
 		cam.MidPos.y = cam.p2.y - ((cam.p2.y - cam.p1.y) / 2);
 	}
 	else
 	{
+		cam.MidPos.x = cam.p1.x - ((cam.p1.x - cam.p2.x) / 2);
 		cam.MidPos.y = cam.p1.y - ((cam.p1.y - cam.p2.y) / 2);
 	}
-	
+
 	//We calculate the delimitations of the map making use of the map data we already have.
 	cam.mapLimit.x = -(App->map->data.tile_width * App->map->data.width) + cam.WinWidth;		//data.tile_width refers to the tile's width in pixels and data.width refers to the map's total width in tiles
 	cam.mapLimit.y = -(App->map->data.tile_height * App->map->data.height) + cam.WinHeight;		//data.tile_height refers to the tile's height in pixels and data.height refers to the map's total height in tiles.

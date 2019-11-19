@@ -9,6 +9,7 @@ struct SDL_Texture;
 class j1Entity;
 class j1Player;
 class j1Player1;			//Temporal(?)
+class j1Player2;
 
 class j1EntityManager : public j1Module
 {
@@ -31,7 +32,7 @@ public:
 
 public:
 	j1Entity* CreateEntity(ENTITY_TYPE type, int x = 0, int y = 0);
-	void CreatePlayer();
+	void CreatePlayers();
 	void SpawnEnemy();
 	void DestroyEntity(j1Entity* entity);
 	
@@ -47,7 +48,7 @@ public:
 	
 	p2List<j1Entity*>	entities;			//List of entities. Each created entity will be added to this list and then iterated in the class methods (Update()...)
 	j1Player1*			player;				//Pointer to the j1Player1 class. Will represent P1. Change name to player1 later.
-	j1Player1*			player2;			//Pointer to the j1Player1 class. Will represent P2.
+	j1Player2*			player2;			//Pointer to the j1Player1 class. Will represent P2.
 	//j1Mecha*			mecha;
 	//j1Alien*			alien;
 

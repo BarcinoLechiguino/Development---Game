@@ -52,11 +52,11 @@ public:
 public:
 	//Entity Methods
 	/*virtual bool LoadEntity();
-	virtual bool LoadEntityProperties(pugi::xml_node& conﬁg);
-	virtual bool AddAnimationPushbacks();*/
+	virtual bool LoadEntityProperties(pugi::xml_node& conﬁg);*/
+	virtual bool LoadAnimationPushbacks();
 	virtual bool Save(pugi::xml_node&) const;
 	virtual bool Load(pugi::xml_node&);
-	virtual void Restart();								//Maybe not needed
+	virtual void Restart();								//Maybe not needed THIS HERE
 
 	virtual void BlitEntity(int x, int y, SDL_Rect entity_rect, bool flip);
 	virtual void OnCollision(Collider* c1, Collider* c2); /*{};*/				//If {} are used then the OnCollision on the entity.cpp needs to be erased.

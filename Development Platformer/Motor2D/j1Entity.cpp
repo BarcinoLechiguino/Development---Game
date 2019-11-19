@@ -75,6 +75,11 @@ void j1Entity::Restart()
 	return;
 }
 
+bool j1Entity::LoadAnimationPushbacks()
+{
+	return true;
+}
+
 void j1Entity::BlitEntity(int x, int y, SDL_Rect entity_rect, bool flip)
 {
 	App->render->Blit(entity_sprite, x, y, &entity_rect, flip);
