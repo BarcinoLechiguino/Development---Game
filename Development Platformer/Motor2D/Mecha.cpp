@@ -13,6 +13,7 @@
 #include "j1FadeScene.h"
 #include "j1Audio.h"
 #include "j1EntityManager.h"
+#include "Brofiler\Brofiler.h"
 #include "Mecha.h"
 
 //Mecha::Mecha(int x, int y, ENTITY_TYPE type) : j1Entity(x, y, ENTITY_TYPE::MECHA)
@@ -48,6 +49,7 @@
 //
 //bool Mecha::Update(float dt)
 //{
+// BROFILER_CATEGORY("Mecha Update", Profiler::Color::AliceBlue);
 //	//CalculatePath
 //
 //	switch (state)

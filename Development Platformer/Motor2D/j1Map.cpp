@@ -11,6 +11,7 @@
 #include "j1Audio.h"
 #include "j1Scene.h"
 #include "p2Point.h"
+#include "Brofiler\Brofiler.h"
 #include <math.h>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -42,6 +43,7 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 void j1Map::Draw()
 {
+	BROFILER_CATEGORY("Draw Map", Profiler::Color::Khaki);
 	if (map_loaded == false)																						//If no map was loaded, return.
 	{
 		return;
@@ -250,6 +252,7 @@ bool j1Map::CleanUp()
 // Load new map
 bool j1Map::Load(const char* file_name)
 {
+	BROFILER_CATEGORY("Load Map", Profiler::Color::Khaki);
 	bool ret = true;
 	p2SString tmp("%s%s", folder.GetString(), file_name);
 

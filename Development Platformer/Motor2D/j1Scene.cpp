@@ -13,6 +13,7 @@
 #include "j1EntityManager.h"
 #include "j1Player1.h"
 #include "j1Player2.h"
+#include "Brofiler\Brofiler.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -68,6 +69,7 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)														//Receives dt as an argument.
 {
+	BROFILER_CATEGORY("Scene Update", Profiler::Color::LavenderBlush);
 	//Camera Movement With Arrow Keys
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
@@ -209,6 +211,7 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 // Called each loop iteration
 bool j1Scene::PostUpdate()
 {
+	BROFILER_CATEGORY("Scene Update", Profiler::Color::LavenderBlush);
 	bool ret = true;
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)

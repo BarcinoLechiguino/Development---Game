@@ -4,9 +4,10 @@
 #include "j1Window.h"
 #include "j1Render.h"
 #include "j1Map.h"
-#include "j1EntityManager.h"		//THIS HERE
+#include "j1EntityManager.h"		
 #include "j1Player1.h"
 #include "j1Player2.h"
+#include "Brofiler\Brofiler.h"
 
 #define VSYNC true
 
@@ -71,12 +72,14 @@ bool j1Render::Start()
 // Called each loop iteration
 bool j1Render::PreUpdate()
 {
+	BROFILER_CATEGORY("Render PreUpdate", Profiler::Color::DeepSkyBlue);
 	SDL_RenderClear(renderer);
 	return true;
 }
 
 bool j1Render::Update(float dt)
 {
+	BROFILER_CATEGORY("Render Update", Profiler::Color::DeepSkyBlue);
 	App->win->GetWindowSize(cam.WinWidth, cam.WinHeight);		//Last pixel of window is the 0,0 of the window we see. So we need to add + cam.WinWidth or + cam.WinHeight to set it where we want it to be.
 
 	fPoint p1Pos = App->entityManager->player->position;			//THIS HERE
@@ -145,6 +148,7 @@ bool j1Render::Update(float dt)
 
 bool j1Render::PostUpdate()
 {
+	BROFILER_CATEGORY("Render PostUpdate", Profiler::Color::DeepSkyBlue);
 	//Trying to implement lerping on the y axis of the camera.
 	/*if (App->player2->p2.position.x > App->player1->p1.position.x)
 	{

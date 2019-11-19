@@ -2,7 +2,7 @@
 #include "j1Collisions.h"
 #include "j1Map.h"
 #include "j1Render.h"
-
+#include "Brofiler\Brofiler.h"
 
 //With the constructor call collider_debug (draw colliders on screen) is set to true or false.
 j1Collisions::j1Collisions() : j1Module()
@@ -32,6 +32,7 @@ bool j1Collisions::Start()
 //Calculates the colliders's collisions and deletes from memory any collider that has been set to be deleted.
 bool j1Collisions::PreUpdate()
 {
+	BROFILER_CATEGORY("Collision PreUpdate", Profiler::Color::GreenYellow);
 	p2List_item<Collider*>* collider_iterator = collider_list.start;
 
 	//This loop deletes from memory any collider that has been set to be deleted before calculating any new collisions.
@@ -83,6 +84,7 @@ bool j1Collisions::PreUpdate()
 
 bool j1Collisions::Update(float dt)
 {
+	
 	Collider_Debug();
 	return true;
 };
@@ -90,6 +92,7 @@ bool j1Collisions::Update(float dt)
 //Iterates all the colliders and assigns each type a Draw_Quad() with an identifying colour.
 void j1Collisions::Collider_Debug()
 {
+	BROFILER_CATEGORY("Collision Debug", Profiler::Color::GreenYellow)
 	if (collider_debug != true)
 	{
 		return;

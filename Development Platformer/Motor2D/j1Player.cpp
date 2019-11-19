@@ -13,6 +13,7 @@
 //#include "j1FadeScene.h"
 //#include "j1Audio.h"
 //#include "j1EntityManager.h"
+//#include "Brofiler\Brofiler.h"
 //
 //j1Player::j1Player(int x, int y, ENTITY_TYPE type) : j1Entity(x,  y, ENTITY_TYPE::PLAYER) //Constructor. Called at the first frame.
 //{
@@ -65,6 +66,7 @@
 //
 //bool j1Player::PreUpdate()
 //{
+// BROFILER_CATEGORY("Player PreUpdate", Profiler::Color::Chocolate);
 //	if (p1.GodMode == false)
 //	{
 //		p1.state = idle_P1;
@@ -139,6 +141,7 @@
 //
 //bool j1Player::Update(float dt)
 //{
+// BROFILER_CATEGORY("Player Update", Profiler::Color::Chocolate);
 //	switch (p1.state)
 //	{
 //	case idle_P1:
@@ -270,6 +273,7 @@
 //
 //bool j1Player::PostUpdate()
 //{
+// BROFILER_CATEGORY("Player Update", Profiler::Color::Chocolate);
 //	//Resetting the collider related bools after the collision happened in Update() so it can be checked the next update/frame.
 //	p1.againstCeiling = false;
 //	p1.againstRightWall = false;

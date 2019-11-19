@@ -10,6 +10,7 @@
 #include "j1Player1.h"
 #include "Mecha.h"
 #include "j1Window.h"
+#include "Brofiler\Brofiler.h"
 
 j1EntityManager::j1EntityManager() : player(nullptr), player2(nullptr)		//Sets the j1Player1* pointers declared in the header to nullptr
 {
@@ -63,6 +64,7 @@ bool j1EntityManager::PreUpdate()
 
 bool j1EntityManager::Update(float dt)
 {
+	BROFILER_CATEGORY("EntityManager Update", Profiler::Color::FireBrick);
 	accumulated_time += dt;
 
 	if (accumulated_time >= cycle_length) //Timer that will set doLogic to true 10 times per second (cycle_length = 0.1 sec).
@@ -113,6 +115,7 @@ bool j1EntityManager::CleanUp()
 
 void j1EntityManager::DestroyEntity(j1Entity* entity)
 {
+	BROFILER_CATEGORY("EntityManager PostUpdate", Profiler::Color::FireBrick);
 	//Iterates all entities in the entities list and searches for the entity passed as argument, if it is inside the list and is found, it is then destroyed.
 	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
 	{
