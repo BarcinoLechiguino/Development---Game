@@ -331,7 +331,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 					{
 						if (p1.grounded == true)
 						{
-							p1.speed.y -= p1.boost_jump.y * App->dt;
+							p1.speed.y -= p1.boost_jump.y * App->GetDt();
 							p1.isBoostJumping = true;
 							p1.airborne = true;
 							p1.grounded = false;
@@ -785,18 +785,18 @@ void j1Player1::GodModeInput()
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)		//THIS HERE
 	{
-		position.x += p1.godModeSpeed * App->dt;
+		position.x += p1.godModeSpeed * App->GetDt();
 	}
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		position.x -= p1.godModeSpeed * App->dt;
+		position.x -= p1.godModeSpeed * App->GetDt();
 	}
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
-		position.y -= p1.godModeSpeed * App->dt;
+		position.y -= p1.godModeSpeed * App->GetDt();
 	}
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
-		position.y += p1.godModeSpeed * App->dt;
+		position.y += p1.godModeSpeed * App->GetDt();
 	}
 }

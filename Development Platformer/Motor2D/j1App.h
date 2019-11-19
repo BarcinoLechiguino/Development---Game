@@ -100,13 +100,13 @@ public:
 	j1Fade_Scene*		fadescene;
 
 	//Temporal measure. Fix later so dt can be private.
-	float				dt;						//Keeps track of the amount of time in milliseconds that has passed in a frame. Will be used to make everything (update()) be in the same timestep.
+	//float				dt;						//Keeps track of the amount of time in milliseconds that has passed in a frame. Will be used to make everything (update()) be in the same timestep.
+	bool				framesAreCapped;		//Keeps track whether the frame cap is on or off.
+	bool				vsyncIsActive;			//Keeps track whether Vsync is on or off.
 
 private:
 
 	p2List<j1Module*>	modules;
-	//uint				frames;
-	//float				dt;
 	int					argc;
 	char**				args;
 
@@ -130,7 +130,10 @@ private:
 
 	j1PerfTimer			true_delay_timer;		//Timer that will be used to see the actual amount of time that was delayed to cap the framerate.
 	uint				frame_cap;				//Stores the frames per second cap to be applied.
-	//float				dt;						//Keeps track of the amount of time in milliseconds that has passed in a frame. Will be used to make everything (update()) be in the same timestep.
+	float				dt;						//Keeps track of the amount of time in milliseconds that has passed in a frame. Will be used to make everything (update()) be in the same timestep.
+
+	char*				frameCapOnOff;			//String that is set to 'On' when the frame cap is on and  'Off' when it is off.
+	char*				vsyncOnOff;				//String that is set to 'On' when Vsync is on and 'Off' when it is off.
 };
 
 extern j1App* App; // No student is asking me about that ... odd :-S

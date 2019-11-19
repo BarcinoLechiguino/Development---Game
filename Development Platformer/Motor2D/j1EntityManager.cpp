@@ -133,7 +133,7 @@ void j1EntityManager::DestroyEntity(j1Entity* entity)
 	}
 }
 
-void j1EntityManager::OnCollision(Collider* C1, Collider* C2)		//THIS HERE
+void j1EntityManager::OnCollision(Collider* C1, Collider* C2)		//This OnCollision will manage the collisions of all entities and derive them to their respective OnCollision methods()
 {
 	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
 	{
@@ -186,6 +186,7 @@ j1Entity* j1EntityManager::CreateEntity(ENTITY_TYPE type, int x, int y)
 void j1EntityManager::CreatePlayer()
 {
 	player = (j1Player1*)CreateEntity(ENTITY_TYPE::PLAYER);	//Revise 0, 0. Maybe default x and y of the CreateEntity method to 0.
+
 
 	//Maybe create methods for them?
 	//mecha = (j1Mecha*)CreateEntity(ENTITY_TYPE::MECHA);
