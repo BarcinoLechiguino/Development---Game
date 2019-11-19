@@ -1,7 +1,7 @@
 <!-- Config file for the game -->
 
 <config>
-  <app framerate_cap="30">
+  <app framerate_cap="30" frame_cap_on="true">
     <title>Mutual Cooperation</title>
     <organization>UPC</organization>
   </app>
@@ -10,7 +10,7 @@
     <vsync value="false"/>
     <camera x ="0" y ="-570" smoothing_speed ="0.01f"/>
     <spawn_cam x ="0" y ="-570"/>
-    <camera_debug value="true" speed="300.0f"/>
+    <camera_debug value="false" speed="300.0f"/>
   </renderer>
   
   <window>

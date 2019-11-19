@@ -145,7 +145,7 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 	}
 
 	//Enable / Diable free camera movement Key
-	else if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+	else if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{
 		if (App->render->cam.camera_debug == true)
 		{
@@ -155,6 +155,25 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 		{
 			App->render->cam.camera_debug = true;
 		}
+	}
+
+	//Enabling / Disabling frame cap
+	else if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+	{
+		if (App->framesAreCapped == true)
+		{
+			App->framesAreCapped = false;
+		}
+		else
+		{
+			App->framesAreCapped = true;
+		}
+	}
+
+	//Enabling / Disabling Vsync
+	else if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	{
+
 	}
 
 	//GodMode Activation Key
