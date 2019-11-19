@@ -203,6 +203,11 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 		}
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+	{
+		//Desactivate capped frames
+	}
+
 	//Volume Change
 	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
 	{

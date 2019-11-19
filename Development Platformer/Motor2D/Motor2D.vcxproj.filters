@@ -34,6 +34,8 @@
     <ClCompile Include="Mecha.cpp">
       <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="Alien.cpp">
+      <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
     <ClCompile Include="j1App.cpp">
       <Filter>Desenvolupament  ========\Core</Filter>
     </ClCompile>
@@ -123,6 +125,8 @@
     <ClInclude Include="Mecha.h">
       <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="Alien.h">
+      <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
     <ClInclude Include="j1App.h">
       <Filter>Desenvolupament  ========\Core</Filter>
     </ClInclude>
