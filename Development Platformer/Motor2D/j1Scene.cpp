@@ -50,7 +50,8 @@ bool j1Scene::Start()
 	App->audio->PlayMusic(App->map->data.music_File.GetString());
 	LOG("Boi: %s", map_names.start->data->GetString());
 
-	//App->entityManager->CreatePlayer();
+	App->entityManager->CreatePlayer();								//THIS HERE
+	//App->entityManager->CreateEntity(ENTITY_TYPE::PLAYER);
 
 	cam_debug_speed = App->render->cam.camera_debug_speed;
 
@@ -154,32 +155,19 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 		}
 	}
 
-	//Colliders Debug Draw Activation Key
-	else if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
-	{
-		if (App->collisions->collider_debug)
-		{
-			App->collisions->collider_debug = false;
-		}
-		else
-		{
-			App->collisions->collider_debug = true;
-		}
-	}
-	
 	//GodMode Activation Key
 	else if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
-		if (App->player1->p1.GodMode)
-		{	
-			App->player1->p1.GodMode = false;
+		if (App->entityManager->player->p1.GodMode)
+		{
+			App->entityManager->player->p1.GodMode = false;
 			App->player2->p2.GodMode = false;
-			App->player1->p1.airborne = true;
+			App->entityManager->player->p1.airborne = true;
 			App->player2->p2.airborne = true;
 		}
-		else 
+		else
 		{
-			App->player1->p1.GodMode = true;
+			App->entityManager->player->p1.GodMode = true;
 			App->player2->p2.GodMode = true;
 		}
 

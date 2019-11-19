@@ -4,6 +4,7 @@
 #include "j1Window.h"
 #include "j1Render.h"
 #include "j1Map.h"
+#include "j1EntityManager.h"		//THIS HERE
 #include "j1Player1.h"
 #include "j1Player2.h"
 
@@ -30,7 +31,7 @@ bool j1Render::Awake(pugi::xml_node& config)									//Renderer VSync --> Flags 
 	// load flags
 	Uint32 flags = SDL_RENDERER_ACCELERATED;
 
-	if(config.child("vsync").attribute("value").as_bool(true) == true)
+	if (config.child("vsync").attribute("value").as_bool(true) == true)
 	{
 		flags |= SDL_RENDERER_PRESENTVSYNC;
 		LOG("Using vsync");
@@ -38,7 +39,7 @@ bool j1Render::Awake(pugi::xml_node& config)									//Renderer VSync --> Flags 
 
 	renderer = SDL_CreateRenderer(App->win->window, -1, flags);
 
-	if(renderer == NULL)
+	if (renderer == NULL)
 	{
 		LOG("Could not create the renderer! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
@@ -78,14 +79,20 @@ bool j1Render::Update(float dt)
 {
 	App->win->GetWindowSize(cam.WinWidth, cam.WinHeight);		//Last pixel of window is the 0,0 of the window we see. So we need to add + cam.WinWidth or + cam.WinHeight to set it where we want it to be.
 
+	fPoint p1Pos = App->entityManager->player->position;			//THIS HERE
+	iPoint p1Size = App->entityManager->player->sprite_size;		//THIS HERE
+	//fPoint p2Pos	= App->entityManager->player2->position;		//THIS HERE
+	//iPoint p2Size	= App->entityManager->player2->sprite_size;		//THIS HERE	
+
+
 	//Positions of the camera if it was centered around only one player. Used a p2Point<float> to translate all those long and convoluted expressions to a much more readable state.
-	cam.p1.x = -App->player1->p1.position.x + cam.WinWidth / 2 - App->player1->p1.sprite_measures.x;
-	cam.p1.y = -App->player1->p1.position.y + (cam.WinHeight / 2) - App->player1->p1.sprite_measures.y / 2;
-	cam.p2.x = -App->player2->p2.position.x + cam.WinWidth / 2 - App->player2->p2.sprite_measures.x;
-	cam.p2.y = -App->player2->p2.position.y + (cam.WinHeight / 2) - App->player2->p2.sprite_measures.y / 2;
+	cam.p1.x = -p1Pos.x + cam.WinWidth / 2 - p1Size.x;			//THIS HERE	
+	cam.p1.y = -p1Pos.y + (cam.WinHeight / 2) - p1Size.y / 2;	//THIS HERE	
+	//cam.p2.x = -p2Pos.x + cam.WinWidth / 2 - p2Size.x;		//THIS HERE	
+	//cam.p2.y = -p2Pos.y + (cam.WinHeight / 2) - p2Size.y / 2;	//THIS HERE	
 
 	//Calculating the central position. 
-	if (App->player2->p2.position.x > App->player1->p1.position.x)
+	if (App->player2->p2.position.x > p1Pos.x) //thois
 	{
 		cam.MidPos.x = cam.p2.x - ((cam.p2.x - cam.p1.x) / 2);
 	}
@@ -94,7 +101,7 @@ bool j1Render::Update(float dt)
 		cam.MidPos.x = cam.p1.x - ((cam.p1.x - cam.p2.x) / 2);
 	}
 
-	if (App->player2->p2.position.x > App->player1->p1.position.x)
+	if (App->player2->p2.position.x > p1Pos.x)	//thois
 	{
 		cam.MidPos.y = cam.p2.y - ((cam.p2.y - cam.p1.y) / 2);
 	}

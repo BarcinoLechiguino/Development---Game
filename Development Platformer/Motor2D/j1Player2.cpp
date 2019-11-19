@@ -12,6 +12,7 @@
 #include "j1Collisions.h"
 #include "j1FadeScene.h"
 #include "j1Audio.h"
+#include "j1EntityManager.h"
 
 j1Player2::j1Player2() //Constructor. Called at the first frame.
 {
@@ -67,7 +68,7 @@ bool j1Player2::PreUpdate()
 
 		if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT)			//Move Right
 		{
-			
+
 			if (p2.againstLeftWall == false)
 			{
 				p2.state = goingRight_P2;
@@ -181,7 +182,7 @@ bool j1Player2::Update(float dt)
 		p2.isCrouching = true;
 
 		break;
-	
+
 	case jumping_P2:
 
 		if (p2.grounded == true)
@@ -195,7 +196,7 @@ bool j1Player2::Update(float dt)
 		break;
 
 	case falling_P2:
-		
+
 		p2.airborne = true;
 		p2.grounded = true; //No jumping
 
@@ -282,7 +283,7 @@ bool j1Player2::Update(float dt)
 			p2.lives = p2.max_lives;
 		}
 	}
-	
+
 	//We move the character according the position value after the state has been run.
 	p2.HitBox.x = p2.position.x;
 	p2.HitBox.y = p2.position.y;
@@ -300,7 +301,7 @@ bool j1Player2::PostUpdate()
 	p2.againstCeiling = false;
 	p2.againstRightWall = false;
 	p2.againstLeftWall = false;
-	
+
 	return true;
 };
 
@@ -313,15 +314,17 @@ bool j1Player2::CleanUp()
 
 void j1Player2::TeleportP1ToP2()
 {
+	//App->entityManager->player->p1.grounded = false;
+	
 	if (p2.flip == false)			//The players will be always teleported directly in front of one another. 
 	{
-		App->player1->p1.position.x = p2.position.x + p2.collider->collider.w;
-		App->player1->p1.position.y = p2.position.y - 60;
+		App->entityManager->player->position.x = p2.position.x + p2.collider->collider.w;
+		App->entityManager->player->position.y = p2.position.y - 60;
 	}
 	else
 	{
-		App->player1->p1.position.x = p2.position.x - p2.collider->collider.w / 2;
-		App->player1->p1.position.y = p2.position.y - 60;
+		App->entityManager->player->position.x = p2.position.x - p2.collider->collider.w / 2;	//THIS HERE
+		App->entityManager->player->position.y = p2.position.y - 60;
 	}
 }
 
@@ -329,56 +332,56 @@ void j1Player2::RespawnP2ToP1()		//Method that, on death, will respawn P2 behind
 {
 	if (p2.flip == true)			//The players will be always respawned directly behind of one another. 
 	{
-		p2.position.x = App->player1->p1.position.x + App->player1->p1.collider->collider.w;
-		p2.position.y = App->player1->p1.position.y - 40;
+		p2.position.x = App->entityManager->player->position.x + App->entityManager->player->collider->collider.w;
+		p2.position.y = App->entityManager->player->p1.position.y - 40;
 	}
 	else
 	{
-		p2.position.x = App->player1->p1.position.x + App->player1->p1.collider->collider.w/2;
-		p2.position.y = App->player1->p1.position.y - 40;
+		p2.position.x = App->entityManager->player->position.x + App->entityManager->player->collider->collider.w / 2;
+		p2.position.y = App->entityManager->player->p1.position.y - 40;
 	}
 }
 
 //Collision Handling
 void j1Player2::OnCollision(Collider* C1, Collider* C2)
 {
-	if (C2->type == PLAYER)
+	if (C2->type == Object_Type::PLAYER)
 	{
 		Collider* temp = C1;
 		C1 = C2;
 		C2 = temp;
 	}
-	if (C1->type != PLAYER)
+	if (C1->type != Object_Type::PLAYER)
 	{
 		return;
 	}
 
 	if (p2.GodMode == false)
 	{
-		if (C1->type == PLAYER)
+		if (C1->type == Object_Type::PLAYER)
 		{
 			//Player Colliding Against Another Player
-			if (C2->type == PLAYER)
-			{
-				if (C1->collider.x + C1->collider.w > C2->collider.x || C1->collider.x < C2->collider.x + C2->collider.w) //As the boost can be done even if P1 is static, this allows for more precise jumps... hopefully.
-				{
-					if (App->player1->p1.state == crouching_P1 /*App->player2->p2.isCrouching == true*/)
-					{
-						if (p2.grounded == true)
-						{
-							p2.speed.y -= p2.boost_jump.y * App->dt;
-							p2.isBoostJumping = true;
-							p2.airborne = true;
-							p2.grounded = false;
-							App->audio->PlayFx(3, 0);
-						}
-					}
-					LOG("P2 IS COLLIDING WITH P2");
-				}
-			}
+			//if (C2->type == Object_Type::PLAYER)
+			//{
+			//	if (C1->collider.x + C1->collider.w > C2->collider.x || C1->collider.x < C2->collider.x + C2->collider.w) //As the boost can be done even if P1 is static, this allows for more precise jumps... hopefully.
+			//	{
+			//		if (App->entityManager->player->p1.state == crouching_P1 /*App->player2->p2.isCrouching == true*/)
+			//		{
+			//			if (p2.grounded == true)
+			//			{
+			//				p2.speed.y -= p2.boost_jump.y * App->dt;
+			//				p2.isBoostJumping = true;
+			//				p2.airborne = true;
+			//				p2.grounded = false;
+			//				App->audio->PlayFx(3, 0);
+			//			}
+			//		}
+			//		LOG("P2 IS COLLIDING WITH P2");
+			//	}
+			//}
 
 			//Player colliding against solids
-			if (C2->type == SOLID)
+			if (C2->type == Object_Type::SOLID)
 			{
 				//Player Colliding vertically against the Solid. The first part checks if C1 is contained in the X axis of C2. 
 				if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x + C2->collider.y)
@@ -425,7 +428,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 				}
 			}
 
-			if (C2->type == PLATFORM)
+			if (C2->type == Object_Type::PLATFORM)
 			{
 				if (p2.platformDrop == false)
 				{
@@ -445,7 +448,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 				}
 			}
 
-			if (C2->type == HAZARD)
+			if (C2->type == Object_Type::HAZARD)
 			{
 				//Death logic
 				p2.lives--;
@@ -456,7 +459,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 			}
 
 			//Player Colliding against an Activable Item
-			if (C2->type == ITEM)
+			if (C2->type == Object_Type::ITEM)
 			{
 				p2.item_activated = true;					//Records that P2 (or P1) has activated the item.
 				App->player1->p1.item_activated = true;		//Activates P2's boolean as well.
@@ -465,7 +468,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 			}
 
 			//Player colliding against Deactivable surfaces. 
-			if (C2->type == DEACTIVABLE)
+			if (C2->type == Object_Type::DEACTIVABLE)
 			{
 				if (p2.item_activated == false || App->player1->p1.item_activated == false)
 				{
@@ -516,7 +519,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 			}
 
 			//Player colliding against the Goal
-			if (C2->type == GOAL)
+			if (C2->type == Object_Type::GOAL)
 			{
 				if (C1->collider.y > GOAL_Y && C1->collider.y < GOAL_HEIGHT)	//Dirty way to know which portal goal has been reached.
 				{
@@ -558,7 +561,7 @@ bool j1Player2::LoadPlayer2()		//Loads P2 on screen.
 {
 	//Loads the textures of P2. Switches them according to switch_sprites
 	p2.texture = App->tex->Load("textures/Spritesheets/Character 2/Character_Spritesheet2_Buena.png");
-	
+
 	//--------------------------------------------Loading the data and colliders of P2--------------------------------------------
 	//Loads the position of P2 from the xml.
 	p2.position.x = p2.position.x;
@@ -573,7 +576,7 @@ bool j1Player2::LoadPlayer2()		//Loads P2 on screen.
 	p2.HitBox.h = p2.sprite_measures.y;		//Represents the height of P2.
 
 	//Adds a collider for the player.
-	p2.collider = App->collisions->AddCollider(p2.HitBox, PLAYER, this);
+	p2.collider = App->collisions->AddCollider(p2.HitBox, Object_Type::PLAYER, this);
 
 	//Boolean resetting
 	p2.grounded = false;
@@ -742,7 +745,7 @@ void j1Player2::Restart()
 void j1Player2::GodModeInput()
 {
 	p2.airborne = false;
-	
+
 	if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT)
 	{
 		p2.position.x += GOD_MODE_SPEED;

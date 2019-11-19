@@ -1,5 +1,4 @@
 #include "j1EntityManager.h"
-#include "Mecha.h"
 //
 #include "p2Log.h"
 #include "j1Render.h"
@@ -8,15 +7,20 @@
 #include "j1Collisions.h"
 #include "j1Input.h"
 #include "j1Player.h"
+#include "j1Player1.h"
+#include "Mecha.h"
 #include "j1Window.h"
 
-j1EntityManager::j1EntityManager()
+j1EntityManager::j1EntityManager() : player(nullptr), player2(nullptr)		//Sets the j1Player1* pointers declared in the header to nullptr
 {
 	name.create("entities");
 }
 
 j1EntityManager::~j1EntityManager()
 {
+	//As the pointers have been set in the constructor, they must be destroyed / deleted in the destructor.
+	delete player;
+	delete player2;
 }
 
 bool j1EntityManager::Awake(pugi::xml_node& config)
@@ -48,6 +52,11 @@ bool j1EntityManager::Start()
 bool j1EntityManager::PreUpdate()
 {
 	//Enemies PreUpdate()
+
+	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
+	{
+		entity_iterator->data->PreUpdate();
+	}
 
 	return true;
 }
@@ -94,7 +103,7 @@ bool j1EntityManager::CleanUp()
 	{
 		entity_iterator->data->CleanUp();
 	}
-	
+
 	entities.clear();									//Deletes all items in the entities list and frees all allocated memory.
 
 	player = NULL;										//Sets the j1Player* player pointer to NULL.
@@ -121,23 +130,44 @@ void j1EntityManager::DestroyEntity(j1Entity* entity)
 	}
 }
 
-j1Entity* j1EntityManager::CreateEntity(int x, int y, ENTITY_TYPE type)
+void j1EntityManager::OnCollision(Collider* C1, Collider* C2)		//THIS HERE
+{
+	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
+	{
+		if (C1 == entity_iterator->data->collider)		//Will be run if there is a collision and any of the colliders are of the type PLAYER.
+		{
+			entity_iterator->data->OnCollision(C1, C2);
+			break;
+		}
+		else if (C2 == entity_iterator->data->collider)
+		{
+			entity_iterator->data->OnCollision(C2, C1);
+			break;
+		}
+	}
+}
+
+j1Entity* j1EntityManager::CreateEntity(ENTITY_TYPE type, int x, int y)
 {
 	//static_assert?
-	
+
 	j1Entity* ret = nullptr;
 
 	switch (type)
 	{
 	case ENTITY_TYPE::PLAYER:							//If the ENTITT_TYPE passed as argument is PLAYER.
-		ret = new j1Player(x, y, type);					//Allocates memory for an entity from the j1Player module.
+		//ret = new j1Player(x, y, type);				//Allocates memory for an entity from the j1Player module.
+		ret = new j1Player1(x, y, type);
+
+		/*if (ret != nullptr)							//THIS HERE, More Efficient?
+			entities.add(ret);*/
 		break;
-	
+
 	case ENTITY_TYPE::MECHA:							//If the ENTITT_TYPE passed as argument is a MECHA.
-		//
+		//ret = new j1Mecha(x, y, type);
 		break;
 	case ENTITY_TYPE::ALIEN:							//If the ENTITT_TYPE passed as argument is an ALIEN.
-		//
+		//ret = new j1Alien(x, y, type);
 		break;
 	}
 	//ret->type = type;
@@ -152,7 +182,11 @@ j1Entity* j1EntityManager::CreateEntity(int x, int y, ENTITY_TYPE type)
 
 void j1EntityManager::CreatePlayer()
 {
-	player = (j1Player*)CreateEntity(0, 0, ENTITY_TYPE::PLAYER);	//Revise 0, 0. Maybe default x and y of the CreateEntity method to 0.
+	player = (j1Player1*)CreateEntity(ENTITY_TYPE::PLAYER);	//Revise 0, 0. Maybe default x and y of the CreateEntity method to 0.
+
+	//Maybe create methods for them?
+	//mecha = (j1Mecha*)CreateEntity(ENTITY_TYPE::MECHA);
+	//alien = (j1Alien*)CreateEntity(ENTITY_TYPE::ALIEN);
 }
 
 void j1EntityManager::SpawnEnemy()
@@ -195,12 +229,12 @@ bool j1EntityManager::Load(pugi::xml_node& data)
 	GetPlayer()->Load(data.child("player"));
 	for (pugi::xml_node mecha = data.child("mecha"); mecha; mecha = mecha.next_sibling("mecha"))
 	{
-		CreateEntity(mecha.attribute("position_x").as_int(), mecha.attribute("position_y").as_int(), ENTITY_TYPE::MECHA);
+		CreateEntity(ENTITY_TYPE::MECHA, mecha.attribute("position_x").as_int(), mecha.attribute("position_y").as_int());
 	}  
 	 
 	for (pugi::xml_node alien = data.child("alien"); alien; alien = alien.next_sibling("alien"))
 	{
-		CreateEntity(alien.attribute("position_x").as_int(), alien.attribute("position_y").as_int(), ENTITY_TYPE::ALIEN);
+		CreateEntity(ENTITY_TYPE::ALIEN, alien.attribute("position_x").as_int(), alien.attribute("position_y").as_int());
 	}
 
 	return true;

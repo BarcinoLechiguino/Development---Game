@@ -8,13 +8,10 @@
 struct SDL_Texture;
 class j1Entity;
 class j1Player;
+class j1Player1;			//Temporal(?)
 
 class j1EntityManager : public j1Module
 {
-public:
-
-	p2List<j1Entity*> entities;
-
 public:
 	j1EntityManager();
 
@@ -33,11 +30,13 @@ public:
 	bool CleanUp();
 
 public:
-	j1Entity* CreateEntity(int x, int y, ENTITY_TYPE type);
+	j1Entity* CreateEntity(ENTITY_TYPE type, int x = 0, int y = 0);
 	void CreatePlayer();
 	void SpawnEnemy();
 	void DestroyEntity(j1Entity* entity);
 	
+	void OnCollision(Collider* C1, Collider* C2);
+
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
@@ -46,11 +45,15 @@ public:
 public:
 	pugi::xml_node	config;
 	
-	j1Player* player = NULL;
-	
-	float			accumulated_time;	//Accumulates dt as time goes on.
-	float			cycle_length;		//How much time needs to pass / be accumulated before running a cycle. 
-	bool			doLogic;			//Keeps track whether or not the entity needs to do it's logic (pathfinding...)
+	p2List<j1Entity*>	entities;			//List of entities. Each created entity will be added to this list and then iterated in the class methods (Update()...)
+	j1Player1*			player;				//Pointer to the j1Player1 class. Will represent P1.
+	j1Player1*			player2;			//Pointer to the j1Player1 class. Will represent P2.
+	//j1Mecha*			mecha;
+	//j1Alien*			alien;
+
+	float				accumulated_time;	//Accumulates dt as time goes on.
+	float				cycle_length;		//How much time needs to pass / be accumulated before running a cycle. 
+	bool				doLogic;			//Keeps track whether or not the entity needs to do it's logic (pathfinding...)
 };
 
 #endif // !__j1ENTITY_MANAGER_H__

@@ -6,6 +6,7 @@
 #include "j1Render.h"
 #include "j1Input.h"
 #include "Animation.h"
+#include "j1Entity.h"
 
 struct Collider;
 struct SDL_Texture;
@@ -92,11 +93,11 @@ struct Player1
 	Collider*	atkCollider;		//Collider that  will be assigned to P1 as it's attack reach.
 };
 
-class j1Player1 : public j1Module 
+class j1Player1 : public j1Entity
 {
 public://methods
 
-	j1Player1();
+	j1Player1(int x, int y, ENTITY_TYPE type);
 	// Destructor
 	virtual ~j1Player1();
 
@@ -108,7 +109,7 @@ public://methods
 
 	bool PreUpdate();
 
-	bool Update(float dt);
+	bool Update(float dt, bool doLogic);
 
 	bool PostUpdate();
 
@@ -120,13 +121,14 @@ public: //P1 Variables
 
 	void TeleportP2ToP1();										//Moves P2 directly in front of P1. It takes into account where P1 is looking at.
 	void RespawnP1ToP2();										//Moves P1 directly behind P2 on death.
-	void LivesCheck(int lives);
+	void LivesCheck(int lives);									//Checks if the player has any lives left.
 	void TpCooldownCheck(float dt);								//Keeps track of the tp skill cooldown.
 	void OnCollision(Collider* C1, Collider* C2);				//Collision Logic Handling.
 
 	bool Load(pugi::xml_node &node);							//Loading from xml file.
 	bool Save(pugi::xml_node &node) const;						//Saving to xml file.
 	bool LoadPlayer1();											//Loads P1 on screen (Position, Colliders...)
+	bool LoadPlayerProperties();								//Loads the player's data from the config file.
 	bool LoadPlayer1Properties(pugi::xml_node&);				//Loads P2's data from the config xml file.
 	bool AddAnimationPushbacks();								//Adds P1's animation pushbacks.
 	//bool LoadPlayer1Textures();								//Loads P1's textures on screen.
@@ -135,10 +137,9 @@ public: //P1 Variables
 
 	void SkillCooldown(bool& inCd, float& cdCounter, float& cdTime);		//Keeps track of any skill's cooldown. Revise --> Pass dt as an argument?
 
-private:
-	float half = 0.5f;
-	float quarter = 0.25f;
-	float threeFourths = 0.75f;
+public:
+	pugi::xml_document	config_file;
+	pugi::xml_node		player;
 };
 
 #endif __j1Player_1_H__
