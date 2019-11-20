@@ -162,13 +162,11 @@ j1Entity* j1EntityManager::CreateEntity(ENTITY_TYPE type, int x, int y)
 	case ENTITY_TYPE::PLAYER:							//If the ENTITT_TYPE passed as argument is PLAYER.
 		//ret = new j1Player(x, y, type);				//Allocates memory for an entity from the j1Player module.
 		ret = new j1Player1(x, y, type);
-
-		/*if (ret != nullptr)							//THIS HERE, More Efficient?
-			entities.add(ret);*/
 		break;
 
 	case ENTITY_TYPE::PLAYER2:
 		ret = new j1Player2(x, y, type);				//REVISE THIS HERE. Check if we can pass only j1Player and thats it or if both can be ENTITY_TYPE player
+		break;
 
 	case ENTITY_TYPE::MECHA:							//If the ENTITT_TYPE passed as argument is a MECHA.
 		//ret = new j1Mecha(x, y, type);
@@ -190,7 +188,9 @@ j1Entity* j1EntityManager::CreateEntity(ENTITY_TYPE type, int x, int y)
 void j1EntityManager::CreatePlayers()
 {
 	player = (j1Player1*)CreateEntity(ENTITY_TYPE::PLAYER);	//Revise 0, 0. Maybe default x and y of the CreateEntity method to 0.
-	player2 = (j1Player2*)CreateEntity(ENTITY_TYPE::PLAYER2);//REVISE THIS HERE. Check if we can pass only j1Player and thats it or if both can be ENTITY_TYPE PLAYER
+	//playere = (j1Player1*)CreateEntity(ENTITY_TYPE::PLAYER);
+	//player2 = (j1Player2*)CreateEntity(ENTITY_TYPE::PLAYER2);//REVISE THIS HERE. Check if we can pass only j1Player and thats it or if both can be ENTITY_TYPE PLAYER
+	player2 = (j1Player2*)CreateEntity(ENTITY_TYPE::PLAYER2);
 
 	//Maybe create methods for them?
 	//mecha = (j1Mecha*)CreateEntity(ENTITY_TYPE::MECHA);

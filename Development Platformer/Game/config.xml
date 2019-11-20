@@ -40,7 +40,7 @@
     <layers>
       <bg_parallax_speed speed="0.05f"/>
       <first_parallax_speed speed ="0.70f"/>
-      <decor_parallax_speed speed ="0.25f"/>
+      <decor_parallax_speed speed ="0.9f"/>
     </layers>
   </map>
 

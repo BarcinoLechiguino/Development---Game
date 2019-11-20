@@ -45,7 +45,7 @@ bool j1Player1::Start()
 	LoadPlayerProperties();									//Loads the player's properties from the xml file. //THIS HERE
 	InitPlayer();											//Loads P1 in game.
 	LoadPlayerAudio();										//Loads the sfx for player 1.
-									
+								
 	//LoadPlayer1Textures();		//Loads P1's textures in game.
 
 	player.airborne = true;
@@ -291,7 +291,7 @@ bool j1Player1::PostUpdate()
 bool j1Player1::CleanUp()
 {
 	App->tex->UnLoad(entity_sprite);
-	App->entityManager->player->Disable();	//THIS HERE Change for player1
+	App->entityManager->player->Disable();	//THIS HERE Change for player1 //See what needs to be deleted to avoid memory leaks
 
 	collider = nullptr;						//THIS HERE Maybe they should be deleted in the Entity.cpp
 	animation = nullptr;					//THIS HERE
@@ -303,7 +303,7 @@ bool j1Player1::CleanUp()
 void j1Player1::OnCollision(Collider* C1, Collider* C2)
 {
 	if (player.GodMode == false)
-	{
+	{	
 		if (C2->type == Object_Type::PLAYER)
 		{
 			Collider* temp = C1;

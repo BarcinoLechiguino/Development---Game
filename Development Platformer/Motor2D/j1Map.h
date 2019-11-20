@@ -14,7 +14,10 @@ struct Collider;
 enum Object_Type //Cuidado con el class. If enum class-> Object_Type::HAZARD and not just HAZARD (i.e)
 {
 	PLAYER,
+	PLAYER2,
 	ATTACK,
+	MECHA,
+	ALIEN,
 	SOLID,
 	PLATFORM,
 	HAZARD,

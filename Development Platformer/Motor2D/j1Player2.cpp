@@ -201,6 +201,20 @@ bool j1Player2::Update(float dt, bool doLogic)
 		break;
 	}
 
+	/*if (position.x > App->entityManager->player->position.x && App->entityManager->player->player.state == Player_State::Crouching) //LAST THING TO USE
+	{
+		if (player.grounded == true)
+		{
+			player.speed.y -= player.boost_jump.y * App->GetDt();
+			LOG("boost jump speed is");
+			player.isBoostJumping = true;
+			player.airborne = true;
+			player.grounded = false;
+			player.platformDrop = false;
+			App->audio->PlayFx(3, 0);
+		}
+	}*/
+	
 	//If P2 is in the air then this function brings them back down to the floor.
 	if (player.airborne == true)
 	{
@@ -287,7 +301,7 @@ bool j1Player2::CleanUp()
 void j1Player2::OnCollision(Collider* C1, Collider* C2)
 {
 	if (player.GodMode == false)
-	{
+	{	
 		if (C2->type == Object_Type::PLAYER)
 		{
 			Collider* temp = C1;
@@ -298,9 +312,9 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 		{
 			return;
 		}
-		
+
 		if (C1->type == Object_Type::PLAYER)
-		{
+		{	
 			//Player Colliding Against Another Player
 			if (C2->type == Object_Type::PLAYER)
 			{	

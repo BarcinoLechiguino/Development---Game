@@ -2,6 +2,8 @@
 #include "j1Collisions.h"
 #include "j1Map.h"
 #include "j1Render.h"
+#include "p2Log.h"
+#include "j1EntityManager.h"  //Erase this later
 #include "Brofiler\Brofiler.h"
 
 //With the constructor call collider_debug (draw colliders on screen) is set to true or false.
@@ -53,20 +55,20 @@ bool j1Collisions::PreUpdate()
 	p2List_item<Collider*>* C1_iterator = collider_list.start;
 	while (C1_iterator != NULL)
 	{
-		C1 = C1_iterator->data;	//Sets the data members of the first collider to the data members of the collider being iterated.
+		C1 = C1_iterator->data;										//Sets the data members of the first collider to the data members of the collider being iterated.
 
 		p2List_item<Collider*>* C2_iterator = collider_list.start;	//Declares a new list item pointer that will be associated with the second collider for the same purposes as C1_iterator.
 		while (C2_iterator != NULL)
 		{
-			C2 = C2_iterator->data;	//Sets the data members of the second collider to the data members of the collider being iterated.
+			C2 = C2_iterator->data;									//Sets the data members of the second collider to the data members of the collider being iterated.
 
-			if (C1 != C2)	//If data members of C1 are different from the data members of C2, then this will be run.
+			if (C1 != C2)											//If data members of C1 are different from the data members of C2, then this will be run.
 			{
 				if (C1->Check_Collision(C2->collider) == true && (C1->type == PLAYER || C2->type == PLAYER)) //Will be run if there is a collision and any of the colliders are of the type PLAYER.
 				{
 					if (C1->callback)
 					{
-						C1->callback->OnCollision(C1, C2);		//Callback sends the OnCollision methods in P1's and P2's modules the colliders being iterated in this iteration.
+						C1->callback->OnCollision(C1, C2);			//Callback sends the OnCollision methods in P1's and P2's modules the colliders being iterated in this iteration.
 					}
 					else if (C1->callback)
 					{
@@ -100,48 +102,59 @@ void j1Collisions::Collider_Debug()
 
 	else
 	{
+		int count = 0;
 		p2List_item<Collider*>* collider_iterator = collider_list.start;	//Declares a list item pointer that iterates a given list, in this case the collider list.
 		while (collider_iterator != NULL)
 		{
 			switch (collider_iterator->data->type)	//We declare a switch that will consider collider types as possible cases.
 			{
 			//Declaring a DrawQuad() with a set colour depending of the type of the object/collider that is being iterated at that moment. ALPHA is the transparency value.
-
-			case PLAYER:		//PLAYER collider will be GREEN
+			case Object_Type::PLAYER:		//PLAYER collider will be GREEN
 				App->render->DrawQuad(collider_iterator->data->collider, 0, 255, 0, ALPHA);
 				break;
 
-			case ATTACK:		//ATTACK collider will be CYAN
-				App->render->DrawQuad(collider_iterator->data->collider, 0, 255, 255, ALPHA);
-
-			case SOLID:			//SOLID collider will be BLUE
-				App->render->DrawQuad(collider_iterator->data->collider, 0, 0, 255, ALPHA);
+			case Object_Type::PLAYER2:		//PLAYER collider will be GREEN
+				App->render->DrawQuad(collider_iterator->data->collider, 0, 255, 0, ALPHA);
 				break;
 
-			case PLATFORM:		//PLATFORM collider will be WHITE
-				App->render->DrawQuad(collider_iterator->data->collider, 255, 255, 255, ALPHA);
-				break;
-
-			case HAZARD:		//HAZARD collider will be RED
-				App->render->DrawQuad(collider_iterator->data->collider, 255, 0, 0, ALPHA);
-				break;
-
-			case ITEM:			//ITEM collider will be ORANGE
+			case Object_Type::MECHA:			//MECHA collider will be ORANGE
 				App->render->DrawQuad(collider_iterator->data->collider, 255, 150, 0, ALPHA);
 				break;
 
-			case DEACTIVABLE:	//DEACTIVABLE collider will be YELLOW
+			case Object_Type::ALIEN:			//ALIEN collider will be OLIVE
+				App->render->DrawQuad(collider_iterator->data->collider, 75, 75, 45, ALPHA);
+
+			case Object_Type::ATTACK:		//ATTACK collider will be CYAN
+				App->render->DrawQuad(collider_iterator->data->collider, 0, 255, 255, ALPHA);
+
+			case Object_Type::SOLID:			//SOLID collider will be BLUE
+				App->render->DrawQuad(collider_iterator->data->collider, 0, 0, 255, ALPHA);
+				break; 
+
+			case Object_Type::PLATFORM:		//PLATFORM collider will be WHITE
+				App->render->DrawQuad(collider_iterator->data->collider, 255, 255, 255, ALPHA);
+				break;
+
+			case Object_Type::HAZARD:		//HAZARD collider will be RED
+				App->render->DrawQuad(collider_iterator->data->collider, 255, 0, 0, ALPHA);
+				break;
+
+			case Object_Type::ITEM:			//ITEM collider will be YELLOW
+				App->render->DrawQuad(collider_iterator->data->collider, 255, 150, 0, ALPHA);
+				break;
+
+			case Object_Type::DEACTIVABLE:	//DEACTIVABLE collider will be YELLOW
 				App->render->DrawQuad(collider_iterator->data->collider, 255, 255, 0, ALPHA);
 				break;
 
-			case RESPAWN:		//RESPAWN collider will be PURPLE
+			case Object_Type::RESPAWN:		//RESPAWN collider will be PURPLE
 				App->render->DrawQuad(collider_iterator->data->collider, 255, 0, 255, ALPHA);
 				break;
 
-			case CHECKPOINT:	//CHECKPOINT collider wil be BLACK
+			case Object_Type::CHECKPOINT:	//CHECKPOINT collider wil be BLACK
 				App->render->DrawQuad(collider_iterator->data->collider, 0, 0, 0, ALPHA);
 
-			case GOAL:			//GOAL collider will be PINK
+			case Object_Type::GOAL:			//GOAL collider will be PINK
 				App->render->DrawQuad(collider_iterator->data->collider, 255, 0, 150, ALPHA);
 				break;
 			}

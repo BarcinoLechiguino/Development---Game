@@ -48,10 +48,6 @@ public: //P1 Variables
 	void GodModeInput();										//Enables / Disables the God Mode.
 
 	//bool LoadPlayer1Textures();								//Loads P1's textures on screen.
-
-public:
-	//pugi::xml_document	config_file;
-	//pugi::xml_node		player;
 };
 
 #endif __j1Player_1_H__
