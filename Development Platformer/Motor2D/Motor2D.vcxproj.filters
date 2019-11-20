@@ -181,7 +181,7 @@
     <None Include="..\Game\save_file">
       <Filter>Desenvolupament  ========\XML Files</Filter>
     </None>
-    <None Include="..\Game\maps\Tutorial Screen2.tmx">
+    <None Include="..\Game\maps\Test_Map.tmx">
       <Filter>Desenvolupament  ========\XML Files</Filter>
     </None>
   </ItemGroup>
