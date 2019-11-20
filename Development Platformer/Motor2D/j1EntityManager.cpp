@@ -189,7 +189,7 @@ void j1EntityManager::CreatePlayers()
 {
 	player = (j1Player1*)CreateEntity(ENTITY_TYPE::PLAYER);	//Revise 0, 0. Maybe default x and y of the CreateEntity method to 0.
 	//playere = (j1Player1*)CreateEntity(ENTITY_TYPE::PLAYER);
-	//player2 = (j1Player2*)CreateEntity(ENTITY_TYPE::PLAYER2);//REVISE THIS HERE. Check if we can pass only j1Player and thats it or if both can be ENTITY_TYPE PLAYER
+	player2 = (j1Player2*)CreateEntity(ENTITY_TYPE::PLAYER);//REVISE THIS HERE. Check if we can pass only j1Player and thats it or if both can be ENTITY_TYPE PLAYER
 	player2 = (j1Player2*)CreateEntity(ENTITY_TYPE::PLAYER2);
 
 	//Maybe create methods for them?
