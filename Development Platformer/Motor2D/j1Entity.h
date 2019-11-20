@@ -31,6 +31,12 @@ enum class ENTITY_TYPE
 	ALIEN,
 };
 
+struct EntityData
+{
+	ENTITY_TYPE type;
+	iPoint position;
+};
+
 class j1Entity : public j1Module
 {
 public:
@@ -51,8 +57,6 @@ public:
 
 public:
 	//Entity Methods
-	/*virtual bool LoadEntity();
-	virtual bool LoadEntityProperties(pugi::xml_node& conﬁg);*/
 	virtual bool LoadAnimationPushbacks();
 	virtual bool Save(pugi::xml_node&) const;
 	virtual bool Load(pugi::xml_node&);
@@ -62,28 +66,17 @@ public:
 	virtual void OnCollision(Collider* c1, Collider* c2); /*{};*/				//If {} are used then the OnCollision on the entity.cpp needs to be erased.
 	//bool Calculate_Path();			//Only for enemiess
 
-	
-	//p2Point<float>	velocity;		//Only for players and maybe land enemy.
-	//p2Point<float>	spawn_position;
-	//p2Point<float>	max_speed;		//Only for players and maybe land enemy.
-	//p2Point<float>	acceleration;	//Only for players and maybe land enemy.
-	//p2Point<int>		sprite_measures;
-	//float				gravity;
-	//int				lives;
-
 	//Entity Variables
 	ENTITY_TYPE		type;					//Type of the entity (ENTITY_TYPE::PLAYER...)
 	fPoint			position;				//Initial position of the entity.
 	iPoint			sprite_size;			//Size of the entity sprite --> w and h of the entity collider.
+	float			speed;					//Movement speed of the entity.
 
 	SDL_Texture*	entity_sprite;			//Sprite / Spritesheet of the entity.
 	Collider*		collider;				//Collider of the entity.
 	Animation*		animation;				//Animation of the entity.
-	//entity_state	state;
-	//SDL_Rect		HitBox;
 	
 	//p2DynArray<iPoint> entityPath;		//Only for enemies
-
 };
 
 #endif

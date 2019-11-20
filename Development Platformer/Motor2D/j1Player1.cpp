@@ -591,17 +591,32 @@ void j1Player1::TeleportP2ToP1()		//Method that teleports P2 directly in front o
 	{
 		if (player.flip == false)			//The players will be always teleported directly in front of one another. 
 		{
-			App->entityManager->player2->position.x = position.x + collider->collider.w;		//THIS HERE
-			App->entityManager->player2->position.y = position.y - 60;
+			if (player.againstLeftWall == false)
+			{
+				App->entityManager->player2->position.x = position.x + collider->collider.w;		//THIS HERE
+				App->entityManager->player2->position.y = position.y - 60;
+				App->audio->PlayFx(1, 0);
+				player.tpInCd = true;
+			}
+			else
+			{
+				//Sfx indicating that teleport cannot be used.
+			}
 		}
 		else
 		{
-			App->entityManager->player2->position.x = position.x - collider->collider.w / 2;
-			App->entityManager->player2->position.y = position.y - 60;
+			if (player.againstRightWall == false)
+			{
+				App->entityManager->player2->position.x = position.x - collider->collider.w / 2;
+				App->entityManager->player2->position.y = position.y - 60;
+				App->audio->PlayFx(1, 0);
+				player.tpInCd = true;
+			}
+			else
+			{
+				//Sfx indicating that teleport cannot be used.
+			}
 		}
-
-		App->audio->PlayFx(1, 0);
-		player.tpInCd = true;
 	}
 }
 
