@@ -33,7 +33,8 @@ public:
 public:
 	j1Entity* CreateEntity(ENTITY_TYPE type, int x = 0, int y = 0);
 	void CreatePlayers();
-	void SpawnEnemy();
+	void AddEnemy(ENTITY_TYPE type, int x, int y);							//Iterates entityData_list and 
+	void SpawnEnemy();														//Iterates entityData_list and creates an enemy for each list item.
 	void DestroyEntity(j1Entity* entity);
 	
 	void OnCollision(Collider* C1, Collider* C2);
@@ -46,16 +47,18 @@ public:
 public:
 	pugi::xml_node	config;
 	
-	p2List<j1Entity*>	entities;			//List of entities. Each created entity will be added to this list and then iterated in the class methods (Update()...)
-	j1Player1*			player;				//Pointer to the j1Player1 class. Will represent P1. Change name to player1 later.
-	j1Player2*			player2;			//Pointer to the j1Player1 class. Will represent P2.
-	j1Player2*			player2Copy;			//Pointer to the j1Player1 class. Will represent P2.
-	//j1Mecha*			mecha;
-	//j1Alien*			alien;
+	p2List<j1Entity*>		entities;			//List of entities. Each created entity will be added to this list and then iterated in the class methods (Update()...)
+	j1Player1*				player;				//Pointer to the j1Player1 class. Will represent P1. Change name to player1 later.
+	j1Player2*				player2;			//Pointer to the j1Player1 class. Will represent P2.
+	j1Player2*				player2Copy;		//Pointer to the j1Player1 class. Will represent P2.
+	//j1Mecha*				mecha;
+	//j1Alien*				alien;
 
-	float				accumulated_time;	//Accumulates dt as time goes on.
-	float				cycle_length;		//How much time needs to pass / be accumulated before running a cycle. 
-	bool				doLogic;			//Keeps track whether or not the entity needs to do it's logic (pathfinding...)
+	p2List<EntityData*>		entityData_list;	//List of the position and ENTITY_TYPE data members of enemy entities.
+
+	float					accumulated_time;	//Accumulates dt as time goes on.
+	float					cycle_length;		//How much time needs to pass / be accumulated before running a cycle. 
+	bool					doLogic;			//Keeps track whether or not the entity needs to do it's logic (pathfinding...)
 };
 
 #endif // !__j1ENTITY_MANAGER_H__

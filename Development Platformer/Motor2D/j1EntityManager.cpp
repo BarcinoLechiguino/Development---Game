@@ -197,9 +197,44 @@ void j1EntityManager::CreatePlayers()
 	//alien = (j1Alien*)CreateEntity(ENTITY_TYPE::ALIEN);
 }
 
+void j1EntityManager::AddEnemy(ENTITY_TYPE type, int x, int y)
+{
+	p2List_item<EntityData*>* enemy_iterator = entityData_list.start;
+
+	for (enemy_iterator; enemy_iterator != NULL; enemy_iterator = enemy_iterator->next)
+	{
+		enemy_iterator->data->position.x = x;
+		enemy_iterator->data->position.y = y;
+		enemy_iterator->data->type = type;
+	}
+}
+
 void j1EntityManager::SpawnEnemy()
 {
+	p2List_item<EntityData*>* enemy_iterator = entityData_list.start;
 	
+	for (enemy_iterator; enemy_iterator != NULL; enemy_iterator = enemy_iterator->next)												//Iterates the entityData_list.
+	{
+		j1Entity * enemy;																											//Pointer that will be assigned to each enemy entity.
+
+		switch (enemy_iterator->data->type)			//REVISE TYPE, maybe it will not work.
+		{
+		case ENTITY_TYPE::MECHA:
+			//enemy = new j1Mecha(enemy_iterator->data->position.x, enemy_iterator->data->position.y, enemy_iterator->data->type);	//Spawns a MECHA type enemy.
+			break;
+
+		case ENTITY_TYPE::ALIEN:
+			//enemy = new j1Alien(enemy_iterator->data->position.x, enemy_iterator->data->position.y, enemy_iterator->data->type);	//Spawns an ALIEN type enemy.
+			break;
+		}
+
+		if (enemy != NULL)
+		{
+			entities.add(enemy);																									//The entity is added to the entities list
+			enemy->Start();																											//The entity's start method is called.
+			break;
+		}
+	}
 }
 
 j1Entity* j1EntityManager::GetPlayer() const
