@@ -221,6 +221,7 @@ void j1EntityManager::SpawnEnemy()
 		{
 		case ENTITY_TYPE::MECHA:
 			//enemy = new j1Mecha(enemy_iterator->data->position.x, enemy_iterator->data->position.y, enemy_iterator->data->type);	//Spawns a MECHA type enemy.
+			//
 			break;
 
 		case ENTITY_TYPE::ALIEN:
