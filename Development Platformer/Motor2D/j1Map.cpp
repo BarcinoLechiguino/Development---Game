@@ -53,18 +53,24 @@ void j1Map::Draw()
 
 	camera_collider.collider = { -App->render->camera.x, -App->render->camera.y, (int)winWidth, (int)winHeight };	//Sets the dimensions and position of the camera collider.
 
+	int cam_tileWidth = winWidth / data.tile_width;																	//Width of the camera in tiles.
+	int cam_tileHeight = winHeight / data.tile_height;																//Height of the camera in tiles.
+	
 	p2List_item<MapLayer*>* layer = data.layers.start;																//List_item that will iterate all layers.
 
 	for (layer; layer != NULL; layer = layer->next)																	//As long as the item is not null.
 	{
-		int cam_x_tile = (-App->render->camera.x * layer->data->speed) / data.tile_width;
-		int cam_y_tile = (-App->render->camera.y * layer->data->speed) / data.tile_height;
+		cam_tilePos.x = (-App->render->camera.x * layer->data->speed) / data.tile_width;							//Position in the X axis of the camera in tiles. Takes into account parallax speed.
+		cam_tilePos.y = (-App->render->camera.y * layer->data->speed) / data.tile_height;							//Position in the Y axis of the camera in tiles. Takes into account parallax speed.
 		
-		int tile_index = 0;																							//Will store tile number so the correct tile is loaded.
-		for (uint y = 0; y < data.height; ++y)																		//While y is less than the map's height in  tiles
+		int tile_index = 0;																							//Will store the tile's index number so the correct tile is loaded.
+		int j = cam_tilePos.y;
+		for (uint y = /*cam_tilePos.y*/0; y < /*(cam_tilePos.y + cam_tileHeight)*/data.height; ++y)										//While y is less than the camera's height in tiles
 		{
-			for (uint x = 0; x < data.width; ++x)																	//While x is less than the map's width in tiles.
+			for (uint x = /*cam_tilePos.x*/0; x < /*(cam_tilePos.x + cam_tileWidth)*/data.width; ++x)									//While x is less than the camera's width in tiles.
 			{	
+				//tile_index = x + y * data.tile_width;
+				
 				int tile_id = layer->data->gid[tile_index];															//Gets the tile id from the tile index.
 				if (tile_id > 0)																					//If tile_id is not 0
 				{

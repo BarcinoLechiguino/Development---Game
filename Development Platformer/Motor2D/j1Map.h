@@ -200,16 +200,16 @@ private:
 
 public:
 
-	bool activated = false;					//Bool for the deactivable colliders.
-	MapData data;
+	MapData			data;
 	p2Point<float>	spawn_position_cam;
-	Collider camera_collider;				//Collider that will have the same position and dimensions as the camera. Will be used for camera culling.
-	uint winWidth;							//Declared to store the window's width.
-	uint winHeight;							//Declared to store the window's height.
+	Collider		camera_collider;		//Collider that will have the same position and dimensions as the camera. Will be used for camera culling.
+	uint			winWidth;				//Declared to store the window's width.
+	uint			winHeight;				//Declared to store the window's height.
+	iPoint			cam_tilePos;			//Position of the camera in the X and Y axis in tiles.
 
-	float bg_parallax_spd;					//Parallax speed of the background layer
-	float first_parallax_spd;				//Parallax speed of the first parallax layer.
-	float decor_parallax_spd;				//Parallax speed of the decor parallax layer.
+	float			bg_parallax_spd;		//Parallax speed of the background layer
+	float			first_parallax_spd;		//Parallax speed of the first parallax layer.
+	float			decor_parallax_spd;		//Parallax speed of the decor parallax layer.
 
 private:
 	pugi::xml_document	map_file;
