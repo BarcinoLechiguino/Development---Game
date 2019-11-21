@@ -70,10 +70,15 @@ bool j1Collisions::PreUpdate()
 					{
 						C1->callback->OnCollision(C1, C2);			//Callback sends the OnCollision methods in P1's and P2's modules the colliders being iterated in this iteration.
 					}
-					else if (C1->callback)
-					{
-						C1->callback->OnCollision(C2, C1);			//REVISE THIS HERE
-					}
+					//if (C2->callback)
+					//{
+					//	C2->callback->OnCollision(C2, C1);			//REVISE THIS HERE
+					//}
+
+					//else if (C1->callback)
+					//{
+					//	C1->callback->OnCollision(C2, C1);			//REVISE THIS HERE
+					//}
 				}
 			}
 			C2_iterator = C2_iterator->next; //Gets the next collider 2 that will have its collisions calculated.
