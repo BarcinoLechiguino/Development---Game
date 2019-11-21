@@ -89,9 +89,6 @@
     <alien>
       <position x="212" y="400"/>
       <speed x="350.0f" y="0"/>
-      <max_speed x="240.0f" y="500.0f"/>
-      <acceleration x="60.0f" y="450.0f"/>
-      <gravity value="40.0f"/>
       <sprite_measures w="38" h="58"/>
       <lives lives="1"/>
     </alien>
