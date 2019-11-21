@@ -35,6 +35,7 @@ int main(int argc, char* args[])
 
 	while(state != EXIT)
 	{
+		BROFILER_FRAME("MUTUAL COOP. Brofiler Test");
 		switch(state)
 		{
 
@@ -82,7 +83,6 @@ int main(int argc, char* args[])
 			// Loop all modules until we are asked to leave ---------------------
 			case LOOP:
 			{
-				BROFILER_FRAME("MUTUAL COOP. Brofiler Test");
 				if (App->Update() == false)
 				state = CLEAN;
 			}

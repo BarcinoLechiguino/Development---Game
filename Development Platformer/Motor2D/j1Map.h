@@ -8,6 +8,7 @@
 #include "j1Collisions.h"
 #include "SDL/include/SDL.h"
 
+class j1Collisions;
 struct Collider;
 
 //Kinds of colliders we are working with

@@ -3,10 +3,11 @@
 
 #include "j1Module.h"
 #include "p2Point.h"
-#include "j1Render.h"
-#include "j1Input.h"
-#include "Animation.h"
 #include "j1Player.h"
+
+class Animation;
+class j1Render;
+class j1Input;
 
 struct Collider;
 struct SDL_Texture;
