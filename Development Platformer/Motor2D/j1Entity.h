@@ -2,13 +2,14 @@
 #define __j1ENTITY_H__
 
 #include "j1Module.h"
-#include "Animation.h"
 #include "p2Point.h"
 #include "p2DynArray.h"
 #include "j1Timer.h"
 
-struct Collider;
 class Animation;
+
+
+struct Collider;
 struct SDL_Texture;
 
 enum entity_state	//Does not go here. Is it necessary?
