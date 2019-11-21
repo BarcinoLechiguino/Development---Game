@@ -316,7 +316,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 		if (C1->type == Object_Type::PLAYER)
 		{	
 			//Player Colliding Against Another Player
-			if (C2->type == Object_Type::PLAYER)
+			if (C2->type == Object_Type::PLAYER || C1->type == Object_Type::PLAYER)
 			{	
 				if (C1->collider.x + C1->collider.w > C2->collider.x || C1->collider.x < C2->collider.x + C2->collider.w) //As the boost can be done even if P1 is static, this allows for more precise jumps... hopefully.
 				{
@@ -331,6 +331,8 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 							player.grounded = false;
 							player.platformDrop = false;
 							App->audio->PlayFx(3, 0);
+
+							LOG("P2 IS BOOST JUMPING");
 						}
 					}
 					LOG("P2 IS COLLIDING WITH P1 FROM THE LEFT");

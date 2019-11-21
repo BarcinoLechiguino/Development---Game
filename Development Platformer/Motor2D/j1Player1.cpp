@@ -341,7 +341,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			//Player colliding against solids
 			if (C2->type == Object_Type::SOLID)
 			{
-				//Player Colliding from TOP or BOTTOM. 
+				//Player Colliding from TOP or BOTTOM. sssssa
 				if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x + C2->collider.y)		//The first part checks if C1 is contained in the X axis of C2. 
 				{
 					//Player Colliding from TOP.

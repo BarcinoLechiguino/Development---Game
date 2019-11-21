@@ -53,6 +53,9 @@ void j1Map::Draw()
 
 	camera_collider.collider = { -App->render->camera.x, -App->render->camera.y, (int)winWidth, (int)winHeight };	//Sets the dimensions and position of the camera collider.
 
+	int camera_tile_x = (-App->render->camera.x /** speed*/) / 32;
+	int camera_tile_y = (-App->render->camera.y /** speed*/) / 32;
+
 	p2List_item<MapLayer*>* layer = data.layers.start;																//List_item that will iterate all layers.
 
 	for (layer; layer != NULL; layer = layer->next)																	//As long as the item is not null.
