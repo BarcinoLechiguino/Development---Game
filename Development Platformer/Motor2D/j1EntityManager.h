@@ -48,8 +48,8 @@ public:
 	pugi::xml_node	config;
 	
 	p2List<j1Entity*>		entities;			//List of entities. Each created entity will be added to this list and then iterated in the class methods (Update()...)
-	j1Player1*				player;				//Pointer to the j1Player1 class. Will represent P1. Change name to player1 later.
-	j1Player2*				player2;			//Pointer to the j1Player1 class. Will represent P2.
+	j1Player*				player;				//Pointer to the j1Player1 class. Will represent P1. Change name to player1 later.
+	j1Player*				player2;			//Pointer to the j1Player1 class. Will represent P2.
 	j1Player2*				player2Copy;		//Pointer to the j1Player1 class. Will represent P2.
 	//j1Mecha*				mecha;
 	//j1Alien*				alien;

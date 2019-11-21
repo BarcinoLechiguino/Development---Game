@@ -53,13 +53,13 @@ void j1Map::Draw()
 
 	camera_collider.collider = { -App->render->camera.x, -App->render->camera.y, (int)winWidth, (int)winHeight };	//Sets the dimensions and position of the camera collider.
 
-	int camera_tile_x = (-App->render->camera.x /** speed*/) / 32;
-	int camera_tile_y = (-App->render->camera.y /** speed*/) / 32;
-
 	p2List_item<MapLayer*>* layer = data.layers.start;																//List_item that will iterate all layers.
 
 	for (layer; layer != NULL; layer = layer->next)																	//As long as the item is not null.
 	{
+		int cam_x_tile = (-App->render->camera.x * layer->data->speed) / data.tile_width;
+		int cam_y_tile = (-App->render->camera.y * layer->data->speed) / data.tile_height;
+		
 		int tile_index = 0;																							//Will store tile number so the correct tile is loaded.
 		for (uint y = 0; y < data.height; ++y)																		//While y is less than the map's height in  tiles
 		{
@@ -79,11 +79,11 @@ void j1Map::Draw()
 					//Revise how to make the camera culling not erase the parallax elements	
 					if (layer->data->name == "Parallax")
 					{
-						App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect, false, first_parallax_spd);	//As we need to add parallax to this layer, we pass a value as speed argument.
+						App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect, false, layer->data->speed);	//As we need to add parallax to this layer, we pass a value as speed argument.
 					}
 					else if (layer->data->name == "ParallaxDecor")
 					{
-						App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect, false, decor_parallax_spd);
+						App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect, false, layer->data->speed);
 					}
 						
 						if (camera_collider.Check_Collision(tile_hitBox))											//Checks if the tile is inside or outside the camera boundaries by checking if there  has been a collision between the camera rect and the tile rect. 
@@ -330,11 +330,11 @@ bool j1Map::Load(const char* file_name)
 		p2List_item<TileSet*>* item = data.tilesets.start;
 		while(item != NULL)
 		{
-			TileSet* s = item->data;
+			TileSet* tileset = item->data;
 			LOG("Tileset ----");
-			LOG("name: %s firstgid: %d", s->name.GetString(), s->firstgid);
-			LOG("tile width: %d tile height: %d", s->tile_width, s->tile_height);
-			LOG("spacing: %d margin: %d", s->spacing, s->margin);
+			LOG("name: %s firstgid: %d", tileset->name.GetString(), tileset->firstgid);
+			LOG("tile width: %d tile height: %d", tileset->tile_width, tileset->tile_height);
+			LOG("spacing: %d margin: %d", tileset->spacing, tileset->margin);
 			item = item->next;
 		}
 
@@ -343,20 +343,20 @@ bool j1Map::Load(const char* file_name)
 		p2List_item<MapLayer*>* item_layer = data.layers.start;
 		while (item_layer != NULL)
 		{
-			MapLayer* l = item_layer->data;
+			MapLayer* layer = item_layer->data;
 			LOG("Layer ----");
-			LOG("name: %s", l->name.GetString());
-			LOG("tile width: %d tile height: %d", l->width, l->height);
-			LOG("parallax speed: %f", l->speed_x);
+			LOG("name: %s", layer->name.GetString());
+			LOG("tile width: %d tile height: %d", layer->width, layer->height);
+			LOG("parallax speed: %f", layer->speed);
 			item_layer = item_layer->next;
 		}
 
 		p2List_item<ObjectGroup*>* obj_layer = data.objectGroups.start;
 		while (obj_layer != NULL)
 		{
-			ObjectGroup* o = obj_layer->data;
+			ObjectGroup* object = obj_layer->data;
 			LOG("Group ----");
-			LOG("Gname: %s", o->name.GetString());
+			LOG("Gname: %s", object->name.GetString());
 
 			obj_layer = obj_layer->next;
 		}
@@ -380,11 +380,37 @@ bool j1Map::LoadMap()
 	}
 	else
 	{
-		data.width = map.attribute("width").as_int();
-		data.height = map.attribute("height").as_int();
-		data.tile_width = map.attribute("tilewidth").as_int();
-		data.tile_height = map.attribute("tileheight").as_int();
-		data.music_File = map.child("properties").child("property").attribute("value").as_string();
+		data.width			= map.attribute("width").as_int();
+		data.height			= map.attribute("height").as_int();
+		data.tile_width		= map.attribute("tilewidth").as_int();
+		data.tile_height	= map.attribute("tileheight").as_int();
+		data.music_File		= map.child("properties").child("property").attribute("value").as_string();
+
+		p2SString bg_color(map.attribute("backgroundcolor").as_string());
+
+		data.background_color.r = 0;
+		data.background_color.g = 0;
+		data.background_color.b = 0;
+		data.background_color.a = 0;
+
+		if (bg_color.Length() > 0)
+		{
+			p2SString red, green, blue;
+			bg_color.SubString(1, 2, red);
+			bg_color.SubString(3, 4, green);
+			bg_color.SubString(5, 6, blue);
+
+			int v = 0;
+
+			sscanf_s(red.GetString(), "%x", &v);
+			if (v >= 0 && v <= 255) data.background_color.r = v;
+
+			sscanf_s(green.GetString(), "%x", &v);
+			if (v >= 0 && v <= 255) data.background_color.g = v;
+
+			sscanf_s(blue.GetString(), "%x", &v);
+			if (v >= 0 && v <= 255) data.background_color.b = v;
+		}
 
 		p2SString orientation(map.attribute("orientation").as_string());
 
@@ -413,11 +439,12 @@ bool j1Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
 	set->name.create(tileset_node.attribute("name").as_string());
-	set->firstgid = tileset_node.attribute("firstgid").as_int();
-	set->tile_width = tileset_node.attribute("tilewidth").as_int();
-	set->tile_height = tileset_node.attribute("tileheight").as_int();
-	set->margin = tileset_node.attribute("margin").as_int();
-	set->spacing = tileset_node.attribute("spacing").as_int();
+	set->firstgid		= tileset_node.attribute("firstgid").as_int();
+	set->tile_width		= tileset_node.attribute("tilewidth").as_int();
+	set->tile_height	= tileset_node.attribute("tileheight").as_int();
+	set->margin			= tileset_node.attribute("margin").as_int();
+	set->spacing		= tileset_node.attribute("spacing").as_int();
+
 	pugi::xml_node offset = tileset_node.child("tileoffset");
 
 	if(offset != NULL)
@@ -472,54 +499,14 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 
 bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 {
-	/*bool ret = true;
+	bool ret = true;
 
-	layer->name = node.attribute("name").as_string();
-	layer->width = node.attribute("width").as_int();
-	layer->height = node.attribute("height").as_int();
-	layer->speed_x = node.child("properties").child("property").attribute("value").as_float();
+	layer->name			= node.attribute("name").as_string();
+	layer->width		= node.attribute("width").as_int();
+	layer->height		= node.attribute("height").as_int();
+	layer->speed		= node.child("properties").child("property").attribute("value").as_float();		//Gets the speed property of a layer.
+	//LoadProperties(node, layer->properties);															//Loads the layer's properties and stores them in a list (property_list) //REVISE THIS HERE
 	
-	layer->gid = new uint[layer->height * layer->width];
-	memset(layer->gid, 0, layer->width * layer->height * sizeof(uint));
-	
-	int i = 0;
-	for (pugi::xml_node iterator_node = node.child("data").child("tile"); iterator_node; iterator_node = iterator_node.next_sibling("tile"))
-	{
-		layer->gid[i] = iterator_node.attribute("gid").as_uint();
-		LOG("Layer %u of the tileset.", layer->gid[i]);
-		i++;
-	}
-	
-	pugi::xml_node layer_data = node.child("data");
-	if (layer_data == NULL)
-	{
-		LOG("Error parsing map xml file: Cannot find 'layer/data' tag.");
-		ret = false;
-		RELEASE(layer);
-	}
-	else
-	{
-		//layer->gid = new uint[layer->width*layer->height]; // New
-		//memset(layer->gid, 0, layer->width*layer->height * sizeof(uint)); // New
-		
-		int i = 0;
-		for (pugi::xml_node tileset = node.child("data").child("tile"); tileset; tileset = tileset.next_sibling("tile"))
-		{
-			layer->gid[i] = tileset.attribute("gid").as_uint();
-
-			//LOG("%u", layer->gid[i]);
-			++i;
-		}
-		return true;
-	}
-
-	return true;*/
-
-	bool ret = true;										//LOAD NEEDS TO BE REVISED
-
-	layer->name = node.attribute("name").as_string();
-	layer->width = node.attribute("width").as_int();
-	layer->height = node.attribute("height").as_int();
 	pugi::xml_node layer_data = node.child("data");
 
 	if (layer_data == NULL)
@@ -548,8 +535,8 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 {
 	bool ret = true;
 
-	objectgroup->id = node.attribute("id").as_int();					//Sets the id of a given objectgroup to the id loaded from the tmx map.
-	objectgroup->name = node.attribute("name").as_string();				//Sets the name of a given objectgroup to the name loaded from the tmx map.
+	objectgroup->id		= node.attribute("id").as_int();					//Sets the id of a given objectgroup to the id loaded from the tmx map.
+	objectgroup->name	= node.attribute("name").as_string();				//Sets the name of a given objectgroup to the name loaded from the tmx map.
 
 	int object_count = 0;
 	//This loop iterates all the childs with the object tag, with each iteration of the loop one object is added to the count. Used to reduce memory space waste.
@@ -565,8 +552,8 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 	int index = 0;
 	for (pugi::xml_node object_iterator = node.child("object"); object_iterator; object_iterator = object_iterator.next_sibling("object")) //Iterates again all objects passed in the tmx map.
 	{
-		objectgroup->object[index].id = object_iterator.attribute("id").as_int();			//Gets the id of the object being loaded from tmx and sets it to the corresponding object in the world.
-		objectgroup->object[index].name = object_iterator.attribute("name").as_string();	//Gets the name of the object being loaded from tmx and sets it to the corresponding object in the world.
+		objectgroup->object[index].id		= object_iterator.attribute("id").as_int();			//Gets the id of the object being loaded from tmx and sets it to the corresponding object in the world.
+		objectgroup->object[index].name		= object_iterator.attribute("name").as_string();	//Gets the name of the object being loaded from tmx and sets it to the corresponding object in the world.
 
 		SDL_Rect* collider = new SDL_Rect;								//Allocates memory for the buffer rect(x,y,w,z) that will receive the data members of an object from the objectgroup being iterated.
 
@@ -623,6 +610,64 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 
 	return ret;
 }
+
+bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)							//REVISE THIS HERE. Check why it crashes the game at exit time.
+{
+	bool ret = true;
+
+	pugi::xml_node data = node.child("properties");													//Sets an xml_node with the properties child of the layer node in the map tmx file.
+
+	if (data != NULL)
+	{
+		pugi::xml_node prop;
+		
+		for (prop = data.child("property"); prop != NULL; prop = prop.next_sibling("property"))		//Iterates all property childs from the layer's properties child.
+		{
+			Properties::Property* p = new Properties::Property();									//Allocates memory for a new property.
+
+			p->name				= prop.attribute("name").as_string();								//Sets the Property's name to the name of the property being iterated.
+			p->value.un_float	= prop.attribute("value").as_float();								//Sets the Property's value to the value of the property being iterated.
+
+			properties.property_list.add(p);														//Adds the property beint iterated to property_list.
+		}
+	}
+
+	return ret;
+}
+
+int Properties::Get(p2SString name, int default_value) const					//Revise how to be able to not have a property without default value being nullptr.
+{
+	p2List_item<Property*>* prop_iterator = property_list.start;
+
+	while (prop_iterator != NULL)
+	{
+		if (prop_iterator->data->name == name)										//If the string passed as argument matches the name of a property in the property_list.						
+		{
+			return prop_iterator->data->intValue;										//Returns the value of the property.
+		}
+
+		prop_iterator = prop_iterator->next;
+	}
+
+	return default_value;															//If no property is found then the value returned is 0.
+}
+
+//values Properties::Get(p2SString name, values* default_value) const					//Revise how to be able to not have a property without default value being nullptr.
+//{
+//	p2List_item<Property*>* prop_iterator = property_list.start;
+//
+//	while (prop_iterator != NULL)
+//	{
+//		if (prop_iterator->data->name == name)										//If the string passed as argument matches the name of a property in the property_list.						
+//		{
+//			return prop_iterator->data->value;										//Returns the value of the property.
+//		}
+//
+//		prop_iterator = prop_iterator->next;
+//	}
+//
+//	return *default_value;															//If no property is found then the value returned is 0.
+//}
 
 bool j1Map::SwitchMaps(p2SString* new_map) // switch map function that passes the number of map defined in config.xml
 {
