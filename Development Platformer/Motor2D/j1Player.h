@@ -142,6 +142,8 @@ public:
 	uint			goalFX;			//Goal Reached sfx.
 	uint			tpFX;			//Teleport sfx.
 	uint			activateFX;		//Item Activation sfx.
+	uint			mecha_die;
+	uint			alien_die;
 };
 
 #endif __j1Player_H__
