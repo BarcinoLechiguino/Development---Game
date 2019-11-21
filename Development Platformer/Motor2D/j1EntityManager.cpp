@@ -229,12 +229,12 @@ void j1EntityManager::SpawnEnemy()
 			break;
 		}
 
-		if (enemy != NULL)
-		{
-			entities.add(enemy);																									//The entity is added to the entities list
-			enemy->Start();																											//The entity's start method is called.
-			break;
-		}
+		//if (enemy != NULL)
+		//{
+		//	entities.add(enemy);																									//The entity is added to the entities list
+		//	enemy->Start();																											//The entity's start method is called.
+		//	break;
+		//}
 	}
 }
 

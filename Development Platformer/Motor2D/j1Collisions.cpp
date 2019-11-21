@@ -3,8 +3,10 @@
 #include "j1Map.h"
 #include "j1Render.h"
 #include "p2Log.h"
-#include "j1EntityManager.h"  //Erase this later
 #include "Brofiler\Brofiler.h"
+
+class j1Render;
+class j1EntityManager;
 
 //With the constructor call collider_debug (draw colliders on screen) is set to true or false.
 j1Collisions::j1Collisions() : j1Module()
@@ -64,15 +66,15 @@ bool j1Collisions::PreUpdate()
 
 			if (C1 != C2)											//If data members of C1 are different from the data members of C2, then this will be run.
 			{
-				if (C1->Check_Collision(C2->collider) == true && (C1->type == PLAYER || C2->type == PLAYER)) //Will be run if there is a collision and any of the colliders are of the type PLAYER.
+				if (C1->Check_Collision(C2->collider) == true /*&& (C1->type == PLAYER || C2->type == PLAYER)*/) //Will be run if there is a collision and any of the colliders are of the type PLAYER.
 				{
 					if (C1->callback)
 					{
 						C1->callback->OnCollision(C1, C2);			//Callback sends the OnCollision methods in P1's and P2's modules the colliders being iterated in this iteration.
 					}
-					else if (C1->callback)
+					else if (C2->callback)
 					{
-						C2->callback->OnCollision(C2, C1);
+						C2->callback->OnCollision(C2, C1);			//REVISE THIS HERE
 					}
 				}
 			}

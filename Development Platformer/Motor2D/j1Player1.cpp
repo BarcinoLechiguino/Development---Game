@@ -304,7 +304,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 {
 	if (player.GodMode == false)
 	{	
-		if (C2->type == Object_Type::PLAYER)
+		/*if (C2->type == Object_Type::PLAYER)
 		{
 			Collider* temp = C1;
 			C1 = C2;
@@ -313,7 +313,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 		if (C1->type != Object_Type::PLAYER)
 		{
 			return;
-		}
+		}*/
 
 		if (C1->type == Object_Type::PLAYER)
 		{
