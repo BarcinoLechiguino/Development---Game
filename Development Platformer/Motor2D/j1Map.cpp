@@ -61,15 +61,15 @@ void j1Map::Draw()
 	for (layer; layer != NULL; layer = layer->next)																	//As long as the item is not null.
 	{
 		cam_tilePos.x = (-App->render->camera.x * layer->data->speed) / data.tile_width;							//Position in the X axis of the camera in tiles. Takes into account parallax speed.
+		//cam_tilePos.x = (-App->render->cam.MidPos.x * layer->data->speed) / data.tile_width;
 		cam_tilePos.y = (-App->render->camera.y * layer->data->speed) / data.tile_height;							//Position in the Y axis of the camera in tiles. Takes into account parallax speed.
-		
-		int tile_index = 0;																							//Will store the tile's index number so the correct tile is loaded.
-		int j = cam_tilePos.y;
-		for (uint y = /*cam_tilePos.y*/0; y < /*(cam_tilePos.y + cam_tileHeight)*/data.height; ++y)										//While y is less than the camera's height in tiles
+		//cam_tilePos.y = (-App->render->cam.MidPos.y * layer->data->speed) / data.tile_height;
+
+		for (uint y = cam_tilePos.y; y < (cam_tilePos.y + cam_tileHeight); ++y)										//While y is less than the camera's height in tiles
 		{
-			for (uint x = /*cam_tilePos.x*/0; x < /*(cam_tilePos.x + cam_tileWidth)*/data.width; ++x)									//While x is less than the camera's width in tiles.
+			for (uint x = cam_tilePos.x; x < (cam_tilePos.x + cam_tileWidth); ++x)									//While x is less than the camera's width in tiles.
 			{	
-				//tile_index = x + y * data.tile_width;
+				tile_index = layer->data->Get(x, y)/*x + y * data.tile_width*/;
 				
 				int tile_id = layer->data->gid[tile_index];															//Gets the tile id from the tile index.
 				if (tile_id > 0)																					//If tile_id is not 0
@@ -82,78 +82,67 @@ void j1Map::Draw()
 						SDL_Rect tile_hitBox = {pos.x, pos.y, data.tile_width, data.tile_height};					//Sets a rectangle that will act as hitbox when the cameraCulling on collision checks if the tile is inside or outside the camera boundaries. 
 
 					
-					//Revise how to make the camera culling not erase the parallax elements	
-					if (layer->data->name == "Parallax")
-					{
-						App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect, false, layer->data->speed);	//As we need to add parallax to this layer, we pass a value as speed argument.
-					}
-					else if (layer->data->name == "ParallaxDecor")
-					{
-						App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect, false, layer->data->speed);
-					}
-						
-						if (camera_collider.Check_Collision(tile_hitBox))											//Checks if the tile is inside or outside the camera boundaries by checking if there  has been a collision between the camera rect and the tile rect. 
+						if (layer->data->name == "Background")													//If the name of the layer  is "Background" its elements will be blitted with the specified parameters.
 						{
-							//App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							
-							if (layer->data->name == "Background")													//If the name of the layer  is "Background" its elements will be blitted with the specified parameters.
-							{
-								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							}
-							//else if (layer->data->name == "Parallax")
-							//{
-							//	App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect, false, 0.5f);			//As we need to add parallax to this layer, we pass a value as speed argument.
-							//}
-							//else if (layer->data->name == "ParallaxDecor")
-							//{
-							//	App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect, false, 0.75f);
-							//}
-							else if (layer->data->name == "Decor")
-							{
-								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							}
-							else if (layer->data->name == "Ground")
-							{
-								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							}
-							if (layer->data->name == "Platforms")
-							{
-								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							}
-							else if (layer->data->name == "Hazards")
-							{
-								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							}
-							else if (layer->data->name == "Desactivable")
-							{
-								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							}
-							else  if (layer->data->name == "Activable")
-							{
-								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							}
-							else if (layer->data->name == "Autosave")
-							{
-								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							}
-							else if (layer->data->name == "Portal")
-							{
-								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							}
-
-							////---------------------------TUTORIAL MAP LAYERS----------------------
-							//else if (layer->data->name == "Floor")
-							//{
-							//	App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							//}
-							//else if (layer->data->name == "Letters")
-							//{
-							//	App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							//}
+							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
 						}
+						else if (layer->data->name == "Parallax")
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect, false, layer->data->speed);	//As we need to add parallax to this layer, we pass a value as speed argument.
+						}
+						else if (layer->data->name == "ParallaxDecor")
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect, false, layer->data->speed);
+						}
+						else if (layer->data->name == "Decor")
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+						}
+						else if (layer->data->name == "Ground")
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+						}
+						if (layer->data->name == "Platforms")
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+						}
+						else if (layer->data->name == "Hazards")
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+						}
+						else if (layer->data->name == "Desactivable")
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+						}
+						else  if (layer->data->name == "Activable")
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+						}
+						else if (layer->data->name == "Autosave")
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+						}
+						else if (layer->data->name == "Portal")
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+						}
+
+						////---------------------------TUTORIAL MAP LAYERS----------------------
+						//else if (layer->data->name == "Floor")
+						//{
+						//	App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+						//}
+						//else if (layer->data->name == "Letters")
+						//{
+						//	App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+						//}
+						
+						//if (camera_collider.Check_Collision(tile_hitBox))											//Checks if the tile is inside or outside the camera boundaries by checking if there  has been a collision between the camera rect and the tile rect. 
+						//{
+
+						//}
 					}
 				}
-				tile_index++;
 			}
 		}
 	}

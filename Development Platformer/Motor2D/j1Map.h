@@ -205,7 +205,9 @@ public:
 	Collider		camera_collider;		//Collider that will have the same position and dimensions as the camera. Will be used for camera culling.
 	uint			winWidth;				//Declared to store the window's width.
 	uint			winHeight;				//Declared to store the window's height.
+	
 	iPoint			cam_tilePos;			//Position of the camera in the X and Y axis in tiles.
+	int				tile_index;				//Will store the tile's index number so the correct tile is loaded.
 
 	float			bg_parallax_spd;		//Parallax speed of the background layer
 	float			first_parallax_spd;		//Parallax speed of the first parallax layer.
