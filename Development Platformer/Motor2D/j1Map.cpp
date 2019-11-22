@@ -65,9 +65,9 @@ void j1Map::Draw()
 		cam_tilePos.y = (-App->render->camera.y * layer->data->speed) / data.tile_height;							//Position in the Y axis of the camera in tiles. Takes into account parallax speed.
 		//cam_tilePos.y = (-App->render->cam.MidPos.y * layer->data->speed) / data.tile_height;
 
-		for (uint y = cam_tilePos.y; y < (cam_tilePos.y + cam_tileHeight + 2); ++y)										//While y is less than the camera's height in tiles
+		for (uint y = cam_tilePos.y; y < (cam_tilePos.y + cam_tileHeight + 2); ++y)									//While y is less than the camera's height in tiles //Change it so it is not hardcoded.
 		{
-			for (uint x = cam_tilePos.x; x < (cam_tilePos.x + cam_tileWidth + 2); ++x)									//While x is less than the camera's width in tiles.
+			for (uint x = cam_tilePos.x; x < (cam_tilePos.x + cam_tileWidth + 2); ++x)								//While x is less than the camera's width in tiles. //Change it so it is not hardcoded.
 			{	
 				tile_index = layer->data->Get(x, y)/*x + y * data.tile_width*/;
 				
