@@ -65,9 +65,9 @@ void j1Map::Draw()
 		cam_tilePos.y = (-App->render->camera.y * layer->data->speed) / data.tile_height;							//Position in the Y axis of the camera in tiles. Takes into account parallax speed.
 		//cam_tilePos.y = (-App->render->cam.MidPos.y * layer->data->speed) / data.tile_height;
 
-		for (uint y = cam_tilePos.y; y < (cam_tilePos.y + cam_tileHeight); ++y)										//While y is less than the camera's height in tiles
+		for (uint y = cam_tilePos.y; y < (cam_tilePos.y + cam_tileHeight + 2); ++y)										//While y is less than the camera's height in tiles
 		{
-			for (uint x = cam_tilePos.x; x < (cam_tilePos.x + cam_tileWidth); ++x)									//While x is less than the camera's width in tiles.
+			for (uint x = cam_tilePos.x; x < (cam_tilePos.x + cam_tileWidth + 2); ++x)									//While x is less than the camera's width in tiles.
 			{	
 				tile_index = layer->data->Get(x, y)/*x + y * data.tile_width*/;
 				
@@ -98,11 +98,7 @@ void j1Map::Draw()
 						{
 							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
 						}
-						else if (layer->data->name == "Ground")
-						{
-							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-						}
-						if (layer->data->name == "Platforms")
+						else if (layer->data->name == "Platforms")
 						{
 							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
 						}
@@ -111,14 +107,6 @@ void j1Map::Draw()
 							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
 						}
 						else if (layer->data->name == "Desactivable")
-						{
-							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-						}
-						else  if (layer->data->name == "Activable")
-						{
-							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-						}
-						else if (layer->data->name == "Autosave")
 						{
 							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
 						}
@@ -341,7 +329,7 @@ bool j1Map::Load(const char* file_name)
 			MapLayer* layer = item_layer->data;
 			LOG("Layer ----");
 			LOG("name: %s", layer->name.GetString());
-			LOG("tile width: %d tile height: %d", layer->width, layer->height);
+			LOG("layer width: %d layer height: %d", layer->width, layer->height);
 			LOG("parallax speed: %f", layer->speed);
 			item_layer = item_layer->next;
 		}

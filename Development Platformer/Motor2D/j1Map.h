@@ -95,9 +95,9 @@ struct MapLayer
 {
 	p2SString			name;			//Map name.
 	uint*				gid;			//Tile Id.
-	uint				width;			//Tile Width.
-	uint				height;			//Tile Height.
-	uint				size;			//Tile / Map size?.
+	uint				width;			//Layer width in tiles.
+	uint				height;			//Layer height in tiles.
+	uint				size;			//width * height.
 	float				speed;			//Parallax speed.
 	Properties			properties;		//Properties of a layer.
 
