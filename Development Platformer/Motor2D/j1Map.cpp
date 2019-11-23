@@ -61,9 +61,7 @@ void j1Map::Draw()
 	for (layer; layer != NULL; layer = layer->next)																	//As long as the item is not null.
 	{
 		cam_tilePos.x = (-App->render->camera.x * layer->data->speed) / data.tile_width;							//Position in the X axis of the camera in tiles. Takes into account parallax speed.
-		//cam_tilePos.x = (-App->render->cam.MidPos.x * layer->data->speed) / data.tile_width;
 		cam_tilePos.y = (-App->render->camera.y * layer->data->speed) / data.tile_height;							//Position in the Y axis of the camera in tiles. Takes into account parallax speed.
-		//cam_tilePos.y = (-App->render->cam.MidPos.y * layer->data->speed) / data.tile_height;
 
 		for (uint y = cam_tilePos.y; y < (cam_tilePos.y + cam_tileHeight + 2); ++y)									//While y is less than the camera's height in tiles //Change it so it is not hardcoded.
 		{
@@ -82,7 +80,7 @@ void j1Map::Draw()
 						SDL_Rect tile_hitBox = {pos.x, pos.y, data.tile_width, data.tile_height};					//Sets a rectangle that will act as hitbox when the cameraCulling on collision checks if the tile is inside or outside the camera boundaries. 
 
 					
-						if (layer->data->name == "Background")													//If the name of the layer  is "Background" its elements will be blitted with the specified parameters.
+						if (layer->data->name == "Background")														//If the name of the layer  is "Background" its elements will be blitted with the specified parameters.
 						{
 							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
 						}

@@ -67,15 +67,7 @@ inline const char* const PATH(const char* folder, const char* file)
 
 //Own Definitions --> Revise which are needed.
 #define ALPHA 80
-#define GOD_MODE_SPEED 250
-#define HALF 2;
-#define FOURTH 4;
-#define FLIP_MARGIN 22
-#define FRONTFLIP_START -3
-#define FRONTFLIP_END 3
-#define APEX 0
 #define GOAL_Y 96
 #define GOAL_HEIGHT 160
-#define MAX_LAYERS
 
 #endif
