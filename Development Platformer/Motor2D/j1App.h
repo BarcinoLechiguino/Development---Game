@@ -128,7 +128,7 @@ private:
 	uint32				frames_last_second;		//Calculates the amount of frames that where processed the last second.
 	uint32				prev_sec_frames;		//Stores the number of frames processed last second.
 
-	j1PerfTimer			true_delay_timer;		//Timer that will be used to see the actual amount of time that was delayed to cap the framerate.
+	j1PerfTimer			true_delay_timer;		//Timer that will be used to see the actual amount of delay that was applied to cap the framerate.
 	uint				frame_cap;				//Stores the frames per second cap to be applied.
 	float				dt;						//Keeps track of the amount of time in milliseconds that has passed in a frame. Will be used to make everything (update()) be in the same timestep.
 

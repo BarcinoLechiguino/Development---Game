@@ -11,15 +11,16 @@
 	<scene>
 		<currentMap num="0" />
 	</scene>
+	<entities>
+		<player>
+			<position1 x="338.999969" y="456.279999" />
+		</player>
+		<entities position_x="338.999969" position_y="456.279999" />
+		<entities position_x="182" position_y="456.279999" />
+	</entities>
 	<collisions />
-	<player>
-		<position1 x="124" y="1128.95996" />
-	</player>
-	<player>
-		<position2 x="200" y="1128" />
-	</player>
-	<anonymous />
+	<:anonymous />
 	<renderer>
-		<camera x="0" y="-576" />
+		<camera x="0" y="-101" />
 	</renderer>
 </game_state>

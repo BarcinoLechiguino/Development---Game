@@ -115,31 +115,31 @@ void j1Player::LoadPlayerProperties()
 	player_entity = config_file.child("config").child("entities").child("player");
 
 	//Gets all the required player variables from the config xml file
-	player.speed.x = player_entity.child("speed").attribute("x").as_float();
-	player.speed.y = player_entity.child("speed").attribute("y").as_float();
-	player.max_speed.x = player_entity.child("max_speed").attribute("x").as_float();
-	player.max_speed.y = player_entity.child("max_speed").attribute("y").as_float();
+	player.speed.x			= player_entity.child("speed").attribute("x").as_float();
+	player.speed.y			= player_entity.child("speed").attribute("y").as_float();
+	player.max_speed.x		= player_entity.child("max_speed").attribute("x").as_float();
+	player.max_speed.y		= player_entity.child("max_speed").attribute("y").as_float();
 
-	player.acceleration.x = player_entity.child("acceleration").attribute("x").as_float();
-	player.acceleration.y = player_entity.child("acceleration").attribute("y").as_float();
-	player.gravity = player_entity.child("gravity").attribute("value").as_float();
+	player.acceleration.x	= player_entity.child("acceleration").attribute("x").as_float();
+	player.acceleration.y	= player_entity.child("acceleration").attribute("y").as_float();
+	player.gravity			= player_entity.child("gravity").attribute("value").as_float();
 
-	player.boost_jump.x = player_entity.child("boost_jump").attribute("x").as_float();
-	player.boost_jump.y = player_entity.child("boost_jump").attribute("y").as_float();
+	player.boost_jump.x		= player_entity.child("boost_jump").attribute("x").as_float();
+	player.boost_jump.y		= player_entity.child("boost_jump").attribute("y").as_float();
 
-	sprite_size.x = player_entity.child("sprite_measures").attribute("w").as_int();		//THIS HERE //Maybe change it to two separate variables (spirte_width, sprite_height)
-	sprite_size.y = player_entity.child("sprite_measures").attribute("h").as_int();		//THIS HERE
+	sprite_size.x			= player_entity.child("sprite_measures").attribute("w").as_int();		//THIS HERE //Maybe change it to two separate variables (spirte_width, sprite_height)
+	sprite_size.y			= player_entity.child("sprite_measures").attribute("h").as_int();		//THIS HERE
 
-	player.frontflipStart = player_entity.child("frontflip").attribute("start").as_float();
-	player.frontflipEnd = player_entity.child("frontflip").attribute("end").as_float();
+	player.frontflipStart	= player_entity.child("frontflip").attribute("start").as_float();
+	player.frontflipEnd		= player_entity.child("frontflip").attribute("end").as_float();
 
-	player.lives = player_entity.child("lives").attribute("lives").as_int();
-	player.max_lives = player_entity.child("lives").attribute("lives").as_int();
+	player.lives			= player_entity.child("lives").attribute("lives").as_int();
+	player.max_lives		= player_entity.child("lives").attribute("lives").as_int();
 
-	player.tpCdCount = player_entity.child("tpCooldown").attribute("timer").as_float();
-	player.tpCdTime = player_entity.child("tpCooldown").attribute("cd").as_float();
+	player.tpCdCount		= player_entity.child("tpCooldown").attribute("timer").as_float();
+	player.tpCdTime			= player_entity.child("tpCooldown").attribute("cd").as_float();
 
-	player.godModeSpeed = player_entity.child("godspeed").attribute("gspeed").as_float();
+	player.godModeSpeed		= player_entity.child("godspeed").attribute("gspeed").as_float();
 
 	return;
 }
@@ -176,25 +176,25 @@ bool j1Player::InitPlayer()
 	player.atkCollider = App->collisions->AddCollider(player.atkHitBox, Object_Type::ATTACK, this);
 
 	//Boolean resetting
-	player.grounded = false;
-	player.airborne = false;
-	player.flip = false;
-	player.isCrouching = false;
-	player.isJumping = false;
-	player.isBoostJumping = false;
-	player.item_activated = false;
-	player.isGoingRight = false;
-	player.isGoingLeft = false;
-	player.platformDrop = false;
-	player.tpInCd = false;
-	player.fading = false;
-	player.isAlive = true;
-	player.isDying = false;
-	player.againstRightWall = false;
-	player.againstLeftWall = false;
-	player.againstCeiling = false;
-	player.GodMode = false;
-	player.switch_sprites = false;
+	player.grounded				= false;
+	player.airborne				= false;
+	player.flip					= false;
+	player.isCrouching			= false;
+	player.isJumping			= false;
+	player.isBoostJumping		= false;
+	player.item_activated		= false;
+	player.isGoingRight			= false;
+	player.isGoingLeft			= false;
+	player.platformDrop			= false;
+	player.tpInCd				= false;
+	player.fading				= false;
+	player.isAlive				= true;
+	player.isDying				= false;
+	player.againstRightWall		= false;
+	player.againstLeftWall		= false;
+	player.againstCeiling		= false;
+	player.GodMode				= false;
+	player.switch_sprites		= false;
 
 	return true;
 }

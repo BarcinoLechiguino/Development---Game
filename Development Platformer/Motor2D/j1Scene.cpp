@@ -197,16 +197,6 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 			App->entityManager->player->player.GodMode = true;
 			App->entityManager->player2->player.GodMode = true;
 		}
-
-		//Deactivable bool activation deactivation
-		if (App->map->activated == true)
-		{
-			App->map->activated = false;
-		}
-		else
-		{
-			App->map->activated = true;
-		}
 	}
 
 	//Volume Change

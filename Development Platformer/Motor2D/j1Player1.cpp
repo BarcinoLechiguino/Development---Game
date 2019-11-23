@@ -420,10 +420,14 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			//Player Colliding against an Activable Item
 			if (C2->type == Object_Type::ITEM)
 			{
+				//if (player.item_activated == false)
+				//{
+				//	App->audio->PlayFx(4, 0);					//Item Activation sfx.
+				//}
+
 				player.item_activated = true;				//Records that P1 (or P2) has activated the item.
 				App->entityManager->player2->player.item_activated = true;		//Activates P2's boolean as well. THIS HERE Change all player2 by App->entitymanager->player2->player.pos...
-
-				App->audio->PlayFx(4, 0);					//Item Activation sfx.
+				App->audio->PlayFx(4, 0);
 			}
 
 			//Player colliding against Deactivable surfaces. 
