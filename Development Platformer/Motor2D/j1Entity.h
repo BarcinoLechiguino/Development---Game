@@ -6,13 +6,13 @@
 #include "p2DynArray.h"
 #include "j1Timer.h"
 
-class Animation;
 
+class Animation;
 
 struct Collider;
 struct SDL_Texture;
 
-enum entity_state	//Does not go here. Is it necessary?
+enum class Entity_State	//Does not go here. Is it necessary?
 {
 	IDLE = 0,
 	RIGHT,
@@ -34,8 +34,8 @@ enum class ENTITY_TYPE
 
 struct EntityData
 {
-	ENTITY_TYPE type;
-	iPoint position;
+	ENTITY_TYPE		type;
+	iPoint			position;
 };
 
 class j1Entity : public j1Module
@@ -69,9 +69,12 @@ public:
 
 	//Entity Variables
 	ENTITY_TYPE		type;					//Type of the entity (ENTITY_TYPE::PLAYER...)
+	Entity_State	state;
 	fPoint			position;				//Initial position of the entity.
 	iPoint			sprite_size;			//Size of the entity sprite --> w and h of the entity collider.
 	float			speed;					//Movement speed of the entity.
+
+	//SDL_Rect		HitBox;					//REVISE THIS HERE, TEMPORAL MEASURE FOR ENEMIES
 
 	SDL_Texture*	entity_sprite;			//Sprite / Spritesheet of the entity.
 	Collider*		collider;				//Collider of the entity.

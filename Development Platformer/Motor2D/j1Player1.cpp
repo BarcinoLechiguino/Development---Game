@@ -159,8 +159,16 @@ bool j1Player1::Update(float dt, bool doLogic)
 			position.x += player.speed.x * dt;
 
 			player.flip = false;
-			animation = &running;
 			player.isGoingRight = true;
+
+			if (player.speed.y > 2)
+			{
+				animation = &falling;
+			}
+			else
+			{
+				animation = &running;
+			}
 		}
 
 		break;
@@ -172,13 +180,26 @@ bool j1Player1::Update(float dt, bool doLogic)
 			position.x -= player.speed.x * dt;
 
 			player.flip = true;
-			animation = &running;
 			player.isGoingLeft = true;
+
+			if (player.speed.y > 2)
+			{
+				animation = &falling;
+			}
+			else
+			{
+				animation = &running;
+			}
 		}
 
 		break;
 
 	case Player_State::Crouching:
+
+		/*if (player.speed.y < 2)
+		{
+			animation = &crouching;
+		}*/
 
 		animation = &crouching;
 		player.isCrouching = true;

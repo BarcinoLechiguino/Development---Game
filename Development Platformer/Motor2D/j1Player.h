@@ -67,11 +67,11 @@ struct Player
 	bool			switch_sprites;			//Defines which sprite will P1 have.
 
 
-	SDL_Rect		HitBox;			//Rectangle that represents P1.
-	SDL_Rect		atkHitBox;		//Rectangle that represents P1's attack reach / range.
-	Player_State	state;			//Adds the state enum to P1's variables.
-	Collider*		collider;		//Collider that will be assigned to P1. 
-	Collider*		atkCollider;	//Collider that  will be assigned to P1 as it's attack reach.
+	SDL_Rect		HitBox;					//Rectangle that represents P1.
+	SDL_Rect		atkHitBox;				//Rectangle that represents P1's attack reach / range.
+	Player_State	state;					//Adds the state enum to P1's variables.
+	Collider*		collider;				//Collider that will be assigned to P1. 
+	Collider*		atkCollider;			//Collider that  will be assigned to P1 as it's attack reach.
 };
 
 class j1Player : public j1Entity

@@ -1,5 +1,6 @@
 #include "p2Defs.h"
 #include "p2Log.h"
+#include "p2Point.h"
 #include "j1App.h"
 #include "j1Render.h"
 #include "j1Textures.h"
@@ -10,7 +11,7 @@
 #include "j1Input.h"
 #include "j1Audio.h"
 #include "j1Scene.h"
-#include "p2Point.h"
+#include "j1EntityManager.h"
 #include "Brofiler\Brofiler.h"
 #include <math.h>
 
@@ -581,6 +582,18 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 		{
 			objectgroup->object[index].type = GOAL;						//As the object type string matches "goal" the object's type will be set to GOAL.
 		}
+		
+		// ------------------------------------------- LOADING ENEMIES FROM THE MAP -------------------------------------------
+		else if (object_type == "mecha")								//If the object loaded from the map matches the "mecha" type
+		{
+			App->entityManager->AddEnemy(ENTITY_TYPE::MECHA, object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
+		}
+		else if (object_type == "alien")								//If the object loaded from the map matches the "alien" type
+		{
+			App->entityManager->AddEnemy(ENTITY_TYPE::ALIEN , object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
+		}
+		// --------------------------------------------------------------------------------------------------------------------
+
 		else
 		{
 			objectgroup->object[index].type = UNKNOWN;					//If the object type string does not match any type, the object will be assigned the UKNOWN type.

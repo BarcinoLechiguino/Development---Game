@@ -6,18 +6,22 @@
 #include "Animation.h"
 #include "p2Point.h"
 
-class Mecha : public j1Entity
+class j1Enemy : public j1Entity
 {
 public:
-	Mecha(int x, int y, ENTITY_TYPE type);
+	j1Enemy(int x, int y, ENTITY_TYPE type);
 
-	~Mecha();
+	~j1Enemy();
 
 	bool Awake(pugi::xml_node&);
 
 	bool Start();
 
-	bool Update(float dt);
+	bool Init();
+
+	bool PreUpdate();
+
+	bool Update(float dt,  bool doLogic);
 
 	bool PostUpdate();
 
@@ -33,7 +37,7 @@ public:
 	void Chasing_Path();
 	bool Load_Entity();
 	bool AddAnimationPushbacks();
-	bool LoadMechaProperties(pugi::xml_node& config);
+	bool LoadEnemyProperties(pugi::xml_node& config);
 
 public:
 	p2Point<float>	spawn_position;

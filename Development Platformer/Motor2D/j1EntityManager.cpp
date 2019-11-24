@@ -53,7 +53,7 @@ bool j1EntityManager::Start()
 
 bool j1EntityManager::PreUpdate()
 {
-	//Enemies PreUpdate()
+	SpawnEnemy();
 
 	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
 	{
@@ -220,15 +220,16 @@ void j1EntityManager::SpawnEnemy(/*EntityData& data*/)
 		{
 		case ENTITY_TYPE::MECHA:
 			//enemy = new j1Mecha(enemy_iterator->data->position.x, enemy_iterator->data->position.y, enemy_iterator->data->type);	//Spawns a MECHA type enemy.
-			//
+			//enemy = (j1Mecha*)CreateEntity(ENTITY_TYPE::MECHA, enemy_iterator->data->position.x, enemy_iterator->data->position.y);
 			break;
 
 		case ENTITY_TYPE::ALIEN:
 			//enemy = new j1Alien(enemy_iterator->data->position.x, enemy_iterator->data->position.y, enemy_iterator->data->type);	//Spawns an ALIEN type enemy.
+			//enemy = (j1Alien*)CreateEntity(ENTITY_TYPE::ALIEN, enemy_iterator->data->position.x, enemy_iterator->data->position.y);
 			break;
 		}
 
-		//if (enemy != NULL)
+		//if (enemy != NULL)		//Uncomment when entities can be spawned.
 		//{
 		//	entities.add(enemy);																									//The entity is added to the entities list
 		//	enemy->Start();																											//The entity's start method is called.
@@ -266,7 +267,7 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 	return true;
 }
 
-bool j1EntityManager::Load(pugi::xml_node& data)
+bool j1EntityManager::Load(pugi::xml_node& data)		//Change this.
 {
 	CleanUp();
 	GetPlayer()->Load(data.child("player"));

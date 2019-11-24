@@ -11,11 +11,11 @@ class j1Player;
 class j1Player1;			//Temporal(?)
 class j1Player2;
 
-struct EntityData
-{
-	ENTITY_TYPE		type;
-	iPoint			position;
-};
+//struct EntityData
+//{
+//	ENTITY_TYPE		type;
+//	iPoint			position;
+//};
 
 class j1EntityManager : public j1Module
 {
