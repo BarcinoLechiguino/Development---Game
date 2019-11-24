@@ -11,6 +11,12 @@ class j1Player;
 class j1Player1;			//Temporal(?)
 class j1Player2;
 
+struct EntityData
+{
+	ENTITY_TYPE		type;
+	iPoint			position;
+};
+
 class j1EntityManager : public j1Module
 {
 public:
@@ -33,7 +39,7 @@ public:
 public:
 	j1Entity* CreateEntity(ENTITY_TYPE type, int x = 0, int y = 0);			//Crates a new entity depending on the ENTITY_TYPE passed as argument. 
 	void CreatePlayers();													//Creates P1 and P2. It is called in the j1Scene.cpp.
-	void AddEnemy(ENTITY_TYPE type, int x, int y);							//Iterates entityData_list and sets each data member with the given arguments.
+	void AddEnemy(ENTITY_TYPE type, int x, int y);							//Creates a new entityData pointer that will hold the information passed as an argument and will be added to the entityData_list.
 	void SpawnEnemy();														//Iterates entityData_list and creates an enemy for each list item.
 	void DestroyEntity(j1Entity* entity);									//Calls the CleanUp() method of each entity and then it clears the entities list.
 	

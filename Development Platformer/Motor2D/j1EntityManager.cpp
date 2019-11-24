@@ -199,17 +199,16 @@ void j1EntityManager::CreatePlayers()
 
 void j1EntityManager::AddEnemy(ENTITY_TYPE type, int x, int y)
 {
-	p2List_item<EntityData*>* enemy_iterator = entityData_list.start;
+	EntityData* data = new EntityData();
 
-	for (enemy_iterator; enemy_iterator != NULL; enemy_iterator = enemy_iterator->next)
-	{
-		enemy_iterator->data->position.x = x;
-		enemy_iterator->data->position.y = y;
-		enemy_iterator->data->type = type;
-	}
+	data->position.x = x;
+	data->position.y = y;
+	data->type = type;
+
+	entityData_list.add(data);
 }
 
-void j1EntityManager::SpawnEnemy()
+void j1EntityManager::SpawnEnemy(/*EntityData& data*/)
 {
 	p2List_item<EntityData*>* enemy_iterator = entityData_list.start;
 	
