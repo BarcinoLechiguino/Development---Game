@@ -53,7 +53,7 @@ bool j1EntityManager::Start()
 
 bool j1EntityManager::PreUpdate()
 {
-	SpawnEnemy();
+	SpawnEnemy();							//Should this be here?
 
 	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
 	{
@@ -236,6 +236,8 @@ void j1EntityManager::SpawnEnemy(/*EntityData& data*/)
 		//	break;
 		//}
 	}
+
+	entityData_list.clear();						//Once all enemies have been spawned, the list is cleared.
 }
 
 j1Entity* j1EntityManager::GetPlayer() const
