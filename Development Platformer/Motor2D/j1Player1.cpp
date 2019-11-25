@@ -42,9 +42,9 @@ bool j1Player1::Start()
 	entity_sprite = App->tex->Load("textures/Spritesheets/Character 1/character_spritesheet_I_Buena.png");
 
 	LoadPlayerPosition("player_1", "factoryMap");			//Loads Player 1's position on the map //REVISE THIS HERE For now it is set to the position in the first map, maybe in scene it can be switched? 
-	LoadPlayerProperties();									//Loads the player's properties from the xml file. //THIS HERE
+	LoadEntityProperties();									//Loads the player's properties from the xml file. //THIS HERE
 	InitPlayer();											//Loads P1 in game.
-	LoadPlayerAudio();										//Loads the sfx for player 1.
+	LoadEntityAudio();										//Loads the sfx for player 1.
 								
 	//LoadPlayer1Textures();		//Loads P1's textures in game.
 
@@ -159,8 +159,16 @@ bool j1Player1::Update(float dt, bool doLogic)
 			position.x += player.speed.x * dt;
 
 			player.flip = false;
-			animation = &running;
 			player.isGoingRight = true;
+
+			if (player.speed.y > 2)
+			{
+				animation = &falling;
+			}
+			else
+			{
+				animation = &running;
+			}
 		}
 
 		break;
@@ -172,13 +180,26 @@ bool j1Player1::Update(float dt, bool doLogic)
 			position.x -= player.speed.x * dt;
 
 			player.flip = true;
-			animation = &running;
 			player.isGoingLeft = true;
+
+			if (player.speed.y > 2)
+			{
+				animation = &falling;
+			}
+			else
+			{
+				animation = &running;
+			}
 		}
 
 		break;
 
 	case Player_State::Crouching:
+
+		/*if (player.speed.y < 2)
+		{
+			animation = &crouching;
+		}*/
 
 		animation = &crouching;
 		player.isCrouching = true;
@@ -520,59 +541,6 @@ bool j1Player1::Save(pugi::xml_node&  data) const
 	pos.append_attribute("y") = position.y;			//Saves the position of P1 on  the Y axis the moment Save() is called. "append_" used again to overwrite previous position data.
 	return true;
 }
-
-//bool j1Player1::InitPlayer()								//Initializes all variables and colliders of a player (Position, Colliders...)
-//{
-//	Loads the textures of P1. Switches them according to switch_sprites
-//	/*entity_sprite = new SDL_Texture();*/		//Revise this
-//
-//	entity_sprite = App->tex->Load("textures/Spritesheets/Character 1/character_spritesheet_I_Buena.png");	//THIS HERE
-//
-//	--------------------------------------------Loading the data and colliders of P1--------------------------------------------
-//
-//	//Loads the data of the rectangle that contains P1.
-//	player.HitBox.x = position.x;							//Represents the position in the X axis of P1.		//THIS HERE
-//	player.HitBox.y = position.y;							//Represents the position in the Y axis of P1.
-//	player.HitBox.w = sprite_size.x;						//Represents the width of P1.
-//	player.HitBox.h = sprite_size.y;						//Represents the height of P1.
-//
-//	player.atkHitBox.x = position.x + sprite_size.x;	//Position in the X axis of P1's attack collider.
-//	player.atkHitBox.y = position.y;							//Position in the Y axis of P1's attack collider.
-//	player.atkHitBox.w = sprite_size.x;					//Width of P1's attack collider.
-//	player.atkHitBox.y = sprite_size.y;					//Height of P1's attack collider.
-//
-//	//Adds a collider for the player.
-//	//collider = new Collider();			//THIS HERE
-//
-//	collider = App->collisions->AddCollider(player.HitBox, Object_Type::PLAYER, App->entityManager);				//THIS HERE
-//
-//	//LOG("COLLIDER IS AT POS: (%d, %d)", collider->collider.x, collider->collider.y);
-//
-//	player.atkCollider = App->collisions->AddCollider(player.atkHitBox, Object_Type::ATTACK, this);
-//
-//	//Boolean resetting
-//	player.grounded = false;
-//	player.airborne = false;
-//	player.flip = false;
-//	player.isCrouching = false;
-//	player.isJumping = false;
-//	player.isBoostJumping = false;
-//	player.item_activated = false;
-//	player.isGoingRight = false;
-//	player.isGoingLeft = false;
-//	player.platformDrop = false;
-//	player.tpInCd = false;
-//	player.fading = false;
-//	player.isAlive = true;
-//	player.isDying = false;
-//	player.againstRightWall = false;
-//	player.againstLeftWall = false;
-//	player.againstCeiling = false;
-//	player.GodMode = false;
-//	player.switch_sprites = false;
-//
-//	return true;
-//}
 
 /*bool j1Player1::LoadPlayer1Textures()
 {

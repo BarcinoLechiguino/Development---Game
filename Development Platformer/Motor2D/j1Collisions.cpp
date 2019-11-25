@@ -122,12 +122,9 @@ void j1Collisions::Collider_Debug()
 				App->render->DrawQuad(collider_iterator->data->collider, 0, 255, 0, ALPHA);
 				break;
 
-			case Object_Type::MECHA:			//MECHA collider will be ORANGE
+			case Object_Type::ENEMY:			//MECHA collider will be ORANGE
 				App->render->DrawQuad(collider_iterator->data->collider, 255, 150, 0, ALPHA);
 				break;
-
-			case Object_Type::ALIEN:			//ALIEN collider will be DARK GREEN
-				App->render->DrawQuad(collider_iterator->data->collider, 85, 85, 0, ALPHA);
 
 			case Object_Type::ATTACK:		//ATTACK collider will be CYAN
 				App->render->DrawQuad(collider_iterator->data->collider, 0, 255, 255, ALPHA);

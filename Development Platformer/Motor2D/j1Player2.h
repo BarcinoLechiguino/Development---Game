@@ -48,4 +48,4 @@ public: //P2 Variables
 	void GodModeInput();							//Enables / Disables the God Mode.
 };
 
-#endif __j1Player_2_H__
+#endif // __j1Player_2_H__

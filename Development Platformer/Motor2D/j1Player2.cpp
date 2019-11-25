@@ -43,9 +43,9 @@ bool j1Player2::Start()
 	entity_sprite = App->tex->Load("textures/Spritesheets/Character 2/Character_Spritesheet2_Buena.png");
 
 	LoadPlayerPosition("player_2", "factoryMap");			//Loads Player 2's position on the map //REVISE THIS HERE For now it is set to the position in the first map, maybe in scene it can be switched? 
-	LoadPlayerProperties();									//Loads the player's properties from the xml file. //THIS HERE
+	LoadEntityProperties();									//Loads the player's properties from the xml file. //THIS HERE
 	InitPlayer();											//Loads P2 in game.
-	LoadPlayerAudio();										//Loads the sfx for player 2.
+	LoadEntityAudio();										//Loads the sfx for player 2.
 
 	player.airborne = true;
 	player.item_activated = false;
@@ -142,8 +142,16 @@ bool j1Player2::Update(float dt, bool doLogic)
 			position.x += player.speed.x * dt;
 
 			player.flip = false;
-			animation = &running;
 			player.isGoingRight = true;
+
+			if (player.speed.y > 2)
+			{
+				animation = &falling;
+			}
+			else
+			{
+				animation = &running;
+			}
 		}
 
 		break;
@@ -155,8 +163,16 @@ bool j1Player2::Update(float dt, bool doLogic)
 			position.x -= player.speed.x * dt;
 
 			player.flip = true;
-			animation = &running;
 			player.isGoingLeft = true;
+
+			if (player.speed.y > 2)
+			{
+				animation = &falling;
+			}
+			else
+			{
+				animation = &running;
+			}
 		}
 
 		break;

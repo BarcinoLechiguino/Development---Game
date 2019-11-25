@@ -67,11 +67,11 @@ struct Player
 	bool			switch_sprites;			//Defines which sprite will P1 have.
 
 
-	SDL_Rect		HitBox;			//Rectangle that represents P1.
-	SDL_Rect		atkHitBox;		//Rectangle that represents P1's attack reach / range.
-	Player_State	state;			//Adds the state enum to P1's variables.
-	Collider*		collider;		//Collider that will be assigned to P1. 
-	Collider*		atkCollider;	//Collider that  will be assigned to P1 as it's attack reach.
+	SDL_Rect		HitBox;					//Rectangle that represents P1.
+	SDL_Rect		atkHitBox;				//Rectangle that represents P1's attack reach / range.
+	Player_State	state;					//Adds the state enum to P1's variables.
+	Collider*		collider;				//Collider that will be assigned to P1. 
+	Collider*		atkCollider;			//Collider that  will be assigned to P1 as it's attack reach.
 };
 
 class j1Player : public j1Entity
@@ -100,29 +100,26 @@ public: //P1 Variables
 
 	Player player;
 
-	//void TeleportP2ToP1();											//Moves P2 directly in front of P1. It takes into account where P1 is looking at.
-	//void RespawnP1ToP2();												//Moves P1 directly behind P2 on death.
+	//void TeleportP2ToP1();													//Moves P2 directly in front of P1. It takes into account where P1 is looking at.
+	//void RespawnP1ToP2();														//Moves P1 directly behind P2 on death.
 	
-	virtual void OnCollision(Collider* C1, Collider* C2);				//Collision Logic Handling.
-	bool Load(pugi::xml_node &);										//Loading from xml file.
-	bool Save(pugi::xml_node &) const;									//Saving to xml file.
-	bool LoadAnimationPushbacks();										//Loads the player's animation pushbacks from the xml file.
-	//bool LoadPlayerAnimations();										//Loads the player's animation pushbacks from the xml file.	//Maybe separate the loads? Maybe there is no need to separate.
+	virtual void OnCollision(Collider* C1, Collider* C2);						//Collision Logic Handling.
+	bool Load(pugi::xml_node &);												//Loading from xml file.
+	bool Save(pugi::xml_node &) const;											//Saving to xml file.
 
-	virtual bool LoadPlayerPosition(p2SString playerPosition, p2SString map);		//Loads a player's position given a player.
+	void LoadAnimationPushbacks();												//Loads the player's animation pushbacks from the xml file.
+	void LoadEntityProperties();												//Loads the player's properties.
+	void LoadEntityAudio();														//Loads a player's audio.
 
-	virtual bool InitPlayer();											//Initializes all variables and colliders of the players (Position, Colliders...) and loads them on screen. 
-	virtual void LoadPlayerProperties();								//Loads the player's data from the config file.
-	virtual void LoadPlayerAudio();										//Loads a player's audio.
-	//virtual bool LoadPlayerPosition();								//Loads the player's position from the config file. Takes into account which map the player is at.
-	virtual void LivesCheck(int lives);									//Checks if the player has any lives left.
-	virtual void GodModeInput();										//Enables / Disables the God Mode.
+	virtual bool InitPlayer();													//Initializes all variables and colliders of the players (Position, Colliders...) and loads them on screen. 
+	virtual bool LoadPlayerPosition(p2SString playerPosition, p2SString map);	//Loads the player's position from the config file. Takes into account which map the player is at.
+	virtual void LivesCheck(int lives);											//Checks if the player has any lives left.
+	virtual void GodModeInput();												//Enables / Disables the God Mode.
 
 	virtual void SkillCooldown(bool& inCd, float& cdCounter, float& cdTime);	//Keeps track of any skill's cooldown. Revise --> Pass dt as an argument?
 
-	//bool LoadPlayer1Properties(pugi::xml_node&);						//Loads P2's data from the config xml file.
-	//bool LoadPlayer1Textures();										//Loads P1's textures on screen.
-	//void Restart();													//Resets P1's position to where P1 started the level. 
+	//bool LoadPlayer1Textures();												//Loads P1's textures on screen.
+	//void Restart();															//Resets P1's position to where P1 started the level. 
 
 public:
 	pugi::xml_document	config_file;
@@ -149,4 +146,4 @@ public:
 	uint			alien_die;
 };
 
-#endif __j1Player_H__
+#endif // __j1Player_H__

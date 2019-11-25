@@ -99,8 +99,6 @@ public:
 	j1Player2*			player2;
 	j1Fade_Scene*		fadescene;
 
-	//Temporal measure. Fix later so dt can be private.
-	//float				dt;						//Keeps track of the amount of time in milliseconds that has passed in a frame. Will be used to make everything (update()) be in the same timestep.
 	bool				framesAreCapped;		//Keeps track whether the frame cap is on or off.
 	bool				vsyncIsActive;			//Keeps track whether Vsync is on or off.
 

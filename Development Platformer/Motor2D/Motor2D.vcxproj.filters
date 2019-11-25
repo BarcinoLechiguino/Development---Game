@@ -13,9 +13,6 @@
     <ClCompile Include="j1Player.cpp">
       <Filter>Desenvolupament  ========\Modules\Entities\Players</Filter>
     </ClCompile>
-    <ClCompile Include="Mecha.cpp">
-      <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
-    </ClCompile>
     <ClCompile Include="Alien.cpp">
       <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
     </ClCompile>
@@ -70,6 +67,12 @@
     <ClCompile Include="j1Player2.cpp">
       <Filter>Desenvolupament  ========\Modules\Entities\Players</Filter>
     </ClCompile>
+    <ClCompile Include="j1Enemy.cpp">
+      <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Mecha.cpp">
+      <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -98,9 +101,6 @@
     </ClInclude>
     <ClInclude Include="j1Player.h">
       <Filter>Desenvolupament  ========\Modules\Entities\Players</Filter>
-    </ClInclude>
-    <ClInclude Include="Mecha.h">
-      <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="Alien.h">
       <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
@@ -161,6 +161,12 @@
     </ClInclude>
     <ClInclude Include="j1Player1.h">
       <Filter>Desenvolupament  ========\Modules\Entities\Players</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Enemy.h">
+      <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Mecha.h">
+      <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
