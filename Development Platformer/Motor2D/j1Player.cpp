@@ -78,7 +78,7 @@ bool j1Player::Save(pugi::xml_node&  data) const
 }
 
 //-------------------------------- PLAYER METHODS--------------------------------
-bool j1Player::LoadAnimationPushbacks()
+void j1Player::LoadAnimationPushbacks()
 {
 	idle.LoadAnimation("player", "idle");					//Player's Idle animation.
 	running.LoadAnimation("player", "running");			//Player's Running animation.
@@ -89,7 +89,7 @@ bool j1Player::LoadAnimationPushbacks()
 	falling.LoadAnimation("player", "falling");			//Player's Falling Animation.
 	death.LoadAnimation("player", "death");				//Player's Death Animation.
 
-	return true;
+	return;
 }
 
 bool j1Player::LoadPlayerPosition(p2SString playerPosition, p2SString map)
@@ -108,7 +108,7 @@ bool j1Player::LoadPlayerPosition(p2SString playerPosition, p2SString map)
 	return true;
 }
 
-void j1Player::LoadPlayerProperties()
+void j1Player::LoadEntityProperties()
 {
 	config_file.load_file("config.xml");
 
@@ -127,8 +127,8 @@ void j1Player::LoadPlayerProperties()
 	player.boost_jump.x		= player_entity.child("boost_jump").attribute("x").as_float();
 	player.boost_jump.y		= player_entity.child("boost_jump").attribute("y").as_float();
 
-	sprite_size.x			= player_entity.child("sprite_measures").attribute("w").as_int();		//THIS HERE //Maybe change it to two separate variables (spirte_width, sprite_height)
-	sprite_size.y			= player_entity.child("sprite_measures").attribute("h").as_int();		//THIS HERE
+	sprite_width			= player_entity.child("sprite_measures").attribute("w").as_int();		//THIS HERE //Maybe change it to two separate variables (spirte_width, sprite_height)
+	sprite_height			= player_entity.child("sprite_measures").attribute("h").as_int();		//THIS HERE
 
 	player.frontflipStart	= player_entity.child("frontflip").attribute("start").as_float();
 	player.frontflipEnd		= player_entity.child("frontflip").attribute("end").as_float();
@@ -144,7 +144,7 @@ void j1Player::LoadPlayerProperties()
 	return;
 }
 
-void j1Player::LoadPlayerAudio()
+void j1Player::LoadEntityAudio()
 {
 	jumpFX = App->audio->LoadFx("audio/fx/Jump.wav");
 	deathFX = App->audio->LoadFx("audio/fx/Death.wav");
@@ -162,13 +162,13 @@ bool j1Player::InitPlayer()
 	//Loads the data of the rectangle that contains P1.
 	player.HitBox.x = position.x;							//Represents the position in the X axis of P1.		//THIS HERE
 	player.HitBox.y = position.y;							//Represents the position in the Y axis of P1.
-	player.HitBox.w = sprite_size.x;						//Represents the width of P1.
-	player.HitBox.h = sprite_size.y;						//Represents the height of P1.
+	player.HitBox.w = sprite_width;						//Represents the width of P1.
+	player.HitBox.h = sprite_height;						//Represents the height of P1.
 
-	player.atkHitBox.x = position.x + sprite_size.x;		//Position in the X axis of P1's attack collider.
+	player.atkHitBox.x = position.x + sprite_width;		//Position in the X axis of P1's attack collider.
 	player.atkHitBox.y = position.y;						//Position in the Y axis of P1's attack collider.
-	player.atkHitBox.w = sprite_size.x;						//Width of P1's attack collider.
-	player.atkHitBox.y = sprite_size.y;						//Height of P1's attack collider.
+	player.atkHitBox.w = sprite_width;						//Width of P1's attack collider.
+	player.atkHitBox.y = sprite_height;						//Height of P1's attack collider.
 
 	//Adds a collider for the player.
 	collider = App->collisions->AddCollider(player.HitBox, Object_Type::PLAYER, App->entityManager);				//THIS HERE

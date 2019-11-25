@@ -76,6 +76,11 @@ bool j1Enemy::Save(pugi::xml_node&  data) const
 }
 
 // Enemy methods ---------------------------------------------
+bool j1Enemy::Calculate_Path()
+{
+	return true;
+}
+
 void j1Enemy::Normal_Path()
 {
 
@@ -86,17 +91,22 @@ void j1Enemy::Chasing_Path()
 
 }
 
-bool j1Enemy::Load_Entity()
+//bool j1Enemy::Load_Entity()
+//{
+//	return true;
+//}
+
+void j1Enemy::LoadAnimationPushbacks()
 {
-	return true;
+	return;
 }
 
-bool j1Enemy::AddAnimationPushbacks()
+void j1Enemy::LoadEntityProperties()
 {
-	return true;
+	return;
 }
 
-bool j1Enemy::LoadEnemyProperties(pugi::xml_node& config)
+void j1Enemy::LoadEntityAudio()
 {
-	return true;
+	return;
 }

@@ -12,17 +12,6 @@ class Animation;
 struct Collider;
 struct SDL_Texture;
 
-enum class Entity_State	//Does not go here. Is it necessary?
-{
-	IDLE = 0,
-	RIGHT,
-	LEFT,
-	JUMPING,
-	FALLING,
-	DEAD,
-	HURT
-};
-
 enum class ENTITY_TYPE
 {
 	UNKNOWN_TYPE,
@@ -58,20 +47,22 @@ public:
 
 public:
 	//Entity Methods
-	virtual bool LoadAnimationPushbacks();
 	virtual bool Save(pugi::xml_node&) const;
 	virtual bool Load(pugi::xml_node&);
-	virtual void Restart();								//Maybe not needed THIS HERE
-
+	virtual void Restart();								//Maybe not needed THIS HERE REVISE, CHANGE
+	
 	virtual void BlitEntity(int x, int y, SDL_Rect entity_rect, bool flip);
 	virtual void OnCollision(Collider* c1, Collider* c2); /*{};*/				//If {} are used then the OnCollision on the entity.cpp needs to be erased.
-	//bool Calculate_Path();			//Only for enemiess
+	virtual void LoadAnimationPushbacks();										//Loads an entity's specific animations.
+	virtual void LoadEntityProperties();										//Loads an entity's specific properties.
+	virtual void LoadEntityAudio();												//Loads an entity's specific audios.
 
 	//Entity Variables
 	ENTITY_TYPE		type;					//Type of the entity (ENTITY_TYPE::PLAYER...)
-	Entity_State	state;
 	fPoint			position;				//Initial position of the entity.
-	iPoint			sprite_size;			//Size of the entity sprite --> w and h of the entity collider.
+	//iPoint			sprite_size;			//Size of the entity sprite --> w and h of the entity collider.
+	uint			sprite_width;			//Width of the sprite. Applied to the entity's collider width.
+	uint			sprite_height;			//Height of the sprite. Applied to the entity's collider height.
 	float			speed;					//Movement speed of the entity.
 
 	//SDL_Rect		HitBox;					//REVISE THIS HERE, TEMPORAL MEASURE FOR ENEMIES
@@ -79,8 +70,6 @@ public:
 	SDL_Texture*	entity_sprite;			//Sprite / Spritesheet of the entity.
 	Collider*		collider;				//Collider of the entity.
 	Animation*		animation;				//Animation of the entity.
-	
-	//p2DynArray<iPoint> entityPath;		//Only for enemies
 };
 
-#endif
+#endif // __j1ENTITY_H__

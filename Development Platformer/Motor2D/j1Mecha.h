@@ -2,16 +2,16 @@
 #define __ModuleMecha__
 
 #include "j1Module.h"
-#include "j1Entity.h"
+#include "j1Enemy.h"
 #include "Animation.h"
 #include "p2Point.h"
 
-class Mecha : public j1Entity
+class j1Mecha : public j1Enemy
 {
 public:
-	Mecha(int x, int y, ENTITY_TYPE type);
+	j1Mecha(int x, int y, ENTITY_TYPE type);
 
-	~Mecha();
+	~j1Mecha();
 
 	bool Awake(pugi::xml_node&);
 
@@ -31,22 +31,13 @@ public:
 
 	void Normal_Path();
 	void Chasing_Path();
-	bool Load_Entity();
-	bool AddAnimationPushbacks();
-	bool LoadMechaProperties(pugi::xml_node& config);
+	//bool Load_Entity();
+	void InitMecha();							
+	void LoadAnimationPushbacks();
+	void LoadEntityProperties();
+	void LoadEntityAudio();
 
 public:
-	p2Point<float>	spawn_position;
-	bool grounded = false;
-	bool airborne = false;
-	bool flip = false;
-	bool isGoingRight = false;
-	bool isGoingLeft = false;
-	bool fading = false;
-	bool isAlive = true;
-	bool isDying = false;
-	bool againstRightWall = false;
-	bool againstLeftWall = false;
 
 public:
 	Animation	idle;				//Idle animation.

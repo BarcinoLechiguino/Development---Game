@@ -9,7 +9,7 @@
 #include "j1Player.h"
 #include "j1Player1.h"
 #include "j1Player2.h"
-#include "Mecha.h"
+#include "j1Mecha.h"
 #include "j1Window.h"
 #include "Brofiler\Brofiler.h"
 
@@ -236,7 +236,7 @@ void j1EntityManager::SpawnEnemy(/*EntityData& data*/)
 		//	break;
 		//}
 	}
-
+ 
 	entityData_list.clear();						//Once all enemies have been spawned, the list is cleared.
 }
 

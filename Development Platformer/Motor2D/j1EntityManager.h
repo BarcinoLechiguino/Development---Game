@@ -60,11 +60,11 @@ public:
 	//j1Mecha*				mecha;
 	//j1Alien*				alien;
 
-	p2List<EntityData*>		entityData_list;	//List of the position and ENTITY_TYPE data members of enemy entities.
+	p2List<EntityData*>		entityData_list;	//List of the position and ENTITY_TYPE data members of enemy entities.  Change for an array, its faster.
 
 	float					accumulated_time;	//Accumulates dt as time goes on.
 	float					cycle_length;		//How much time needs to pass / be accumulated before running a cycle. 
 	bool					doLogic;			//Keeps track whether or not the entity needs to do it's logic (pathfinding...)
 };
 
-#endif // !__j1ENTITY_MANAGER_H__
+#endif // __j1ENTITY_MANAGER_H__
