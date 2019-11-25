@@ -115,8 +115,11 @@ void j1Player::LoadEntityProperties()
 	player_entity = config_file.child("config").child("entities").child("player");
 
 	//Gets all the required player variables from the config xml file
-	player.speed.x			= player_entity.child("speed").attribute("x").as_float();
-	player.speed.y			= player_entity.child("speed").attribute("y").as_float();
+	sprite_width = player_entity.child("sprite_size").attribute("w").as_int();
+	sprite_height = player_entity.child("sprite_size").attribute("h").as_int();
+
+	speed.x			= player_entity.child("speed").attribute("x").as_float();
+	speed.y			= player_entity.child("speed").attribute("y").as_float();
 	player.max_speed.x		= player_entity.child("max_speed").attribute("x").as_float();
 	player.max_speed.y		= player_entity.child("max_speed").attribute("y").as_float();
 
@@ -125,10 +128,7 @@ void j1Player::LoadEntityProperties()
 	player.gravity			= player_entity.child("gravity").attribute("value").as_float();
 
 	player.boost_jump.x		= player_entity.child("boost_jump").attribute("x").as_float();
-	player.boost_jump.y		= player_entity.child("boost_jump").attribute("y").as_float();
-
-	sprite_width			= player_entity.child("sprite_measures").attribute("w").as_int();		//THIS HERE //Maybe change it to two separate variables (spirte_width, sprite_height)
-	sprite_height			= player_entity.child("sprite_measures").attribute("h").as_int();		//THIS HERE
+	player.boost_jump.y		= player_entity.child("boost_jump").attribute("y").as_float();	
 
 	player.frontflipStart	= player_entity.child("frontflip").attribute("start").as_float();
 	player.frontflipEnd		= player_entity.child("frontflip").attribute("end").as_float();

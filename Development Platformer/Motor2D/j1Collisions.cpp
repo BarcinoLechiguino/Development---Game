@@ -40,7 +40,7 @@ bool j1Collisions::PreUpdate()
 	//This loop deletes from memory any collider that has been set to be deleted before calculating any new collisions.
 	while (collider_iterator != NULL)
 	{
-		if (collider_iterator->data->delete_collider == true)	//If the delete_collider is set to true this will be run.
+		if (collider_iterator->data->to_delete == true)	//If the delete_collider is set to true this will be run.
 		{
 			collider_list.del(collider_iterator);				//Using the list's properties all colliders set to delete will be deleted from memory.
 		}
@@ -91,11 +91,27 @@ bool j1Collisions::PreUpdate()
 
 bool j1Collisions::Update(float dt)
 {
-	
 	Collider_Debug();
 	return true;
 };
 
+bool j1Collisions::PostUpdate()
+{
+	return true;
+};
+
+bool j1Collisions::CleanUp()
+{
+	//When this is changed to arrays check if the collider being iterated is null or not and then delete it (delete collider, collider = nullptr)
+	/*for (p2List_item<Collider*>* collider_iterator = collider_list.start; collider_iterator != NULL; collider_iterator = collider_iterator->next)
+	{
+		collider_list.del(collider_iterator);
+	}*/
+	
+	return true;
+};
+
+//-------------------------------------------------- COLLIDER METHODS --------------------------------------------------
 //Iterates all the colliders and assigns each type a Draw_Quad() with an identifying colour.
 void j1Collisions::Collider_Debug()
 {
@@ -113,7 +129,7 @@ void j1Collisions::Collider_Debug()
 		{
 			switch (collider_iterator->data->type)	//We declare a switch that will consider collider types as possible cases.
 			{
-			//Declaring a DrawQuad() with a set colour depending of the type of the object/collider that is being iterated at that moment. ALPHA is the transparency value.
+				//Declaring a DrawQuad() with a set colour depending of the type of the object/collider that is being iterated at that moment. ALPHA is the transparency value.
 			case Object_Type::PLAYER:		//PLAYER collider will be GREEN
 				App->render->DrawQuad(collider_iterator->data->collider, 0, 255, 0, ALPHA);
 				break;
@@ -131,7 +147,7 @@ void j1Collisions::Collider_Debug()
 
 			case Object_Type::SOLID:			//SOLID collider will be BLUE
 				App->render->DrawQuad(collider_iterator->data->collider, 0, 0, 255, ALPHA);
-				break; 
+				break;
 
 			case Object_Type::PLATFORM:		//PLATFORM collider will be WHITE
 				App->render->DrawQuad(collider_iterator->data->collider, 255, 255, 255, ALPHA);
@@ -165,15 +181,19 @@ void j1Collisions::Collider_Debug()
 	}
 }
 
-bool j1Collisions::PostUpdate()
+//Loads all the objects that are in the tmx map file and iterates through them generating a new collider for each one of them.
+void j1Collisions::LoadColliderFromMap() // Remember to put in fade to black.
 {
-	return true;
-};
-
-bool j1Collisions::CleanUp()
-{
-	return true;
-};
+	p2List_item<ObjectGroup*>* object_iterator = App->map->data.objectGroups.start;									//Declares a list item pointer that iterates through the ObjectGroup list and sets it starting position to the first objectgroup in the list.  
+	while (object_iterator != NULL)
+	{
+		for (int i = 0; i < object_iterator->data->num_objects; i++)												//This loop will iterate as many times as objects the objectgroup being iterated has. Done like this to avoid wasting memory.
+		{
+			AddCollider(*object_iterator->data->object[i].collider, object_iterator->data->object[i].type, NULL);	//Adds a new collider for each object that is iterated.
+		}
+		object_iterator = object_iterator->next;																	//Gets the next objectGroup that will be iterated through to load all its objects.
+	}
+}
 
 //Generates a new collider with the given arguments and allocates it in memory.
 Collider* j1Collisions::AddCollider(SDL_Rect collider, Object_Type type, j1Module* callback)
@@ -187,20 +207,6 @@ Collider* j1Collisions::AddCollider(SDL_Rect collider, Object_Type type, j1Modul
 	collider_list.add(hitbox);			//Adds the new collider to collider_list.
 
 	return hitbox;
-}
-
-//Loads all the objects that are in the tmx map file and iterates through them generating a new collider for each one of them.
-void j1Collisions::LoadColliderFromMap() // Remember to put in fade to black.
-{
-	p2List_item<ObjectGroup*>* object_iterator = App->map->data.objectGroups.start;									//Declares a list item pointer that iterates through the ObjectGroup list and sets it starting position to the first objectgroup in the list.  
-	while (object_iterator != NULL)
-	{
-		for (int i = 0; i < object_iterator->data->num_objects; i++)												//This loop will iterate as many times as objects the objectgroup being iterated has. Done like this to avoid wasting memory.
-		{
-			AddCollider(*object_iterator->data->object[i].collider, object_iterator->data->object[i].type, NULL);	//Adds a new collider for each object that is iterated.
-		}
-		object_iterator = object_iterator->next;																	//Gets the next objectGroup that will be iterated through to load all its objects.
-	}
 }
 
 //Checks all possible collider collisions

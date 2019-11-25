@@ -38,7 +38,7 @@ bool j1Mecha::Awake(pugi::xml_node& config)
 bool j1Mecha::Start()
 {
 	//Load_Entity();
-	LoadEntityProperties();		//Revise this
+	LoadEntityProperties();
 	InitMecha();
 
 	//Sets the first cycle of animations to the idle set.
@@ -65,6 +65,7 @@ bool j1Mecha::Update(float dt)
 	}
 
 	enemy_HitBox = animation->GetCurrentFrame(dt);						//REVISE THIS HERE.
+	collider->Set_Position(position.x, position.y);
 	BlitEntity(position.x, position.y, enemy_HitBox, flip);
 
 	return true;
@@ -77,12 +78,73 @@ bool j1Mecha::PostUpdate()
 
 bool j1Mecha::CleanUp()
 {
+	App->tex->UnLoad(entity_sprite);
+
+	if (collider != nullptr)
+	{
+		/*delete collider;
+		collider = nullptr;*/
+
+		collider->to_delete = true;
+	}
+
+	if (animation != nullptr)
+	{
+		animation = nullptr;
+	}
+	
 	return true;
 }
 
-void j1Mecha::OnCollision(Collider*c1, Collider* c2)
+void j1Mecha::OnCollision(Collider* C1, Collider* C2)
 {
 	//Entity_On collision function in entity
+	if (C1->type == Object_Type::ENEMY)
+	{
+		//Player Colliding Against Another Player
+		if (C2->type == Object_Type::ATTACK)
+		{
+			//DeathSound
+			CleanUp();
+		}
+
+		//Player colliding against solids
+		if (C2->type == Object_Type::SOLID)
+		{
+			//Player Colliding from TOP or BOTTOM. sssssa
+			if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x + C2->collider.y)		//The first part checks if C1 is contained in the X axis of C2. 
+			{
+				//Player Colliding from TOP.
+				if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y && speed.y != 0)			//This second part checks if C1 is actually colliding vertically down.
+				{
+					speed.y = 0;
+					position.y = C2->collider.y - C1->collider.h + 1;		//THIS HERE
+					grounded = true;
+					LOG("MECHA IS COLLIDING WITH A SOLID FROM ABOVE");
+				}
+			}
+
+			//Player is colliding from LEFT or RIGHT.
+			if (C1->collider.y <= C2->collider.y + C2->collider.h && C1->collider.y + C1->collider.h - 4 >= C2->collider.y)		//The first part checks if C1 is contained in the Y axis of C2.
+			{
+				//Player is colliding from LEFT.
+				if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x)						//This second part checks if C1 is actually colliding from the left side of the collider.
+				{
+					againstLeftWall = true;
+					againstRightWall = false;
+					LOG("MECHA IS COLLIDING WITH A SOLID FROM THE LEFT");
+				}
+
+				//Player is colliding from RIGHT.
+				if (C1->collider.x <= C2->collider.x + C2->collider.w && C1->collider.x >= C2->collider.x)						// This second part checks if C1 is actually colliding from the right side of the collider.
+				{
+					againstRightWall = true;
+					againstLeftWall = false;
+					LOG("MECHA IS COLLIDING WITH A SOLID FROM THE RIGHT");
+				}
+			}
+		}
+	}
 }
 
 bool j1Mecha::Load(pugi::xml_node&)
@@ -94,26 +156,6 @@ bool j1Mecha::Save(pugi::xml_node&) const
 {
 	return true;
 }
-
-//bool j1Mecha::Load_Entity()
-//{
-//	entity_sprite = App->tex->Load("textures/Spritesheets/Enemies/mech-unit/mech-unit.png");
-//
-//	//Hitbox & colliders
-//
-//	grounded = false;
-//	airborne = false;
-//	flip = false;
-//	isGoingRight = false;
-//	isGoingLeft = false;
-//	fading = false;
-//	isAlive = true;
-//	isDying = false;
-//	againstRightWall = false;
-//	againstLeftWall = false;
-//
-//	return true;
-//}
 
 void j1Mecha::Normal_Path()
 {
@@ -135,25 +177,22 @@ void j1Mecha::LoadAnimationPushbacks()
 
 void j1Mecha::LoadEntityProperties()
 {
+	config_file.load_file("config.xml");
+
+	enemy_entity = config_file.child("config").child("entities").child("mecha");
+
 	//Gets all the required player variables from the config xml file
-	//position.x = config.child("mecha").child("position").attribute("x").as_float();				//Position x from entity.h
-	//position.y = config.child("mecha").child("position").attribute("y").as_float();				//Position y from entity.h
-	//spawn_position.x = config.child("mecha").child("position").attribute("x").as_float();
-	//spawn_position.y = config.child("mecha").child("position").attribute("y").as_float();
+	sprite_width			= enemy_entity.child("sprite_size").attribute("w").as_int();
+	sprite_height			= enemy_entity.child("sprite_size").attribute("h").as_int();
 
-	/*velocity.x = config.child("mecha").child("speed").attribute("x").as_float();
-	velocity.y = config.child("mecha").child("speed").attribute("y").as_float();
-	max_speed.x = config.child("mecha").child("max_speed").attribute("x").as_float();
-	max_speed.y = config.child("mecha").child("max_speed").attribute("y").as_float();
+	speed.x					= enemy_entity.child("speed").attribute("x").as_float();
+	speed.y					= enemy_entity.child("speed").attribute("y").as_float();
+	mecha_max_speed.x		= enemy_entity.child("max_speed").attribute("x").as_float();
+	mecha_max_speed.y		= enemy_entity.child("max_speed").attribute("y").as_float();
 
-	acceleration.x = config.child("mecha").child("acceleration").attribute("x").as_float();
-	acceleration.y = config.child("mecha").child("acceleration").attribute("y").as_float();
-	gravity = config.child("mecha").child("gravity").attribute("value").as_float();
-
-	sprite_measures.x = config.child("mecha").child("sprite_measures").attribute("w").as_int();
-	sprite_measures.y = config.child("mecha").child("sprite_measures").attribute("h").as_int();
-
-	lives = config.child("mecha").child("lives").attribute("lives").as_int();*/
+	mecha_acceleration.x	= enemy_entity.child("acceleration").attribute("x").as_float();
+	mecha_acceleration.y	= enemy_entity.child("acceleration").attribute("y").as_float();
+	mecha_gravity			= enemy_entity.child("gravity").attribute("value").as_float();
 
 	return;
 }

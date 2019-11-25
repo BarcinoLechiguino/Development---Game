@@ -40,21 +40,21 @@ public:
 	j1Entity* CreateEntity(ENTITY_TYPE type, int x = 0, int y = 0);			//Crates a new entity depending on the ENTITY_TYPE passed as argument. 
 	void CreatePlayers();													//Creates P1 and P2. It is called in the j1Scene.cpp.
 	void AddEnemy(ENTITY_TYPE type, int x, int y);							//Creates a new entityData pointer that will hold the information passed as an argument and will be added to the entityData_list.
-	void SpawnEnemy();														//Iterates entityData_list and creates an enemy for each list item.
-	void DestroyEntity(j1Entity* entity);									//Calls the CleanUp() method of each entity and then it clears the entities list.
+	void SpawnEnemies();													//Iterates entityData_list and creates an enemy for each list item.
+	void DestroyEntities();									//Calls the CleanUp() method of each entity and then it clears the entities list.
 	
 	void OnCollision(Collider* C1, Collider* C2);
 
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
-	j1Entity* GetPlayer() const;
+	//j1Entity* GetPlayer() const;
 
 public:
 	pugi::xml_node	config;
 	
 	p2List<j1Entity*>		entities;			//List of entities. Each created entity will be added to this list and then iterated in the class methods (Update()...)
-	j1Player*				player;				//Pointer to the j1Player1 class. Will represent P1. Change name to player1 later.
+	j1Player*				player;				//Pointer to the j1Player1 class. Will represent P1. The pointer will be from the mother class and later it will be setted to player 1 (CreateEntity())
 	j1Player*				player2;			//Pointer to the j1Player1 class. Will represent P2.
 	j1Player2*				player2Copy;		//Pointer to the j1Player1 class. Will represent P2.
 	//j1Mecha*				mecha;

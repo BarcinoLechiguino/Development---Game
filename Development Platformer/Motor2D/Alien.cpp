@@ -72,6 +72,18 @@ bool Alien::PostUpdate()
 
 bool Alien::CleanUp()
 {
+	App->tex->UnLoad(entity_sprite);
+
+	if (collider != nullptr)
+	{
+		collider->to_delete = true;
+	}
+
+	if (animation != nullptr)
+	{
+		animation = nullptr;
+	}
+	
 	return true;
 }
 
@@ -135,7 +147,7 @@ bool Alien::LoadAlienProperties(pugi::xml_node& config)
 	spawn_position.x = config.child("alien").child("position").attribute("x").as_float();
 	spawn_position.y = config.child("alien").child("position").attribute("y").as_float();
 
-	speed = config.child("alien").child("speed").attribute("x").as_float();
+	speed.x = config.child("alien").child("speed").attribute("x").as_float();
 	//velocity.x = config.child("alien").child("speed").attribute("x").as_float();
 	//velocity.y = config.child("alien").child("speed").attribute("y").as_float();
 	//max_speed.x = config.child("alien").child("max_speed").attribute("x").as_float();

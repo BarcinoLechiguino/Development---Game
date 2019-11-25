@@ -31,7 +31,7 @@ struct Player
 {
 	//p2Point<float>	position;			//Point with the position of P1 on the world. NOT NEEDED?
 	p2Point<float>	spawn_position;			//Keeps record of the first position(x, y) of P1 when spawns in the map.
-	p2Point<float>	speed;					//P1's Speed Vector Variable. (Not actually declared as a vector but that is irrelevant to us right now)
+	//p2Point<float>	speed;					//P1's Speed Vector Variable. (Not actually declared as a vector but that is irrelevant to us right now)
 	p2Point<float>	max_speed;				//P1's Cruiser Speed for both axis.
 	p2Point<float>	acceleration;			//Sets how much time it takes P1 to reach Cruiser Speed horizontally and/or vertically.
 	p2Point<float>	boost_jump;				//Sets how much vertical or horizontal impulse will P1 get.

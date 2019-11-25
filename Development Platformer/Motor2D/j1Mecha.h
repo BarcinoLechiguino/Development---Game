@@ -38,6 +38,10 @@ public:
 	void LoadEntityAudio();
 
 public:
+	fPoint			mecha_speed;			//Change it later so it is a global value. Put it in entity.h
+	fPoint			mecha_max_speed;
+	fPoint			mecha_acceleration;
+	float			mecha_gravity;
 
 public:
 	Animation	idle;				//Idle animation.
