@@ -50486,7 +50486,7 @@
   <object id="154" name="Mecha" type="mecha" x="3328" y="224" width="64" height="96"/>
   <object id="158" name="Mecha" type="mecha" x="4192" y="992" width="64" height="96"/>
  </objectgroup>
- <objectgroup color="#555500" id="24" name="Alien">
+ <objectgroup color="#555500" id="24" name="Alien" visible="0">
   <object id="150" name="Alien" type="alien" x="1888" y="992" width="64" height="64"/>
   <object id="151" name="Alien" type="alien" x="2784" y="576" width="64" height="64"/>
   <object id="155" name="Alien" type="alien" x="3200" y="768" width="64" height="64"/>

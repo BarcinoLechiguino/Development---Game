@@ -17,7 +17,7 @@ public:
 
 	bool Start();
 
-	bool Update(float dt);
+	bool Update(float dt, bool doLogic);
 
 	bool PostUpdate();
 

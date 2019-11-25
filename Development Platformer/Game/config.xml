@@ -82,7 +82,7 @@
       <max_speed x="240.0f" y="500.0f"/>
       <acceleration x="60.0f" y="450.0f"/>
       <gravity value="40.0f"/>
-      <sprite_size w="38" h="58"/>
+      <sprite_size w="64" h="96"/>
       <lives lives="1"/>
     </mecha>
 

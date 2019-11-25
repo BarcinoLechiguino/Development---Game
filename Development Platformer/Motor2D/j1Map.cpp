@@ -97,6 +97,10 @@ void j1Map::Draw()
 						{
 							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
 						}
+						else if (layer->data->name == "Ground")
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+						}
 						else if (layer->data->name == "Platforms")
 						{
 							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
@@ -114,7 +118,16 @@ void j1Map::Draw()
 							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
 						}
 
-						////---------------------------TUTORIAL MAP LAYERS----------------------
+						//---------------------- PATHFINDING META TILES ----------------------
+						/*else if (layer->data->name == "PathfindingCollisions")
+						{
+							if (PathfindingDebug == true)
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							}
+						}*/
+						
+						//---------------------------TUTORIAL MAP LAYERS----------------------
 						//else if (layer->data->name == "Floor")
 						//{
 						//	App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);

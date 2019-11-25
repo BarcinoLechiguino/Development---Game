@@ -115,11 +115,11 @@ void j1Player::LoadEntityProperties()
 	player_entity = config_file.child("config").child("entities").child("player");
 
 	//Gets all the required player variables from the config xml file
-	sprite_width = player_entity.child("sprite_size").attribute("w").as_int();
-	sprite_height = player_entity.child("sprite_size").attribute("h").as_int();
+	sprite_width			= player_entity.child("sprite_size").attribute("w").as_int();
+	sprite_height			= player_entity.child("sprite_size").attribute("h").as_int();
 
-	speed.x			= player_entity.child("speed").attribute("x").as_float();
-	speed.y			= player_entity.child("speed").attribute("y").as_float();
+	speed.x					= player_entity.child("speed").attribute("x").as_float();
+	speed.y					= player_entity.child("speed").attribute("y").as_float();
 	player.max_speed.x		= player_entity.child("max_speed").attribute("x").as_float();
 	player.max_speed.y		= player_entity.child("max_speed").attribute("y").as_float();
 

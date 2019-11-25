@@ -41,7 +41,7 @@ bool j1Player1::Start()
 {
 	entity_sprite = App->tex->Load("textures/Spritesheets/Character 1/character_spritesheet_I_Buena.png");
 
-	LoadPlayerPosition("player_1", "factoryMap");			//Loads Player 1's position on the map //REVISE THIS HERE For now it is set to the position in the first map, maybe in scene it can be switched? 
+	LoadPlayerPosition("player_1", "factoryMap");			//Change this so strings arent hardcoded //Loads Player 1's position on the map //REVISE THIS HERE For now it is set to the position in the first map, maybe in scene it can be switched? 
 	LoadEntityProperties();									//Loads the player's properties from the xml file. //THIS HERE
 	InitPlayer();											//Loads P1 in game.
 	LoadEntityAudio();										//Loads the sfx for player 1.
@@ -547,16 +547,16 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			}
 
 			//Player colliding against the Goal
-			if (C2->type == Object_Type::GOAL)
+			if (C2->type == Object_Type::GOAL)		//CHANGE THIS, USE SwitchMaps() or ChangeMaps()
 			{
 				if (C1->collider.y > GOAL_Y && C1->collider.y < GOAL_HEIGHT)	//Dirty way to know which portal goal has been reached.
 				{
-					App->fadescene->FadeToBlack("1st_Level.tmx");				//Loads the 1st level.
+					App->fadescene->FadeToBlack("Test_Map.tmx");				//Loads the 1st level.
 					App->map->Restart_Cam();
 				}
 				else
 				{
-					App->fadescene->FadeToBlack("Tutorial_Level.tmx");			//Loads the 2nd level.
+					App->fadescene->FadeToBlack("Test_Map_2.tmx");				//Loads the 2nd level.
 					App->map->Restart_Cam();
 				}
 

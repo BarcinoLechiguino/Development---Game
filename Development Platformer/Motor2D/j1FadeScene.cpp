@@ -53,7 +53,7 @@ bool j1Fade_Scene::Update(float dt)
 		{
 			if (now >= total_time) //Point where the screen is totally black, and the new map is loaded.
 			{
-				ChangeMap(mapName);
+				ChangeMap(mapName);								//Here the map is changed
 				
 				total_time += total_time;
 				start_time = SDL_GetTicks();
@@ -118,10 +118,12 @@ bool j1Fade_Scene::ChangeMap(const char* newMap)
 
 	App->map->Load(newMap);						//Loads a specified map
 	App->collisions->LoadColliderFromMap();		//Load Collisions
-	App->entityManager->player->InitPlayer();	//Load / Reset P1	//THIS HERE
-	App->entityManager->player2->InitPlayer();	//Load / Reset P2
-	//App->player1->LoadPlayer1Textures();		//Load / Reset P1's textures.
-	//App->player1->LoadPlayer1Textures();		//Load / Reset P2's textures.
+	
+	//App->entityManager->CreatePlayers();
+	App->entityManager->player->Start();		//Load / Reset P1	//REVISE THIS HERE. Should players be loaded like this?
+	App->entityManager->player2->Start();		//Load / Reset P2
+	//App->entityManager->SpawnEnemies();
+	//App->scene->Start();						//This breaks the game
 
 	return ret;
 }

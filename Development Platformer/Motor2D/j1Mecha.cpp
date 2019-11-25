@@ -41,8 +41,6 @@ bool j1Mecha::Start()
 	LoadEntityProperties();
 	InitMecha();
 
-	//Sets the first cycle of animations to the idle set.
-	animation = &idle;
 	airborne = true;
 
 	state = Entity_State::IDLE;
@@ -50,7 +48,7 @@ bool j1Mecha::Start()
 	return true;
 }
 
-bool j1Mecha::Update(float dt)
+bool j1Mecha::Update(float dt, bool doLogic)
 {
  BROFILER_CATEGORY("Mecha Update", Profiler::Color::AliceBlue);
 	//CalculatePath
@@ -170,6 +168,7 @@ void j1Mecha::Chasing_Path()
 void j1Mecha::LoadAnimationPushbacks()
 {
 	idle.LoadAnimation("mecha", "idle");
+	//idle.LoadAnimation("mecha", "running");
 	running.LoadAnimation("mecha", "running");
 
 	return;
@@ -200,14 +199,14 @@ void j1Mecha::LoadEntityProperties()
 void j1Mecha::InitMecha()
 {
 	entity_sprite = App->tex->Load("textures/Spritesheets/Enemies/mech-unit/mech-unit.png");
-
+	
 	//Hitbox & colliders
 	enemy_HitBox.x = position.x;
 	enemy_HitBox.y = position.y;
 	enemy_HitBox.w = sprite_width;
 	enemy_HitBox.h = sprite_height;
 
-	collider = App->collisions->AddCollider(enemy_HitBox, Object_Type::ENEMY, App->entityManager);				//THIS HERE
+	collider = App->collisions->AddCollider(enemy_HitBox, Object_Type::ENEMY, App->entityManager);				//THIS HERE This one loads the enemy collider (orange)
 
 	grounded = true;
 	isAlive = true;

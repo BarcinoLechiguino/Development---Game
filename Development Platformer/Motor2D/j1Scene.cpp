@@ -46,11 +46,26 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
+	bool ret;
+
 	to_end = false;
-	bool ret = App->map->Load(map_names.start->data->GetString());
-	App->audio->PlayMusic(App->map->data.music_File.GetString());
+
+	/*if (firstMap == true)
+	{
+		ret = App->map->Load(map_names.start->data->GetString());
+		LOG("Map Name: %s", map_names.start->data->GetString());
+	}
+	else
+	{
+		ret = App->map->Load(map_names.start->next->data->GetString());
+		LOG("Map Name: %s", map_names.start->next->data->GetString());
+	}*/
+	
+	ret = App->map->Load(map_names.start->data->GetString());
 	LOG("Map Name: %s", map_names.start->data->GetString());
 
+	App->audio->PlayMusic(App->map->data.music_File.GetString());
+	
 	App->entityManager->CreatePlayers();								//THIS HERE
 	/*App->entityManager->SpawnEnemies();*/
 	//App->entityManager->CreateEntity(ENTITY_TYPE::PLAYER);
@@ -104,20 +119,18 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 		}
 	}*/
 
-	//Debug Keys
-	//Load First Level Key
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	// ---------------------------------------- DEBUG KEYS ----------------------------------------
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)			//Load First Level Key
 	{
 		//Load_lvl(0);
 
 		//New
-		App->fadescene->FadeToBlack("Tutorial_Level.tmx");
+		App->fadescene->FadeToBlack("Test_map.tmx");
 		App->entityManager->player->Restart();
 		App->entityManager->player2->Restart();
 	}
 
-	//Load Second Level Key
-	else if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)			//Load Second Level Key
 	{
 		//Load_lvl(1);
 
@@ -125,28 +138,24 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 		App->entityManager->player->Restart();
 		App->entityManager->player2->Restart();
 	}
-
-	//Restart Key
-	else if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	
+	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)			//Restart Key
 	{
 		App->entityManager->player->Restart();
 		App->entityManager->player2->Restart();
 	}
 	
-	//Save Game Key
-	else if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)			//Save Game Key
 	{
 		App->SaveGame();
 	}
 	
-	//Load Game Key
-	else if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)			//Load Game Key
 	{
 		App->LoadGame();
 	}
-
-	//Enable / Diable free camera movement Key
-	else if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+	
+	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)			//Enable / Diable free camera movement Key
 	{
 		if (App->render->cam.camera_debug == true)
 		{
@@ -158,8 +167,7 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 		}
 	}
 
-	//Enabling / Disabling frame cap
-	else if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)			//Enabling / Disabling frame cap
 	{
 		if (App->framesAreCapped == true)
 		{
@@ -171,7 +179,7 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 		}
 	}
 
-	else if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)			//Collider Debug Key
 	{
 		if (App->collisions->collider_debug == true)
 		{
@@ -182,9 +190,7 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 			App->collisions->collider_debug = true;
 		}
 	}
-
-	//GodMode Activation Key
-	else if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	else if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)		//God Mode Key
 	{
 		if (App->entityManager->player->player.GodMode)
 		{
@@ -256,8 +262,17 @@ bool j1Scene::CleanUp()
 	{
 		App->entityManager->player2->CleanUp();				//Deletes all data related to P2.
 	}
-	
 
+	/*if (firstMap == true)									//Resets the booleans depending on which map was loaded  / deleted.
+	{
+		firstMap	= false;
+		secondMap	= true;
+	}
+	else
+	{
+		firstMap	= true;
+		secondMap	= false;
+	}*/
 
 	return true;
 }
