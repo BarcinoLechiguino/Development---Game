@@ -256,7 +256,7 @@ bool j1Player1::Update(float dt, bool doLogic)
 	}
 
 	//THIS HERE
-	player.HitBox = animation->GetCurrentFrame(dt);											//THIS HERE //Sets the animation cycle that P1 will have. 
+	player.HitBox = animation->GetCurrentFrame(dt);											//Sets the animation cycle that P1 will have. 
 	collider->Set_Position(position.x, position.y);											//Makes P1's collider follow P1.
 	//p1.atkCollider->Set_Position(position.x + sprite_size.x, sprite_size.y);				//Makes P1's attack collider follow P1.
 

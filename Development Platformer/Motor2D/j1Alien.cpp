@@ -71,6 +71,12 @@ bool j1Alien::Update(float dt, bool doLogic)
 		state = Entity_State::IDLE;
 	}
 
+	if (doLogic == true)
+	{
+		Normal_Path();
+		Chasing_Path();
+	}
+
 	switch (state)
 	{
 	case Entity_State::IDLE:
@@ -96,9 +102,9 @@ bool j1Alien::Update(float dt, bool doLogic)
 		break;
 	}
 
-	enemy_HitBox = animation->GetCurrentFrame(dt);
-	collider->Set_Position(position.x, position.y);
-	BlitEntity(position.x, position.y, enemy_HitBox, flip);
+	enemy_HitBox = animation->GetCurrentFrame(dt);				//Sets the animation cycle that the alien enemies will have. 
+	collider->Set_Position(position.x, position.y);				//Resets the position of the colliders the alien enemies
+	BlitEntity(position.x, position.y, enemy_HitBox, flip);		//Blits the alien enemies on screen.
 
 	return true;
 }

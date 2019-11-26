@@ -76,9 +76,11 @@ bool j1Mecha::Update(float dt, bool doLogic)
 			state = Entity_State::IDLE;
 		}
 
-
-
-		//state = Entity_State::IDLE;
+		if (doLogic == true)
+		{
+			Normal_Path();
+			Chasing_Path();
+		}
 
 		switch (state)
 		{

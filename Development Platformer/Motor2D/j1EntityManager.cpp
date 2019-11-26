@@ -267,6 +267,8 @@ void j1EntityManager::DestroyEntities()
 {
 	BROFILER_CATEGORY("EntityManager PostUpdate", Profiler::Color::FireBrick);
 	//Iterates all entities in the entities list and searches for the entity passed as argument, if it is inside the list and is found, it is then destroyed.
+	LOG("There are %d entities in the entities list.", entities.count());
+	
 	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
 	{ 	
 		if (entity_iterator->data->type != ENTITY_TYPE::PLAYER && entity_iterator->data->type != ENTITY_TYPE::PLAYER2)
