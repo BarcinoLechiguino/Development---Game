@@ -12,6 +12,7 @@
 #include "j1Collisions.h"
 #include "j1FadeScene.h"
 #include "j1Audio.h"
+#include "j1Module.h"
 #include "j1EntityManager.h"
 
 j1Player1::j1Player1(int x, int y, ENTITY_TYPE type) : j1Player(x, y, type) //THIS HERE //Constructor. Called at the first frame.

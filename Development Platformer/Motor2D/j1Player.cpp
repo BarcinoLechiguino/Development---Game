@@ -173,7 +173,7 @@ bool j1Player::InitPlayer()
 	//Adds a collider for the player.
 	collider = App->collisions->AddCollider(player.HitBox, Object_Type::PLAYER, App->entityManager);				//THIS HERE
 
-	player.atkCollider = App->collisions->AddCollider(player.atkHitBox, Object_Type::ATTACK, this);
+	player.atkCollider = App->collisions->AddCollider(player.atkHitBox, Object_Type::ATTACK, App->entityManager);
 
 	//Boolean resetting
 	player.grounded				= false;
