@@ -27,7 +27,7 @@ struct EntityData
 	iPoint			position;
 };
 
-class j1Entity : public j1Module				//Delete module, not needed.
+class j1Entity									//Delete module, not needed.
 {
 public:
 	j1Entity(int x, int y, ENTITY_TYPE type);	// here we will set initial position

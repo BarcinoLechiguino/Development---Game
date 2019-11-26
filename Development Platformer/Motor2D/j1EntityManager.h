@@ -8,6 +8,7 @@
 struct SDL_Texture;
 class j1Entity;
 class j1Player;
+class j1Enemy;
 class j1Player1;			//Temporal(?)
 class j1Player2;
 
@@ -54,11 +55,11 @@ public:
 	pugi::xml_node	config;
 	
 	p2List<j1Entity*>		entities;			//List of entities. Each created entity will be added to this list and then iterated in the class methods (Update()...)
-	j1Player*				player;				//Pointer to the j1Player1 class. Will represent P1. The pointer will be from the mother class and later it will be setted to player 1 (CreateEntity())
-	j1Player*				player2;			//Pointer to the j1Player1 class. Will represent P2.
-	j1Player2*				player2Copy;		//Pointer to the j1Player1 class. Will represent P2.
-	//j1Mecha*				mecha;
-	//j1Alien*				alien;
+	j1Player*				player;				//Pointer to the j1Player class. Will represent P1. The pointer will be from the mother class and later it will be setted to player 1 (CreateEntity())
+	j1Player*				player2;			//Pointer to the j1Player class. Will represent P2.
+	j1Player*				player2Copy;		//Pointer to the j1Player class. Will represent P2.
+	/*j1Enemy*				mecha;
+	j1Enemy*				alien;*/
 
 	p2List<EntityData*>		entityData_list;	//List of the position and ENTITY_TYPE data members of enemy entities.  Change for an array, its faster.
 

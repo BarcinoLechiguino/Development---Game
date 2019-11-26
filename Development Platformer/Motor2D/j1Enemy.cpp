@@ -16,7 +16,7 @@
 j1Enemy::j1Enemy(int x, int y, ENTITY_TYPE type) : j1Entity(x, y, type)  //Constructor. Called at the first frame.
 {
 	//String that will be given to the different functions (Awake(), Load()...) to generate the handler node.
-	name.create("entities"); //The string has to be the same as the name of the node in the xml file.
+	/*name.create("entities");*/ //The string has to be the same as the name of the node in the xml file.
 };
 
 j1Enemy::~j1Enemy()  //Destructor. Called at the last frame.

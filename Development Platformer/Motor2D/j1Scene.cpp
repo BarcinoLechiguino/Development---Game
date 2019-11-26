@@ -126,8 +126,8 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 
 		//New
 		App->fadescene->FadeToBlack("Test_map.tmx");
-		App->entityManager->player->Restart();
-		App->entityManager->player2->Restart();
+		/*App->entityManager->player->Restart();
+		App->entityManager->player2->Restart();*/
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)			//Load Second Level Key
@@ -135,8 +135,8 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 		//Load_lvl(1);
 
 		App->fadescene->FadeToBlack("Test_map_2.tmx");
-		App->entityManager->player->Restart();
-		App->entityManager->player2->Restart();
+		/*App->entityManager->player->Restart();
+		App->entityManager->player2->Restart();*/
 	}
 	
 	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)			//Restart Key

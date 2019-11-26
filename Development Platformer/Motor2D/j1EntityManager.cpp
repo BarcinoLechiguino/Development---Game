@@ -34,7 +34,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 	//Iterates all entities and calls their Awake() methods.
 	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator; entity_iterator = entity_iterator->next)
 	{
-		entity_iterator->data->Awake(config.child(entity_iterator->data->name.GetString()));
+		//entity_iterator->data->Awake(config.child(entity_iterator->data->name.GetString()));
 	}
 
 	return true;
@@ -110,6 +110,7 @@ bool j1EntityManager::CleanUp()
 	entities.clear();									//Deletes all items in the entities list and frees all allocated memory.
 
 	player = NULL;										//Sets the j1Player* player pointer to NULL.
+	player2 = NULL;
 
 	return true;
 }
@@ -136,9 +137,9 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 	//GetPlayer()->Save(data.append_child("player"));
 	for (p2List_item<j1Entity*>* entity = entities.start; entity; entity = entity->next)
 	{
-		pugi::xml_node child = data.append_child(entity->data->name.GetString());
+		/*pugi::xml_node child = data.append_child(entity->data->name.GetString());
 		child.append_attribute("position_x") = entity->data->position.x;
-		child.append_attribute("position_y") = entity->data->position.y;
+		child.append_attribute("position_y") = entity->data->position.y;*/
 	}
 
 	return true;
@@ -249,6 +250,8 @@ void j1EntityManager::SpawnEnemies(/*EntityData& data*/)
 		case ENTITY_TYPE::ALIEN:
 			enemy = new j1Alien(enemy_iterator->data->position.x, enemy_iterator->data->position.y, enemy_iterator->data->type);	//Spawns an ALIEN type enemy.
 			//enemy = (j1Alien*)CreateEntity(ENTITY_TYPE::ALIEN, enemy_iterator->data->position.x, enemy_iterator->data->position.y);
+			//enemy->Start();
+
 			break;
 		}
 
@@ -273,9 +276,9 @@ void j1EntityManager::DestroyEntities()
 	{ 	
 		if (entity_iterator->data->type != ENTITY_TYPE::PLAYER && entity_iterator->data->type != ENTITY_TYPE::PLAYER2)
 		{
-			entity_iterator->data->CleanUp();
-			RELEASE(entity_iterator->data);
-			entities.del(entity_iterator);
+			entity_iterator->data->CleanUp();			//Calls the CleanUp() method of the iterated entity (an enemy entity).
+			RELEASE(entity_iterator->data);				//Deletes the data buffer
+			entities.del(entity_iterator);				//Deletes the entity being iterated from the list.
 			
 			//break;
 		}

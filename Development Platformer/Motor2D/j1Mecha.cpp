@@ -143,6 +143,8 @@ bool j1Mecha::CleanUp()
 	{
 		animation = nullptr;
 	}
+
+	//RELEASE(App->entityManager->mecha);					//Breaks everything
 	
 	return true;
 }

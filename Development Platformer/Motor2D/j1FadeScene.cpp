@@ -108,13 +108,7 @@ bool j1Fade_Scene::ChangeMap(const char* newMap)
 
 	//Put this on scene CleanUp()
 	App->scene->CleanUp();
-
-	//App->collisions->collider_list.clear();					//Deletes all colliders from memory.		//Change for an array. To Clear set the collider_delete bool to true for all colliders.
-	//App->entityManager->player->CleanUp();					//Deletes all data related to P1. 
-	//App->entityManager->player2->CleanUp();					//Deletes all data related to P2.
-	////App->audio->CleanUp();
-
-	//App->map->CleanUp();						//Deletes everything related with the map from memory. (Tilesets, Layers and ObjectGroups)
+	//App->audio->CleanUp();
 
 	App->map->Load(newMap);						//Loads a specified map
 	App->collisions->LoadColliderFromMap();		//Load Collisions
