@@ -13,9 +13,6 @@
     <ClCompile Include="j1Player.cpp">
       <Filter>Desenvolupament  ========\Modules\Entities\Players</Filter>
     </ClCompile>
-    <ClCompile Include="Alien.cpp">
-      <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
-    </ClCompile>
     <ClCompile Include="PugiXml\src\pugixml.cpp">
       <Filter>Desenvolupament  ========\Tools\PuguiXML</Filter>
     </ClCompile>
@@ -76,6 +73,9 @@
     <ClCompile Include="j1Map.cpp">
       <Filter>Desenvolupament  ========\Modules\Map</Filter>
     </ClCompile>
+    <ClCompile Include="j1Alien.cpp">
+      <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -104,9 +104,6 @@
     </ClInclude>
     <ClInclude Include="j1Player.h">
       <Filter>Desenvolupament  ========\Modules\Entities\Players</Filter>
-    </ClInclude>
-    <ClInclude Include="Alien.h">
-      <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="PugiXml\src\pugiconfig.hpp">
       <Filter>Desenvolupament  ========\Tools\PuguiXML</Filter>
@@ -173,6 +170,9 @@
     </ClInclude>
     <ClInclude Include="j1Map.h">
       <Filter>Desenvolupament  ========\Modules\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Alien.h">
+      <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

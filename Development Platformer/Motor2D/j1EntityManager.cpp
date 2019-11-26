@@ -1,5 +1,4 @@
 #include "j1EntityManager.h"
-#include "Alien.h"
 #include "p2Log.h"
 #include "j1Render.h"
 #include "j1Map.h"
@@ -10,6 +9,7 @@
 #include "j1Player1.h"
 #include "j1Player2.h"
 #include "j1Mecha.h"
+#include "j1Alien.h"
 #include "j1Window.h"
 #include "Brofiler\Brofiler.h"
 
@@ -184,7 +184,7 @@ j1Entity* j1EntityManager::CreateEntity(ENTITY_TYPE type, int x, int y)
 		ret = new j1Mecha(x, y, type);
 		break;
 	case ENTITY_TYPE::ALIEN:							//If the ENTITT_TYPE passed as argument is an ALIEN.
-		//ret = new j1Alien(x, y, type);
+		ret = new j1Alien(x, y, type);
 		break;
 	}
 	//ret->type = type;
@@ -203,14 +203,14 @@ void j1EntityManager::CreatePlayers()
 	//playere = (j1Player1*)CreateEntity(ENTITY_TYPE::PLAYER);
 	player2 = (j1Player2*)CreateEntity(ENTITY_TYPE::PLAYER2);//REVISE THIS HERE. Check if we can pass only j1Player and thats it or if both can be ENTITY_TYPE PLAYER
 	//player2 = (j1Player2*)CreateEntity(ENTITY_TYPE::PLAYER2);
-
-	//Maybe create methods for them?
-	//mecha = (j1Mecha*)CreateEntity(ENTITY_TYPE::MECHA);
-	//alien = (j1Alien*)CreateEntity(ENTITY_TYPE::ALIEN);
 }
 
 void j1EntityManager::AddEnemy(ENTITY_TYPE type, int x, int y)
 {
+	int i = 0;
+	LOG("Adding enemy %d", i);
+	i++;
+	
 	EntityData* data = new EntityData();
 
 	data->position.x = x;
@@ -222,21 +222,32 @@ void j1EntityManager::AddEnemy(ENTITY_TYPE type, int x, int y)
 
 void j1EntityManager::SpawnEnemies(/*EntityData& data*/)
 {
-	p2List_item<EntityData*>* enemy_iterator = entityData_list.start;
 	
+	p2List_item<EntityData*>* enemy_iterator = entityData_list.start;
+
 	for (enemy_iterator; enemy_iterator != NULL; enemy_iterator = enemy_iterator->next)												//Iterates the entityData_list.
 	{
+		int i = 0, j = 0;
+		LOG("Spawning enemy %d", i);
+		i++;
 		j1Entity * enemy = nullptr;																									//Pointer that will be assigned to each enemy entity.
+
+		if (enemy_iterator->data->type == ENTITY_TYPE::MECHA)
+		{
+			LOG("Creating a Mecha type enemy");
+		}
 
 		switch (enemy_iterator->data->type)			//REVISE TYPE, maybe it will not work.
 		{
 		case ENTITY_TYPE::MECHA:
 			enemy = new j1Mecha(enemy_iterator->data->position.x, enemy_iterator->data->position.y, enemy_iterator->data->type);	//Spawns a MECHA type enemy.
-			//enemy = (j1Mecha*)CreateEntity(ENTITY_TYPE::MECHA, enemy_iterator->data->position.x, enemy_iterator->data->position.y);
+			//enemy = (j1Mecha*)CreateEntity(enemy_iterator->data->type, enemy_iterator->data->position.x, enemy_iterator->data->position.y);
+			//enemy->Start();
+
 			break;
 
 		case ENTITY_TYPE::ALIEN:
-			//enemy = new j1Alien(enemy_iterator->data->position.x, enemy_iterator->data->position.y, enemy_iterator->data->type);	//Spawns an ALIEN type enemy.
+			enemy = new j1Alien(enemy_iterator->data->position.x, enemy_iterator->data->position.y, enemy_iterator->data->type);	//Spawns an ALIEN type enemy.
 			//enemy = (j1Alien*)CreateEntity(ENTITY_TYPE::ALIEN, enemy_iterator->data->position.x, enemy_iterator->data->position.y);
 			break;
 		}
@@ -245,7 +256,7 @@ void j1EntityManager::SpawnEnemies(/*EntityData& data*/)
 		{
 			entities.add(enemy);																									//The entity is added to the entities list
 			enemy->Start();																											//The entity's start method is called.
-			break;
+			//break;				//Unless this method is used to spawn a single entity at a time, this needs to be kept commented. 
 		}
 	}
  
@@ -257,12 +268,14 @@ void j1EntityManager::DestroyEntities()
 	BROFILER_CATEGORY("EntityManager PostUpdate", Profiler::Color::FireBrick);
 	//Iterates all entities in the entities list and searches for the entity passed as argument, if it is inside the list and is found, it is then destroyed.
 	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
-	{
+	{ 	
 		if (entity_iterator->data->type != ENTITY_TYPE::PLAYER && entity_iterator->data->type != ENTITY_TYPE::PLAYER2)
 		{
-			entities.del(entity_iterator);
+			entity_iterator->data->CleanUp();
 			RELEASE(entity_iterator->data);
-			break;
+			entities.del(entity_iterator);
+			
+			//break;
 		}
 	}
 }

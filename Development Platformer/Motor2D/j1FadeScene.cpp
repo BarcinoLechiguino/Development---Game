@@ -96,8 +96,8 @@ bool j1Fade_Scene ::FadeToBlack(const char* mapname, float time)
 		ret = true;
 	}
 
-	App->entityManager->player->Restart();					//Returns P1 to the starting position of the map.
-	App->entityManager->player2->Restart();					//Returns P2 to the starting position of the map.
+	//App->entityManager->player->Restart();					//Returns P1 to the starting position of the map.
+	//App->entityManager->player2->Restart();					//Returns P2 to the starting position of the map.
 	
 	return ret;
 }
@@ -119,10 +119,9 @@ bool j1Fade_Scene::ChangeMap(const char* newMap)
 	App->map->Load(newMap);						//Loads a specified map
 	App->collisions->LoadColliderFromMap();		//Load Collisions
 	
-	//App->entityManager->CreatePlayers();
 	App->entityManager->player->Start();		//Load / Reset P1	//REVISE THIS HERE. Should players be loaded like this?
 	App->entityManager->player2->Start();		//Load / Reset P2
-	//App->entityManager->SpawnEnemies();
+
 	//App->scene->Start();						//This breaks the game
 
 	return ret;

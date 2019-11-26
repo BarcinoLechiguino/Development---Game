@@ -234,42 +234,7 @@ bool j1Player2::Update(float dt, bool doLogic)
 	//If P2 is in the air then this function brings them back down to the floor.
 	if (player.airborne == true)
 	{
-		speed.y += player.gravity * dt;
-
-		if (speed.y > player.max_speed.y * dt)
-		{
-			speed.y = player.max_speed.y * dt;
-		}
-
-		position.y += speed.y;				//Refreshes the vector speed of P1 in the Y axis.
-
-		//Jump animation modifications.
-		if (player.isBoostJumping == true)				//If P1 is boost jumping then this set of animations is played.
-		{
-			if (speed.y < player.frontflipStart)
-			{
-				animation = &jumping;
-			}
-			else if (speed.y < player.frontflipEnd)
-			{
-				animation = &frontflip;
-			}
-			else
-			{
-				animation = &falling;
-			}
-		}
-		else if (player.isJumping == true)				//If P1 is jumping then this set of animations is played.
-		{
-			if (speed.y < 0)
-			{
-				animation = &jumping;
-			}
-			else
-			{
-				animation = &falling;
-			}
-		}
+		ApplyGravity();
 	}
 
 	//--------------------------------------- Miscelaneous Checks ---------------------------------------
@@ -487,48 +452,10 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 			{
 				if (player.item_activated == false || App->entityManager->player->player.item_activated == false)
 				{
-					//Player Colliding vertically against the Solid. The first part checks if C1 is contained in the X axis of C2. 
-					if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x + C2->collider.y)
-					{
-						//Player Colliding from Above the Solid, ergo colliding with the ground. This second part checks if C1 is actually colliding vertically down.
-						if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y)
-						{
-							speed.y = 0;
-							player.isJumping = false;
-							player.isBoostJumping = false;
-							player.grounded = true;
-							LOG("P2 IS COLLIDING WITH A SOLID FROM ABOVE");
-						}
-
-						//Player Colliding from Below the Solid. ergo colliding with the ceiling. This second part checks if C1 is actually colliding vertically down.
-						else if (C1->collider.y < C2->collider.y + C2->collider.h && C1->collider.y > C2->collider.y)
-						{
-							speed.y = 0;
-							position.y = C2->collider.y + C2->collider.h + 1;
-							player.againstCeiling = true;
-							LOG("P2 IS COLLIDING WITH A SOLID FROM BELOW");
-						}
-					}
-
-					//Player is colliding from the sides. The first part checks if C1 is contained in the Y axis of C2.
-					if (C1->collider.y <= C2->collider.y + C2->collider.h && C1->collider.y + C1->collider.h - 4 >= C2->collider.y)
-					{
-						//Player is colliding from left (going right). This second part checks if C1 is actually colliding from the left side of the collider.
-						if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x < C2->collider.x)
-						{
-							player.againstLeftWall = true;
-							player.againstRightWall = false;
-							LOG("P2 IS COLLIDING WITH A SOLID FROM THE LEFT");
-						}
-
-						//Player is colliding from right (going left). This second part checks if  C1 is actually colliding from the right side of the collider.
-						if (C1->collider.x <= C2->collider.x + C2->collider.w && C1->collider.x > C2->collider.x)
-						{
-							player.againstRightWall = true;
-							player.againstLeftWall = false;
-							LOG("P2 IS COLLIDING WITH A SOLID FROM THE RIGHT");
-						}
-					}
+					player.lives--;
+					player.state = Player_State::Dying;
+					
+					RespawnP2ToP1();
 				}
 			}
 
@@ -542,12 +469,12 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 			{
 				if (C1->collider.y > GOAL_Y && C1->collider.y < GOAL_HEIGHT)	//Dirty way to know which portal goal has been reached.
 				{
-					App->fadescene->FadeToBlack("1st_Level.tmx");				//Loads the 1st level.
+					App->fadescene->FadeToBlack("Test_Map.tmx");				//Loads the 1st level.
 					App->map->Restart_Cam();
 				}
 				else
 				{
-					App->fadescene->FadeToBlack("Tutorial_Level.tmx");			//Loads the 2nd level.
+					App->fadescene->FadeToBlack("Test_Map_2.tmx");			//Loads the 2nd level.
 					App->map->Restart_Cam();
 				}
 

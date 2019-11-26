@@ -1,17 +1,17 @@
-#ifndef __j1MECHA_H__
-#define __j1MECHA_H__
+#ifndef __j1ALIEN_H__
+#define __j1ALIEN_H__
 
 #include "j1Module.h"
+#include "j1Entity.h"
 #include "j1Enemy.h"
 #include "Animation.h"
 #include "p2Point.h"
 
-class j1Mecha : public j1Enemy
+class j1Alien : public j1Enemy
 {
 public:
-	j1Mecha(int x, int y, ENTITY_TYPE type);
-
-	~j1Mecha();
+	j1Alien(int x, int y, ENTITY_TYPE type);
+	~j1Alien();
 
 	bool Awake(pugi::xml_node&);
 
@@ -28,26 +28,22 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
-	void Normal_Path();
 	void Chasing_Path();
-	//bool Load_Entity();						
+	void Normal_Path();
+
 	void LoadAnimationPushbacks();
 	void LoadEntityProperties();
 	void LoadEntityAudio();
 
-	void ApplyMechaGravity();
-
-public:
-	fPoint			mecha_speed;			//Change it later so it is a global value. Put it in entity.h
-	fPoint			mecha_max_speed;
-	fPoint			mecha_acceleration;
-	float			mecha_gravity;
+	//bool Load_Entity();
 
 public:
 	Animation	idle;				//Idle animation.
 	Animation	running;			//Running animation.
-
-
 };
 
-#endif // __j1MECHA_H__
+#endif // __j1ALIEN_H__
+
+
+
+

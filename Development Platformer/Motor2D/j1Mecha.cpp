@@ -18,7 +18,7 @@
 
 j1Mecha::j1Mecha(int x, int y, ENTITY_TYPE type) : j1Enemy(x, y, ENTITY_TYPE::MECHA)
 {
-	name.create("entities");
+	//name.create("entities");		//NOT NECESSARY
 	
 	position.x = x;					//REVISE THIS. SPAWNING THE ENEMIES AT THEIR RESPECTIVE POSITIONS
 	position.y = y;
@@ -37,9 +37,11 @@ bool j1Mecha::Awake(pugi::xml_node& config)
 
 bool j1Mecha::Start()
 {
+	entity_sprite = App->tex->Load("textures/Spritesheets/Enemies/mech-unit/mech-unit.png");
+	
 	//Load_Entity();
 	LoadEntityProperties();
-	InitMecha();
+	InitEnemy();
 
 	airborne = true;
 
@@ -50,21 +52,69 @@ bool j1Mecha::Start()
 
 bool j1Mecha::Update(float dt, bool doLogic)
 {
- BROFILER_CATEGORY("Mecha Update", Profiler::Color::AliceBlue);
+	BROFILER_CATEGORY("Mecha Update", Profiler::Color::AliceBlue);
 	//CalculatePath
 
-	switch (state)
+	if (doLogic)
 	{
-	case Entity_State::IDLE:
+		//MECHA DEBUG INPUTS
+		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		{
+			state = Entity_State::PATHING_RIGHT;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
+		{
+			state = Entity_State::IDLE;
+		}
 
-		animation = &idle;
+		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		{
+			state = Entity_State::PATHING_LEFT;
+		}
+		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
+		{
+			state = Entity_State::IDLE;
+		}
 
-		break;
+
+
+		//state = Entity_State::IDLE;
+
+		switch (state)
+		{
+		case Entity_State::IDLE:
+
+			animation = &idle;
+
+			break;
+
+		case Entity_State::PATHING_RIGHT:
+
+			position.x += speed.x * dt;
+			flip = false;
+			animation = &running;
+
+			break;
+
+		case Entity_State::PATHING_LEFT:
+
+			position.x -= speed.x * dt;
+			flip = true;
+			animation = &running;
+
+			break;
+		}
+
+		if (airborne = true)
+		{
+			ApplyMechaGravity();
+		}
+
+		enemy_HitBox = animation->GetCurrentFrame(dt);						//REVISE THIS HERE.
+		collider->Set_Position(position.x, position.y);
+		BlitEntity(position.x, position.y, enemy_HitBox, flip);
 	}
-
-	enemy_HitBox = animation->GetCurrentFrame(dt);						//REVISE THIS HERE.
-	collider->Set_Position(position.x, position.y);
-	BlitEntity(position.x, position.y, enemy_HitBox, flip);
+	
 
 	return true;
 }
@@ -84,6 +134,7 @@ bool j1Mecha::CleanUp()
 		collider = nullptr;*/
 
 		collider->to_delete = true;
+		//collider = nullptr;
 	}
 
 	if (animation != nullptr)
@@ -99,20 +150,20 @@ void j1Mecha::OnCollision(Collider* C1, Collider* C2)
 	//Entity_On collision function in entity
 	if (C1->type == Object_Type::ENEMY)
 	{
-		//Player Colliding Against Another Player
+		//Enemy Colliding Against a Player
 		if (C2->type == Object_Type::ATTACK)
 		{
 			//DeathSound
 			CleanUp();
 		}
 
-		//Player colliding against solids
+		//Enemy colliding against solids
 		if (C2->type == Object_Type::SOLID)
 		{
-			//Player Colliding from TOP or BOTTOM. sssssa
+			//Enemy Colliding from TOP or BOTTOM. sssssa
 			if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x + C2->collider.y)		//The first part checks if C1 is contained in the X axis of C2. 
 			{
-				//Player Colliding from TOP.
+				//Enemy Colliding from TOP.
 				if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y && speed.y != 0)			//This second part checks if C1 is actually colliding vertically down.
 				{
 					speed.y = 0;
@@ -122,10 +173,10 @@ void j1Mecha::OnCollision(Collider* C1, Collider* C2)
 				}
 			}
 
-			//Player is colliding from LEFT or RIGHT.
+			//Enemy is colliding from LEFT or RIGHT.
 			if (C1->collider.y <= C2->collider.y + C2->collider.h && C1->collider.y + C1->collider.h - 4 >= C2->collider.y)		//The first part checks if C1 is contained in the Y axis of C2.
 			{
-				//Player is colliding from LEFT.
+				//Enemy is colliding from LEFT.
 				if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x)						//This second part checks if C1 is actually colliding from the left side of the collider.
 				{
 					againstLeftWall = true;
@@ -133,7 +184,7 @@ void j1Mecha::OnCollision(Collider* C1, Collider* C2)
 					LOG("MECHA IS COLLIDING WITH A SOLID FROM THE LEFT");
 				}
 
-				//Player is colliding from RIGHT.
+				//Enemy is colliding from RIGHT.
 				if (C1->collider.x <= C2->collider.x + C2->collider.w && C1->collider.x >= C2->collider.x)						// This second part checks if C1 is actually colliding from the right side of the collider.
 				{
 					againstRightWall = true;
@@ -155,6 +206,8 @@ bool j1Mecha::Save(pugi::xml_node&) const
 	return true;
 }
 
+
+// ------------------------ MECHA ENTITY METHODS ------------------------
 void j1Mecha::Normal_Path()
 {
 
@@ -180,7 +233,7 @@ void j1Mecha::LoadEntityProperties()
 
 	enemy_entity = config_file.child("config").child("entities").child("mecha");
 
-	//Gets all the required player variables from the config xml file
+	//Gets all the required enemy variables from the config xml file
 	sprite_width			= enemy_entity.child("sprite_size").attribute("w").as_int();
 	sprite_height			= enemy_entity.child("sprite_size").attribute("h").as_int();
 
@@ -196,33 +249,19 @@ void j1Mecha::LoadEntityProperties()
 	return;
 }
 
-void j1Mecha::InitMecha()
-{
-	entity_sprite = App->tex->Load("textures/Spritesheets/Enemies/mech-unit/mech-unit.png");
-	
-	//Hitbox & colliders
-	enemy_HitBox.x = position.x;
-	enemy_HitBox.y = position.y;
-	enemy_HitBox.w = sprite_width;
-	enemy_HitBox.h = sprite_height;
-
-	collider = App->collisions->AddCollider(enemy_HitBox, Object_Type::ENEMY, App->entityManager);				//THIS HERE This one loads the enemy collider (orange)
-
-	grounded = true;
-	isAlive = true;
-	airborne = false;
-	flip = false;
-	isGoingRight = false;
-	isGoingLeft = false;
-	fading = false;
-	isDying = false;
-	againstRightWall = false;
-	againstLeftWall = false;
-
-	return;
-}
-
 void j1Mecha::LoadEntityAudio()
 {
 
+}
+
+void j1Mecha::ApplyMechaGravity()
+{
+	speed.y += mecha_gravity * App->GetDt();
+
+	if (speed.y > mecha_max_speed.y * App->GetDt())
+	{
+		speed.y = mecha_max_speed.y * App->GetDt();
+	}
+
+	position.y += speed.y;				//Refreshes the vector speed of P1 in the Y axis.
 }

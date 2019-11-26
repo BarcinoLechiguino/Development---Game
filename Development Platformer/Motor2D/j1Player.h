@@ -113,10 +113,12 @@ public: //P1 Variables
 
 	virtual bool InitPlayer();													//Initializes all variables and colliders of the players (Position, Colliders...) and loads them on screen. 
 	virtual bool LoadPlayerPosition(p2SString playerPosition, p2SString map);	//Loads the player's position from the config file. Takes into account which map the player is at.
-	virtual void LivesCheck(int lives);											//Checks if the player has any lives left.
 	virtual void GodModeInput();												//Enables / Disables the God Mode.
 
+	virtual void LivesCheck(int lives);											//Checks if the player has any lives left.
 	virtual void SkillCooldown(bool& inCd, float& cdCounter, float& cdTime);	//Keeps track of any skill's cooldown. Revise --> Pass dt as an argument?
+
+	void ApplyGravity();														//If a player is airborne then this function brings her/him down to the ground.
 
 	//bool LoadPlayer1Textures();												//Loads P1's textures on screen.
 	//void Restart();															//Resets P1's position to where P1 started the level. 

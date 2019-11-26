@@ -9,8 +9,8 @@
 enum class Entity_State	//Does not go here. Is it necessary?
 {
 	IDLE = 0,
-	RIGHT,
-	LEFT,
+	PATHING_RIGHT,
+	PATHING_LEFT,
 	JUMPING,
 	FALLING,
 	DEAD,
@@ -48,9 +48,10 @@ public:
 	void Chasing_Path();						//Aerial Path?
 	bool Calculate_Path();			
 	//bool Load_Entity();
-	void LoadAnimationPushbacks();				//Revise if this needs to be virtual
-	void LoadEntityProperties();
-	void LoadEntityAudio();
+	void LoadAnimationPushbacks();				//Loads a set of animation pushbacks.
+	void LoadEntityProperties();				//Loads an entity's specific properties.
+	void LoadEntityAudio();						//Loads an entity's specific audios/sfx.
+	void InitEnemy();							//Initializes an enemy's specific data members.
 
 public:
 	fPoint			spawn_position;

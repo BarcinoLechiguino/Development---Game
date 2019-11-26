@@ -600,11 +600,12 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 		else if (object_type == "mecha")								//If the object loaded from the map matches the "mecha" type
 		{
 			App->entityManager->AddEnemy(ENTITY_TYPE::MECHA, object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
-			LOG("Added Enemy at Position %d, %d", object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
+			LOG("Added Mecha Enemy at Position %d, %d", object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
 		}
 		else if (object_type == "alien")								//If the object loaded from the map matches the "alien" type
 		{
 			App->entityManager->AddEnemy(ENTITY_TYPE::ALIEN , object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
+			LOG("Added Alien Enemy at Position %d, %d", object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
 		}
 		// --------------------------------------------------------------------------------------------------------------------
 

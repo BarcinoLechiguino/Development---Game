@@ -158,6 +158,7 @@ void j1Player::LoadEntityAudio()
 
 bool j1Player::InitPlayer()
 {
+
 	// --------------------------------------------Loading the data and colliders of P1--------------------------------------------
 	//Loads the data of the rectangle that contains P1.
 	player.HitBox.x = position.x;							//Represents the position in the X axis of P1.		//THIS HERE
@@ -215,6 +216,46 @@ bool j1Player::InitPlayer()
 }*/
 
 //---------------------------------------------- General Checks ----------------------------------------------
+void j1Player::ApplyGravity()
+{
+	speed.y += player.gravity * App->GetDt();
+
+	if (speed.y > player.max_speed.y * App->GetDt())
+	{
+		speed.y = player.max_speed.y * App->GetDt();
+	}
+
+	position.y += speed.y;				//Refreshes the vector speed of P1 in the Y axis.
+
+	//Jump animation modifications.
+	if (player.isBoostJumping == true)				//If P1 is boost jumping then this set of animations is played.
+	{
+		if (speed.y < player.frontflipStart)
+		{
+			animation = &jumping;
+		}
+		else if (speed.y < player.frontflipEnd)
+		{
+			animation = &frontflip;
+		}
+		else
+		{
+			animation = &falling;
+		}
+	}
+	else if (player.isJumping == true)				//If P1 is jumping then this set of animations is played.
+	{
+		if (speed.y < 0)
+		{
+			animation = &jumping;
+		}
+		else
+		{
+			animation = &falling;
+		}
+	}
+}
+
 void j1Player::LivesCheck(int lives)
 {
 	return;

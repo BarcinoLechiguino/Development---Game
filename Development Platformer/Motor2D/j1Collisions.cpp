@@ -103,10 +103,9 @@ bool j1Collisions::PostUpdate()
 bool j1Collisions::CleanUp()
 {
 	//When this is changed to arrays check if the collider being iterated is null or not and then delete it (delete collider, collider = nullptr)
-	/*for (p2List_item<Collider*>* collider_iterator = collider_list.start; collider_iterator != NULL; collider_iterator = collider_iterator->next)
-	{
-		collider_list.del(collider_iterator);
-	}*/
+	
+	//Should change this list for an array.
+	collider_list.clear();				//Deletes all colliders freeing all allocated memory from the collider_list so it can be filled again with the colliders of another map.
 	
 	return true;
 };
@@ -123,11 +122,12 @@ void j1Collisions::Collider_Debug()
 
 	else
 	{
-		int count = 0;
+		LOG("Elements in the collider_list: %d", collider_list.count());	//Used to count how many items there are in a list
+
 		p2List_item<Collider*>* collider_iterator = collider_list.start;	//Declares a list item pointer that iterates a given list, in this case the collider list.
 		while (collider_iterator != NULL)
 		{
-			switch (collider_iterator->data->type)	//We declare a switch that will consider collider types as possible cases.
+			switch (collider_iterator->data->type)							//We declare a switch that will consider collider types as possible cases.
 			{
 				//Declaring a DrawQuad() with a set colour depending of the type of the object/collider that is being iterated at that moment. ALPHA is the transparency value.
 			case Object_Type::PLAYER:		//PLAYER collider will be GREEN
@@ -138,14 +138,14 @@ void j1Collisions::Collider_Debug()
 				App->render->DrawQuad(collider_iterator->data->collider, 0, 255, 0, ALPHA);
 				break;
 
-			case Object_Type::ENEMY:			//MECHA collider will be ORANGE
+			case Object_Type::ENEMY:		//MECHA collider will be ORANGE
 				App->render->DrawQuad(collider_iterator->data->collider, 255, 150, 0, ALPHA);
 				break;
 
 			case Object_Type::ATTACK:		//ATTACK collider will be CYAN
 				App->render->DrawQuad(collider_iterator->data->collider, 0, 255, 255, ALPHA);
 
-			case Object_Type::SOLID:			//SOLID collider will be BLUE
+			case Object_Type::SOLID:		//SOLID collider will be BLUE
 				App->render->DrawQuad(collider_iterator->data->collider, 0, 0, 255, ALPHA);
 				break;
 

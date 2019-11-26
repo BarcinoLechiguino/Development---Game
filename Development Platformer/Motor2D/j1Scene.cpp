@@ -67,7 +67,7 @@ bool j1Scene::Start()
 	App->audio->PlayMusic(App->map->data.music_File.GetString());
 	
 	App->entityManager->CreatePlayers();								//THIS HERE
-	/*App->entityManager->SpawnEnemies();*/
+	/*App->entityManager->SpawnEnemies();*/								//If SpawnEnemies is called here then it should not be called in the PreUpdate()
 	//App->entityManager->CreateEntity(ENTITY_TYPE::PLAYER);
 
 	cam_debug_speed = App->render->cam.camera_debug_speed;
@@ -249,10 +249,10 @@ bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
 
-	App->collisions->collider_list.clear();					//Deletes all colliders from memory.		//Change for an array. To Clear set the collider_delete bool to true for all colliders.
-	//App->audio->CleanUp();
+	App->collisions->CleanUp();								//Deletes all colliders that were loaded for this scene / map.
 	App->entityManager->DestroyEntities();					//Destroys all non-player entities.
 	App->map->CleanUp();									//Deletes everything related with the map from memory. (Tilesets, Layers and ObjectGroups)
+	//App->audio->CleanUp();
 
 	if (App->entityManager->player != nullptr)
 	{
