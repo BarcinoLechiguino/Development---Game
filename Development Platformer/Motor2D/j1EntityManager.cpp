@@ -13,9 +13,9 @@
 #include "j1Window.h"
 #include "Brofiler\Brofiler.h"
 
-#include "mmgr/mmgr.h"
+//#include "mmgr/mmgr.h"
 
-j1EntityManager::j1EntityManager() : player(nullptr), player2(nullptr)		//Sets the j1Player1* pointers declared in the header to nullptr
+j1EntityManager::j1EntityManager() : player(nullptr), player2(nullptr)	//Sets the j1Player1* pointers declared in the header to nullptr
 {
 	name.create("entities");
 }
@@ -107,6 +107,7 @@ bool j1EntityManager::CleanUp()
 	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
 	{
 		entity_iterator->data->CleanUp();
+		RELEASE(entity_iterator->data);
 	}
 
 	entities.clear();									//Deletes all items in the entities list and frees all allocated memory.
@@ -204,8 +205,8 @@ void j1EntityManager::CreatePlayers()
 {
 	player = (j1Player1*)CreateEntity(ENTITY_TYPE::PLAYER);	//Revise 0, 0. Maybe default x and y of the CreateEntity method to 0.
 	//playere = (j1Player1*)CreateEntity(ENTITY_TYPE::PLAYER);
+	//player2Copy = (j1Player2*)CreateEntity(ENTITY_TYPE::PLAYER2);
 	player2 = (j1Player2*)CreateEntity(ENTITY_TYPE::PLAYER2);//REVISE THIS HERE. Check if we can pass only j1Player and thats it or if both can be ENTITY_TYPE PLAYER
-	//player2 = (j1Player2*)CreateEntity(ENTITY_TYPE::PLAYER2);
 }
 
 void j1EntityManager::AddEnemy(ENTITY_TYPE type, int x, int y)
@@ -261,8 +262,10 @@ void j1EntityManager::SpawnEnemies(/*EntityData& data*/)
 		{
 			entities.add(enemy);																									//The entity is added to the entities list
 			enemy->Start();																											//The entity's start method is called.
-			//break;				//Unless this method is used to spawn a single entity at a time, this needs to be kept commented. 
+			//break;								//Unless this method is used to spawn a single entity at a time, this needs to be kept commented. 
 		}
+
+		RELEASE(enemy_iterator->data);				//Frees all memory allocated for the entity. AddEnemy() --> EntityData* data = new EntityData();
 	}
  
 	entityData_list.clear();						//Once all enemies have been spawned, the list is cleared.
@@ -276,6 +279,12 @@ void j1EntityManager::DestroyEntities()
 	
 	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
 	{ 	
+		//entity_iterator->data->CleanUp();			//Calls the CleanUp() method of the iterated entity (an enemy entity).
+		//RELEASE(entity_iterator->data);				//Deletes the data buffer
+		//entities.del(entity_iterator);				//Deletes the entity being iterated from the list.
+		
+		//PLAYERS ARE A MEMORY LEAK, BUT NOT THE ONLY ONE
+
 		if (entity_iterator->data->type != ENTITY_TYPE::PLAYER && entity_iterator->data->type != ENTITY_TYPE::PLAYER2)
 		{
 			entity_iterator->data->CleanUp();			//Calls the CleanUp() method of the iterated entity (an enemy entity).

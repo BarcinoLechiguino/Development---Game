@@ -12,8 +12,11 @@
 #include "j1Audio.h"
 #include "j1Scene.h"
 #include "j1EntityManager.h"
+#include "j1Player.h"
 #include "Brofiler\Brofiler.h"
 #include <math.h>
+
+//#include "mmgr/mmgr.h"
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -31,10 +34,6 @@ bool j1Map::Awake(pugi::xml_node& config)
 	bool ret = true;
 
 	folder.create(config.child("folder").child_value());
-
-	bg_parallax_spd = config.child("layers").child("bg_parallax_speed").attribute("speed").as_float();
-	first_parallax_spd = config.child("layers").child("first_parallax_speed").attribute("speed").as_float();
-	decor_parallax_spd = config.child("layers").child("decor_parallax_speed").attribute("speed").as_float();
 
 	/*spawn_position_cam.x = config.child("renderer").child("cam").attribute("x").as_float();
 	spawn_position_cam.x = config.child("renderer").child("cam").attribute("y").as_float();*/
@@ -205,19 +204,19 @@ bool j1Map::CleanUp()
 	LOG("Unloading map");
 
 	//App->player1->Disable(); NEED A DISABLE FUNCTION
-	// Remove all tilesets
+	// Remove all tilesets from memory
 	p2List_item<TileSet*>* item;
 	item = data.tilesets.start;
 
 	while(item != NULL)
-	{
+	{	
 		SDL_DestroyTexture(item->data->texture);
 		RELEASE(item->data);
 		item = item->next;
 	}
 	data.tilesets.clear();
 
-	// Remove all layers
+	// Remove all layers from memory
 	p2List_item<MapLayer*>* map_layer_item;
 	map_layer_item = data.layers.start;
 
@@ -228,21 +227,25 @@ bool j1Map::CleanUp()
 	}
 	data.layers.clear();
 
-	//Removing all Objects
+	//Removing all Objects from memory
 	p2List_item<ObjectGroup*>* object_iterator = data.objectGroups.start;
 	while (object_iterator != NULL)
-	{
-		RELEASE(object_iterator->data);				//RELEASE deletes all elements in a list (deletes a buffer).
+	{	
+		delete[] object_iterator->data->object;		//Frees the memory allocated to the object array. LoadObjectLayers() line 544.
+		
+		//RELEASE(object_iterator->data->object->collider);
+
+		RELEASE(object_iterator->data);				//RELEASE frees all memory allocated for a list item. All declared news that were added to the list will be deleted here.
 		object_iterator = object_iterator->next;
 	}
 	data.objectGroups.clear();
 	
-	//Removing all data of all layers from memory.
-	data.layers.clear();		//Deletes from memory all the items inside the layers list.
-	data = { 0 };				//Frees all memory allocated to the data struct.
+	////Removing all data of all layers from memory.
+	//data.layers.clear();		//Deletes from memory all the items inside the layers list.
+	//data = { 0 };				//Frees all memory allocated to the data struct.
 
-	// Clean up the pugui tree
-	map_file.reset();
+	//// Clean up the pugui tree
+	//map_file.reset();
 
 	return true;
 }
@@ -302,7 +305,7 @@ bool j1Map::Load(const char* file_name)
 		data.layers.add(set_layer);
 	}
 
-	//Load Collider Info ------------------------------------------
+	//Load Object / ObjectGroup / Collider Info ------------------------------------------
 	pugi::xml_node objectgroup;
 	for (objectgroup = map_file.child("map").child("objectgroup"); objectgroup && ret; objectgroup = objectgroup.next_sibling("objectgroup"))
 	{
@@ -550,7 +553,7 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 		objectgroup->object[index].id		= object_iterator.attribute("id").as_int();			//Gets the id of the object being loaded from tmx and sets it to the corresponding object in the world.
 		objectgroup->object[index].name		= object_iterator.attribute("name").as_string();	//Gets the name of the object being loaded from tmx and sets it to the corresponding object in the world.
 
-		SDL_Rect* collider = new SDL_Rect;								//Allocates memory for the buffer rect(x,y,w,z) that will receive the data members of an object from the objectgroup being iterated.
+		SDL_Rect* collider = new SDL_Rect();
 
 		collider->x = object_iterator.attribute("x").as_int();			//Sets the buffer rect's x position to the x position of the object given by the tmx map this iteration.
 		collider->y = object_iterator.attribute("y").as_int();			//Sets the buffer rect's y position to the y position of the object given by the tmx map this iteration.
@@ -558,7 +561,6 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 		collider->h = object_iterator.attribute("height").as_int();		//Sets the buffer rect's height to the height of the object given by the tmx map this iteration.
 
 		objectgroup->object[index].collider = collider;					//Passes the buffer rect's data members to the object in this index position. Need to use a buffer due to objectgroup only accepting a class expression.
-
 
 		p2SString object_type(object_iterator.attribute("type").as_string());		//Buffer string that improves readability of the code.
 
@@ -692,6 +694,36 @@ bool j1Map::SwitchMaps(p2SString* new_map) // switch map function that passes th
 	return true;
 }
 
+bool j1Map::ChangeMap(const char* newMap)
+{
+	bool ret = true;
+
+	//Put this on scene CleanUp()
+	App->scene->CleanUp();
+	//App->audio->CleanUp();
+
+	App->map->Load(newMap);						//Loads a specified map
+	App->collisions->LoadColliderFromMap();		//Load Collisions
+
+	if (newMap == "Test_map.tmx")
+	{
+		App->scene->firstMap	= true;
+		App->scene->secondMap	= false;
+	}
+	if (newMap == "Test_map_2.tmx")
+	{
+		App->scene->secondMap	= true;
+		App->scene->firstMap	= false;
+	}
+
+	App->entityManager->player->Start();		//Load / Reset P1	//REVISE THIS HERE. Should players be loaded like this?
+	App->entityManager->player2->Start();		//Load / Reset P2
+
+	//App->scene->Start();						//This breaks the game
+
+	return ret;
+}
+
 void j1Map::Restart_Cam() // function that resets the camera
 {
 	App->render->camera.x = spawn_position_cam.x;
@@ -700,5 +732,5 @@ void j1Map::Restart_Cam() // function that resets the camera
 
 MapLayer::~MapLayer()
 {
-	RELEASE(gid); //New
+	RELEASE(gid); //New		//Breaks with mmgr.
 }

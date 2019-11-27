@@ -53,7 +53,8 @@ bool j1Fade_Scene::Update(float dt)
 		{
 			if (now >= total_time) //Point where the screen is totally black, and the new map is loaded.
 			{
-				ChangeMap(mapName);								//Here the map is changed
+				//ChangeMap(mapName);								//Here the map is changed
+				App->map->ChangeMap(mapName);								//Here the map is changed
 				
 				total_time += total_time;
 				start_time = SDL_GetTicks();
@@ -102,24 +103,33 @@ bool j1Fade_Scene ::FadeToBlack(const char* mapname, float time)
 	return ret;
 }
 
-bool j1Fade_Scene::ChangeMap(const char* newMap)
-{
-	bool ret = true;
-
-	//Put this on scene CleanUp()
-	App->scene->CleanUp();
-	//App->audio->CleanUp();
-
-	App->map->Load(newMap);						//Loads a specified map
-	App->collisions->LoadColliderFromMap();		//Load Collisions
-	
-	App->entityManager->player->Start();		//Load / Reset P1	//REVISE THIS HERE. Should players be loaded like this?
-	App->entityManager->player2->Start();		//Load / Reset P2
-
-	//App->scene->Start();						//This breaks the game
-
-	return ret;
-}
+//bool j1Fade_Scene::ChangeMap(const char* newMap)
+//{
+//	bool ret = true;
+//
+//	//Put this on scene CleanUp()
+//	App->scene->CleanUp();
+//	//App->audio->CleanUp();
+//
+//	App->map->Load(newMap);						//Loads a specified map
+//	App->collisions->LoadColliderFromMap();		//Load Collisions
+//	
+//	if (newMap == "Test_Map.tmx")
+//	{
+//
+//	}
+//	if (newMap == "Test_Map_2.tmx")
+//	{
+//
+//	}
+//
+//	App->entityManager->player->Start();		//Load / Reset P1	//REVISE THIS HERE. Should players be loaded like this?
+//	App->entityManager->player2->Start();		//Load / Reset P2
+//
+//	//App->scene->Start();						//This breaks the game
+//
+//	return ret;
+//}
 
 bool j1Fade_Scene::IsChanging() const
 {

@@ -51,8 +51,8 @@ public:
 	float fade_time;
 	bool to_end;
 
-	bool firstMap = true;						//Keeps track of which map is loaded. In this case this one keeps track of the first map.
-	bool secondMap = false;						//Keeps track of which map is loaded. In this case this one keeps track of the second map.
+	bool firstMap;						//Keeps track of which map is loaded. In this case this one keeps track of the first map.
+	bool secondMap;						//Keeps track of which map is loaded. In this case this one keeps track of the second map.
 };
 
 #endif // __j1SCENE_H__

@@ -59,6 +59,7 @@ public:
 
 	//Entity Variables
 	ENTITY_TYPE		type;					//Type of the entity (ENTITY_TYPE::PLAYER...)
+	p2SString		nameTag;				//Name of the entity in the xml file.
 	fPoint			position;				//Initial position of the entity.
 	fPoint			speed;					//Movement speed of the entity.
 	uint			sprite_width;			//Width of the sprite. Applied to the entity's collider width.

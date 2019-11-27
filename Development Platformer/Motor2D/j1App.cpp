@@ -19,6 +19,8 @@
 #include "j1FadeScene.h"
 #include "Brofiler\Brofiler.h"
 
+//#include "mmgr/mmgr.h"
+
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -51,8 +53,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(entityManager);				//entityManager is called after the module scene (where the player is created) is called.
 	AddModule(collisions);
-	//AddModule(player1);					//There is no module j1Player1 anymore.
-	//AddModule(player2);
 	AddModule(fadescene);
 
 	// render last to swap buffer

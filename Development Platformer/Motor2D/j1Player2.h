@@ -37,6 +37,7 @@ public://methods
 public: //P2 Variables
 	void TeleportP1ToP2();							//Moves P1 directly in front of P2. It takes into account where P1 is looking at.
 	void RespawnP2ToP1();							//Moves P1 directly behind P2 on death.
+	void SetPlayer2Position();						//Sets P1's origin position in a map. Takes into account which map is being loaded (firstMap and secondMap).
 	void LivesCheck(int lives);						//Checks if the player has any lives left.
 	void OnCollision(Collider* C1, Collider* C2);	//Collision Logic Handling.
 

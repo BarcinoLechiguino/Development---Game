@@ -15,6 +15,8 @@
 #include "j1Player2.h"
 #include "Brofiler\Brofiler.h"
 
+//#include "mmgr/mmgr.h"
+
 j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
@@ -28,17 +30,18 @@ j1Scene::~j1Scene()
 bool j1Scene::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Scene");
+
+	bool ret = true;
+	
 	fade_time = config.child("fade_time").attribute("value").as_float();
 
 	for (pugi::xml_node map = config.child("map_name"); map; map = map.next_sibling("map_name"))
 	{
-		p2SString* data = new p2SString;
+		p2SString* data = new p2SString;							//Memory Leak. Should delete un CleanUp
 
 		data->create(map.attribute("name").as_string());
 		map_names.add(data);
 	}
-
-	bool ret = true;
 
 	return ret;
 }
@@ -61,14 +64,16 @@ bool j1Scene::Start()
 		LOG("Map Name: %s", map_names.start->next->data->GetString());
 	}*/
 	
+	firstMap	= true;
+	secondMap	= false;
+
 	ret = App->map->Load(map_names.start->data->GetString());
 	LOG("Map Name: %s", map_names.start->data->GetString());
 
 	App->audio->PlayMusic(App->map->data.music_File.GetString());
-	
+
 	App->entityManager->CreatePlayers();								//THIS HERE
 	/*App->entityManager->SpawnEnemies();*/								//If SpawnEnemies is called here then it should not be called in the PreUpdate()
-	//App->entityManager->CreateEntity(ENTITY_TYPE::PLAYER);
 
 	cam_debug_speed = App->render->cam.camera_debug_speed;
 
@@ -248,7 +253,7 @@ bool j1Scene::PostUpdate()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
-
+	
 	App->collisions->CleanUp();								//Deletes all colliders that were loaded for this scene / map.
 	App->entityManager->DestroyEntities();					//Destroys all non-player entities.
 	App->map->CleanUp();									//Deletes everything related with the map from memory. (Tilesets, Layers and ObjectGroups)

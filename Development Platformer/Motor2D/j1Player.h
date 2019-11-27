@@ -66,6 +66,7 @@ struct Player
 	bool			GodMode;				//Defines whether GodMode is active or not.
 	bool			switch_sprites;			//Defines which sprite will P1 have.
 
+	p2SString		mapTag;					//Depending on the mapTag, the initial position loaded from the xml file of the player will be one or another. mapTag = "factoryMap" --> Origin Pos in the factory map.
 
 	SDL_Rect		HitBox;					//Rectangle that represents P1.
 	SDL_Rect		atkHitBox;				//Rectangle that represents P1's attack reach / range.

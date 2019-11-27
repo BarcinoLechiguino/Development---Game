@@ -42,7 +42,7 @@ bool j1Player2::Start()
 {
 	entity_sprite = App->tex->Load("textures/Spritesheets/Character 2/Character_Spritesheet2_Buena.png");
 
-	LoadPlayerPosition("player_2", "factoryMap");			//Loads Player 2's position on the map //REVISE THIS HERE For now it is set to the position in the first map, maybe in scene it can be switched? 
+	SetPlayer2Position();									//Sets P1's origin position in the map.
 	LoadEntityProperties();									//Loads the player's properties from the xml file. //THIS HERE
 	InitPlayer();											//Loads P2 in game.
 	LoadEntityAudio();										//Loads the sfx for player 2.
@@ -61,7 +61,7 @@ bool j1Player2::PreUpdate()
 	{
 		player.state = Player_State::Idle;
 
-		if (speed.y > 2)				//THIS HERE
+		if (speed.y > 2)													//For some reason the player's speed when colliding against the ground is 1.4f aprox instead of 0.
 		{
 			player.state = Player_State::Falling;
 		}
@@ -551,6 +551,28 @@ void j1Player2::RespawnP2ToP1()		//Method that, on death, will respawn P2 behind
 	{
 		position.x = App->entityManager->player->position.x + App->entityManager->player->collider->collider.w / 2;
 		position.y = App->entityManager->player->position.y - 40;
+	}
+}
+
+void j1Player2::SetPlayer2Position()
+{
+	config_file.load_file("config.xml");				//REVISE THIS HERE  Can a pugi object be reused as a copy in another class?
+
+	player_entity = config_file.child("config").child("entities").child("player").child("player_2");
+
+	nameTag = player_entity.attribute("name").as_string();
+
+	if (App->scene->firstMap == true)
+	{
+		//LoadPlayerPosition("player_1", "factoryMap");		//Change this so strings arent hardcoded //Loads Player 1's position on the map //REVISE THIS HERE For now it is set to the position in the first map, maybe in scene it can be switched? 
+		player.mapTag = player_entity.child("factoryMap").attribute("mapName").as_string();
+		LoadPlayerPosition(nameTag.GetString(), player.mapTag.GetString());
+	}
+	if (App->scene->secondMap == true)
+	{
+		//LoadPlayerPosition("player_1", "forestMap");		//Change this so strings arent hardcoded //Loads Player 1's position on the map //REVISE THIS HERE For now it is set to the position in the first map, maybe in scene it can be switched? 
+		player.mapTag = player_entity.child("forestMap").attribute("mapName").as_string();
+		LoadPlayerPosition(nameTag.GetString(), player.mapTag.GetString());
 	}
 }
 

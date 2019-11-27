@@ -81,13 +81,13 @@ bool j1Player::Save(pugi::xml_node&  data) const
 void j1Player::LoadAnimationPushbacks()
 {
 	idle.LoadAnimation("player", "idle");					//Player's Idle animation.
-	running.LoadAnimation("player", "running");			//Player's Running animation.
-	crouching.LoadAnimation("player", "crouching");		//Player's Crouching animation.	
-	jumping.LoadAnimation("player", "jumping");			//Player's Jumping Animation.
-	frontflip.LoadAnimation("player", "frontflip");		//Player's Frontflip Animation.
+	running.LoadAnimation("player", "running");				//Player's Running animation.
+	crouching.LoadAnimation("player", "crouching");			//Player's Crouching animation.	
+	jumping.LoadAnimation("player", "jumping");				//Player's Jumping Animation.
+	frontflip.LoadAnimation("player", "frontflip");			//Player's Frontflip Animation.
 	boosted_jump.LoadAnimation("player", "boosted_jump");	//Player's Boosted Jump Animation.
-	falling.LoadAnimation("player", "falling");			//Player's Falling Animation.
-	death.LoadAnimation("player", "death");				//Player's Death Animation.
+	falling.LoadAnimation("player", "falling");				//Player's Falling Animation.
+	death.LoadAnimation("player", "death");					//Player's Death Animation.
 
 	return;
 }

@@ -185,6 +185,9 @@ public:
 	// Load new map. This method translates the position of the tile on the map to its equivalent position on screen.
 	iPoint MapToWorld(int x, int y) const;
 
+	//Change map with a fade time
+	bool ChangeMap(const char* newMap); 
+
 	void Restart_Cam();
 private:
 
@@ -207,10 +210,6 @@ public:
 	
 	iPoint			cam_tilePos;			//Position of the camera in the X and Y axis in tiles.
 	int				tile_index;				//Will store the tile's index number so the correct tile is loaded.
-
-	float			bg_parallax_spd;		//Parallax speed of the background layer
-	float			first_parallax_spd;		//Parallax speed of the first parallax layer.
-	float			decor_parallax_spd;		//Parallax speed of the decor parallax layer.
 
 private:
 	pugi::xml_document	map_file;

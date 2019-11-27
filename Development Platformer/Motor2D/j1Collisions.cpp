@@ -6,6 +6,8 @@
 #include "j1EntityManager.h"
 #include "Brofiler\Brofiler.h"
 
+//#include "mmgr/mmgr.h"
+
 //With the constructor call collider_debug (draw colliders on screen) is set to true or false.
 j1Collisions::j1Collisions() : j1Module()
 {
@@ -40,7 +42,7 @@ bool j1Collisions::PreUpdate()
 	//This loop deletes from memory any collider that has been set to be deleted before calculating any new collisions.
 	while (collider_iterator != NULL)
 	{
-		if (collider_iterator->data->to_delete == true /*|| collider_iterator->data->type == Object_Type::UNKNOWN*/)	//If the delete_collider is set to true this will be run.
+		if (collider_iterator->data->to_delete == true || collider_iterator->data->type == Object_Type::UNKNOWN)	//If the delete_collider is set to true this will be run. //Second part breaks with mmgr
 		{
 			collider_list.del(collider_iterator);				//Using the list's properties all colliders set to delete will be deleted from memory.
 		}
@@ -105,6 +107,11 @@ bool j1Collisions::CleanUp()
 	//When this is changed to arrays check if the collider being iterated is null or not and then delete it (delete collider, collider = nullptr)
 	
 	//Should change this list for an array.
+	for (p2List_item<Collider*>* collider_iterator = collider_list.start; collider_iterator != NULL; collider_iterator = collider_iterator->next)
+	{
+		RELEASE(collider_iterator->data);		//Frees all alocated memory in the process of generating colliders. AddCollider()--> Collider* collider = new Collider().
+	}
+
 	collider_list.clear();				//Deletes all colliders freeing all allocated memory from the collider_list so it can be filled again with the colliders of another map.
 	
 	return true;
@@ -182,7 +189,7 @@ void j1Collisions::Collider_Debug()
 }
 
 //Loads all the objects that are in the tmx map file and iterates through them generating a new collider for each one of them.
-void j1Collisions::LoadColliderFromMap() // Remember to put in fade to black.
+void j1Collisions::LoadColliderFromMap()																			// Remember to call it in fade to black.
 {
 	p2List_item<ObjectGroup*>* object_iterator = App->map->data.objectGroups.start;									//Declares a list item pointer that iterates through the ObjectGroup list and sets it starting position to the first objectgroup in the list.  
 	while (object_iterator != NULL)
@@ -190,6 +197,7 @@ void j1Collisions::LoadColliderFromMap() // Remember to put in fade to black.
 		for (int i = 0; i < object_iterator->data->num_objects; i++)												//This loop will iterate as many times as objects the objectgroup being iterated has. Done like this to avoid wasting memory.
 		{
 			AddCollider(*object_iterator->data->object[i].collider, object_iterator->data->object[i].type, NULL);	//Adds a new collider for each object that is iterated.
+			RELEASE(object_iterator->data->object[i].collider);														//Deletes from memory the buffer collider specific for an object. LoadObjectLayers() --> SDL_Rect* collider = new SDL_Rect(); at line 555.
 		}
 		object_iterator = object_iterator->next;																	//Gets the next objectGroup that will be iterated through to load all its objects.
 	}
@@ -212,10 +220,10 @@ Collider* j1Collisions::AddCollider(SDL_Rect collider, Object_Type type, j1Modul
 //Checks all possible collider collisions
 bool Collider::Check_Collision(const SDL_Rect& r) const //Main collider calls the method and given collider is passed as an argument.
 {
-	return ((r.x + r.w > collider.x) &&			// Collision going from left to right.
-		(r.x < collider.x + collider.w) &&		// Collison going from right to left.
-		(r.y + r.h > collider.y) &&				// Collision going up down. Falling collision (With player, ground, platform...).
-		(r.y < collider.y + collider.h));		// Collision going down up. Jumping collision (With player, ground, platform...).
+	return ((r.x + r.w > collider.x) &&					// Collision going from left to right.
+		(r.x < collider.x + collider.w) &&				// Collison going from right to left.
+		(r.y + r.h > collider.y) &&						// Collision going up down. Falling collision (With player, ground, platform...).
+		(r.y < collider.y + collider.h));				// Collision going down up. Jumping collision (With player, ground, platform...).
 }
 
 //Method that sets a collider's data members with the values of the data members of a given object. 

@@ -18,9 +18,11 @@
 j1Player1::j1Player1(int x, int y, ENTITY_TYPE type) : j1Player(x, y, type) //THIS HERE //Constructor. Called at the first frame.
 {
 	//String that will be given to the different functions (Awake(), Load()...) to generate the handler node.
-/*	name.create("entities");*/ //The string has to be the same as the name of the node in the xml file.
+	/*name.create("entities");*/ //The string has to be the same as the name of the node in the xml file.
 
 	LoadAnimationPushbacks();		//REVISE THIS HERE. This needs to be separated from the enemies, there is a need to create a separate LoadEnemyAnimations().
+
+	//tag = "player_1";
 };
 
 j1Player1::~j1Player1()  //Destructor. Called at the last frame.
@@ -42,7 +44,7 @@ bool j1Player1::Start()
 {
 	entity_sprite = App->tex->Load("textures/Spritesheets/Character 1/character_spritesheet_I_Buena.png");
 
-	LoadPlayerPosition("player_1", "factoryMap");			//Change this so strings arent hardcoded //Loads Player 1's position on the map //REVISE THIS HERE For now it is set to the position in the first map, maybe in scene it can be switched? 
+	SetPlayer1Position();									//Sets P1's origin position in the map.
 	LoadEntityProperties();									//Loads the player's properties from the xml file. //THIS HERE
 	InitPlayer();											//Loads P1 in game.
 	LoadEntityAudio();										//Loads the sfx for player 1.
@@ -63,7 +65,7 @@ bool j1Player1::PreUpdate()
 	{
 		player.state = Player_State::Idle;
 
-		if (speed.y > 2)				//THIS HERE
+		if (speed.y > 2)													//For some reason the player's speed when colliding against the ground is 1.4f aprox instead of 0.
 		{
 			player.state = Player_State::Falling;
 		}
@@ -540,6 +542,7 @@ bool j1Player1::Save(pugi::xml_node&  data) const
 	return true;
 }*/
 
+// ------------------------------------ PLAYER 1 METHODS ------------------------------------
 void j1Player1::TeleportP2ToP1()		//Method that teleports P2 directly in front of P1. Takes into account which direction P1 is facing. Can trigger some fun interactions between players :)
 {
 	if (!player.tpInCd)
@@ -586,6 +589,28 @@ void j1Player1::RespawnP1ToP2()		//Method that, on death, will respawn P1 behind
 	{
 		position.x = App->entityManager->player2->position.x + App->entityManager->player2->collider->collider.w / 2;
 		position.y = App->entityManager->player2->position.y - 40;
+	}
+}
+
+void j1Player1::SetPlayer1Position()
+{
+	config_file.load_file("config.xml");				//REVISE THIS HERE  Can a pugi object be reused as a copy in another class?
+
+	player_entity = config_file.child("config").child("entities").child("player").child("player_1");
+
+	nameTag = player_entity.attribute("name").as_string();
+
+	if (App->scene->firstMap == true)
+	{
+		//LoadPlayerPosition("player_1", "factoryMap");		//Change this so strings arent hardcoded //Loads Player 1's position on the map //REVISE THIS HERE For now it is set to the position in the first map, maybe in scene it can be switched? 
+		player.mapTag = player_entity.child("factoryMap").attribute("mapName").as_string();
+		LoadPlayerPosition(nameTag.GetString(), player.mapTag.GetString());
+	}
+	if (App->scene->secondMap == true)
+	{
+		//LoadPlayerPosition("player_1", "forestMap");		//Change this so strings arent hardcoded //Loads Player 1's position on the map //REVISE THIS HERE For now it is set to the position in the first map, maybe in scene it can be switched? 
+		player.mapTag = player_entity.child("forestMap").attribute("mapName").as_string();
+		LoadPlayerPosition(nameTag.GetString(), player.mapTag.GetString());
 	}
 }
 
