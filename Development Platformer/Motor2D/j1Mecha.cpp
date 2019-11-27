@@ -37,7 +37,7 @@ bool j1Mecha::Awake(pugi::xml_node& config)
 
 bool j1Mecha::Start()
 {
-	entity_sprite = App->tex->Load("textures/Spritesheets/Enemies/mech-unit/mech-unit.png");
+	entity_sprite = App->tex->Load("textures/Spritesheets/Enemies/mech-unit/mech-unit2.png");
 	
 	//Load_Entity();
 	LoadEntityProperties();

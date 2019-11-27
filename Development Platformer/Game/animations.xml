@@ -86,7 +86,7 @@
   <mecha>
     <idle speed =" 1.0f" loop="true">
       <!--<pushback x="20" y="16" w="47" h="64"/>-->
-      <pushback x="26" y="21" w="58" h="79"/>
+      <pushback x="25" y="21" w="58" h="79"/>
     </idle>
     <running speed ="7.0f" loop ="true">
       <!--<pushback x="20" y="16" w="47" h="64"/>
@@ -99,16 +99,16 @@
       <pushback x="694" y="15" w="49" h="64"/>
       <pushback x="791" y="18" w="46" h="62"/>
       <pushback x="887" y="19" w="44" h="61"/>-->
-      <pushback x="25" y="21" w="59" h="79"/>
-      <pushback x="141" y="18" w="68" h="82"/>
+      <pushback x="29" y="21" w="59" h="79"/>
+      <pushback x="141" y="18" w="67" h="82"/>
       <pushback x="259" y="19" w="74" h="81"/>
       <pushback x="379" y="23" w="75" h="77"/>
-      <pushback x="499" y="24" w="73" h="76"/>
-      <pushback x="624" y="21" w="62" h="79"/>
+      <pushback x="499" y="24" w="72" h="76"/>
+      <pushback x="624" y="21" w="61" h="79"/>
       <pushback x="745" y="18" w="58" h="82"/>
       <pushback x="867" y="19" w="61" h="81"/>
-      <pushback x="985" y="23" w="58" h="77"/>
-      <pushback x="1108" y="24" w="55" h="76"/>
+      <pushback x="985" y="23" w="54" h="77"/>
+      <pushback x="1108" y="24" w="54" h="76"/>
     </running>
   </mecha>
 
@@ -117,6 +117,14 @@
       <pushback x = "20" y="18" w="52" h="54"/>
     </idle>
     <running speed ="7.0f" loop ="true">
+      <!--<pushback x="20" y="18" w="52" h="54"/>
+      <pushback x="84" y="21" w="54" h="51"/>
+      <pushback x="163" y="19" w="52" h="53"/>
+      <pushback x="235" y="22" w="54" h="50"/>
+      <pushback x="309" y="20" w="51" h="52"/>
+      <pushback x="381" y="21" w="54" h="51"/>
+      <pushback x="455" y="19" w="52" h="53"/>
+      <pushback x="524" y="22" w="54" h="50"/>-->
       <pushback x="20" y="18" w="52" h="54"/>
       <pushback x="84" y="21" w="54" h="51"/>
       <pushback x="163" y="19" w="52" h="53"/>
