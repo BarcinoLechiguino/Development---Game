@@ -113,7 +113,7 @@
   </mecha>
 
   <alien>
-    <idle speed ="3.0f" loop="true">
+    <idle speed ="3 .0f" loop="true">
       <pushback x="20" y="18" w="52" h="54"/>
       <pushback x="84" y="21" w="54" h="51"/>
       <pushback x="163" y="19" w="52" h="53"/>

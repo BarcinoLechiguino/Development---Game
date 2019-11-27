@@ -61,6 +61,7 @@ bool j1Mecha::Update(float dt, bool doLogic)
 		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		{
 			state = Entity_State::PATHING_RIGHT;
+			App->audio->PlayFx(18, 0);
 		}
 		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
 		{
@@ -70,6 +71,7 @@ bool j1Mecha::Update(float dt, bool doLogic)
 		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		{
 			state = Entity_State::PATHING_LEFT;
+			App->audio->PlayFx(18, 0);
 		}
 		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
 		{

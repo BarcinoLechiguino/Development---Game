@@ -88,7 +88,7 @@
 
     <alien>
       <position x="212" y="400"/>
-      <speed x="350.0f" y="0"/>
+      <speed x="275.0f" y="0"/>
       <sprite_size w="38" h="58"/>
       <lives lives="1"/>
     </alien>
