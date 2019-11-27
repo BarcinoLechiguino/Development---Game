@@ -76,6 +76,9 @@
     <ClCompile Include="j1Alien.cpp">
       <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="mmgr\mmgr.cpp">
+      <Filter>Desenvolupament  ========\Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -242,6 +245,9 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Modules\Map">
       <UniqueIdentifier>{3027b9ed-12dc-442e-ab2f-05fb2dcc84f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Sources">
+      <UniqueIdentifier>{2c952b81-74fb-4fef-9e28-a7299a9498f7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

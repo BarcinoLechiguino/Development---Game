@@ -40,7 +40,7 @@ bool j1Collisions::PreUpdate()
 	//This loop deletes from memory any collider that has been set to be deleted before calculating any new collisions.
 	while (collider_iterator != NULL)
 	{
-		if (collider_iterator->data->to_delete == true || collider_iterator->data->type == Object_Type::UNKNOWN)	//If the delete_collider is set to true this will be run.
+		if (collider_iterator->data->to_delete == true /*|| collider_iterator->data->type == Object_Type::UNKNOWN*/)	//If the delete_collider is set to true this will be run.
 		{
 			collider_list.del(collider_iterator);				//Using the list's properties all colliders set to delete will be deleted from memory.
 		}
