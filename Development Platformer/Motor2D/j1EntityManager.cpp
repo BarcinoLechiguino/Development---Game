@@ -13,6 +13,8 @@
 #include "j1Window.h"
 #include "Brofiler\Brofiler.h"
 
+#include "mmgr/mmgr.h"
+
 j1EntityManager::j1EntityManager() : player(nullptr), player2(nullptr)		//Sets the j1Player1* pointers declared in the header to nullptr
 {
 	name.create("entities");
