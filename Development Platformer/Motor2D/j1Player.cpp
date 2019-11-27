@@ -154,6 +154,7 @@ void j1Player::LoadEntityAudio()
 	goalFX = App->audio->LoadFx("audio/fx/Pass.wav");
 	mecha_die = App->audio->LoadFx("audio/fx/Mecha die.wav");
 	alien_die = App->audio->LoadFx("audio/fx/Alien die.wav");
+	mecha_walking = App->audio->LoadFx("audio/fx/Mecha_Walking.wav");
 }
 
 bool j1Player::InitPlayer()

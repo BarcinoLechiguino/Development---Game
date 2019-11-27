@@ -113,18 +113,17 @@
   </mecha>
 
   <alien>
-    <idle speed ="1.0f" loop="true">
-      <pushback x = "20" y="18" w="52" h="54"/>
-    </idle>
-    <running speed ="7.0f" loop ="true">
-      <!--<pushback x="20" y="18" w="52" h="54"/>
+    <idle speed ="3 .0f" loop="true">
+      <pushback x="20" y="18" w="52" h="54"/>
       <pushback x="84" y="21" w="54" h="51"/>
       <pushback x="163" y="19" w="52" h="53"/>
       <pushback x="235" y="22" w="54" h="50"/>
       <pushback x="309" y="20" w="51" h="52"/>
       <pushback x="381" y="21" w="54" h="51"/>
       <pushback x="455" y="19" w="52" h="53"/>
-      <pushback x="524" y="22" w="54" h="50"/>-->
+      <pushback x="524" y="22" w="54" h="50"/>
+    </idle>
+    <running speed ="7.0f" loop ="true">
       <pushback x="20" y="18" w="52" h="54"/>
       <pushback x="84" y="21" w="54" h="51"/>
       <pushback x="163" y="19" w="52" h="53"/>

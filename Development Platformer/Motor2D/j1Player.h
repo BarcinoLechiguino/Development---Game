@@ -147,6 +147,7 @@ public:
 	uint			activateFX;		//Item Activation sfx.
 	uint			mecha_die;
 	uint			alien_die;
+	uint			mecha_walking;
 };
 
 #endif // __j1Player_H__
