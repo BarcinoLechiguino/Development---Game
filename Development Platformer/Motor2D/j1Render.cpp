@@ -89,7 +89,7 @@ bool j1Render::Update(float dt)
 
 	fPoint p1Pos = App->entityManager->player->position;													//Sets an fPoint with the position data members of the player1 player entity. Done for readability.
 	iPoint p1Size( App->entityManager->player->sprite_width , App->entityManager->player->sprite_height);	//Sets an iPoint with the size data members of the player1 player entity. Done for readability.	
-	fPoint p2Pos	= App->entityManager->player2->position;												//Sets an fPoint with the position data members of the player2 player entity. Done for readability.
+	fPoint p2Pos = App->entityManager->player2->position;													//Sets an fPoint with the position data members of the player2 player entity. Done for readability.
 	iPoint p2Size(App->entityManager->player->sprite_width , App->entityManager->player->sprite_height);	//Sets an iPoint with the size data members of the player2 player entity. Done for readability.	
 
 

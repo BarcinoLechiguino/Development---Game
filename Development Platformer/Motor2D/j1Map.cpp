@@ -97,6 +97,10 @@ void j1Map::Draw()
 						{
 							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
 						}
+						else if (layer->data->name == "Ground")
+						{
+							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+						}
 						else if (layer->data->name == "Platforms")
 						{
 							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
@@ -114,7 +118,16 @@ void j1Map::Draw()
 							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
 						}
 
-						////---------------------------TUTORIAL MAP LAYERS----------------------
+						//---------------------- PATHFINDING META TILES ----------------------
+						/*else if (layer->data->name == "PathfindingCollisions")
+						{
+							if (PathfindingDebug == true)
+							{
+								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							}
+						}*/
+						
+						//---------------------------TUTORIAL MAP LAYERS----------------------
 						//else if (layer->data->name == "Floor")
 						//{
 						//	App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
@@ -587,10 +600,16 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 		else if (object_type == "mecha")								//If the object loaded from the map matches the "mecha" type
 		{
 			App->entityManager->AddEnemy(ENTITY_TYPE::MECHA, object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
+			LOG("Added Mecha Enemy at Position %d, %d", object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
+
+			objectgroup->object[index].type = UNKNOWN;
 		}
 		else if (object_type == "alien")								//If the object loaded from the map matches the "alien" type
 		{
 			App->entityManager->AddEnemy(ENTITY_TYPE::ALIEN , object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
+			LOG("Added Alien Enemy at Position %d, %d", object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
+
+			objectgroup->object[index].type = UNKNOWN;
 		}
 		// --------------------------------------------------------------------------------------------------------------------
 

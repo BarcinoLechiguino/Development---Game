@@ -53,7 +53,7 @@ bool j1Fade_Scene::Update(float dt)
 		{
 			if (now >= total_time) //Point where the screen is totally black, and the new map is loaded.
 			{
-				ChangeMap(mapName);
+				ChangeMap(mapName);								//Here the map is changed
 				
 				total_time += total_time;
 				start_time = SDL_GetTicks();
@@ -96,8 +96,8 @@ bool j1Fade_Scene ::FadeToBlack(const char* mapname, float time)
 		ret = true;
 	}
 
-	App->entityManager->player->Restart();					//Returns P1 to the starting position of the map.
-	App->entityManager->player2->Restart();					//Returns P2 to the starting position of the map.
+	//App->entityManager->player->Restart();					//Returns P1 to the starting position of the map.
+	//App->entityManager->player2->Restart();					//Returns P2 to the starting position of the map.
 	
 	return ret;
 }
@@ -106,20 +106,17 @@ bool j1Fade_Scene::ChangeMap(const char* newMap)
 {
 	bool ret = true;
 
-
-	App->collisions->collider_list.clear();		//Deletes all colliders from memory.
-	App->entityManager->player->CleanUp();					//Deletes all data related to P1. 
-	App->entityManager->player2->CleanUp();					//Deletes all data related to P2.
+	//Put this on scene CleanUp()
+	App->scene->CleanUp();
 	//App->audio->CleanUp();
-
-	App->map->CleanUp();						//Deletes everything related with the map from memory. (Tilesets, Layers and ObjectGroups)
 
 	App->map->Load(newMap);						//Loads a specified map
 	App->collisions->LoadColliderFromMap();		//Load Collisions
-	App->entityManager->player->InitPlayer();	//Load / Reset P1	//THIS HERE
-	App->entityManager->player2->InitPlayer();	//Load / Reset P2
-	//App->player1->LoadPlayer1Textures();		//Load / Reset P1's textures.
-	//App->player1->LoadPlayer1Textures();		//Load / Reset P2's textures.
+	
+	App->entityManager->player->Start();		//Load / Reset P1	//REVISE THIS HERE. Should players be loaded like this?
+	App->entityManager->player2->Start();		//Load / Reset P2
+
+	//App->scene->Start();						//This breaks the game
 
 	return ret;
 }

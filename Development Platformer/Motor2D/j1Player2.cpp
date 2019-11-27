@@ -17,7 +17,7 @@
 j1Player2::j1Player2(int x, int y, ENTITY_TYPE type) : j1Player(x, y, type) //Constructor. Called at the first frame.
 {
 	//String that will be given to the different functions (Awake(), Load()...) to generate the handler node.
-	name.create("entities"); //The string has to be the same as the name of the node in the xml file.
+	//name.create("entities"); //The string has to be the same as the name of the node in the xml file.
 
 	//Adds P2's animation pushback.
 	LoadAnimationPushbacks();
@@ -61,7 +61,7 @@ bool j1Player2::PreUpdate()
 	{
 		player.state = Player_State::Idle;
 
-		if (player.speed.y > 2)				//THIS HERE
+		if (speed.y > 2)				//THIS HERE
 		{
 			player.state = Player_State::Falling;
 		}
@@ -139,12 +139,12 @@ bool j1Player2::Update(float dt, bool doLogic)
 
 		if (player.againstLeftWall == false)
 		{
-			position.x += player.speed.x * dt;
+			position.x += speed.x * dt;
 
 			player.flip = false;
 			player.isGoingRight = true;
 
-			if (player.speed.y > 2)
+			if (speed.y > 2)
 			{
 				animation = &falling;
 			}
@@ -160,12 +160,12 @@ bool j1Player2::Update(float dt, bool doLogic)
 
 		if (player.againstRightWall == false)
 		{
-			position.x -= player.speed.x * dt;
+			position.x -= speed.x * dt;
 
 			player.flip = true;
 			player.isGoingLeft = true;
 
-			if (player.speed.y > 2)
+			if (speed.y > 2)
 			{
 				animation = &falling;
 			}
@@ -187,7 +187,7 @@ bool j1Player2::Update(float dt, bool doLogic)
 	case Player_State::Jumping:
 
 		App->audio->PlayFx(5, 0);
-		player.speed.y = -player.acceleration.y * dt;
+		speed.y = -player.acceleration.y * dt;
 		player.isJumping = true;						//Boolean for animations
 		player.airborne = true;
 		player.grounded = false;
@@ -234,42 +234,7 @@ bool j1Player2::Update(float dt, bool doLogic)
 	//If P2 is in the air then this function brings them back down to the floor.
 	if (player.airborne == true)
 	{
-		player.speed.y += player.gravity * dt;
-
-		if (player.speed.y > player.max_speed.y * dt)
-		{
-			player.speed.y = player.max_speed.y * dt;
-		}
-
-		position.y += player.speed.y;				//Refreshes the vector speed of P1 in the Y axis.
-
-		//Jump animation modifications.
-		if (player.isBoostJumping == true)				//If P1 is boost jumping then this set of animations is played.
-		{
-			if (player.speed.y < player.frontflipStart)
-			{
-				animation = &jumping;
-			}
-			else if (player.speed.y < player.frontflipEnd)
-			{
-				animation = &frontflip;
-			}
-			else
-			{
-				animation = &falling;
-			}
-		}
-		else if (player.isJumping == true)				//If P1 is jumping then this set of animations is played.
-		{
-			if (player.speed.y < 0)
-			{
-				animation = &jumping;
-			}
-			else
-			{
-				animation = &falling;
-			}
-		}
+		ApplyGravity();
 	}
 
 	//--------------------------------------- Miscelaneous Checks ---------------------------------------
@@ -305,10 +270,16 @@ bool j1Player2::PostUpdate()
 bool j1Player2::CleanUp()
 {
 	App->tex->UnLoad(entity_sprite);
-	App->entityManager->player2->Disable();
 
-	collider = nullptr;						//THIS HERE
-	animation = nullptr;					//THIS HERE
+	if (collider != nullptr)
+	{
+		collider->to_delete = true;						//THIS HERE
+	}
+
+	if (animation != nullptr)
+	{
+		animation = nullptr;					//THIS HERE
+	}
 
 	return true;
 };
@@ -340,7 +311,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 					{	
 						if (player.grounded == true)
 						{
-							player.speed.y -= player.boost_jump.y * App->GetDt();
+							speed.y -= player.boost_jump.y * App->GetDt();
 							LOG("boost jump speed is");
 							player.isBoostJumping = true;
 							player.airborne = true;
@@ -362,9 +333,9 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 				if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x + C2->collider.y)		//The first part checks if C1 is contained in the X axis of C2. 
 				{
 					//Player Colliding from TOP.
-					if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y && player.speed.y != 0)			//This second part checks if C1 is actually colliding vertically down.
+					if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y && speed.y != 0)			//This second part checks if C1 is actually colliding vertically down.
 					{
-						player.speed.y = 0;
+						speed.y = 0;
 						position.y = C2->collider.y - C1->collider.h + 1;		//THIS HERE
 						player.isJumping = false;
 						player.isBoostJumping = false;
@@ -375,7 +346,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 					//Player Colliding from BOTTOM.
 					else if (C1->collider.y < C2->collider.y + C2->collider.h && C1->collider.y + 20 > C2->collider.y + C2->collider.h && C1->collider.y > C2->collider.y)	//This second part checks if C1 is actually colliding vertically down.
 					{
-						player.speed.y = 0;
+						speed.y = 0;
 						position.y = C2->collider.y + C2->collider.h + 1;		//THIS HERE
 
 						player.againstCeiling = true;
@@ -413,7 +384,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 						//Player Colliding from Above the Solid, ergo colliding with the ground. This second part checks if C1 is actually colliding vertically down.
 						if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y)
 						{
-							player.speed.y = 0;
+							speed.y = 0;
 							position.y = C2->collider.y - C1->collider.h + 1;
 							player.isJumping = false;
 							player.isBoostJumping = false;
@@ -434,6 +405,39 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 				RespawnP2ToP1();
 			}
 
+			if (C2->type == Object_Type::ENEMY)
+			{
+				//Player is colliding from LEFT or RIGHT.
+				if (C1->collider.y <= C2->collider.y + C2->collider.h && C1->collider.y + C1->collider.h - 4 >= C2->collider.y)		//The first part checks if C1 is contained in the Y axis of C2.
+				{
+					//Player is colliding from LEFT.
+					if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x)						//This second part checks if C1 is actually colliding from the left side of the collider.
+					{
+						//Death logic
+						player.lives--;
+						player.state = Player_State::Dying;
+
+						//Antes la animacion de muerte tiene que haber finalizado - Gerard
+						RespawnP2ToP1();
+					}
+
+					//Player is colliding from RIGHT.
+					if (C1->collider.x <= C2->collider.x + C2->collider.w && C1->collider.x >= C2->collider.x)						// This second part checks if C1 is actually colliding from the right side of the collider.
+					{
+						//Death logic
+						player.lives--;
+						player.state = Player_State::Dying;
+
+						//Antes la animacion de muerte tiene que haber finalizado - Gerard
+						RespawnP2ToP1();
+					}
+				}
+				else
+				{
+					//Destroy Entity;
+				}
+			}
+
 			//Player Colliding against an Activable Item
 			if (C2->type == Object_Type::ITEM)
 			{
@@ -448,48 +452,10 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 			{
 				if (player.item_activated == false || App->entityManager->player->player.item_activated == false)
 				{
-					//Player Colliding vertically against the Solid. The first part checks if C1 is contained in the X axis of C2. 
-					if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x + C2->collider.y)
-					{
-						//Player Colliding from Above the Solid, ergo colliding with the ground. This second part checks if C1 is actually colliding vertically down.
-						if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y)
-						{
-							player.speed.y = 0;
-							player.isJumping = false;
-							player.isBoostJumping = false;
-							player.grounded = true;
-							LOG("P2 IS COLLIDING WITH A SOLID FROM ABOVE");
-						}
-
-						//Player Colliding from Below the Solid. ergo colliding with the ceiling. This second part checks if C1 is actually colliding vertically down.
-						else if (C1->collider.y < C2->collider.y + C2->collider.h && C1->collider.y > C2->collider.y)
-						{
-							player.speed.y = 0;
-							position.y = C2->collider.y + C2->collider.h + 1;
-							player.againstCeiling = true;
-							LOG("P2 IS COLLIDING WITH A SOLID FROM BELOW");
-						}
-					}
-
-					//Player is colliding from the sides. The first part checks if C1 is contained in the Y axis of C2.
-					if (C1->collider.y <= C2->collider.y + C2->collider.h && C1->collider.y + C1->collider.h - 4 >= C2->collider.y)
-					{
-						//Player is colliding from left (going right). This second part checks if C1 is actually colliding from the left side of the collider.
-						if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x < C2->collider.x)
-						{
-							player.againstLeftWall = true;
-							player.againstRightWall = false;
-							LOG("P2 IS COLLIDING WITH A SOLID FROM THE LEFT");
-						}
-
-						//Player is colliding from right (going left). This second part checks if  C1 is actually colliding from the right side of the collider.
-						if (C1->collider.x <= C2->collider.x + C2->collider.w && C1->collider.x > C2->collider.x)
-						{
-							player.againstRightWall = true;
-							player.againstLeftWall = false;
-							LOG("P2 IS COLLIDING WITH A SOLID FROM THE RIGHT");
-						}
-					}
+					player.lives--;
+					player.state = Player_State::Dying;
+					
+					RespawnP2ToP1();
 				}
 			}
 
@@ -503,12 +469,12 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 			{
 				if (C1->collider.y > GOAL_Y && C1->collider.y < GOAL_HEIGHT)	//Dirty way to know which portal goal has been reached.
 				{
-					App->fadescene->FadeToBlack("1st_Level.tmx");				//Loads the 1st level.
+					App->fadescene->FadeToBlack("Test_Map.tmx");				//Loads the 1st level.
 					App->map->Restart_Cam();
 				}
 				else
 				{
-					App->fadescene->FadeToBlack("Tutorial_Level.tmx");			//Loads the 2nd level.
+					App->fadescene->FadeToBlack("Test_Map_2.tmx");			//Loads the 2nd level.
 					App->map->Restart_Cam();
 				}
 

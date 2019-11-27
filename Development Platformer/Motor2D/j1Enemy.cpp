@@ -13,10 +13,10 @@
 #include "j1Enemy.h"
 #include "j1EntityManager.h"
 
-j1Enemy::j1Enemy(int x, int y, ENTITY_TYPE type) : j1Entity(x, y, ENTITY_TYPE::PLAYER)  //Constructor. Called at the first frame.
+j1Enemy::j1Enemy(int x, int y, ENTITY_TYPE type) : j1Entity(x, y, type)  //Constructor. Called at the first frame.
 {
 	//String that will be given to the different functions (Awake(), Load()...) to generate the handler node.
-	name.create("entities"); //The string has to be the same as the name of the node in the xml file.
+	/*name.create("entities");*/ //The string has to be the same as the name of the node in the xml file.
 };
 
 j1Enemy::~j1Enemy()  //Destructor. Called at the last frame.
@@ -75,7 +75,7 @@ bool j1Enemy::Save(pugi::xml_node&  data) const
 	return true;
 }
 
-// Enemy methods ---------------------------------------------
+//---------------------------- Enemy methods ----------------------------
 bool j1Enemy::Calculate_Path()
 {
 	return true;
@@ -104,6 +104,28 @@ void j1Enemy::LoadAnimationPushbacks()
 void j1Enemy::LoadEntityProperties()
 {
 	return;
+}
+
+void j1Enemy::InitEnemy()
+{
+	enemy_HitBox.x = position.x;
+	enemy_HitBox.y = position.y;
+	enemy_HitBox.w = sprite_width;
+	enemy_HitBox.h = sprite_height;
+
+	collider = App->collisions->AddCollider(enemy_HitBox, Object_Type::ENEMY, App->entityManager);				//THIS HERE This one loads the enemy collider (orange)
+
+	// ------------------- ENEMY STATUS BOOLS -------------------
+	grounded = true;
+	isAlive = true;
+	airborne = false;
+	flip = false;
+	isGoingRight = false;
+	isGoingLeft = false;
+	fading = false;
+	isDying = false;
+	againstRightWall = false;
+	againstLeftWall = false;
 }
 
 void j1Enemy::LoadEntityAudio()

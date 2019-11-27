@@ -38,6 +38,7 @@ public://methods
 public: //P1 Variables
 	void TeleportP2ToP1();										//Moves P2 directly in front of P1. It takes into account where P1 is looking at.
 	void RespawnP1ToP2();										//Moves P1 directly behind P2 on death.
+	//void ApplyGravity(float dt);
 	void LivesCheck(int lives);									//Checks if the player has any lives left.
 	void OnCollision(Collider* C1, Collider* C2);				//Collision Logic Handling.
 

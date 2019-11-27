@@ -46,12 +46,28 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
-	to_end = false;
-	bool ret = App->map->Load(map_names.start->data->GetString());
-	App->audio->PlayMusic(App->map->data.music_File.GetString());
-	LOG("Boi: %s", map_names.start->data->GetString());
+	bool ret;
 
+	to_end = false;
+
+	/*if (firstMap == true)
+	{
+		ret = App->map->Load(map_names.start->data->GetString());
+		LOG("Map Name: %s", map_names.start->data->GetString());
+	}
+	else
+	{
+		ret = App->map->Load(map_names.start->next->data->GetString());
+		LOG("Map Name: %s", map_names.start->next->data->GetString());
+	}*/
+	
+	ret = App->map->Load(map_names.start->data->GetString());
+	LOG("Map Name: %s", map_names.start->data->GetString());
+
+	App->audio->PlayMusic(App->map->data.music_File.GetString());
+	
 	App->entityManager->CreatePlayers();								//THIS HERE
+	/*App->entityManager->SpawnEnemies();*/								//If SpawnEnemies is called here then it should not be called in the PreUpdate()
 	//App->entityManager->CreateEntity(ENTITY_TYPE::PLAYER);
 
 	cam_debug_speed = App->render->cam.camera_debug_speed;
@@ -103,49 +119,43 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 		}
 	}*/
 
-	//Debug Keys
-	//Load First Level Key
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	// ---------------------------------------- DEBUG KEYS ----------------------------------------
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)			//Load First Level Key
 	{
 		//Load_lvl(0);
 
 		//New
-		App->fadescene->FadeToBlack("Tutorial_Level.tmx");
-		App->entityManager->player->Restart();
-		App->entityManager->player2->Restart();
+		App->fadescene->FadeToBlack("Test_map.tmx");
+		/*App->entityManager->player->Restart();
+		App->entityManager->player2->Restart();*/
 	}
 
-	//Load Second Level Key
-	else if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)			//Load Second Level Key
 	{
 		//Load_lvl(1);
 
 		App->fadescene->FadeToBlack("Test_map_2.tmx");
-		App->entityManager->player->Restart();
-		App->entityManager->player2->Restart();
+		/*App->entityManager->player->Restart();
+		App->entityManager->player2->Restart();*/
 	}
-
-	//Restart Key
-	else if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	
+	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)			//Restart Key
 	{
 		App->entityManager->player->Restart();
 		App->entityManager->player2->Restart();
 	}
 	
-	//Save Game Key
-	else if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)			//Save Game Key
 	{
 		App->SaveGame();
 	}
 	
-	//Load Game Key
-	else if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)			//Load Game Key
 	{
 		App->LoadGame();
 	}
-
-	//Enable / Diable free camera movement Key
-	else if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+	
+	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)			//Enable / Diable free camera movement Key
 	{
 		if (App->render->cam.camera_debug == true)
 		{
@@ -157,8 +167,7 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 		}
 	}
 
-	//Enabling / Disabling frame cap
-	else if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)			//Enabling / Disabling frame cap
 	{
 		if (App->framesAreCapped == true)
 		{
@@ -170,7 +179,7 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 		}
 	}
 
-	else if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)			//Collider Debug Key
 	{
 		if (App->collisions->collider_debug == true)
 		{
@@ -181,9 +190,7 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 			App->collisions->collider_debug = true;
 		}
 	}
-
-	//GodMode Activation Key
-	else if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	else if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)		//God Mode Key
 	{
 		if (App->entityManager->player->player.GodMode)
 		{
@@ -241,6 +248,31 @@ bool j1Scene::PostUpdate()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
+
+	App->collisions->CleanUp();								//Deletes all colliders that were loaded for this scene / map.
+	App->entityManager->DestroyEntities();					//Destroys all non-player entities.
+	App->map->CleanUp();									//Deletes everything related with the map from memory. (Tilesets, Layers and ObjectGroups)
+	//App->audio->CleanUp();
+
+	if (App->entityManager->player != nullptr)
+	{
+		App->entityManager->player->CleanUp();				//Deletes all data related to P1. 
+	}
+	if (App->entityManager->player2 != nullptr)
+	{
+		App->entityManager->player2->CleanUp();				//Deletes all data related to P2.
+	}
+
+	/*if (firstMap == true)									//Resets the booleans depending on which map was loaded  / deleted.
+	{
+		firstMap	= false;
+		secondMap	= true;
+	}
+	else
+	{
+		firstMap	= true;
+		secondMap	= false;
+	}*/
 
 	return true;
 }

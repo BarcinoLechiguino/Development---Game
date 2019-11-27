@@ -1,5 +1,4 @@
 #include "j1EntityManager.h"
-#include "Alien.h"
 #include "p2Log.h"
 #include "j1Render.h"
 #include "j1Map.h"
@@ -10,8 +9,11 @@
 #include "j1Player1.h"
 #include "j1Player2.h"
 #include "j1Mecha.h"
+#include "j1Alien.h"
 #include "j1Window.h"
 #include "Brofiler\Brofiler.h"
+
+#include "mmgr/mmgr.h"
 
 j1EntityManager::j1EntityManager() : player(nullptr), player2(nullptr)		//Sets the j1Player1* pointers declared in the header to nullptr
 {
@@ -34,7 +36,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 	//Iterates all entities and calls their Awake() methods.
 	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator; entity_iterator = entity_iterator->next)
 	{
-		entity_iterator->data->Awake(config.child(entity_iterator->data->name.GetString()));
+		//entity_iterator->data->Awake(config.child(entity_iterator->data->name.GetString()));
 	}
 
 	return true;
@@ -53,7 +55,7 @@ bool j1EntityManager::Start()
 
 bool j1EntityManager::PreUpdate()
 {
-	SpawnEnemy();							//Should this be here?
+	SpawnEnemies();							//Should this be here?
 
 	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
 	{
@@ -110,28 +112,9 @@ bool j1EntityManager::CleanUp()
 	entities.clear();									//Deletes all items in the entities list and frees all allocated memory.
 
 	player = NULL;										//Sets the j1Player* player pointer to NULL.
+	player2 = NULL;
 
 	return true;
-}
-
-void j1EntityManager::DestroyEntity(j1Entity* entity)
-{
-	BROFILER_CATEGORY("EntityManager PostUpdate", Profiler::Color::FireBrick);
-	//Iterates all entities in the entities list and searches for the entity passed as argument, if it is inside the list and is found, it is then destroyed.
-	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
-	{
-		if (entity_iterator->data == entity)
-		{
-			if (entity_iterator->data == GetPlayer())		//Revise. Should this be here?
-			{
-				GetPlayer()->CleanUp();
-			}
-				
-			entities.del(entity_iterator);
-			RELEASE(entity_iterator->data);
-			break;
-		}
-	}
 }
 
 void j1EntityManager::OnCollision(Collider* C1, Collider* C2)		//This OnCollision will manage the collisions of all entities and derive them to their respective OnCollision methods()
@@ -151,6 +134,38 @@ void j1EntityManager::OnCollision(Collider* C1, Collider* C2)		//This OnCollisio
 	}
 }
 
+bool j1EntityManager::Save(pugi::xml_node& data) const
+{
+	//GetPlayer()->Save(data.append_child("player"));
+	for (p2List_item<j1Entity*>* entity = entities.start; entity; entity = entity->next)
+	{
+		/*pugi::xml_node child = data.append_child(entity->data->name.GetString());
+		child.append_attribute("position_x") = entity->data->position.x;
+		child.append_attribute("position_y") = entity->data->position.y;*/
+	}
+
+	return true;
+}
+
+bool j1EntityManager::Load(pugi::xml_node& data)		//Change this.
+{
+	CleanUp();
+	//GetPlayer()->Load(data.child("player"));
+	for (pugi::xml_node mecha = data.child("mecha"); mecha; mecha = mecha.next_sibling("mecha"))
+	{
+		CreateEntity(ENTITY_TYPE::MECHA, mecha.attribute("position_x").as_int(), mecha.attribute("position_y").as_int());
+	}
+
+	for (pugi::xml_node alien = data.child("alien"); alien; alien = alien.next_sibling("alien"))
+	{
+		CreateEntity(ENTITY_TYPE::ALIEN, alien.attribute("position_x").as_int(), alien.attribute("position_y").as_int());
+	}
+
+	return true;
+}
+
+
+// -------------------------------------- ENTITY MANAGING METHODS --------------------------------------
 j1Entity* j1EntityManager::CreateEntity(ENTITY_TYPE type, int x, int y)
 {
 	//static_assert?
@@ -169,10 +184,10 @@ j1Entity* j1EntityManager::CreateEntity(ENTITY_TYPE type, int x, int y)
 		break;
 
 	case ENTITY_TYPE::MECHA:							//If the ENTITT_TYPE passed as argument is a MECHA.
-		//ret = new j1Mecha(x, y, type);
+		ret = new j1Mecha(x, y, type);
 		break;
 	case ENTITY_TYPE::ALIEN:							//If the ENTITT_TYPE passed as argument is an ALIEN.
-		//ret = new j1Alien(x, y, type);
+		ret = new j1Alien(x, y, type);
 		break;
 	}
 	//ret->type = type;
@@ -191,14 +206,14 @@ void j1EntityManager::CreatePlayers()
 	//playere = (j1Player1*)CreateEntity(ENTITY_TYPE::PLAYER);
 	player2 = (j1Player2*)CreateEntity(ENTITY_TYPE::PLAYER2);//REVISE THIS HERE. Check if we can pass only j1Player and thats it or if both can be ENTITY_TYPE PLAYER
 	//player2 = (j1Player2*)CreateEntity(ENTITY_TYPE::PLAYER2);
-
-	//Maybe create methods for them?
-	//mecha = (j1Mecha*)CreateEntity(ENTITY_TYPE::MECHA);
-	//alien = (j1Alien*)CreateEntity(ENTITY_TYPE::ALIEN);
 }
 
 void j1EntityManager::AddEnemy(ENTITY_TYPE type, int x, int y)
 {
+	int i = 0;
+	LOG("Adding enemy %d", i);
+	i++;
+	
 	EntityData* data = new EntityData();
 
 	data->position.x = x;
@@ -208,81 +223,83 @@ void j1EntityManager::AddEnemy(ENTITY_TYPE type, int x, int y)
 	entityData_list.add(data);
 }
 
-void j1EntityManager::SpawnEnemy(/*EntityData& data*/)
+void j1EntityManager::SpawnEnemies(/*EntityData& data*/)
 {
-	p2List_item<EntityData*>* enemy_iterator = entityData_list.start;
 	
+	p2List_item<EntityData*>* enemy_iterator = entityData_list.start;
+
 	for (enemy_iterator; enemy_iterator != NULL; enemy_iterator = enemy_iterator->next)												//Iterates the entityData_list.
 	{
-		j1Entity * enemy;																											//Pointer that will be assigned to each enemy entity.
+		int i = 0, j = 0;
+		LOG("Spawning enemy %d", i);
+		i++;
+		j1Entity * enemy = nullptr;																									//Pointer that will be assigned to each enemy entity.
+
+		if (enemy_iterator->data->type == ENTITY_TYPE::MECHA)
+		{
+			LOG("Creating a Mecha type enemy");
+		}
 
 		switch (enemy_iterator->data->type)			//REVISE TYPE, maybe it will not work.
 		{
 		case ENTITY_TYPE::MECHA:
-			//enemy = new j1Mecha(enemy_iterator->data->position.x, enemy_iterator->data->position.y, enemy_iterator->data->type);	//Spawns a MECHA type enemy.
-			//enemy = (j1Mecha*)CreateEntity(ENTITY_TYPE::MECHA, enemy_iterator->data->position.x, enemy_iterator->data->position.y);
+			enemy = new j1Mecha(enemy_iterator->data->position.x, enemy_iterator->data->position.y, enemy_iterator->data->type);	//Spawns a MECHA type enemy.
+			//enemy = (j1Mecha*)CreateEntity(enemy_iterator->data->type, enemy_iterator->data->position.x, enemy_iterator->data->position.y);
+			//enemy->Start();
+
 			break;
 
 		case ENTITY_TYPE::ALIEN:
-			//enemy = new j1Alien(enemy_iterator->data->position.x, enemy_iterator->data->position.y, enemy_iterator->data->type);	//Spawns an ALIEN type enemy.
+			enemy = new j1Alien(enemy_iterator->data->position.x, enemy_iterator->data->position.y, enemy_iterator->data->type);	//Spawns an ALIEN type enemy.
 			//enemy = (j1Alien*)CreateEntity(ENTITY_TYPE::ALIEN, enemy_iterator->data->position.x, enemy_iterator->data->position.y);
+			//enemy->Start();
+
 			break;
 		}
 
-		//if (enemy != NULL)		//Uncomment when entities can be spawned.
-		//{
-		//	entities.add(enemy);																									//The entity is added to the entities list
-		//	enemy->Start();																											//The entity's start method is called.
-		//	break;
-		//}
+		if (enemy != NULL)		//Uncomment when entities can be spawned.
+		{
+			entities.add(enemy);																									//The entity is added to the entities list
+			enemy->Start();																											//The entity's start method is called.
+			//break;				//Unless this method is used to spawn a single entity at a time, this needs to be kept commented. 
+		}
 	}
  
 	entityData_list.clear();						//Once all enemies have been spawned, the list is cleared.
 }
 
-j1Entity* j1EntityManager::GetPlayer() const
+void j1EntityManager::DestroyEntities()
 {
-	j1Entity* ret = nullptr;
-
-	for (p2List_item<j1Entity*>* entity = entities.start; entity; entity = entity->next)
-	{
-		if (entity->data->type == ENTITY_TYPE::PLAYER)
+	BROFILER_CATEGORY("EntityManager PostUpdate", Profiler::Color::FireBrick);
+	//Iterates all entities in the entities list and searches for the entity passed as argument, if it is inside the list and is found, it is then destroyed.
+	LOG("There are %d entities in the entities list.", entities.count());
+	
+	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
+	{ 	
+		if (entity_iterator->data->type != ENTITY_TYPE::PLAYER && entity_iterator->data->type != ENTITY_TYPE::PLAYER2)
 		{
-			ret = entity->data;
-			break;
+			entity_iterator->data->CleanUp();			//Calls the CleanUp() method of the iterated entity (an enemy entity).
+			RELEASE(entity_iterator->data);				//Deletes the data buffer
+			entities.del(entity_iterator);				//Deletes the entity being iterated from the list.
+			
+			//break;
 		}
 	}
-
-	return ret;
 }
 
-bool j1EntityManager::Save(pugi::xml_node& data) const
-{
-	GetPlayer()->Save(data.append_child("player"));
-	for (p2List_item<j1Entity*>* entity = entities.start; entity; entity = entity->next)
-	{
-		pugi::xml_node child = data.append_child(entity->data->name.GetString());
-		child.append_attribute("position_x") = entity->data->position.x;
-		child.append_attribute("position_y") = entity->data->position.y;
-	}
 
-	return true;
-}
-
-bool j1EntityManager::Load(pugi::xml_node& data)		//Change this.
-{
-	CleanUp();
-	GetPlayer()->Load(data.child("player"));
-	for (pugi::xml_node mecha = data.child("mecha"); mecha; mecha = mecha.next_sibling("mecha"))
-	{
-		CreateEntity(ENTITY_TYPE::MECHA, mecha.attribute("position_x").as_int(), mecha.attribute("position_y").as_int());
-	}  
-	 
-	for (pugi::xml_node alien = data.child("alien"); alien; alien = alien.next_sibling("alien"))
-	{
-		CreateEntity(ENTITY_TYPE::ALIEN, alien.attribute("position_x").as_int(), alien.attribute("position_y").as_int());
-	}
-
-	return true;
-}
-
+//j1Entity* j1EntityManager::GetPlayer() const
+//{
+//	j1Entity* ret = nullptr;
+//
+//	for (p2List_item<j1Entity*>* entity = entities.start; entity; entity = entity->next)
+//	{
+//		if (entity->data->type == ENTITY_TYPE::PLAYER)
+//		{
+//			ret = entity->data;
+//			break;
+//		}
+//	}
+//
+//	return ret;
+//}

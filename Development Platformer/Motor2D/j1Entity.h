@@ -27,10 +27,10 @@ struct EntityData
 	iPoint			position;
 };
 
-class j1Entity : public j1Module
+class j1Entity									//Delete module, not needed.
 {
 public:
-	j1Entity(int x, int y, ENTITY_TYPE type); // here we will set initial position
+	j1Entity(int x, int y, ENTITY_TYPE type);	// here we will set initial position
 
 	//Must be virtual so when an entity is executed the compiler goes to the entity's methods instead of these
 	virtual bool Awake(pugi::xml_node&);
@@ -60,10 +60,9 @@ public:
 	//Entity Variables
 	ENTITY_TYPE		type;					//Type of the entity (ENTITY_TYPE::PLAYER...)
 	fPoint			position;				//Initial position of the entity.
-	//iPoint			sprite_size;			//Size of the entity sprite --> w and h of the entity collider.
+	fPoint			speed;					//Movement speed of the entity.
 	uint			sprite_width;			//Width of the sprite. Applied to the entity's collider width.
 	uint			sprite_height;			//Height of the sprite. Applied to the entity's collider height.
-	float			speed;					//Movement speed of the entity.
 
 	//SDL_Rect		HitBox;					//REVISE THIS HERE, TEMPORAL MEASURE FOR ENEMIES
 

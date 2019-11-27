@@ -31,7 +31,7 @@ struct Player
 {
 	//p2Point<float>	position;			//Point with the position of P1 on the world. NOT NEEDED?
 	p2Point<float>	spawn_position;			//Keeps record of the first position(x, y) of P1 when spawns in the map.
-	p2Point<float>	speed;					//P1's Speed Vector Variable. (Not actually declared as a vector but that is irrelevant to us right now)
+	//p2Point<float>	speed;					//P1's Speed Vector Variable. (Not actually declared as a vector but that is irrelevant to us right now)
 	p2Point<float>	max_speed;				//P1's Cruiser Speed for both axis.
 	p2Point<float>	acceleration;			//Sets how much time it takes P1 to reach Cruiser Speed horizontally and/or vertically.
 	p2Point<float>	boost_jump;				//Sets how much vertical or horizontal impulse will P1 get.
@@ -113,10 +113,12 @@ public: //P1 Variables
 
 	virtual bool InitPlayer();													//Initializes all variables and colliders of the players (Position, Colliders...) and loads them on screen. 
 	virtual bool LoadPlayerPosition(p2SString playerPosition, p2SString map);	//Loads the player's position from the config file. Takes into account which map the player is at.
-	virtual void LivesCheck(int lives);											//Checks if the player has any lives left.
 	virtual void GodModeInput();												//Enables / Disables the God Mode.
 
+	virtual void LivesCheck(int lives);											//Checks if the player has any lives left.
 	virtual void SkillCooldown(bool& inCd, float& cdCounter, float& cdTime);	//Keeps track of any skill's cooldown. Revise --> Pass dt as an argument?
+
+	void ApplyGravity();														//If a player is airborne then this function brings her/him down to the ground.
 
 	//bool LoadPlayer1Textures();												//Loads P1's textures on screen.
 	//void Restart();															//Resets P1's position to where P1 started the level. 

@@ -18,7 +18,7 @@
 j1Player::j1Player(int x, int y, ENTITY_TYPE type) : j1Entity(x, y, ENTITY_TYPE::PLAYER)  //Constructor. Called at the first frame.
 {
 	//String that will be given to the different functions (Awake(), Load()...) to generate the handler node.
-	name.create("entities"); //The string has to be the same as the name of the node in the xml file.
+	//name.create("entities"); //The string has to be the same as the name of the node in the xml file.
 };
 
 j1Player::~j1Player()  //Destructor. Called at the last frame.
@@ -115,8 +115,11 @@ void j1Player::LoadEntityProperties()
 	player_entity = config_file.child("config").child("entities").child("player");
 
 	//Gets all the required player variables from the config xml file
-	player.speed.x			= player_entity.child("speed").attribute("x").as_float();
-	player.speed.y			= player_entity.child("speed").attribute("y").as_float();
+	sprite_width			= player_entity.child("sprite_size").attribute("w").as_int();
+	sprite_height			= player_entity.child("sprite_size").attribute("h").as_int();
+
+	speed.x					= player_entity.child("speed").attribute("x").as_float();
+	speed.y					= player_entity.child("speed").attribute("y").as_float();
 	player.max_speed.x		= player_entity.child("max_speed").attribute("x").as_float();
 	player.max_speed.y		= player_entity.child("max_speed").attribute("y").as_float();
 
@@ -125,10 +128,7 @@ void j1Player::LoadEntityProperties()
 	player.gravity			= player_entity.child("gravity").attribute("value").as_float();
 
 	player.boost_jump.x		= player_entity.child("boost_jump").attribute("x").as_float();
-	player.boost_jump.y		= player_entity.child("boost_jump").attribute("y").as_float();
-
-	sprite_width			= player_entity.child("sprite_measures").attribute("w").as_int();		//THIS HERE //Maybe change it to two separate variables (spirte_width, sprite_height)
-	sprite_height			= player_entity.child("sprite_measures").attribute("h").as_int();		//THIS HERE
+	player.boost_jump.y		= player_entity.child("boost_jump").attribute("y").as_float();	
 
 	player.frontflipStart	= player_entity.child("frontflip").attribute("start").as_float();
 	player.frontflipEnd		= player_entity.child("frontflip").attribute("end").as_float();
@@ -158,6 +158,7 @@ void j1Player::LoadEntityAudio()
 
 bool j1Player::InitPlayer()
 {
+
 	// --------------------------------------------Loading the data and colliders of P1--------------------------------------------
 	//Loads the data of the rectangle that contains P1.
 	player.HitBox.x = position.x;							//Represents the position in the X axis of P1.		//THIS HERE
@@ -173,7 +174,7 @@ bool j1Player::InitPlayer()
 	//Adds a collider for the player.
 	collider = App->collisions->AddCollider(player.HitBox, Object_Type::PLAYER, App->entityManager);				//THIS HERE
 
-	player.atkCollider = App->collisions->AddCollider(player.atkHitBox, Object_Type::ATTACK, this);
+	player.atkCollider = App->collisions->AddCollider(player.atkHitBox, Object_Type::ATTACK, App->entityManager);
 
 	//Boolean resetting
 	player.grounded				= false;
@@ -215,6 +216,46 @@ bool j1Player::InitPlayer()
 }*/
 
 //---------------------------------------------- General Checks ----------------------------------------------
+void j1Player::ApplyGravity()
+{
+	speed.y += player.gravity * App->GetDt();
+
+	if (speed.y > player.max_speed.y * App->GetDt())
+	{
+		speed.y = player.max_speed.y * App->GetDt();
+	}
+
+	position.y += speed.y;				//Refreshes the vector speed of P1 in the Y axis.
+
+	//Jump animation modifications.
+	if (player.isBoostJumping == true)				//If P1 is boost jumping then this set of animations is played.
+	{
+		if (speed.y < player.frontflipStart)
+		{
+			animation = &jumping;
+		}
+		else if (speed.y < player.frontflipEnd)
+		{
+			animation = &frontflip;
+		}
+		else
+		{
+			animation = &falling;
+		}
+	}
+	else if (player.isJumping == true)				//If P1 is jumping then this set of animations is played.
+	{
+		if (speed.y < 0)
+		{
+			animation = &jumping;
+		}
+		else
+		{
+			animation = &falling;
+		}
+	}
+}
+
 void j1Player::LivesCheck(int lives)
 {
 	return;

@@ -13,9 +13,6 @@
     <ClCompile Include="j1Player.cpp">
       <Filter>Desenvolupament  ========\Modules\Entities\Players</Filter>
     </ClCompile>
-    <ClCompile Include="Alien.cpp">
-      <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
-    </ClCompile>
     <ClCompile Include="PugiXml\src\pugixml.cpp">
       <Filter>Desenvolupament  ========\Tools\PuguiXML</Filter>
     </ClCompile>
@@ -26,10 +23,7 @@
       <Filter>Desenvolupament  ========\Tools</Filter>
     </ClCompile>
     <ClCompile Include="j1Scene.cpp">
-      <Filter>Desenvolupament  ========\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Map.cpp">
-      <Filter>Desenvolupament  ========</Filter>
+      <Filter>Desenvolupament  ========\Modules\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="j1App.cpp">
       <Filter>Desenvolupament  ========\Core</Filter>
@@ -73,6 +67,18 @@
     <ClCompile Include="j1Mecha.cpp">
       <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="j1Gui.cpp">
+      <Filter>Desenvolupament  ========\Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Map.cpp">
+      <Filter>Desenvolupament  ========\Modules\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Alien.cpp">
+      <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="mmgr\mmgr.cpp">
+      <Filter>Desenvolupament  ========\Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -102,9 +108,6 @@
     <ClInclude Include="j1Player.h">
       <Filter>Desenvolupament  ========\Modules\Entities\Players</Filter>
     </ClInclude>
-    <ClInclude Include="Alien.h">
-      <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
-    </ClInclude>
     <ClInclude Include="PugiXml\src\pugiconfig.hpp">
       <Filter>Desenvolupament  ========\Tools\PuguiXML</Filter>
     </ClInclude>
@@ -118,10 +121,7 @@
       <Filter>Desenvolupament  ========\Tools</Filter>
     </ClInclude>
     <ClInclude Include="j1Scene.h">
-      <Filter>Desenvolupament  ========\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Map.h">
-      <Filter>Desenvolupament  ========</Filter>
+      <Filter>Desenvolupament  ========\Modules\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="j1Module.h">
       <Filter>Desenvolupament  ========\Core</Filter>
@@ -168,6 +168,15 @@
     <ClInclude Include="j1Mecha.h">
       <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="j1Gui.h">
+      <Filter>Desenvolupament  ========\Modules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Map.h">
+      <Filter>Desenvolupament  ========\Modules\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Alien.h">
+      <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\animations.xml">
@@ -201,9 +210,6 @@
     <Filter Include="Desenvolupament  ========\Modules">
       <UniqueIdentifier>{0160d731-a168-43fe-9d33-17cfe14ded4b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Desenvolupament  ========\Scenes">
-      <UniqueIdentifier>{cfefb632-29cd-4a89-a8bf-15893c12df0a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Desenvolupament  ========\Tools">
       <UniqueIdentifier>{ce22a53a-7afa-459b-9195-af412d2213cd}</UniqueIdentifier>
     </Filter>
@@ -230,6 +236,18 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\XML Files">
       <UniqueIdentifier>{a25f4839-5bf5-43fa-8c51-a0dd4ed26bb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\UI">
+      <UniqueIdentifier>{9568892c-efcc-4eec-89c1-d01ef8e2d712}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Scenes">
+      <UniqueIdentifier>{cfefb632-29cd-4a89-a8bf-15893c12df0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Map">
+      <UniqueIdentifier>{3027b9ed-12dc-442e-ab2f-05fb2dcc84f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Sources">
+      <UniqueIdentifier>{2c952b81-74fb-4fef-9e28-a7299a9498f7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

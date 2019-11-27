@@ -52,7 +52,7 @@
       <gravity value="40.0f"/>
       <boost_jump x="0"  y="700.0f"/>
       <frontflip start="-6.0f" end="6.0f"/>
-      <sprite_measures w="38" h="58"/>
+      <sprite_size w="38" h="58"/>
       <lives lives="3"/>
       <tpCooldown timer="0.0f" cd="1.0f"/>
       <godspeed gspeed ="250.0f"/>
@@ -82,14 +82,14 @@
       <max_speed x="240.0f" y="500.0f"/>
       <acceleration x="60.0f" y="450.0f"/>
       <gravity value="40.0f"/>
-      <sprite_measures w="38" h="58"/>
+      <sprite_size w="64" h="96"/>
       <lives lives="1"/>
     </mecha>
 
     <alien>
       <position x="212" y="400"/>
       <speed x="350.0f" y="0"/>
-      <sprite_measures w="38" h="58"/>
+      <sprite_size w="38" h="58"/>
       <lives lives="1"/>
     </alien>
   </entities>
