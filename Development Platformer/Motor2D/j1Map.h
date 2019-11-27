@@ -26,6 +26,7 @@ enum Object_Type					//Care with enum class. If enum class-> Object_Type::HAZARD
 	RESPAWN,
 	CHECKPOINT,
 	GOAL,
+	NONE,
 	UNKNOWN = -1
 };
 

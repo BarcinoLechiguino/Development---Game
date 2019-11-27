@@ -55,7 +55,7 @@
       <sprite_size w="38" h="58"/>
       <lives lives="3"/>
       <tpCooldown timer="0.0f" cd="1.0f"/>
-      <godspeed gspeed ="250.0f"/>
+      <godspeed gspeed ="450.0f"/>
       <jumpFX name ="Jump.wav"/>
       <DuoJumpFX name ="Jump_Duo.wav"/>
       <DeathFX name ="Death.wav"/>

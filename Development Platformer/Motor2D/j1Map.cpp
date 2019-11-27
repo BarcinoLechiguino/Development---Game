@@ -604,20 +604,20 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 			App->entityManager->AddEnemy(ENTITY_TYPE::MECHA, object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
 			LOG("Added Mecha Enemy at Position %d, %d", object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
 
-			objectgroup->object[index].type = UNKNOWN;
+			objectgroup->object[index].type = NONE;
 		}
 		else if (object_type == "alien")								//If the object loaded from the map matches the "alien" type
 		{
 			App->entityManager->AddEnemy(ENTITY_TYPE::ALIEN , object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
 			LOG("Added Alien Enemy at Position %d, %d", object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
 
-			objectgroup->object[index].type = UNKNOWN;
+			objectgroup->object[index].type = NONE;
 		}
 		// --------------------------------------------------------------------------------------------------------------------
 
 		else
 		{
-			objectgroup->object[index].type = UNKNOWN;					//If the object type string does not match any type, the object will be assigned the UKNOWN type.
+			objectgroup->object[index].type = SOLID;					//If the object type string does not match any type, the object will be assigned the UKNOWN type.
 		}
 
 		index++;	//index is increased in one so the next object is iterated.

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="150" height="42" tilewidth="32" tileheight="32" infinite="0" nextlayerid="25" nextobjectid="164">
+<map version="1.2" tiledversion="1.3.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="150" height="42" tilewidth="32" tileheight="32" infinite="0" nextlayerid="25" nextobjectid="174">
  <properties>
   <property name="BackgroundMusic" value="Combat Heavy.ogg"/>
   <property name="P1_PositionX" value="192"/>
@@ -15412,7 +15412,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="97"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -15562,7 +15562,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="97"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -15712,7 +15712,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="97"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -15862,7 +15862,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="97"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -16012,7 +16012,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="161"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -21719,7 +21719,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="97"/>
    <tile/>
    <tile/>
    <tile/>
@@ -21869,7 +21869,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="97"/>
    <tile/>
    <tile/>
    <tile/>
@@ -22019,7 +22019,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="97"/>
    <tile/>
    <tile/>
    <tile/>
@@ -22169,7 +22169,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="97"/>
    <tile/>
    <tile/>
    <tile/>
@@ -22319,7 +22319,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="97"/>
    <tile/>
    <tile/>
    <tile/>
@@ -22469,7 +22469,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="161"/>
    <tile/>
    <tile/>
    <tile/>
@@ -50474,7 +50474,9 @@
   <object id="119" name="Goal" type="goal" x="1024" y="960" width="32" height="32"/>
   <object id="161" name="Goal" type="goal" x="288" y="416" width="32" height="96"/>
  </objectgroup>
- <objectgroup id="19" name="Auto-Save"/>
+ <objectgroup id="19" name="Auto-Save">
+  <object id="105" name="Checkpoint" type="checkpoint" x="2431.67" y="510.333" width="64" height="63.3333"/>
+ </objectgroup>
  <objectgroup id="11" name="Respawn">
   <object id="3" name="Origin" type="respawn" x="192" y="448" width="63" height="63"/>
  </objectgroup>
@@ -50562,6 +50564,16 @@
   <object id="139" name="Floor" type="solid" x="4096" y="320" width="256" height="32"/>
   <object id="140" name="Floor" type="solid" x="4352" y="320" width="256" height="32"/>
   <object id="141" name="Floor" type="solid" x="4608" y="320" width="192" height="32"/>
+  <object id="164" name="Ground" type="solid" x="3424" y="320" width="96" height="32"/>
+  <object id="165" name="Ground" type="solid" x="3104" y="128" width="320" height="32.0024"/>
+  <object id="166" name="Floor" type="solid" x="3648" y="320" width="32" height="32"/>
+  <object id="167" name="Floor" type="solid" x="3648" y="320" width="32" height="32"/>
+  <object id="168" name="Ground" type="solid" x="1696" y="224" width="448" height="32.0024"/>
+  <object id="169" name="Ground" type="solid" x="0" y="256" width="416" height="32.0024"/>
+  <object id="170" name="Ground" type="solid" x="0" y="288" width="31.9997" height="224"/>
+  <object id="171" name="Ground" type="solid" x="4800" y="160" width="31.9997" height="160"/>
+  <object id="172" name="Ground" type="solid" x="3072" y="320" width="352" height="32.0024"/>
+  <object id="173" name="Ground" type="solid" x="3616" y="1088" width="1184" height="255.997"/>
  </objectgroup>
  <objectgroup id="16" name="Hazards">
   <object id="82" name="Spikes" type="hazard" x="1156" y="794" width="26.0104" height="6"/>
@@ -50585,7 +50597,6 @@
   <object id="102" name="Spikes" type="hazard" x="1349.98" y="1244.09" width="85.9792" height="3.91304"/>
   <object id="103" name="Spikes" type="hazard" x="1728" y="1308" width="448" height="6"/>
   <object id="104" name="Spikes" type="hazard" x="2560" y="1308" width="1056" height="6"/>
-  <object id="105" name="Autosaver" type="saver" x="2431.67" y="510.333" width="64" height="63.3333"/>
   <object id="114" name="Spikes" type="hazard" x="2979" y="348" width="26" height="4"/>
  </objectgroup>
  <layer id="21" name="PathfindingCollisions" width="150" height="42" visible="0">

@@ -39,13 +39,22 @@ bool j1Collisions::PreUpdate()
 	BROFILER_CATEGORY("Collision PreUpdate", Profiler::Color::GreenYellow);
 	p2List_item<Collider*>* collider_iterator = collider_list.start;
 
+	LOG("There Are %d colliders", collider_list.count());
+	
 	//This loop deletes from memory any collider that has been set to be deleted before calculating any new collisions.
 	while (collider_iterator != NULL)
 	{
-		if (collider_iterator->data->to_delete == true || collider_iterator->data->type == Object_Type::UNKNOWN)	//If the delete_collider is set to true this will be run. //Second part breaks with mmgr
+		if (collider_iterator->data->type == Object_Type::UNKNOWN)	//If the delete_collider is set to true this will be run. //Second part breaks with mmgr
 		{
+			collider_iterator->data->type == Object_Type::SOLID;
+		}
+		
+		if (collider_iterator->data->to_delete == true || collider_iterator->data->type == Object_Type::NONE)	//If the delete_collider is set to true this will be run. //Second part breaks with mmgr
+		{	
+			RELEASE(collider_iterator->data);
 			collider_list.del(collider_iterator);				//Using the list's properties all colliders set to delete will be deleted from memory.
 		}
+
 		collider_iterator = collider_iterator->next;			//Gets the next collider that will be deleted.
 	}
 
@@ -107,12 +116,14 @@ bool j1Collisions::CleanUp()
 	//When this is changed to arrays check if the collider being iterated is null or not and then delete it (delete collider, collider = nullptr)
 	
 	//Should change this list for an array.
+	LOG("There Are %d colliders being deleted", collider_list.count());
+	
 	for (p2List_item<Collider*>* collider_iterator = collider_list.start; collider_iterator != NULL; collider_iterator = collider_iterator->next)
 	{
 		RELEASE(collider_iterator->data);		//Frees all alocated memory in the process of generating colliders. AddCollider()--> Collider* collider = new Collider().
 	}
 
-	collider_list.clear();				//Deletes all colliders freeing all allocated memory from the collider_list so it can be filled again with the colliders of another map.
+	collider_list.clear();						//Deletes all colliders freeing all allocated memory from the collider_list so it can be filled again with the colliders of another map.
 	
 	return true;
 };
@@ -181,6 +192,14 @@ void j1Collisions::Collider_Debug()
 
 			case Object_Type::GOAL:			//GOAL collider will be PINK
 				App->render->DrawQuad(collider_iterator->data->collider, 255, 0, 150, ALPHA);
+				break;
+
+			case Object_Type::NONE:
+				App->render->DrawQuad(collider_iterator->data->collider, 255, 255, 255, 255);
+				break;
+
+			case Object_Type::UNKNOWN:
+				App->render->DrawQuad(collider_iterator->data->collider,0, 0, 0, 255);
 				break;
 			}
 			collider_iterator = collider_iterator->next; //Gets the next collider that will be assigned a type.
