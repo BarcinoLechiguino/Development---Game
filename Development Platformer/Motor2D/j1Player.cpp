@@ -256,15 +256,11 @@ void j1Player::LoadNextMap()										//REVISE THIS HERE. Loads the map but coll
 {
 	if (App->scene->firstMap == false)
 	{
-		App->scene->firstMap = true;
-		App->scene->secondMap = false;
-		App->fadescene->FadeToBlack("Test_Map.tmx");				//Loads the 1st level.
+		App->fadescene->FadeToBlack("Test_map.tmx");				//Loads the 1st level.
 	}
 	if (App ->scene->secondMap == false)
 	{
-		App->scene->secondMap = true;
-		App->scene->firstMap = false;
-		App->fadescene->FadeToBlack("Test_Map_2.tmx");
+		App->fadescene->FadeToBlack("Test_map_2.tmx");
 	}	
 }
 
