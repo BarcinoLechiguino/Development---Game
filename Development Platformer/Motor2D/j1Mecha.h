@@ -1,7 +1,7 @@
 #ifndef __j1MECHA_H__
 #define __j1MECHA_H__
 
-#include "j1Module.h"
+//#include "j1Module.h"
 #include "j1Enemy.h"
 #include "Animation.h"
 #include "p2Point.h"

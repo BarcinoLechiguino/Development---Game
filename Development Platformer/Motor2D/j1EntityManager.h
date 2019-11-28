@@ -7,7 +7,7 @@
 
 struct SDL_Texture;
 class j1Entity;
-class j1Player;
+class j1Player;				//Forward declaration. Avoid having to recompile everything when sth is changed in a file / class.
 class j1Enemy;
 class j1Player1;			//Temporal(?)
 class j1Player2;
