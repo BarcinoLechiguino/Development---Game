@@ -38,7 +38,7 @@ public:
 
 	bool CleanUp();
 
-	void OnCollision(Collider* c1, Collider* c2);
+	void OnCollision(Collider* C1, Collider* C2);
 
 public:
 	bool Load(pugi::xml_node&);
