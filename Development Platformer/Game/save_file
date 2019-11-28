@@ -15,6 +15,6 @@
 	<collisions />
 	<:anonymous />
 	<renderer>
-		<camera x="0" y="-101" />
+		<camera x="0" y="-576" />
 	</renderer>
 </game_state>

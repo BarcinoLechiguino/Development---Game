@@ -104,9 +104,7 @@ public: //P1 Variables
 	//void TeleportP2ToP1();													//Moves P2 directly in front of P1. It takes into account where P1 is looking at.
 	//void RespawnP1ToP2();														//Moves P1 directly behind P2 on death.
 	
-	virtual void OnCollision(Collider* C1, Collider* C2);						//Collision Logic Handling.
-	bool Load(pugi::xml_node &);												//Loading from xml file.
-	bool Save(pugi::xml_node &) const;											//Saving to xml file.
+	virtual void OnCollision(Collider* C1, Collider* C2);						//Collision Logic Handling.										//Saving to xml file.
 
 	void LoadAnimationPushbacks();												//Loads the player's animation pushbacks from the xml file.
 	void LoadEntityProperties();												//Loads the player's properties.

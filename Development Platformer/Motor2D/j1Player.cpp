@@ -67,16 +67,6 @@ void j1Player::OnCollision(Collider* C1, Collider* C2)
 	return;
 }
 
-bool j1Player::Load(pugi::xml_node& data)
-{
-	return true;
-}
-
-bool j1Player::Save(pugi::xml_node&  data) const
-{
-	return true;
-}
-
 //-------------------------------- PLAYER METHODS--------------------------------
 void j1Player::LoadAnimationPushbacks()
 {

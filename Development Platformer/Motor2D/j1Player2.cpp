@@ -473,25 +473,6 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 	}
 }
 
-bool j1Player2::Load(pugi::xml_node& data)
-{
-	position.x = data.child("position2").attribute("x").as_int();
-	position.y = data.child("position2").attribute("y").as_int();
-
-	return true;
-}
-
-// Save Game State
-bool j1Player2::Save(pugi::xml_node& data) const
-{
-	pugi::xml_node pos = data.append_child("position2");
-
-	pos.append_attribute("x") = position.x;
-	pos.append_attribute("y") = position.y;
-
-	return true;
-}
-
 void j1Player2::TeleportP1ToP2()
 {
 	//App->entityManager->player->p1.grounded = false;
