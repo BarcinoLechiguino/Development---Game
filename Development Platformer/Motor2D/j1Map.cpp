@@ -10,6 +10,7 @@
 #include "j1FadeScene.h"
 #include "j1Input.h"
 #include "j1Audio.h"
+#include "j1Pathfinding.h"
 #include "j1Scene.h"
 #include "j1EntityManager.h"
 #include "j1Player.h"
@@ -67,9 +68,7 @@ void j1Map::Draw()
 		{
 			for (uint x = cam_tilePos.x; x < (cam_tilePos.x + cam_tileWidth + 2); ++x)								//While x is less than the camera's width in tiles. //Change it so it is not hardcoded.
 			{	
-				tile_index = layer->data->Get(x, y)/*x + y * data.tile_width*/;
-				
-				int tile_id = layer->data->gid[tile_index];															//Gets the tile id from the tile index.
+				int tile_id = layer->data->Get(x, y);																//Gets the tile id from the tile index. Gets the tile index for a given tile. x + y * data.tile_width;
 				if (tile_id > 0)																					//If tile_id is not 0
 				{
 					TileSet* tileset = GetTilesetFromTileId(tile_id);												//Gets the tileset corresponding with the tile_id. If tile id is 34 and the current tileset first gid is 35, that means that the current  tile belongs to the previous tileset. 
@@ -155,11 +154,40 @@ iPoint j1Map::MapToWorld(int x, int y) const
 		ret.x = x * data.tile_width;												//Position in the X axis of the tile on the world in pixels. For tile_width = 32 --> Tile 1: x = 0, Tile 2: x = 32.
 		ret.y = y * data.tile_height;												//Position in the Y axis of the tile on the world in pixels. For tile_height = 32 --> Tile 1: y = 0, Tile 2: y = 32.
 	}
-
-	if (data.type == MAPTYPE_ISOMETRIC)												//Position calculus for isometric maps
+	else if (data.type == MAPTYPE_ISOMETRIC)												//Position calculus for isometric maps
 	{
 		ret.x = (x / (data.tile_width / 2) + y / (data.tile_height / 2)) / 2;
 		ret.y = (y / (data.tile_height / 2) - x / (data.tile_width / 2)) / 2;
+	}
+	else
+	{
+		LOG("Unknown map type");
+		ret.x = x; ret.y = y;
+	}
+
+	return ret;
+}
+
+iPoint j1Map::WorldToMap(int x, int y) const
+{
+	iPoint ret(0, 0);
+
+	if (data.type == MAPTYPE_ORTHOGONAL)
+	{
+		ret.x = x / data.tile_width;
+		ret.y = y / data.tile_height;
+	}
+	else if (data.type == MAPTYPE_ISOMETRIC)
+	{
+		float half_width = data.tile_width * 0.5f;
+		float half_height = data.tile_height * 0.5f;
+		ret.x = int((x / half_width + y / half_height) / 2) - 1;
+		ret.y = int((y / half_height - (x / half_width)) / 2);
+	}
+	else
+	{
+		LOG("Unknown map type");
+		ret.x = x; ret.y = y;
 	}
 
 	return ret;
@@ -205,7 +233,6 @@ bool j1Map::CleanUp()
 {
 	LOG("Unloading map");
 
-	//App->player1->Disable(); NEED A DISABLE FUNCTION
 	// Remove all tilesets from memory
 	p2List_item<TileSet*>* item;
 	item = data.tilesets.start;
@@ -223,7 +250,7 @@ bool j1Map::CleanUp()
 	map_layer_item = data.layers.start;
 
 	while (map_layer_item != NULL)
-	{
+	{	
 		RELEASE(map_layer_item->data);
 		map_layer_item = map_layer_item->next;
 	}
@@ -234,8 +261,6 @@ bool j1Map::CleanUp()
 	while (object_iterator != NULL)
 	{	
 		delete[] object_iterator->data->object;		//Frees the memory allocated to the object array. LoadObjectLayers() line 544.
-		
-		//RELEASE(object_iterator->data->object->collider);
 
 		RELEASE(object_iterator->data);				//RELEASE frees all memory allocated for a list item. All declared news that were added to the list will be deleted here.
 		object_iterator = object_iterator->next;
@@ -246,8 +271,8 @@ bool j1Map::CleanUp()
 	//data.layers.clear();		//Deletes from memory all the items inside the layers list.
 	//data = { 0 };				//Frees all memory allocated to the data struct.
 
-	//// Clean up the pugui tree
-	//map_file.reset();
+	// Clean up the pugui tree
+	map_file.reset();
 
 	return true;
 }
@@ -505,7 +530,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->width		= node.attribute("width").as_int();
 	layer->height		= node.attribute("height").as_int();
 	layer->speed		= node.child("properties").child("property").attribute("value").as_float();		//Gets the speed property of a layer.
-	//LoadProperties(node, layer->properties);															//Loads the layer's properties and stores them in a list (property_list) //REVISE THIS HERE
+	LoadProperties(node, layer->properties);															//Loads the layer's properties and stores them in a list (property_list) //REVISE THIS HERE
 	
 	pugi::xml_node layer_data = node.child("data");
 
@@ -630,7 +655,7 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 
 bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)							//REVISE THIS HERE. Check why it crashes the game at exit time.
 {
-	bool ret = true;
+	bool ret = false;
 
 	pugi::xml_node data = node.child("properties");													//Sets an xml_node with the properties child of the layer node in the map tmx file.
 
@@ -638,15 +663,66 @@ bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)							/
 	{
 		pugi::xml_node prop;
 		
-		for (prop = data.child("property"); prop != NULL; prop = prop.next_sibling("property"))		//Iterates all property childs from the layer's properties child.
+		for (prop = data.child("property"); prop; prop = prop.next_sibling("property"))		//Iterates all property childs from the layer's properties child.
 		{
 			Properties::Property* p = new Properties::Property();									//Allocates memory for a new property.
 
 			p->name				= prop.attribute("name").as_string();								//Sets the Property's name to the name of the property being iterated.
-			p->value.un_float	= prop.attribute("value").as_float();								//Sets the Property's value to the value of the property being iterated.
+			p->intValue			= prop.attribute("value").as_int();								//Sets the Property's value to the value of the property being iterated.
 
 			properties.property_list.add(p);														//Adds the property beint iterated to property_list.
 		}
+	}
+
+	return ret;
+}
+
+bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
+{
+	bool ret = false;
+
+	p2List_item<MapLayer*>* item = data.layers.start;								//List item that iterates the layers list.
+
+	for (item = data.layers.start; item != NULL; item = item->next)					//While the item is not NULL, continue to iterate.
+	{
+		MapLayer* layer = item->data;												//Sets the item of the list as item->data. Done for readability.
+
+		if (layer->properties.Get("Navigation", 0) == 0)							//If the value of the Navigation property of the mapLayer is 0.
+		{
+			continue;																//If the value mentioned above is 0, jump to the next iteration (of layers list).
+		}
+
+		uchar* map = new uchar[layer->width*layer->height];							//Allocates memory for all the tiles in the map.
+		memset(map, 1, layer->width*layer->height);									//Sets all memory allocated for map to 1. 
+
+		for (int y = 0; y < data.height; ++y)										//Iterate all the tiles in the y axis of the map.
+		{
+			for (int x = 0; x < data.width; ++x)									//Iterate all the tiles in the x axis of the map.
+			{
+				int index = (y * layer->width) + x;									//Tile index of a tile in the map: If 32x32, (2, 1) --> Index = (1 * 32) + 2 = 34; 
+
+				int tile_id = layer->Get(x, y);										//Gets the tile id  for a given tile.
+				if (tile_id > 0)
+				{
+					TileSet* tileset = GetTilesetFromTileId(tile_id);				//Gets the corresponding tileset for a tile by taking into account the tile_id.
+					if (tileset != NULL)
+					{
+						map[index] = (tile_id - tileset->firstgid) > 0 ? 0 : 1;		//If (tile_id - firstgid) > 0, return 0. Else return 1.
+
+						/*TileType* ts = tileset->GetTileType(tile_id);
+						if (ts != NULL)
+						{
+							map[i] = ts->properties.Get("walkable", 1);
+						}*/
+					}
+				}
+			}
+		}
+
+		*buffer		= map;															//Sets buffer as the map array.
+		width		= data.width;													//Sets width to the width of the map in tiles.
+		height		= data.height;													//Sets height to the height of the map in tiles. 
+		ret			= true;															//Sets the ret bool to true as the walkability map could be created.
 	}
 
 	return ret;
@@ -700,9 +776,7 @@ bool j1Map::ChangeMap(const char* newMap)
 {
 	bool ret = true;
 
-	//Put this on scene CleanUp()
 	App->scene->CleanUp();
-	//App->audio->CleanUp();
 
 	App->map->Load(newMap);						//Loads a specified map
 	App->collisions->LoadColliderFromMap();		//Load Collisions
@@ -711,17 +785,35 @@ bool j1Map::ChangeMap(const char* newMap)
 	{
 		App->scene->firstMap	= true;
 		App->scene->secondMap	= false;
+
+		//This needs to be changed somewhere else. Here it works but probably this is not it's place.
+		int w, h;
+		uchar* data = NULL;
+		if (App->map->CreateWalkabilityMap(w, h, &data))				//If CreatewalkabilityMap() returns true. It means that the walkability map could be created.
+		{
+			App->pathfinding->SetMap(w, h, data);						//Sets a new walkability map with the map passed by CreateWalkabilityMap().
+		}
+
+		RELEASE_ARRAY(data);
 	}
 	if (newMap == "Test_map_2.tmx")
 	{
 		App->scene->secondMap	= true;
 		App->scene->firstMap	= false;
+
+		//This needs to be changed somewhere else. Here it works but probably this is not it's place.
+		int w, h;
+		uchar* data = NULL;
+		if (App->map->CreateWalkabilityMap(w, h, &data))				//If CreatewalkabilityMap() returns true. It means that the walkability map could be created.
+		{
+			App->pathfinding->SetMap(w, h, data);						//Sets a new walkability map with the map passed by CreateWalkabilityMap().
+		}
+
+		RELEASE_ARRAY(data);
 	}
 
 	App->entityManager->player->Start();		//Load / Reset P1	//REVISE THIS HERE. Should players be loaded like this?
 	App->entityManager->player2->Start();		//Load / Reset P2
-
-	//App->scene->Start();						//This breaks the game
 
 	return ret;
 }
@@ -730,9 +822,4 @@ void j1Map::Restart_Cam() // function that resets the camera
 {
 	App->render->camera.x = spawn_position_cam.x;
 	App->render->camera.y = spawn_position_cam.y;
-}
-
-MapLayer::~MapLayer()
-{
-	RELEASE(gid); //New		//Breaks with mmgr.
 }

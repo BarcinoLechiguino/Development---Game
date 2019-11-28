@@ -13,6 +13,7 @@
 #include "j1EntityManager.h"
 #include "j1Player1.h"
 #include "j1Player2.h"
+#include "j1Pathfinding.h"
 #include "Brofiler\Brofiler.h"
 
 //#include "mmgr/mmgr.h"
@@ -52,17 +53,6 @@ bool j1Scene::Start()
 	bool ret;
 
 	to_end = false;
-
-	/*if (firstMap == true)
-	{
-		ret = App->map->Load(map_names.start->data->GetString());
-		LOG("Map Name: %s", map_names.start->data->GetString());
-	}
-	else
-	{
-		ret = App->map->Load(map_names.start->next->data->GetString());
-		LOG("Map Name: %s", map_names.start->next->data->GetString());
-	}*/
 	
 	firstMap	= true;
 	secondMap	= false;
@@ -72,18 +62,56 @@ bool j1Scene::Start()
 
 	App->audio->PlayMusic(App->map->data.music_File.GetString());
 
+	//if (App->entityManager->player == nullptr && App->entityManager->player2) == nullptr) { App->entityManager->CreatePlayers(); } //Use this if App->Scene->Start() is called in the ChangeMap() function.
 	App->entityManager->CreatePlayers();								//THIS HERE
 	/*App->entityManager->SpawnEnemies();*/								//If SpawnEnemies is called here then it should not be called in the PreUpdate()
 
-	cam_debug_speed = App->render->cam.camera_debug_speed;
+	cam_debug_speed = App->render->cam.camera_debug_speed;				//Sets the camera speed in debug mode.
+
+	if (App->map->Load(map_names.start->data->GetString()) == true)		//If the first map is loaded then create the walkability map for it.
+	{
+		int w, h;
+		uchar* data = NULL;
+		if (App->map->CreateWalkabilityMap(w, h, &data))				//If CreatewalkabilityMap() returns true. It means that the walkability map could be created.
+		{
+			App->pathfinding->SetMap(w, h, data);						//Sets a new walkability map with the map passed by CreateWalkabilityMap().
+		}
+
+		RELEASE_ARRAY(data);											//Frees all memory allocated to the data array.
+	}
+
+	path_debug_tex = App->tex->Load("maps/path2.png");					//Sets the path_debug_tex as path2.png.
 
 	return true;
-
 }
 
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
+	// debug pathfing ------------------
+	static iPoint origin;
+	static bool origin_selected = false;
+
+	int x, y;
+	App->input->GetMousePosition(x, y);
+	iPoint p = App->render->ScreenToWorld(x, y);
+	p = App->map->WorldToMap(p.x, p.y);
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		if (origin_selected == true)
+		{
+			App->pathfinding->CreatePath(origin, p);
+			LOG("Tiles selected: (%d, %d) and (%d, %d)", origin.x, origin.y, p.x, p.y);
+			origin_selected = false;
+		}
+		else
+		{
+			origin = p;
+			origin_selected = true;
+		}
+	}
+
 	return true;
 }
 
@@ -127,21 +155,12 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 	// ---------------------------------------- DEBUG KEYS ----------------------------------------
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)			//Load First Level Key
 	{
-		//Load_lvl(0);
-
-		//New
 		App->fadescene->FadeToBlack("Test_map.tmx");
-		/*App->entityManager->player->Restart();
-		App->entityManager->player2->Restart();*/
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)			//Load Second Level Key
 	{
-		//Load_lvl(1);
-
 		App->fadescene->FadeToBlack("Test_map_2.tmx");
-		/*App->entityManager->player->Restart();
-		App->entityManager->player2->Restart();*/
 	}
 	
 	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)			//Restart Key
@@ -239,6 +258,23 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 
 	App->map->Draw();
 
+
+	// Debug pathfinding ------------------------------
+	int x, y;
+	App->input->GetMousePosition(x, y);
+	iPoint p = App->render->ScreenToWorld(x, y);
+	p = App->map->WorldToMap(p.x, p.y);
+	p = App->map->MapToWorld(p.x, p.y);
+
+	App->render->Blit(path_debug_tex, p.x, p.y);								//Should we want it, we could make a separate texture called mouse_debug_tex so the tex at mouse pos and the tex at path tile are different.
+
+	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
+
+	for (uint i = 0; i < path->Count(); ++i)
+	{
+		iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+		App->render->Blit(path_debug_tex, pos.x, pos.y);
+	}
 
 	//Technical title
 	/*p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d", App->map->data.width, App->map->data.height, App->map->data.tile_width, App->map->data.tile_height, App->map->data.tilesets.count());

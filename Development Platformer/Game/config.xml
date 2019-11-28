@@ -10,7 +10,7 @@
     <vsync value="false"/>
     <camera x ="0" y ="-570" smoothing_speed ="0.01f"/>
     <spawn_cam x ="0" y ="-570"/>
-    <camera_debug value="false" speed="300.0f"/>
+    <camera_debug value="false" speed="400.0f"/>
   </renderer>
   
   <window>
@@ -82,14 +82,14 @@
       <max_speed x="240.0f" y="500.0f"/>
       <acceleration x="60.0f" y="450.0f"/>
       <gravity value="40.0f"/>
-      <sprite_size w="64" h="96"/>
+      <sprite_size w="56" h="78"/>
       <lives lives="1"/>
     </mecha>
 
     <alien>
       <position x="212" y="400"/>
       <speed x="275.0f" y="0"/>
-      <sprite_size w="38" h="58"/>
+      <sprite_size w="38" h="52"/>
       <lives lives="1"/>
     </alien>
   </entities>

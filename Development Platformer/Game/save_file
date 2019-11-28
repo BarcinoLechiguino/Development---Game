@@ -11,13 +11,7 @@
 	<scene>
 		<currentMap num="0" />
 	</scene>
-	<entities>
-		<player>
-			<position1 x="338.999969" y="456.279999" />
-		</player>
-		<entities position_x="338.999969" position_y="456.279999" />
-		<entities position_x="182" position_y="456.279999" />
-	</entities>
+	<entities />
 	<collisions />
 	<:anonymous />
 	<renderer>

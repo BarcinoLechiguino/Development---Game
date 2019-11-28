@@ -279,12 +279,6 @@ void j1EntityManager::DestroyEntities()
 	
 	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
 	{ 	
-		//entity_iterator->data->CleanUp();			//Calls the CleanUp() method of the iterated entity (an enemy entity).
-		//RELEASE(entity_iterator->data);				//Deletes the data buffer
-		//entities.del(entity_iterator);				//Deletes the entity being iterated from the list.
-		
-		//PLAYERS ARE A MEMORY LEAK, BUT NOT THE ONLY ONE
-
 		if (entity_iterator->data->type != ENTITY_TYPE::PLAYER && entity_iterator->data->type != ENTITY_TYPE::PLAYER2)
 		{
 			entity_iterator->data->CleanUp();			//Calls the CleanUp() method of the iterated entity (an enemy entity).

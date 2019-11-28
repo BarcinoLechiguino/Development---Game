@@ -16,9 +16,6 @@
 
 j1Player2::j1Player2(int x, int y, ENTITY_TYPE type) : j1Player(x, y, type) //Constructor. Called at the first frame.
 {
-	//String that will be given to the different functions (Awake(), Load()...) to generate the handler node.
-	//name.create("entities"); //The string has to be the same as the name of the node in the xml file.
-
 	//Adds P2's animation pushback.
 	LoadAnimationPushbacks();
 };
@@ -40,18 +37,13 @@ bool j1Player2::Awake(pugi::xml_node& config)
 
 bool j1Player2::Start()
 {
-	/*if (entity_sprite == NULL)
-	{
-		entity_sprite = App->tex->Load("textures/Spritesheets/Character 2/Character_Spritesheet2_Buena.png");
-	}*/
-
 	entity_sprite = App->tex->Load("textures/Spritesheets/Character 2/Character_Spritesheet2_Buena.png");
 
 	SetPlayer2Position();									//Sets P1's origin position in the map.
 	LoadEntityProperties();									//Loads the player's properties from the xml file. //THIS HERE
 	InitPlayer();											//Loads P2 in game.
-	LoadEntityAudio();										//Loads the sfx for player 2.
-
+	LoadEntityAudio();
+	
 	player.airborne = true;
 	player.item_activated = false;
 
@@ -215,26 +207,26 @@ bool j1Player2::Update(float dt, bool doLogic)
 
 	case Player_State::Dying:
 
-		//App->audio->PlayFx(2, 0);
+		App->audio->PlayFx(2, 0);
 		animation = &death;
 		player.isDying = true;
 
 		break;
 	}
 
-	/*if (position.x > App->entityManager->player->position.x && App->entityManager->player->player.state == Player_State::Crouching) //LAST THING TO USE
-	{
-		if (player.grounded == true)
-		{
-			player.speed.y -= player.boost_jump.y * App->GetDt();
-			LOG("boost jump speed is");
-			player.isBoostJumping = true;
-			player.airborne = true;
-			player.grounded = false;
-			player.platformDrop = false;
-			App->audio->PlayFx(3, 0);
-		}
-	}*/
+	//if (position.x > App->entityManager->player->position.x && App->entityManager->player->player.state == Player_State::Crouching) //LAST THING TO USE
+	//{
+	//	if (player.grounded == true)
+	//	{
+	//		speed.y -= player.boost_jump.y * App->GetDt();
+	//		LOG("boost jump speed is");
+	//		player.isBoostJumping = true;
+	//		player.airborne = true;
+	//		player.grounded = false;
+	//		player.platformDrop = false;
+	//		App->audio->PlayFx(3, 0);
+	//	}
+	//}
 	
 	//If P2 is in the air then this function brings them back down to the floor.
 	if (player.airborne == true)
@@ -275,8 +267,6 @@ bool j1Player2::PostUpdate()
 bool j1Player2::CleanUp()
 {
 	App->tex->UnLoad(entity_sprite);
-
-	//entity_sprite = NULL;
 
 	if (collider != nullptr)
 	{
@@ -475,16 +465,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 			//Player colliding against the Goal
 			if (C2->type == Object_Type::GOAL)
 			{
-				if (C1->collider.y > GOAL_Y && C1->collider.y < GOAL_HEIGHT)	//Dirty way to know which portal goal has been reached.
-				{
-					App->fadescene->FadeToBlack("Test_Map.tmx");				//Loads the 1st level.
-					App->map->Restart_Cam();
-				}
-				else
-				{
-					App->fadescene->FadeToBlack("Test_Map_2.tmx");			//Loads the 2nd level.
-					App->map->Restart_Cam();
-				}
+				LoadNextMap();													//Loads the next map
 
 				App->audio->PlayFx(6, 0);										//Sound effect of the Goal / Protal.
 			}

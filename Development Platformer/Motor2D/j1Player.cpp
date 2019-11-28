@@ -146,15 +146,20 @@ void j1Player::LoadEntityProperties()
 
 void j1Player::LoadEntityAudio()
 {
-	jumpFX = App->audio->LoadFx("audio/fx/Jump.wav");
-	deathFX = App->audio->LoadFx("audio/fx/Death.wav");
-	duoFX = App->audio->LoadFx("audio/fx/Jump_Duo.wav");
-	activateFX = App->audio->LoadFx("audio/fx/Activate.wav");
-	tpFX = App->audio->LoadFx("audio/fx/TP.wav");
-	goalFX = App->audio->LoadFx("audio/fx/Pass.wav");
-	mecha_die = App->audio->LoadFx("audio/fx/Mecha die.wav");
-	alien_die = App->audio->LoadFx("audio/fx/Alien die.wav");
-	mecha_walking = App->audio->LoadFx("audio/fx/Mecha_Walking.wav");
+	if (audioIsLoaded == false)
+	{
+		jumpFX = App->audio->LoadFx("audio/fx/Jump.wav");
+		deathFX = App->audio->LoadFx("audio/fx/Death.wav");
+		duoFX = App->audio->LoadFx("audio/fx/Jump_Duo.wav");
+		activateFX = App->audio->LoadFx("audio/fx/Activate.wav");
+		tpFX = App->audio->LoadFx("audio/fx/TP.wav");
+		goalFX = App->audio->LoadFx("audio/fx/Pass.wav");
+		mecha_die = App->audio->LoadFx("audio/fx/Mecha die.wav");
+		alien_die = App->audio->LoadFx("audio/fx/Alien die.wav");
+		mecha_walking = App->audio->LoadFx("audio/fx/Mecha_Walking.wav");
+
+		audioIsLoaded = true;
+	}
 }
 
 bool j1Player::InitPlayer()
@@ -255,6 +260,22 @@ void j1Player::ApplyGravity()
 			animation = &falling;
 		}
 	}
+}
+
+void j1Player::LoadNextMap()										//REVISE THIS HERE. Loads the map but collider goal disappears.
+{
+	if (App->scene->firstMap == false)
+	{
+		App->scene->firstMap = true;
+		App->scene->secondMap = false;
+		App->fadescene->FadeToBlack("Test_Map.tmx");				//Loads the 1st level.
+	}
+	if (App ->scene->secondMap == false)
+	{
+		App->scene->secondMap = true;
+		App->scene->firstMap = false;
+		App->fadescene->FadeToBlack("Test_Map_2.tmx");
+	}	
 }
 
 void j1Player::LivesCheck(int lives)

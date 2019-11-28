@@ -53,6 +53,11 @@ bool j1Collisions::PreUpdate()
 		{	
 			RELEASE(collider_iterator->data);
 			collider_list.del(collider_iterator);				//Using the list's properties all colliders set to delete will be deleted from memory.
+			
+			//int index = collider_list.find(collider_iterator->data);
+			//RELEASE(collider_list.At(index)->data);
+			//collider_list.del(collider_list.At(index));				//Using the list's properties all colliders set to delete will be deleted from memory.
+
 		}
 
 		collider_iterator = collider_iterator->next;			//Gets the next collider that will be deleted.
