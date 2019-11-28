@@ -496,6 +496,8 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			if (C2->type == Object_Type::CHECKPOINT)
 			{
 				LOG("P1 HAS REACHED A CHECKPOINT");															//Call Safe() method here.
+
+				//App->SaveGame();
 			}
 
 			//Player colliding against the Goal

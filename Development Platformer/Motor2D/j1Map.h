@@ -211,6 +211,8 @@ public:
 	
 	iPoint			cam_tilePos;			//Position of the camera in the X and Y axis in tiles.
 	int				tile_index;				//Will store the tile's index number so the correct tile is loaded.
+	
+	bool			pathfindingMetaDebug = false;	//Keeps track of whether to load the PathfindingCollisions layer. Temporally declared here.
 
 private:
 	pugi::xml_document	map_file;

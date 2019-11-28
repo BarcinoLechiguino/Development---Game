@@ -195,19 +195,32 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 			App->collisions->collider_debug = true;
 		}
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)		//God Mode Key
+
+	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)		//God Mode Key
 	{
 		if (App->entityManager->player->player.GodMode)
 		{
-			App->entityManager->player->player.GodMode = false;
-			App->entityManager->player2->player.GodMode = false;
-			App->entityManager->player->player.airborne = true;
-			App->entityManager->player2->player.airborne = true;
+			App->entityManager->player->player.GodMode		= false;
+			App->entityManager->player2->player.GodMode		= false;
+			App->entityManager->player->player.airborne		= true;
+			App->entityManager->player2->player.airborne	= true;
 		}
 		else
 		{
-			App->entityManager->player->player.GodMode = true;
-			App->entityManager->player2->player.GodMode = true;
+			App->entityManager->player->player.GodMode		= true;
+			App->entityManager->player2->player.GodMode		= true;
+		}
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)		//PathfindingCollisions meta layer Debug Key
+	{
+		if (App->map->pathfindingMetaDebug == true)
+		{
+			App->map->pathfindingMetaDebug = false;
+		}
+		else
+		{
+			App->map->pathfindingMetaDebug = true;
 		}
 	}
 

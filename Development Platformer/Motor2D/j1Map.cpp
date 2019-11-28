@@ -119,12 +119,10 @@ void j1Map::Draw()
 						//---------------------- PATHFINDING META TILES ----------------------
 						else if (layer->data->name == "PathfindingCollisions")
 						{
-							
-							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							/*if (PathfindingDebug == true)
+							if (pathfindingMetaDebug == true)									//If pathfindingMetaDebug is true (Switch the bool state with F11)
 							{
 								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							}*/
+							}
 						}
 						
 						//---------------------------TUTORIAL MAP LAYERS----------------------
@@ -184,15 +182,18 @@ SDL_Rect TileSet::GetTileRect(uint tile_id) const
 TileSet* j1Map::GetTilesetFromTileId(int id) const				//Revise. Its possible that it should do id < tilesetIter->data->firstgid.
 {
 	p2List_item<TileSet*>* tilesetIter = data.tilesets.start;
-	TileSet* ret = NULL;
+	//TileSet* ret = NULL;
+	TileSet* ret = tilesetIter->data;
 
 	while (tilesetIter != NULL)
 	{
-		if (id >= tilesetIter->data->firstgid)
+		if (id < /*>=*/ tilesetIter->data->firstgid)
 		{
-			ret = tilesetIter->data;
+			//ret = tilesetIter->data;
+			ret = tilesetIter->prev->data;
 			break;
 		}
+		ret = tilesetIter->data;
 		tilesetIter = tilesetIter->next;
 	}
 	
