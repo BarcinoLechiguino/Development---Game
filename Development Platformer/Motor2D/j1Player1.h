@@ -43,8 +43,6 @@ public: //P1 Variables
 	void LivesCheck(int lives);									//Checks if the player has any lives left.
 	void OnCollision(Collider* C1, Collider* C2);				//Collision Logic Handling.
 
-	bool Load(pugi::xml_node &node);							//Loading from xml file.
-	bool Save(pugi::xml_node &node) const;						//Saving to xml file.
 	void Restart();												//Resets P1's position to where P1 started the level. 
 	void GodModeInput();										//Enables / Disables the God Mode.
 

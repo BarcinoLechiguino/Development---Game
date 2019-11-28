@@ -520,22 +520,6 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 	}
 }
 
-bool j1Player1::Load(pugi::xml_node& data)
-{
-	position.x = data.child("position1").attribute("x").as_int();	//Loads the position of the X axis saved in the save_file.xml.
-	position.y = data.child("position1").attribute("y").as_int();	//Loads the position of the X axis saved in the save_file.xml.
-	return true;
-}
-
-bool j1Player1::Save(pugi::xml_node&  data) const
-{
-	pugi::xml_node pos = data.append_child("position1");	//Declares the node and with "append_" it is set to overwrite the data in the given xml. 
-
-	pos.append_attribute("x") = position.x;			//Saves the position of P1 on  the X axis the moment Save() is called. "append_" used again to overwrite previous position data.
-	pos.append_attribute("y") = position.y;			//Saves the position of P1 on  the Y axis the moment Save() is called. "append_" used again to overwrite previous position data.
-	return true;
-}
-
 /*bool j1Player1::LoadPlayer1Textures()
 {
 	//Loads the textures of P1. Switches them according to switch_sprites

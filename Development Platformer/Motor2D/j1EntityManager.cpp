@@ -137,32 +137,58 @@ void j1EntityManager::OnCollision(Collider* C1, Collider* C2)		//This OnCollisio
 
 bool j1EntityManager::Save(pugi::xml_node& data) const
 {
-	//GetPlayer()->Save(data.append_child("player"));
-	for (p2List_item<j1Entity*>* entity = entities.start; entity; entity = entity->next)
+	bool ret = true;
+	p2List_item<j1Entity*>* tmp = entities.start;
+	while (tmp != nullptr)
 	{
-		/*pugi::xml_node child = data.append_child(entity->data->name.GetString());
-		child.append_attribute("position_x") = entity->data->position.x;
-		child.append_attribute("position_y") = entity->data->position.y;*/
+		tmp->data->Save(data);
+		tmp = tmp->next;
 	}
+	return ret;
 
 	return true;
 }
 
-bool j1EntityManager::Load(pugi::xml_node& data)		//Change this.
+bool j1EntityManager::Load(pugi::xml_node& data)
 {
-	CleanUp();
-	//GetPlayer()->Load(data.child("player"));
-	for (pugi::xml_node mecha = data.child("mecha"); mecha; mecha = mecha.next_sibling("mecha"))
+	bool ret = true;
+	p2List_item<j1Entity*>* tmp = entities.start;
+	pugi::xml_node mecha = data.child("mecha");
+	pugi::xml_node alien = data.child("alien");
+	while (tmp != nullptr)
 	{
-		CreateEntity(ENTITY_TYPE::MECHA, mecha.attribute("position_x").as_int(), mecha.attribute("position_y").as_int());
-	}
+		if (tmp->data->type == ENTITY_TYPE::PLAYER);
+		{
+			tmp->data->Load(data.child("player"));
+		}
+		if (tmp->data->type == ENTITY_TYPE::PLAYER2);
+		{
+			tmp->data->Load(data.child("player2"));
+		}
+		if (tmp->data->type == ENTITY_TYPE::MECHA);
+		{
+			tmp->data->Load(mecha);
+			mecha = mecha.next_sibling("mecha");
+		}
+		if (tmp->data->type == ENTITY_TYPE::ALIEN);
+		{
+			tmp->data->Load(alien);
+			alien = alien.next_sibling("alien");
+		}
+		/*for (pugi::xml_node mecha = data.child("mecha"); mecha; mecha = mecha.next_sibling("mecha"))
+		{
+			CreateEntity(ENTITY_TYPE::MECHA, mecha.attribute("position_x").as_int(), mecha.attribute("position_y").as_int());
+		}
 
-	for (pugi::xml_node alien = data.child("alien"); alien; alien = alien.next_sibling("alien"))
-	{
-		CreateEntity(ENTITY_TYPE::ALIEN, alien.attribute("position_x").as_int(), alien.attribute("position_y").as_int());
+		for (pugi::xml_node alien = data.child("alien"); alien; alien = alien.next_sibling("alien"))
+		{
+			CreateEntity(ENTITY_TYPE::ALIEN, alien.attribute("position_x").as_int(), alien.attribute("position_y").as_int());
+		}*/
+		tmp = tmp->next;
 	}
+	
 
-	return true;
+	return ret;
 }
 
 
