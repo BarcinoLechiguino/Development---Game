@@ -40,6 +40,11 @@ bool j1Player2::Awake(pugi::xml_node& config)
 
 bool j1Player2::Start()
 {
+	/*if (entity_sprite == NULL)
+	{
+		entity_sprite = App->tex->Load("textures/Spritesheets/Character 2/Character_Spritesheet2_Buena.png");
+	}*/
+
 	entity_sprite = App->tex->Load("textures/Spritesheets/Character 2/Character_Spritesheet2_Buena.png");
 
 	SetPlayer2Position();									//Sets P1's origin position in the map.
@@ -270,6 +275,8 @@ bool j1Player2::PostUpdate()
 bool j1Player2::CleanUp()
 {
 	App->tex->UnLoad(entity_sprite);
+
+	//entity_sprite = NULL;
 
 	if (collider != nullptr)
 	{

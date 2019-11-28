@@ -73,7 +73,7 @@
 //		#include "myfile3.h" //
 //
 // ---------------------------------------------------------------------------------------------------------------------------------
-/*
+
 #define _CRT_SECURE_NO_WARNINGS
 #pragma warning( disable : 4577 ) // Warning that exceptions are disabled
 #pragma warning( disable : 4530 ) // Warning that exceptions are disabled
@@ -175,7 +175,7 @@ static	const	unsigned int	paddingSize            = 4;
 //
 // The BEOS assert added by Arvid Norberg <arvid@iname.com>.
 // ---------------------------------------------------------------------------------------------------------------------------------
-
+/*
 #ifdef	WIN32
 	#ifdef	_DEBUG
 	#define	m_assert(x) if ((x) == false) __asm { int 3 }

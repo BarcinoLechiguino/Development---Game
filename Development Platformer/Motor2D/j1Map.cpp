@@ -77,7 +77,6 @@ void j1Map::Draw()
 					{
 						SDL_Rect tile_rect = tileset->GetTileRect(tile_id);											//Gets the position on the world and the dimensions of the rect of the given tile_id 
 						iPoint pos = MapToWorld(x, y);																//Gets the position on the world (in pixels) of a specific point (in tiles). In the case of orthogonal maps the x and y are multiplied by the tile's width  or height. If 32x32, Map pos: x = 1 --> World pos: x = 32...
-						SDL_Rect tile_hitBox = {pos.x, pos.y, data.tile_width, data.tile_height};					//Sets a rectangle that will act as hitbox when the cameraCulling on collision checks if the tile is inside or outside the camera boundaries. 
 
 					
 						if (layer->data->name == "Background")														//If the name of the layer  is "Background" its elements will be blitted with the specified parameters.
@@ -118,13 +117,15 @@ void j1Map::Draw()
 						}
 
 						//---------------------- PATHFINDING META TILES ----------------------
-						/*else if (layer->data->name == "PathfindingCollisions")
+						else if (layer->data->name == "PathfindingCollisions")
 						{
-							if (PathfindingDebug == true)
+							
+							App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
+							/*if (PathfindingDebug == true)
 							{
 								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-							}
-						}*/
+							}*/
+						}
 						
 						//---------------------------TUTORIAL MAP LAYERS----------------------
 						//else if (layer->data->name == "Floor")

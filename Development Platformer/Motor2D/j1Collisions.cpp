@@ -117,9 +117,9 @@ bool j1Collisions::CleanUp()
 	
 	//Should change this list for an array.
 	LOG("There Are %d colliders being deleted", collider_list.count());
-	
+
 	for (p2List_item<Collider*>* collider_iterator = collider_list.start; collider_iterator != NULL; collider_iterator = collider_iterator->next)
-	{
+	{	
 		RELEASE(collider_iterator->data);		//Frees all alocated memory in the process of generating colliders. AddCollider()--> Collider* collider = new Collider().
 	}
 
