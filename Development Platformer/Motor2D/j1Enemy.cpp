@@ -11,12 +11,12 @@
 #include "j1FadeScene.h"
 #include "j1Audio.h"
 #include "j1Enemy.h"
+#include "j1Player.h"
 #include "j1EntityManager.h"
 
 j1Enemy::j1Enemy(int x, int y, ENTITY_TYPE type) : j1Entity(x, y, type)  //Constructor. Called at the first frame.
 {
-	//String that will be given to the different functions (Awake(), Load()...) to generate the handler node.
-	/*name.create("entities");*/ //The string has to be the same as the name of the node in the xml file.
+
 };
 
 j1Enemy::~j1Enemy()  //Destructor. Called at the last frame.
@@ -111,6 +111,8 @@ void j1Enemy::InitEnemy()
 	isDying				= false;
 	againstRightWall	= false;
 	againstLeftWall		= false;
+
+	hasTarget			= false;
 }
 
 bool j1Enemy::Calculate_Path()
@@ -138,4 +140,20 @@ float j1Enemy::DistanceFromP1() const
 	float distance = 0.0f;
 
 	return distance;
+}
+
+float j1Enemy::DistanceFromP2() const
+{
+	float distance = 0.0f;
+
+	return distance;
+}
+
+float j1Enemy::DistanceFromPlayer(j1Player* player) const
+{	
+	fPoint enemyPos(position.x, position.y);					//Fills a p2Point<float> with the position coordinates of an enemy entity.
+	fPoint playerPos(player->position.x, player->position.y);	//Fills a p2Point<float> with the position coordinates of a player.
+
+	//Used DistanceNoSqrt() because square roots have a really high computation cost over just multiplying. Calculus: (p1.x*p2.x) + (p1.y*p2.y).
+	return enemyPos.DistanceNoSqrt(playerPos);					//Calculates and returns the distance between the enemyPos point (as the origin) and the playerPos point.
 }

@@ -61,20 +61,22 @@ public:
 	float DistanceFromPlayer(j1Player* player) const;		//Calculates the distance between a player and an enemy entity.
 
 public:
-	Entity_State	state;
-	SDL_Rect		enemy_HitBox;
-	iPoint			detectionRadius;
+	Entity_State	state;									//State in which the entity is in any given moment.
+	SDL_Rect		enemy_HitBox;							//Rectangle that will represent the enemy in the world. Used to create colliders, 
+	iPoint			detectionRadius;						//Threshold that the enemy will have to detect whether or not a player is inside its detection range.
 
-	bool grounded;
-	bool airborne;
-	bool flip;
-	bool isGoingRight;
-	bool isGoingLeft;
-	bool fading;
-	bool isAlive;
-	bool isDying;
-	bool againstRightWall;
-	bool againstLeftWall;
+	bool grounded;											//
+	bool airborne;											//
+	bool flip;												//
+	bool isGoingRight;										//
+	bool isGoingLeft;										//
+	bool fading;											//
+	bool isAlive;											//
+	bool isDying;											//
+	bool againstRightWall;									//
+	bool againstLeftWall;									//
+	
+	bool hasTarget;											//Keeps track whether an enemy entity already has a target or not.
 
 	p2DynArray<iPoint> entityPath;		//Only for enemies
 

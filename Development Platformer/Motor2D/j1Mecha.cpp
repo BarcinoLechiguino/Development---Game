@@ -14,6 +14,7 @@
 #include "j1Audio.h"
 #include "j1Mecha.h"
 #include "j1EntityManager.h"
+#include "j1Pathfinding.h"
 #include "Brofiler\Brofiler.h"
 
 j1Mecha::j1Mecha(int x, int y, ENTITY_TYPE type) : j1Enemy(x, y, ENTITY_TYPE::MECHA)
@@ -82,7 +83,13 @@ bool j1Mecha::Update(float dt, bool doLogic)
 			Chasing_Path();
 
 			//Create the DistanceFromP1() and DistanceFromP2() methods
-			if (App->entityManager->player->position.x <= 0)
+			if (DistanceFromPlayer(App->entityManager->player) <= 100 || DistanceFromPlayer(App->entityManager->player2) <= 100)
+			{
+
+				//App->pathfinding->CreatePath();
+			}
+
+			if (DistanceFromPlayer(App->entityManager->player2) <= 100)
 			{
 
 			}

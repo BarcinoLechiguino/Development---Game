@@ -50,8 +50,10 @@ private:
 	// size of the map
 	uint width;
 	uint height;
+
 	// all map walkability values [0..255]
 	uchar* map;
+
 	// we store the created path here
 	p2DynArray<iPoint> last_path;
 };
