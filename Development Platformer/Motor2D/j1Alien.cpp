@@ -50,8 +50,9 @@ bool j1Alien::Start()
 bool j1Alien::Update(float dt, bool doLogic)
 {
 	BROFILER_CATEGORY("Alien Update", Profiler::Color::Pink);
-	//CalculatePath
 
+	state = Entity_State::IDLE;
+	
 	//ALIEN DEBUG INPUTS
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
@@ -71,10 +72,12 @@ bool j1Alien::Update(float dt, bool doLogic)
 		state = Entity_State::IDLE;
 	}
 
+	/*Normal_Path();
+	Chasing_Path();*/
+
 	if (doLogic == true)
 	{
-		Normal_Path();
-		Chasing_Path();
+		PathfindingLogic();
 	}
 
 	switch (state)
@@ -82,6 +85,20 @@ bool j1Alien::Update(float dt, bool doLogic)
 	case Entity_State::IDLE:
 
 		animation = &idle;
+
+		break;
+
+	case Entity_State::PATHING_UP:
+
+		position.y -= speed.y * dt;
+		animation = &running;
+
+		break;
+	
+	case Entity_State::PATHING_DOWN:
+
+		position.y += speed.y * dt;
+		animation = &running;
 
 		break;
 
@@ -99,6 +116,42 @@ bool j1Alien::Update(float dt, bool doLogic)
 		flip = false;
 		animation = &running;
 
+		break;
+
+	case Entity_State::PATHING_UP_RIGHT:
+
+		position.x += speed.x * dt;
+		position.y -= speed.y * dt;
+		flip = true;
+		animation = &running;
+
+		break;
+	
+	case Entity_State::PATHING_UP_LEFT:
+
+		position.x -= speed.x * dt;
+		position.y -= speed.y * dt;
+		flip = false;
+		animation = &running;
+		
+		break;
+	
+	case Entity_State::PATHING_DOWN_RIGHT:
+
+		position.x += speed.x * dt;
+		position.y += speed.y * dt;
+		flip = true;
+		animation = &running;
+		
+		break;
+	
+	case Entity_State::PATHING_DOWN_LEFT:
+
+		position.x -= speed.x * dt;
+		position.y += speed.y * dt;
+		flip = false;
+		animation = &running;
+		
 		break;
 	}
 
@@ -146,16 +199,15 @@ void j1Alien::OnCollision(Collider* C1, Collider* C2)
 		//Enemy colliding against solids
 		if (C2->type == Object_Type::SOLID)
 		{
-			//Enemy Colliding from TOP or BOTTOM. sssssa
+			//Enemy Colliding from TOP or BOTTOM.
 			if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x + C2->collider.y)		//The first part checks if C1 is contained in the X axis of C2. 
 			{
 				//Enemy Colliding from TOP.
 				if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y && speed.y != 0)			//This second part checks if C1 is actually colliding vertically down.
 				{
-					speed.y = 0;
 					position.y = C2->collider.y - C1->collider.h + 1;		//THIS HERE
-					grounded = true;
-					LOG("MECHA IS COLLIDING WITH A SOLID FROM ABOVE");
+					//grounded = true;
+					LOG("ALIEN IS COLLIDING WITH A SOLID FROM ABOVE");
 				}
 			}
 
@@ -167,7 +219,7 @@ void j1Alien::OnCollision(Collider* C1, Collider* C2)
 				{
 					againstLeftWall = true;
 					againstRightWall = false;
-					LOG("MECHA IS COLLIDING WITH A SOLID FROM THE LEFT");
+					LOG("ALIEN IS COLLIDING WITH A SOLID FROM THE LEFT");
 				}
 
 				//Enemy is colliding from RIGHT.
@@ -175,7 +227,7 @@ void j1Alien::OnCollision(Collider* C1, Collider* C2)
 				{
 					againstRightWall = true;
 					againstLeftWall = false;
-					LOG("MECHA IS COLLIDING WITH A SOLID FROM THE RIGHT");
+					LOG("ALIEN IS COLLIDING WITH A SOLID FROM THE RIGHT");
 				}
 			}
 		}
@@ -225,10 +277,106 @@ void j1Alien::LoadEntityProperties()
 	speed.x			= enemy_entity.child("speed").attribute("x").as_float();
 	speed.y			= enemy_entity.child("speed").attribute("y").as_float();
 
+	detectionRadius = enemy_entity.child("detection_radius").attribute("radius").as_int();
+
 	return;
 }
 
 void j1Alien::LoadEntityAudio()
 {
 
+}
+
+void j1Alien::PathfindingLogic()
+{
+	if (DistanceFromPlayer(App->entityManager->player) <= detectionRadius)
+	{
+		iPoint enemyPos(App->map->WorldToMap(position.x, position.y));															//Enemy's position coordinates in tiles.
+		iPoint playerPos(App->map->WorldToMap(App->entityManager->player->position.x, App->entityManager->player->position.y));	//Player's position coordinates in tiles.
+
+		App->pathfinding->CreatePath(enemyPos, playerPos);
+		hasTarget = true;
+
+		if (hasTarget == false)
+		{
+			App->pathfinding->CreatePath(enemyPos, playerPos);
+			hasTarget = true;
+
+		}
+
+		if (hasTarget == true)
+		{
+			SetEnemyState(enemyPos, playerPos);
+		}
+	}
+	/*else
+	{
+		hasTarget = false;
+	}*/
+
+	if (DistanceFromPlayer(App->entityManager->player2) <= detectionRadius)
+	{
+		if (hasTarget == false)
+		{
+			iPoint enemyPos(App->map->WorldToMap(position.x, position.y));																//Enemy's position coordinates in tiles.
+			iPoint playerPos(App->map->WorldToMap(App->entityManager->player2->position.x, App->entityManager->player2->position.y));	//Player's position coordinates in tiles.
+
+			App->pathfinding->CreatePath(enemyPos, playerPos);
+			hasTarget = true;
+
+			if (hasTarget == false)
+			{
+				App->pathfinding->CreatePath(enemyPos, playerPos);
+				hasTarget = true;
+			}
+
+			if (hasTarget == true)
+			{
+				SetEnemyState(enemyPos, playerPos);
+			}
+		}
+	}
+}
+
+void j1Alien::SetEnemyState(iPoint enemyPos, iPoint playerPos)
+{
+	if (playerPos.y < enemyPos.y && playerPos.x == enemyPos.x)
+	{
+		state = Entity_State::PATHING_UP;
+	}
+
+	if (playerPos.y > enemyPos.y && playerPos.x == enemyPos.x)
+	{
+		state = Entity_State::PATHING_DOWN;
+	}
+
+	if (playerPos.x > enemyPos.x && playerPos.y == enemyPos.y)
+	{
+		state = Entity_State::PATHING_RIGHT;
+	}
+
+	if (playerPos.x < enemyPos.x && playerPos.y == enemyPos.y)
+	{
+		state = Entity_State::PATHING_LEFT;
+	}
+
+	if (playerPos.x > enemyPos.x && playerPos.y < enemyPos.y)
+	{
+		state = Entity_State::PATHING_UP_RIGHT;
+	}
+
+	if (playerPos.x < enemyPos.x && playerPos.y < enemyPos.y)
+	{
+		state = Entity_State::PATHING_UP_LEFT;
+	}
+
+	if (playerPos.x > enemyPos.x && playerPos.y > enemyPos.y)
+	{
+		state = Entity_State::PATHING_DOWN_RIGHT;
+	}
+
+	if (playerPos.x < enemyPos.x && playerPos.y > enemyPos.y)
+	{
+		state = Entity_State::PATHING_DOWN_LEFT;
+	}
 }

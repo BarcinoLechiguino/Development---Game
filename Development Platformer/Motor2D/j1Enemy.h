@@ -11,8 +11,14 @@ class j1Player;
 enum class Entity_State	//Does not go here. Is it necessary?
 {
 	IDLE = 0,
+	PATHING_UP,
+	PATHING_DOWN,
 	PATHING_RIGHT,
 	PATHING_LEFT,
+	PATHING_UP_RIGHT,
+	PATHING_UP_LEFT,
+	PATHING_DOWN_RIGHT,
+	PATHING_DOWN_LEFT,
 	JUMPING,
 	FALLING,
 	DEAD,
@@ -46,24 +52,25 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
-	void LoadAnimationPushbacks();							//Loads a set of animation pushbacks.
-	void LoadEntityProperties();							//Loads an entity's specific properties.
-	void LoadEntityAudio();									//Loads an entity's specific audios/sfx.
+	void LoadAnimationPushbacks();			//Loads a set of animation pushbacks.
+	void LoadEntityProperties();			//Loads an entity's specific properties.
+	void LoadEntityAudio();					//Loads an entity's specific audios/sfx.
 
-	void InitEnemy();										//Initializes an enemy's specific data members.
-	void Normal_Path();										//Land Path?
-	void Chasing_Path();									//Aerial Path?
+	void InitEnemy();						//Initializes an enemy's specific data members.
+	void Normal_Path();						//Land Path?
+	void Chasing_Path();					//Aerial Path?
 	bool Calculate_Path();
-	//bool Load_Entity();
 
-	float DistanceFromP1() const;							//Calculates the distance between P1 and an enemy entity.
-	float DistanceFromP2() const;							//Calculates the distance between P1 and an enemy entity.
-	float DistanceFromPlayer(j1Player* player) const;		//Calculates the distance between a player and an enemy entity.
+	virtual void PathfindingLogic();								//
+	virtual void SetEnemyState(iPoint enemyPos, iPoint playerPos);	//
+	int DistanceFromPlayer(j1Player* player) const;					//Calculates the distance between a player and an enemy entity.
+
+	//bool Load_Entity();
 
 public:
 	Entity_State	state;									//State in which the entity is in any given moment.
 	SDL_Rect		enemy_HitBox;							//Rectangle that will represent the enemy in the world. Used to create colliders, 
-	iPoint			detectionRadius;						//Threshold that the enemy will have to detect whether or not a player is inside its detection range.
+	int				detectionRadius;						//Threshold that the enemy will have to detect whether or not a player is inside its detection range. Distance in tiles, not pixels.
 
 	bool grounded;											//
 	bool airborne;											//
@@ -78,7 +85,7 @@ public:
 	
 	bool hasTarget;											//Keeps track whether an enemy entity already has a target or not.
 
-	p2DynArray<iPoint> entityPath;		//Only for enemies
+	p2DynArray<iPoint> entityPath;							//Will store the path created between the enemy entity and a player.
 
 public:
 	pugi::xml_document	config_file;	//

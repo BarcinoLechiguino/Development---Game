@@ -130,30 +130,26 @@ void j1Enemy::Chasing_Path()
 
 }
 
+void j1Enemy::PathfindingLogic()
+{
+	return;
+}
+
+void j1Enemy::SetEnemyState(iPoint enemyPos, iPoint playerPos)
+{
+	return;
+}
+
+int j1Enemy::DistanceFromPlayer(j1Player* player) const
+{
+	iPoint enemyPos(App->map->WorldToMap(position.x, position.y));					//Fills a p2Point<float> with the position coordinates of an enemy entity in tiles.
+	iPoint playerPos(App->map->WorldToMap(player->position.x, player->position.y));	//Fills a p2Point<float> with the position coordinates of a player in tiles.
+
+	//Used DistanceNoSqrt() because square roots have a really high computation cost over just multiplying. Calculus: (p1.x*p2.x) + (p1.y*p2.y).
+	return enemyPos.DistanceNoSqrt(playerPos);										//Calculates and returns the distance between the enemyPos point (as the origin) and the playerPos point in tiles.
+}
+
 //bool j1Enemy::Load_Entity()
 //{
 //	return true;
 //}
-
-float j1Enemy::DistanceFromP1() const
-{
-	float distance = 0.0f;
-
-	return distance;
-}
-
-float j1Enemy::DistanceFromP2() const
-{
-	float distance = 0.0f;
-
-	return distance;
-}
-
-float j1Enemy::DistanceFromPlayer(j1Player* player) const
-{	
-	fPoint enemyPos(position.x, position.y);					//Fills a p2Point<float> with the position coordinates of an enemy entity.
-	fPoint playerPos(player->position.x, player->position.y);	//Fills a p2Point<float> with the position coordinates of a player.
-
-	//Used DistanceNoSqrt() because square roots have a really high computation cost over just multiplying. Calculus: (p1.x*p2.x) + (p1.y*p2.y).
-	return enemyPos.DistanceNoSqrt(playerPos);					//Calculates and returns the distance between the enemyPos point (as the origin) and the playerPos point.
-}

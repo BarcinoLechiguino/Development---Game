@@ -28,12 +28,15 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
-	void Chasing_Path();
-	void Normal_Path();
-
 	void LoadAnimationPushbacks();
 	void LoadEntityProperties();
 	void LoadEntityAudio();
+
+	void Chasing_Path();
+	void Normal_Path();
+
+	void PathfindingLogic();
+	void SetEnemyState(iPoint enemyPos, iPoint playerPos);
 
 	//bool Load_Entity();
 

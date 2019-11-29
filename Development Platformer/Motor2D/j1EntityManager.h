@@ -68,7 +68,7 @@ public:
 	float					cycle_length;		//How much time needs to pass / be accumulated before running a cycle. 
 	bool					doLogic;			//Keeps track whether or not the entity needs to do it's logic (pathfinding...)
 
-	EnemyData				enemies[MAX_ENEMIES];
+	EnemyData				enemies[MAX_ENEMIES];	//Use this if entities need to be processed in an array instead of a list.
 };
 
 

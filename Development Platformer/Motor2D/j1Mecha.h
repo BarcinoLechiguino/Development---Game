@@ -27,13 +27,17 @@ public:
 	void OnCollision(Collider* C1, Collider* C2);
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
-
-	void Normal_Path();
-	void Chasing_Path();
-	//bool Load_Entity();						
+					
 	void LoadAnimationPushbacks();
 	void LoadEntityProperties();
 	void LoadEntityAudio();
+
+	void Normal_Path();
+	void Chasing_Path();
+	//bool Load_Entity();	
+
+	void PathfindingLogic();
+	void SetEnemyState(iPoint enemyPos, iPoint playerPos);
 
 	void ApplyMechaGravity();
 

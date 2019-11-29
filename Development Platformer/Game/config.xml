@@ -84,13 +84,15 @@
       <gravity value="40.0f"/>
       <sprite_size w="56" h="78"/>
       <lives lives="1"/>
+      <detection_radius radius="100"/>
     </mecha>
 
     <alien>
       <position x="212" y="400"/>
-      <speed x="275.0f" y="0"/>
+      <speed x="200.0f" y="100.0f"/>
       <sprite_size w="38" h="52"/>
       <lives lives="1"/>
+      <detection_radius radius="100"/>
     </alien>
   </entities>
 

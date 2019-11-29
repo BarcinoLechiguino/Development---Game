@@ -189,6 +189,8 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
 	int ret = -1;		//Revise, Should be 1?															//The value returned by the function. Done to improve readability.
 
+	//last_path.Clear();
+	
 	if (IsWalkable(origin) == false || IsWalkable(destination) == false)	//IsWalkable() checks if origin and destination are walkable tiles. IsWalkable calls GetTile(), which returns the walkability value only if the given tile is inside the map's boundaries.
 	{
 		ret = -1;

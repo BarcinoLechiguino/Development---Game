@@ -54,82 +54,72 @@ bool j1Mecha::Update(float dt, bool doLogic)
 	BROFILER_CATEGORY("Mecha Update", Profiler::Color::AliceBlue);
 	//CalculatePath
 
-	if (doLogic)
+	state = Entity_State::IDLE;
+	
+	//MECHA DEBUG INPUTS
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
-		//MECHA DEBUG INPUTS
-		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		{
-			state = Entity_State::PATHING_RIGHT;
-			App->audio->PlayFx(18, 0);
-		}
-		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
-		{
-			state = Entity_State::IDLE;
-		}
+		state = Entity_State::PATHING_RIGHT;
+		//App->audio->PlayFx(18, 0);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
+	{
+		state = Entity_State::IDLE;
+	}
 
-		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		{
-			state = Entity_State::PATHING_LEFT;
-			App->audio->PlayFx(18, 0);
-		}
-		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
-		{
-			state = Entity_State::IDLE;
-		}
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	{
+		state = Entity_State::PATHING_LEFT;
+		//App->audio->PlayFx(18, 0);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
+	{
+		state = Entity_State::IDLE;
+	}
 
-		if (doLogic == true)
-		{
-			Normal_Path();
-			Chasing_Path();
+	/*Normal_Path();
+		Chasing_Path();*/
 
-			//Create the DistanceFromP1() and DistanceFromP2() methods
-			if (DistanceFromPlayer(App->entityManager->player) <= 100 || DistanceFromPlayer(App->entityManager->player2) <= 100)
-			{
-
-				//App->pathfinding->CreatePath();
-			}
-
-			if (DistanceFromPlayer(App->entityManager->player2) <= 100)
-			{
-
-			}
-		}
-
-		switch (state)
-		{
-		case Entity_State::IDLE:
-
-			animation = &idle;
-
-			break;
-
-		case Entity_State::PATHING_RIGHT:
-
-			position.x += speed.x * dt;
-			flip = false;
-			animation = &running;
-
-			break;
-
-		case Entity_State::PATHING_LEFT:
-
-			position.x -= speed.x * dt;
-			flip = true;
-			animation = &running;
-
-			break;
-		}
-
-		if (airborne = true)
-		{
-			ApplyMechaGravity();
-		}
-
-		enemy_HitBox = animation->GetCurrentFrame(dt);						//REVISE THIS HERE.
-		collider->Set_Position(position.x, position.y);
-		BlitEntity(position.x, position.y, enemy_HitBox, flip);
+	if (doLogic == true)
+	{
+		PathfindingLogic();
 	}
 	
+	switch (state)
+	{
+	case Entity_State::IDLE:
+
+		animation = &idle;
+
+		break;
+
+	case Entity_State::PATHING_RIGHT:
+
+		position.x += speed.x * dt;
+		flip = false;
+		animation = &running;
+		App->audio->PlayFx(18, 1);
+
+		break;
+
+	case Entity_State::PATHING_LEFT:
+
+		position.x -= speed.x * dt;
+		flip = true;
+		animation = &running;
+		App->audio->PlayFx(18, 1);
+
+		break;
+	}
+
+	if (airborne = true)
+	{
+		ApplyMechaGravity();
+	}
+
+	enemy_HitBox = animation->GetCurrentFrame(dt);						//REVISE THIS HERE.
+	collider->Set_Position(position.x, position.y);
+	BlitEntity(position.x, position.y, enemy_HitBox, flip);
 
 	return true;
 }
@@ -259,12 +249,89 @@ void j1Mecha::LoadEntityProperties()
 	mecha_acceleration.y	= enemy_entity.child("acceleration").attribute("y").as_float();
 	mecha_gravity			= enemy_entity.child("gravity").attribute("value").as_float();
 
+	detectionRadius			= enemy_entity.child("detection_radius").attribute("radius").as_int();
+
 	return;
 }
 
 void j1Mecha::LoadEntityAudio()
 {
 
+}
+
+void j1Mecha::PathfindingLogic()
+{
+	if (DistanceFromPlayer(App->entityManager->player) <= detectionRadius)
+	{
+		iPoint enemyPos(App->map->WorldToMap(position.x, position.y));															//Enemy's position coordinates in tiles.
+		iPoint playerPos(App->map->WorldToMap(App->entityManager->player->position.x, App->entityManager->player->position.y));	//Player's position coordinates in tiles.
+
+		/*App->pathfinding->CreatePath(enemyPos, playerPos);
+		hasTarget = true;*/
+
+		if (hasTarget == false)
+		{
+			App->pathfinding->CreatePath(enemyPos, playerPos);
+			hasTarget = true;
+		}
+
+		if (hasTarget == true)
+		{
+			SetEnemyState(enemyPos, playerPos);
+		}
+	}
+	else
+	{
+		hasTarget = false;
+	}
+
+	if (DistanceFromPlayer(App->entityManager->player2) <= detectionRadius)
+	{
+		if (hasTarget == false)
+		{
+			iPoint enemyPos(App->map->WorldToMap(position.x, position.y));																//Enemy's position coordinates in tiles.
+			iPoint playerPos(App->map->WorldToMap(App->entityManager->player2->position.x, App->entityManager->player2->position.y));	//Player's position coordinates in tiles.
+
+			App->pathfinding->CreatePath(enemyPos, playerPos);
+			hasTarget = true;
+
+			if (hasTarget == false)
+			{
+
+				App->pathfinding->CreatePath(enemyPos, playerPos);
+				hasTarget = true;
+
+			}
+
+			if (hasTarget == true)
+			{
+				SetEnemyState(enemyPos, playerPos);
+			}
+		}
+	}
+	else
+	{
+		const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
+
+		if (path != NULL)
+		{
+			//path->Clear();
+		}
+		
+		hasTarget = false;
+	}
+}
+
+void j1Mecha::SetEnemyState(iPoint enemyPos, iPoint playerPos)
+{
+	if (playerPos.x < enemyPos.x)
+	{
+		state = Entity_State::PATHING_LEFT;
+	}
+	else
+	{
+		state = Entity_State::PATHING_RIGHT;
+	}
 }
 
 void j1Mecha::ApplyMechaGravity()
