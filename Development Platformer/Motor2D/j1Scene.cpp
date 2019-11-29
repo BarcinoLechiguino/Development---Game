@@ -174,12 +174,12 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 	
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)			//Save Game Key
 	{
-		App->SaveGame();
+		App->SaveGame("save_game.xml");
 	}
 	
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)			//Load Game Key
 	{
-		App->LoadGame();
+		App->LoadGame("save_game.xml");
 	}
 	
 	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)			//Enable / Diable free camera movement Key

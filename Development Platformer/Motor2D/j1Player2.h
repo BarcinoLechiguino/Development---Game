@@ -41,6 +41,10 @@ public: //P2 Variables
 	void LivesCheck(int lives);						//Checks if the player has any lives left.
 	void OnCollision(Collider* C1, Collider* C2);	//Collision Logic Handling.
 
+	// Load / Save
+	bool Load(pugi::xml_node&);
+	bool Save(pugi::xml_node&) const;
+
 	//bool LoadPlayer2Textures();					//Loads P2's textures on screen.
 
 	void Restart();									//Resets P2's position to where P2 started the level. 

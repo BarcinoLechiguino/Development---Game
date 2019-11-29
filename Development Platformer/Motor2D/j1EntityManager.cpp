@@ -137,58 +137,62 @@ void j1EntityManager::OnCollision(Collider* C1, Collider* C2)		//This OnCollisio
 
 bool j1EntityManager::Save(pugi::xml_node& data) const
 {
-	bool ret = true;
-	p2List_item<j1Entity*>* tmp = entities.start;
-	while (tmp != nullptr)
+	player->Save(data.append_child("player"));
+	player2->Save(data.append_child("player2"));
+
+	pugi::xml_node mecha = data.append_child("mecha");
+	pugi::xml_node alien = data.append_child("alien");
+
+	for (p2List_item<j1Entity*>* iterator = entities.start; iterator; iterator = iterator->next)
 	{
-		tmp->data->Save(data);
-		tmp = tmp->next;
+		if (iterator->data->type == ENTITY_TYPE::MECHA)
+			iterator->data->Save(mecha);
+		if (iterator->data->type == ENTITY_TYPE::ALIEN)
+			iterator->data->Save(alien);
 	}
-	return ret;
+
+	for (int i = 0; i < MAX_ENEMIES; ++i)
+	{
+		
+		if (enemies[i].type == ENTITY_TYPE::MECHA) {
+			pugi::xml_node position = mecha.append_child("position");
+			position.append_attribute("x") = enemies[i].position.x;
+			position.append_attribute("y") = enemies[i].position.y;
+		}
+		if (enemies[i].type == ENTITY_TYPE::ALIEN) {
+			pugi::xml_node position = alien.append_child("position");
+			position.append_attribute("x") = enemies[i].position.x;
+			position.append_attribute("y") = enemies[i].position.y;
+		}
+		
+	}
 
 	return true;
 }
 
 bool j1EntityManager::Load(pugi::xml_node& data)
 {
-	bool ret = true;
-	p2List_item<j1Entity*>* tmp = entities.start;
-	pugi::xml_node mecha = data.child("mecha");
-	pugi::xml_node alien = data.child("alien");
-	while (tmp != nullptr)
+	if (player != nullptr)
 	{
-		if (tmp->data->type == ENTITY_TYPE::PLAYER);
-		{
-			tmp->data->Load(data.child("player"));
-		}
-		if (tmp->data->type == ENTITY_TYPE::PLAYER2);
-		{
-			tmp->data->Load(data.child("player2"));
-		}
-		if (tmp->data->type == ENTITY_TYPE::MECHA);
-		{
-			tmp->data->Load(mecha);
-			mecha = mecha.next_sibling("mecha");
-		}
-		if (tmp->data->type == ENTITY_TYPE::ALIEN);
-		{
-			tmp->data->Load(alien);
-			alien = alien.next_sibling("alien");
-		}
-		/*for (pugi::xml_node mecha = data.child("mecha"); mecha; mecha = mecha.next_sibling("mecha"))
-		{
-			CreateEntity(ENTITY_TYPE::MECHA, mecha.attribute("position_x").as_int(), mecha.attribute("position_y").as_int());
-		}
-
-		for (pugi::xml_node alien = data.child("alien"); alien; alien = alien.next_sibling("alien"))
-		{
-			CreateEntity(ENTITY_TYPE::ALIEN, alien.attribute("position_x").as_int(), alien.attribute("position_y").as_int());
-		}*/
-		tmp = tmp->next;
+		player->Load(data);
 	}
-	
 
-	return ret;
+	if (player2 != nullptr)
+	{
+		player2->Load(data);
+	}
+
+	for (pugi::xml_node mecha = data.child("mecha").child("position"); mecha; mecha = mecha.next_sibling()) {
+		iPoint mechapos = { mecha.attribute("x").as_int(), mecha.attribute("y").as_int() };
+		AddEnemy(ENTITY_TYPE::MECHA, mechapos.x, mechapos.y );
+	}
+
+	for (pugi::xml_node alien = data.child("alien").child("position"); alien; alien = alien.next_sibling()) {
+		iPoint alienpos = { alien.attribute("x").as_int(), alien.attribute("y").as_int() };
+		AddEnemy(ENTITY_TYPE::ALIEN, alienpos.x, alienpos.y);
+	}
+
+	return true;
 }
 
 

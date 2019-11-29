@@ -193,9 +193,6 @@
     <None Include="..\Game\maps\1st Screen2.tmx">
       <Filter>Desenvolupament  ========\XML Files</Filter>
     </None>
-    <None Include="..\Game\save_file">
-      <Filter>Desenvolupament  ========\XML Files</Filter>
-    </None>
     <None Include="..\Game\maps\Test_Map.tmx">
       <Filter>Desenvolupament  ========\XML Files</Filter>
     </None>
