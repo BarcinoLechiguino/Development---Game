@@ -90,9 +90,6 @@ bool j1App::Awake()
 	pugi::xml_node		config;
 	pugi::xml_node		app_config;
 
-	save_game = "save_file"; 
-	load_game = "save_file"; 
-
 	bool ret = false;
 		
 	config = LoadConfig(config_file);
@@ -383,7 +380,7 @@ float j1App::GetDt()
 }
 
 // Load / Save
-void j1App::LoadGame()
+void j1App::LoadGame(const char* file)
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list
@@ -391,12 +388,13 @@ void j1App::LoadGame()
 }
 
 // ---------------------------------------
-void j1App::SaveGame() const
+void j1App::SaveGame(const char* file) const
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list ... should we overwrite ?
 
 	want_to_save = true;
+	save_game.create(file);
 }
 
 // ---------------------------------------
@@ -408,6 +406,8 @@ void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
 bool j1App::LoadGameNow()
 {
 	bool ret = false;
+
+	load_game.create("save_game.xml");
 
 	pugi::xml_document data;
 	pugi::xml_node root;
@@ -445,6 +445,8 @@ bool j1App::LoadGameNow()
 bool j1App::SavegameNow() const
 {
 	bool ret = true;
+
+	save_game.create("save_game.xml");
 
 	LOG("Saving Game State to %s...", save_game.GetString());
 

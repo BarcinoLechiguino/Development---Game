@@ -277,6 +277,25 @@ bool j1Player1::PostUpdate()
 	return true;
 };
 
+bool j1Player1::Load(pugi::xml_node& data) {
+
+	position.x = data.child("player").child("position").attribute("x").as_int();
+	position.y = data.child("player").child("position").attribute("y").as_int();
+
+	return true;
+}
+
+// Save game state
+bool j1Player1::Save(pugi::xml_node& data) const {
+
+	pugi::xml_node pos = data.append_child("position");
+
+	pos.append_attribute("x") = position.x;
+	pos.append_attribute("y") = position.y;
+
+	return true;
+}
+
 bool j1Player1::CleanUp()
 {
 	LOG("Unloading Player 1");

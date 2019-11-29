@@ -146,9 +146,6 @@
     <None Include="..\Game\maps\Test_Map.tmx">
       <SubType>Designer</SubType>
     </None>
-    <None Include="..\Game\save_file">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\animations.xml">

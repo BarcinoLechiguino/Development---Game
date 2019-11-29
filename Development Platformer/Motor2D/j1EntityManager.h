@@ -5,6 +5,8 @@
 #include "j1Entity.h"		
 #include "p2List.h"
 
+#define MAX_ENEMIES 50
+
 struct SDL_Texture;
 class j1Entity;
 class j1Player;				//Forward declaration. Avoid having to recompile everything when sth is changed in a file / class.
@@ -12,11 +14,11 @@ class j1Enemy;
 class j1Player1;			//Temporal(?)
 class j1Player2;
 
-//struct EntityData
-//{
-//	ENTITY_TYPE		type;
-//	iPoint			position;
-//};
+struct EnemyData
+{
+	ENTITY_TYPE		type;
+	iPoint			position;
+};
 
 class j1EntityManager : public j1Module
 {
@@ -66,6 +68,9 @@ public:
 	float					accumulated_time;	//Accumulates dt as time goes on.
 	float					cycle_length;		//How much time needs to pass / be accumulated before running a cycle. 
 	bool					doLogic;			//Keeps track whether or not the entity needs to do it's logic (pathfinding...)
+
+	EnemyData				enemies[MAX_ENEMIES];
 };
+
 
 #endif // __j1ENTITY_MANAGER_H__
