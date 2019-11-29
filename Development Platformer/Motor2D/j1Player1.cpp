@@ -17,12 +17,7 @@
 
 j1Player1::j1Player1(int x, int y, ENTITY_TYPE type) : j1Player(x, y, type) //THIS HERE //Constructor. Called at the first frame.
 {
-	//String that will be given to the different functions (Awake(), Load()...) to generate the handler node.
-	/*name.create("entities");*/ //The string has to be the same as the name of the node in the xml file.
-
 	LoadAnimationPushbacks();		//REVISE THIS HERE. This needs to be separated from the enemies, there is a need to create a separate LoadEnemyAnimations().
-
-	//tag = "player_1";
 };
 
 j1Player1::~j1Player1()  //Destructor. Called at the last frame.
@@ -42,18 +37,13 @@ bool j1Player1::Awake(pugi::xml_node& config)
 
 bool j1Player1::Start()
 {
-	//if (entity_sprite == NULL)
-	//{
-	//	entity_sprite = App->tex->Load("textures/Spritesheets/Character 1/character_spritesheet_I_Buena.png");
-	//}
-
 	entity_sprite = App->tex->Load("textures/Spritesheets/Character 1/character_spritesheet_I_Buena.png");
 
 	SetPlayer1Position();									//Sets P1's origin position in the map.
 	LoadEntityProperties();									//Loads the player's properties from the xml file. //THIS HERE
 	InitPlayer();											//Loads P1 in game.
-	LoadEntityAudio();										//Loads the sfx for player 1.
-								
+	LoadEntityAudio();
+							
 	//LoadPlayer1Textures();		//Loads P1's textures in game.
 
 	player.airborne = true;
@@ -129,7 +119,7 @@ bool j1Player1::PreUpdate()
 			player.state = Player_State::Teleporting;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT)				//Suicide Button
+		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)				//Suicide Button
 		{
 			player.state = Player_State::Dying;
 		}
@@ -240,10 +230,15 @@ bool j1Player1::Update(float dt, bool doLogic)
 
 	case Player_State::Dying:
 
-		//App->audio->PlayFx(2, 0);
+		App->audio->PlayFx(2, 0);
 		animation = &death;
-		player.isDying = true;
-
+		
+		if (animation->Finished())			//Only switch the isDying bool when the animation has finished. Does not work yet. Check <dying loop="">  in animations.xml.
+		{
+			player.isDying = true;
+			/*RespawnP1ToP2();*/
+		}
+		
 		break;
 	}
 
@@ -503,16 +498,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			//Player colliding against the Goal
 			if (C2->type == Object_Type::GOAL)		//CHANGE THIS, USE SwitchMaps() or ChangeMaps()
 			{
-				if (C1->collider.y > GOAL_Y && C1->collider.y < GOAL_HEIGHT)	//Dirty way to know which portal goal has been reached.
-				{
-					App->fadescene->FadeToBlack("Test_Map.tmx");				//Loads the 1st level.
-					//App->map->Restart_Cam();
-				}
-				else
-				{
-					App->fadescene->FadeToBlack("Test_Map_2.tmx");				//Loads the 2nd level.
-					//App->map->Restart_Cam();
-				}
+				LoadNextMap();						//Loads the next map.
 
 				App->audio->PlayFx(6, 0);										//Sound effect of the Goal / Protal.
 			}

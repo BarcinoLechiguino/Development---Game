@@ -4,6 +4,7 @@
 #include "PugiXml/src/pugixml.hpp"
 #include "p2List.h"
 #include "p2Point.h"
+#include "p2Log.h"
 #include "j1Module.h"
 #include "j1Collisions.h"
 #include "SDL/include/SDL.h"
@@ -47,15 +48,20 @@ struct Properties
 		values		value;													//Value of the property in a layer.
 		int			intValue;												//Int value of the property in a layer. Used mainly for pathfinding
 	};
-
+	
 	~Properties()															//Deletes every property and frees all allocated memory.
 	{
-		p2List_item<Property*>* prop_iterator = property_list.start;		//Item that will iterate all the items in the property_list.
+		LOG("The Properties' destructor has been called");
+		LOG("property_list has %d elements", property_list.count());
 
+		p2List_item<Property*>* prop_iterator = property_list.start;		//Item that will iterate all the items in the property_list.
+		 
+		int i = 0;
 		while (prop_iterator != NULL)
 		{
+			++i;
 			RELEASE(prop_iterator->data);									//Deletes all data members of a property and frees all allocated memory.
-			prop_iterator->next;
+			prop_iterator = prop_iterator->next;
 		}
 
 		property_list.clear();												//Clears poperty_list by deleting all items in the list and freeing all allocated memory.
@@ -64,6 +70,7 @@ struct Properties
 	//values default_values = { 0 };
 
 	//values Get(p2SString name, values* default_value = nullptr) const;			//Will get a specified property's data members. //Revise string type (p2SString, const char*...)
+	
 	int Get(p2SString name, int default_value = 0) const;			//Will get a specified property's data members. //This version will be used exclusively for pathfinding. (Draw / Nodraw)
 
 	p2List<Property*>	property_list;
@@ -103,11 +110,15 @@ struct MapLayer
 
 	MapLayer() : gid(NULL) {} //New Comment
 
-	~MapLayer(); //Defined at j1Map.cpp
+	~MapLayer()
+	{
+		RELEASE(gid);		//Breaks with mmgr.
+	}
 
 	inline uint Get(uint x, uint y) const
 	{
-		return x + y * width;
+		return gid[(y * width) + x];
+		//return x + y * width;
 	}
 };
 
@@ -161,8 +172,6 @@ struct MapData
 	p2SString music_File;
 };
 
-
-
 // ----------------------------------------------------
 class j1Map : public j1Module
 {
@@ -180,16 +189,14 @@ public:
 	// Load new map
 	bool Load(const char* path);
 
-	//Unloads the map and changes by another one. 
-	bool SwitchMaps(p2SString* new_map);
-
-	// Load new map. This method translates the position of the tile on the map to its equivalent position on screen.
-	iPoint MapToWorld(int x, int y) const;
-
-	//Change map with a fade time
-	bool ChangeMap(const char* newMap); 
-
+	iPoint MapToWorld(int x, int y) const;	//This method translates the position of the tile on the map to its equivalent position on screen.
+	iPoint WorldToMap(int x, int y) const;	//This method translates the position of the tile on the screen to its equivalent position on the map.
+	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
+	
+	bool SwitchMaps(p2SString* new_map);	//Unloads the map and changes by another one. 
+	bool ChangeMap(const char* newMap);		//Change map with a fade time
 	void Restart_Cam();
+
 private:
 
 	bool LoadMap();

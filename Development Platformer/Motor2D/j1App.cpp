@@ -36,8 +36,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new j1Scene();
 	map = new j1Map();
 	pathfinding = new j1PathFinding();
-	//player1 = new j1Player1();			//There is no module j1Player1 anymore.
-	//player2 = new j1Player2();
 	collisions = new j1Collisions();
 	entityManager = new j1EntityManager();
 	fadescene = new j1Fade_Scene();
@@ -54,6 +52,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entityManager);				//entityManager is called after the module scene (where the player is created) is called.
 	AddModule(collisions);
 	AddModule(fadescene);
+	
 
 	// render last to swap buffer
 	AddModule(render);

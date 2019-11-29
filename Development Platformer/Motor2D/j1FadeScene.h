@@ -24,9 +24,6 @@ public:
 	//Called each loop iteration
 	bool Update(float dt);
 
-	//Change map with a fade time
-	bool ChangeMap(const char* newMap);
-
 	//returns true if it's changing map
 	bool IsChanging() const;
 
