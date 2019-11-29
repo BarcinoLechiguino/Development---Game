@@ -6,6 +6,8 @@
 #include "Animation.h"
 #include "p2Point.h"
 
+class j1Player;
+
 enum class Entity_State	//Does not go here. Is it necessary?
 {
 	IDLE = 0,
@@ -44,30 +46,35 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
-	void Normal_Path();							//Land Path?
-	void Chasing_Path();						//Aerial Path?
-	bool Calculate_Path();			
+	void LoadAnimationPushbacks();							//Loads a set of animation pushbacks.
+	void LoadEntityProperties();							//Loads an entity's specific properties.
+	void LoadEntityAudio();									//Loads an entity's specific audios/sfx.
+
+	void InitEnemy();										//Initializes an enemy's specific data members.
+	void Normal_Path();										//Land Path?
+	void Chasing_Path();									//Aerial Path?
+	bool Calculate_Path();
 	//bool Load_Entity();
-	void LoadAnimationPushbacks();				//Loads a set of animation pushbacks.
-	void LoadEntityProperties();				//Loads an entity's specific properties.
-	void LoadEntityAudio();						//Loads an entity's specific audios/sfx.
-	void InitEnemy();							//Initializes an enemy's specific data members.
+
+	float DistanceFromP1() const;							//Calculates the distance between P1 and an enemy entity.
+	float DistanceFromP2() const;							//Calculates the distance between P1 and an enemy entity.
+	float DistanceFromPlayer(j1Player* player) const;		//Calculates the distance between a player and an enemy entity.
 
 public:
-	fPoint			spawn_position;
 	Entity_State	state;
 	SDL_Rect		enemy_HitBox;
+	iPoint			detectionRadius;
 
-	bool grounded = false;
-	bool airborne = false;
-	bool flip = false;
-	bool isGoingRight = false;
-	bool isGoingLeft = false;
-	bool fading = false;
-	bool isAlive = true;
-	bool isDying = false;
-	bool againstRightWall = false;
-	bool againstLeftWall = false;
+	bool grounded;
+	bool airborne;
+	bool flip;
+	bool isGoingRight;
+	bool isGoingLeft;
+	bool fading;
+	bool isAlive;
+	bool isDying;
+	bool againstRightWall;
+	bool againstLeftWall;
 
 	p2DynArray<iPoint> entityPath;		//Only for enemies
 

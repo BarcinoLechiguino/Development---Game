@@ -80,6 +80,12 @@ bool j1Mecha::Update(float dt, bool doLogic)
 		{
 			Normal_Path();
 			Chasing_Path();
+
+			//Create the DistanceFromP1() and DistanceFromP2() methods
+			if (App->entityManager->player->position.x <= 0)
+			{
+
+			}
 		}
 
 		switch (state)
