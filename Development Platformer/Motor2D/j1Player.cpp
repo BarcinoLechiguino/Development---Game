@@ -15,10 +15,9 @@
 #include "j1Audio.h"
 #include "j1EntityManager.h"
 
-j1Player::j1Player(int x, int y, ENTITY_TYPE type) : j1Entity(x, y, ENTITY_TYPE::PLAYER)  //Constructor. Called at the first frame.
+j1Player::j1Player(int x, int y, ENTITY_TYPE type) : j1Entity(x, y, ENTITY_TYPE::PLAYER)/*, audioIsLoaded(false)*/  //Constructor. Called at the first frame.
 {
-	//String that will be given to the different functions (Awake(), Load()...) to generate the handler node.
-	//name.create("entities"); //The string has to be the same as the name of the node in the xml file.
+	audioIsLoaded = false;					//Sets the audioIsLoaded bool to false when an entity is created (when j1Player constructor has been called).
 };
 
 j1Player::~j1Player()  //Destructor. Called at the last frame.
@@ -157,18 +156,18 @@ bool j1Player::InitPlayer()
 
 	// --------------------------------------------Loading the data and colliders of P1--------------------------------------------
 	//Loads the data of the rectangle that contains P1.
-	player.HitBox.x = position.x;							//Represents the position in the X axis of P1.		//THIS HERE
-	player.HitBox.y = position.y;							//Represents the position in the Y axis of P1.
+	player.HitBox.x = position.x;						//Represents the position in the X axis of P1.		//THIS HERE
+	player.HitBox.y = position.y;						//Represents the position in the Y axis of P1.
 	player.HitBox.w = sprite_width;						//Represents the width of P1.
-	player.HitBox.h = sprite_height;						//Represents the height of P1.
+	player.HitBox.h = sprite_height;					//Represents the height of P1.
 
 	player.atkHitBox.x = position.x + sprite_width;		//Position in the X axis of P1's attack collider.
-	player.atkHitBox.y = position.y;						//Position in the Y axis of P1's attack collider.
-	player.atkHitBox.w = sprite_width;						//Width of P1's attack collider.
-	player.atkHitBox.y = sprite_height;						//Height of P1's attack collider.
+	player.atkHitBox.y = position.y;					//Position in the Y axis of P1's attack collider.
+	player.atkHitBox.w = sprite_width;					//Width of P1's attack collider.
+	player.atkHitBox.y = sprite_height;					//Height of P1's attack collider.
 
 	//Adds a collider for the player.
-	collider = App->collisions->AddCollider(player.HitBox, Object_Type::PLAYER, App->entityManager);				//THIS HERE
+	collider = App->collisions->AddCollider(player.HitBox, Object_Type::PLAYER, App->entityManager);				//The callback pointer will be pointing to the OnCollision of j1EntityManager.
 
 	//player.atkCollider = App->collisions->AddCollider(player.atkHitBox, Object_Type::ATTACK, App->entityManager);
 

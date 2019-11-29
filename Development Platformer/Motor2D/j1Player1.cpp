@@ -17,7 +17,7 @@
 
 j1Player1::j1Player1(int x, int y, ENTITY_TYPE type) : j1Player(x, y, type) //THIS HERE //Constructor. Called at the first frame.
 {
-	LoadAnimationPushbacks();		//REVISE THIS HERE. This needs to be separated from the enemies, there is a need to create a separate LoadEnemyAnimations().
+	LoadAnimationPushbacks();
 };
 
 j1Player1::~j1Player1()  //Destructor. Called at the last frame.
@@ -263,7 +263,7 @@ bool j1Player1::Update(float dt, bool doLogic)
 	//p1.atkCollider->Set_Position(position.x + sprite_size.x, sprite_size.y);				//Makes P1's attack collider follow P1.
 
 	BlitEntity(position.x, position.y, player.HitBox, player.flip);							//Blits the player on screen with the data we have given the Blit() function.
-	//
+
 	return true;
 };
 

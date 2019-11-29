@@ -17,9 +17,7 @@
 #include "Brofiler\Brofiler.h"
 
 j1Mecha::j1Mecha(int x, int y, ENTITY_TYPE type) : j1Enemy(x, y, ENTITY_TYPE::MECHA)
-{
-	//name.create("entities");		//NOT NECESSARY
-	
+{	
 	position.x = x;					//REVISE THIS. SPAWNING THE ENEMIES AT THEIR RESPECTIVE POSITIONS
 	position.y = y;
 
@@ -82,6 +80,12 @@ bool j1Mecha::Update(float dt, bool doLogic)
 		{
 			Normal_Path();
 			Chasing_Path();
+
+			//Create the DistanceFromP1() and DistanceFromP2() methods
+			if (App->entityManager->player->position.x <= 0)
+			{
+
+			}
 		}
 
 		switch (state)
@@ -134,11 +138,7 @@ bool j1Mecha::CleanUp()
 
 	if (collider != nullptr)
 	{
-		/*delete collider;
-		collider = nullptr;*/
-
 		collider->to_delete = true;
-		//collider = nullptr;
 	}
 
 	if (animation != nullptr)

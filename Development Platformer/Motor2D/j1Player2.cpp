@@ -16,7 +16,6 @@
 
 j1Player2::j1Player2(int x, int y, ENTITY_TYPE type) : j1Player(x, y, type) //Constructor. Called at the first frame.
 {
-	//Adds P2's animation pushback.
 	LoadAnimationPushbacks();
 };
 

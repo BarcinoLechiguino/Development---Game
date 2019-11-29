@@ -76,6 +76,43 @@ bool j1Enemy::Save(pugi::xml_node&  data) const
 }
 
 //---------------------------- Enemy methods ----------------------------
+void j1Enemy::LoadAnimationPushbacks()
+{
+	return;
+}
+
+void j1Enemy::LoadEntityProperties()
+{
+	return;
+}
+
+void j1Enemy::LoadEntityAudio()
+{
+	return;
+}
+
+void j1Enemy::InitEnemy()
+{
+	enemy_HitBox.x = position.x;
+	enemy_HitBox.y = position.y;
+	enemy_HitBox.w = sprite_width;
+	enemy_HitBox.h = sprite_height;
+
+	collider = App->collisions->AddCollider(enemy_HitBox, Object_Type::ENEMY, App->entityManager);				//THIS HERE This one loads the enemy collider (orange)
+
+	// ------------------- ENEMY STATUS BOOLS -------------------
+	isAlive				= true;
+	grounded			= false;
+	airborne			= false;
+	flip				= false;
+	isGoingRight		= false; 
+	isGoingLeft			= false;
+	fading				= false;
+	isDying				= false;
+	againstRightWall	= false;
+	againstLeftWall		= false;
+}
+
 bool j1Enemy::Calculate_Path()
 {
 	return true;
@@ -96,39 +133,9 @@ void j1Enemy::Chasing_Path()
 //	return true;
 //}
 
-void j1Enemy::LoadAnimationPushbacks()
+float j1Enemy::DistanceFromP1() const
 {
-	return;
-}
+	float distance = 0.0f;
 
-void j1Enemy::LoadEntityProperties()
-{
-	return;
-}
-
-void j1Enemy::InitEnemy()
-{
-	enemy_HitBox.x = position.x;
-	enemy_HitBox.y = position.y;
-	enemy_HitBox.w = sprite_width;
-	enemy_HitBox.h = sprite_height;
-
-	collider = App->collisions->AddCollider(enemy_HitBox, Object_Type::ENEMY, App->entityManager);				//THIS HERE This one loads the enemy collider (orange)
-
-	// ------------------- ENEMY STATUS BOOLS -------------------
-	grounded = true;
-	isAlive = true;
-	airborne = false;
-	flip = false;
-	isGoingRight = false;
-	isGoingLeft = false;
-	fading = false;
-	isDying = false;
-	againstRightWall = false;
-	againstLeftWall = false;
-}
-
-void j1Enemy::LoadEntityAudio()
-{
-	return;
+	return distance;
 }
