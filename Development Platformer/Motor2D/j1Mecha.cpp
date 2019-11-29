@@ -17,9 +17,7 @@
 #include "Brofiler\Brofiler.h"
 
 j1Mecha::j1Mecha(int x, int y, ENTITY_TYPE type) : j1Enemy(x, y, ENTITY_TYPE::MECHA)
-{
-	//name.create("entities");		//NOT NECESSARY
-	
+{	
 	position.x = x;					//REVISE THIS. SPAWNING THE ENEMIES AT THEIR RESPECTIVE POSITIONS
 	position.y = y;
 
@@ -134,11 +132,7 @@ bool j1Mecha::CleanUp()
 
 	if (collider != nullptr)
 	{
-		/*delete collider;
-		collider = nullptr;*/
-
 		collider->to_delete = true;
-		//collider = nullptr;
 	}
 
 	if (animation != nullptr)

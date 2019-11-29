@@ -148,7 +148,7 @@ public:
 	uint			alien_die;
 	uint			mecha_walking;
 
-	bool			audioIsLoaded = false;	//Keeps track whether the audio has already been loaded. Temporally set false here, change it later so it is loaded from the xml file.
+	bool			audioIsLoaded;	//Keeps track whether the audio has already been loaded. Temporally set false here, change it later so it is loaded from the xml file.
 };
 
 #endif // __j1Player_H__

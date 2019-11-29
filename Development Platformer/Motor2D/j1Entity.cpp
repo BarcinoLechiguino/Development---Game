@@ -94,7 +94,7 @@ void j1Entity::BlitEntity(int x, int y, SDL_Rect entity_rect, bool flip)
 {
 	App->render->Blit(entity_sprite, x, y, &entity_rect, flip);
 
-	//App->render->Blit(entity_sprite, x, y, &entity_rect, flip, SDL_FLIP_HORIZONTAL);	//Check out how to use the flip integrated in the Blit.
+	//App->render->Blit(entity_sprite, x, y, &entity_rect, flip, SDL_FLIP_HORIZONTAL);	//Check out how to use the flip already integrated in the Blit.
 }
 
 void j1Entity::OnCollision(Collider* C1, Collider* C2)
