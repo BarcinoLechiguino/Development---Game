@@ -49,6 +49,7 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
+
 	bool ret;
 
 	to_end = false;
@@ -90,6 +91,8 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)														//Receives dt as an argument.
 {
+
+	
 	BROFILER_CATEGORY("Scene Update", Profiler::Color::LavenderBlush);
 	//Camera Movement With Arrow Keys
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
@@ -238,7 +241,6 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 	}
 
 	App->map->Draw();
-
 
 	//Technical title
 	/*p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d", App->map->data.width, App->map->data.height, App->map->data.tile_width, App->map->data.tile_height, App->map->data.tilesets.count());
