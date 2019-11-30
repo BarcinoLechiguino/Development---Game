@@ -296,7 +296,7 @@ void j1Mecha::PathfindingMovement(Entity_State state, float dt)
 
 		position.y -= speed.y * dt;
 		animation = &running;
-		App->audio->PlayFx(19, 1);
+		App->audio->PlayFx(21, 1);
 
 		break;
 
@@ -304,7 +304,7 @@ void j1Mecha::PathfindingMovement(Entity_State state, float dt)
 
 		position.y += speed.y * dt;
 		animation = &running;
-		App->audio->PlayFx(19, 1);
+		App->audio->PlayFx(21, 1);
 
 		break;
 
@@ -313,7 +313,7 @@ void j1Mecha::PathfindingMovement(Entity_State state, float dt)
 		position.x += speed.x * dt;
 		flip = false;
 		animation = &running;
-		App->audio->PlayFx(19, 1);
+		App->audio->PlayFx(21, 1);
 
 		break;
 
@@ -322,7 +322,7 @@ void j1Mecha::PathfindingMovement(Entity_State state, float dt)
 		position.x -= speed.x * dt;
 		flip = true;
 		animation = &running;
-		App->audio->PlayFx(19, 1);
+		App->audio->PlayFx(21, 1);
 
 		break;
 	}

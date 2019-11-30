@@ -147,6 +147,8 @@ void j1Player::LoadEntityAudio()
 		alien_die = App->audio->LoadFx("audio/fx/Alien die.wav");
 		mecha_walking = App->audio->LoadFx("audio/fx/Mecha_Walking.wav");
 		saver = App->audio->LoadFx("audio/fx/Saver.wav");
+		no_teleport = App->audio->LoadFx("audio/fx/Nope.wav");
+		ready_tp = App->audio->LoadFx("audio/fx/Analogue microwave ding.wav");
 		audioIsLoaded = true;
 	}
 }
@@ -287,6 +289,7 @@ void j1Player::SkillCooldown(bool& inCd, float& cdCounter, float& cdTime)			//Ar
 	{
 		inCd = false;						//Resets the bool so tp can be used again.
 		cdCounter = 0;						//Resets the count so it can be used the next time tp is in cd.
+		App->audio->PlayFx(24, 0);
 	}
 }
 

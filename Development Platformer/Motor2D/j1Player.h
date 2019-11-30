@@ -146,6 +146,8 @@ public:
 	uint			alien_die;
 	uint			mecha_walking;
 	uint			saver;
+	uint			no_teleport;
+	uint			ready_tp;
 
 	bool			audioIsLoaded;	//Keeps track whether the audio has already been loaded.
 };

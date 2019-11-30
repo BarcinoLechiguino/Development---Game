@@ -333,7 +333,8 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 			if (C2->type == Object_Type::CHECKPOINT)
 			{
 				LOG("P2 HAS REACHED A CHECKPOINT");															//Call Safe() method here.
-				//App->SaveGame();
+				App->SaveGame("save_game.xml");
+				App->audio->PlayFx(22, 1);
 			}
 
 			//Player colliding against the Goal
@@ -341,7 +342,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 			{
 				LoadNextMap();													//Loads the next map
 
-				App->audio->PlayFx(6, 0);										//Sound effect of the Goal / Protal.
+				App->audio->PlayFx(6, 1);										//Sound effect of the Goal / Protal.
 			}
 		}
 	}
@@ -364,7 +365,7 @@ void j1Player2::TeleportP1ToP2()
 			}
 			else
 			{
-				//Sfx indicating that teleport cannot be used.
+				App->audio->PlayFx(23, 0);     //Sfx indicating that teleport cannot be used.
 			}
 		}
 		else
@@ -378,7 +379,7 @@ void j1Player2::TeleportP1ToP2()
 			}
 			else
 			{
-				//Sfx indicating that teleport cannot be used.
+				App->audio->PlayFx(23, 0);     //Sfx indicating that teleport cannot be used.
 			}
 		}
 	}
