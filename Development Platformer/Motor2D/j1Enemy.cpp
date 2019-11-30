@@ -130,7 +130,35 @@ void j1Enemy::Chasing_Path()
 
 }
 
+void j1Enemy::EnemyDebugInputs()
+{
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	{
+		state = Entity_State::PATHING_UP;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	{
+		state = Entity_State::PATHING_DOWN;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	{
+		state = Entity_State::PATHING_RIGHT;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	{
+		state = Entity_State::PATHING_LEFT;
+	}
+}
+
 void j1Enemy::PathfindingLogic()
+{
+	return;
+}
+
+void j1Enemy::PathfindingMovement(Entity_State state, float dt)
 {
 	return;
 }

@@ -40,6 +40,9 @@ public://methods
 	bool Save(pugi::xml_node&) const;
 
 public: //P1 Variables
+	void SetPlayerState(Player_State& player_state);				//Depending on the input, P1 will be set in a state or another. 
+	void PlayerMovement(Player_State player_state, float dt);	//Holds all states of P1. Depending on which state P1 is set, it will move, jump, teleport...
+	
 	void TeleportP2ToP1();										//Moves P2 directly in front of P1. It takes into account where P1 is looking at.
 	void RespawnP1ToP2();										//Moves P1 directly behind P2 on death.
 	void SetPlayer1Position();									//Sets P1's origin position in a map. Takes into account which map is being loaded (firstMap and secondMap).

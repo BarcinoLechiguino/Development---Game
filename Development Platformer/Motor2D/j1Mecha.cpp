@@ -57,60 +57,20 @@ bool j1Mecha::Update(float dt, bool doLogic)
 	state = Entity_State::IDLE;
 	
 	//MECHA DEBUG INPUTS
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-	{
-		state = Entity_State::PATHING_RIGHT;
-		//App->audio->PlayFx(18, 0);
-	}
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
-	{
-		state = Entity_State::IDLE;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-	{
-		state = Entity_State::PATHING_LEFT;
-		//App->audio->PlayFx(18, 0);
-	}
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
-	{
-		state = Entity_State::IDLE;
-	}
+	EnemyDebugInputs();
 
 	/*Normal_Path();
 		Chasing_Path();*/
 
 	if (doLogic == true)
 	{
-		PathfindingLogic();
+		if (App->entityManager->player->player.GodMode == false || App->entityManager->player2->player.GodMode == false)
+		{
+			PathfindingLogic();
+		}
 	}
 	
-	switch (state)
-	{
-	case Entity_State::IDLE:
-
-		animation = &idle;
-
-		break;
-
-	case Entity_State::PATHING_RIGHT:
-
-		position.x += speed.x * dt;
-		flip = false;
-		animation = &running;
-		App->audio->PlayFx(19, 1);
-
-		break;
-
-	case Entity_State::PATHING_LEFT:
-
-		position.x -= speed.x * dt;
-		flip = true;
-		animation = &running;
-		App->audio->PlayFx(19, 1);
-
-		break;
-	}
+	PathfindingMovement(state, dt);
 
 	if (airborne = true)
 	{
@@ -319,6 +279,52 @@ void j1Mecha::PathfindingLogic()
 		}
 		
 		hasTarget = false;
+	}
+}
+
+void j1Mecha::PathfindingMovement(Entity_State state, float dt)
+{
+	switch (state)
+	{
+	case Entity_State::IDLE:
+
+		animation = &idle;
+
+		break;
+
+	case Entity_State::PATHING_UP:
+
+		position.y -= speed.y * dt;
+		animation = &running;
+		App->audio->PlayFx(19, 1);
+
+		break;
+
+	case Entity_State::PATHING_DOWN:
+
+		position.y += speed.y * dt;
+		animation = &running;
+		App->audio->PlayFx(19, 1);
+
+		break;
+
+	case Entity_State::PATHING_RIGHT:
+
+		position.x += speed.x * dt;
+		flip = false;
+		animation = &running;
+		App->audio->PlayFx(19, 1);
+
+		break;
+
+	case Entity_State::PATHING_LEFT:
+
+		position.x -= speed.x * dt;
+		flip = true;
+		animation = &running;
+		App->audio->PlayFx(19, 1);
+
+		break;
 	}
 }
 

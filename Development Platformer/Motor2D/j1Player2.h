@@ -35,11 +35,14 @@ public://methods
 	bool CleanUp();
 
 public: //P2 Variables
-	void TeleportP1ToP2();							//Moves P1 directly in front of P2. It takes into account where P1 is looking at.
-	void RespawnP2ToP1();							//Moves P1 directly behind P2 on death.
-	void SetPlayer2Position();						//Sets P1's origin position in a map. Takes into account which map is being loaded (firstMap and secondMap).
-	void LivesCheck(int lives);						//Checks if the player has any lives left.
-	void OnCollision(Collider* C1, Collider* C2);	//Collision Logic Handling.
+	void SetPlayerState(Player_State& player_state);			//Depending on the input, P2 will be set in a state or another. 
+	void PlayerMovement(Player_State player_state, float dt);	//Holds all states of P2. Depending on which state P2 is set, it will move, jump, teleport...
+	
+	void TeleportP1ToP2();										//Moves P1 directly in front of P2. It takes into account where P2 is looking at.
+	void RespawnP2ToP1();										//Moves P2 directly behind P1 on death.
+	void SetPlayer2Position();									//Sets P2's origin position in a map. Takes into account which map is being loaded (firstMap and secondMap).
+	void LivesCheck(int lives);									//Checks if the player has any lives left.
+	void OnCollision(Collider* C1, Collider* C2);				//Collision Logic Handling.
 
 	// Load / Save
 	bool Load(pugi::xml_node&);

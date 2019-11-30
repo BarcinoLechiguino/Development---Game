@@ -55,79 +55,8 @@ bool j1Player1::Start()
 };
 
 bool j1Player1::PreUpdate()
-{
-	if (player.GodMode == false)
-	{
-		player.state = Player_State::Idle;
-
-		if (speed.y > 2)													//For some reason the player's speed when colliding against the ground is 1.4f aprox instead of 0.
-		{
-			player.state = Player_State::Falling;
-		}
-
-		LOG("Speed y is %f", speed.y);
-
-		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)				//Move Right
-		{
-			/*if (p1.againstLeftWall == false)
-			{
-				p1.state = goingRight_P1;
-			}*/
-
-			player.state = Player_State::Going_Right;
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)				//Move Left
-		{
-			/*if (p1.againstRightWall == false)				//THIS HERE, for some reason the bool here is always set to false now that the entity system has been implemented
-			{
-				p1.state = goingLeft_P1;
-			}*/
-
-			player.state = Player_State::Going_Left;
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)				//Crouch
-		{
-			/*if (p1.state != falling_P1)						//THIS HERE
-			{
-
-			}*/
-
-			player.state = Player_State::Crouching;
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)				//Jump
-		{
-			if (player.grounded == true)
-			{
-				player.state = Player_State::Jumping;
-			}
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)				//Drop from platform
-		{
-			player.platformDrop = true;
-		}
-		else
-		{
-			player.platformDrop = false;
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)					//Teleport
-		{
-			player.state = Player_State::Teleporting;
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)				//Suicide Button
-		{
-			player.state = Player_State::Dying;
-		}
-	}
-	else
-	{
-		GodModeInput();														//GodMode 
-	}
+{	
+	SetPlayerState(player.state);
 
 	//Switch Sprites Method Call
 	/*if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
@@ -141,107 +70,8 @@ bool j1Player1::PreUpdate()
 
 bool j1Player1::Update(float dt, bool doLogic)
 {
-	switch (player.state)							//REVISE THIS HERE Can this be put in the  j1Player? Maybe it is simmilar to OnCollision and needs to be here.
-	{
-	case Player_State::Idle:
-
-		animation = &idle;	
-		player.isCrouching = false;
-
-		break;
-
-	case Player_State::Going_Right:
-
-		if (player.againstLeftWall == false)
-		{
-			position.x += speed.x * dt;
-
-			player.flip = false;
-			player.isGoingRight = true;
-
-			if (speed.y > 2)
-			{
-				animation = &falling;
-			}
-			else
-			{
-				animation = &running;
-			}
-		}
-
-		break;
-
-	case Player_State::Going_Left:
-
-		if (player.againstRightWall == false)
-		{
-			position.x -= speed.x * dt;
-
-			player.flip = true;
-			player.isGoingLeft = true;
-
-			if (speed.y > 2)
-			{
-				animation = &falling;
-			}
-			else
-			{
-				animation = &running;
-			}
-		}
-
-		break;
-
-	case Player_State::Crouching:
-
-		/*if (player.speed.y < 2)
-		{
-			animation = &crouching;
-		}*/
-
-		animation = &crouching;
-		player.isCrouching = true;
-
-		break;
-
-	case Player_State::Jumping:
-
-		App->audio->PlayFx(5, 0);
-		speed.y = -player.acceleration.y * dt;
-		player.isJumping = true;					//Boolean for animations
-		player.airborne = true;
-		player.grounded = false;
-
-		break;
-
-	case Player_State::Falling:		//When dropping from platforms
-
-		player.airborne = true;
-		//p1.grounded = false;					//With this commented, jumping after falling off platforms is allowed.
-		animation = &falling;
-
-		break;
-
-	case Player_State::Teleporting:
-
-		TeleportP2ToP1();
-
-		break;
-
-	case Player_State::Dying:
-
-		App->audio->PlayFx(2, 0);
-		animation = &death;
-		
-		if (animation->Finished())			//Only switch the isDying bool when the animation has finished. Does not work yet. Check <dying loop="">  in animations.xml.
-		{
-			player.isDying = true;
-			/*RespawnP1ToP2();*/
-		}
-		
-		break;
-	}
-
+	PlayerMovement(player.state, dt);
+	
 	//If P1 is in the air then this function brings them back down to the floor.
 	if (player.airborne == true)
 	{
@@ -541,7 +371,210 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 	return true;
 }*/
 
-// ------------------------------------ PLAYER 1 METHODS ------------------------------------
+//----------------------------------------------- PLAYER 1 INPUTS -----------------------------------------------
+void j1Player1::SetPlayerState(Player_State& player_state)
+{
+	if (player.GodMode == false)
+	{
+		player_state = Player_State::Idle;
+
+		if (speed.y > 2)													//For some reason the player's speed when colliding against the ground is 1.4f aprox instead of 0.
+		{
+			player_state = Player_State::Falling;
+		}
+
+		LOG("Speed y is %f", speed.y);
+
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)				//Move Right
+		{
+			/*if (p1.againstLeftWall == false)
+			{
+				state = goingRight_P1;
+			}*/
+
+			player_state = Player_State::Going_Right;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)				//Move Left
+		{
+			/*if (p1.againstRightWall == false)				//THIS HERE, for some reason the bool here is always set to false now that the entity system has been implemented
+			{
+				p1.state = goingLeft_P1;
+			}*/
+
+			player_state = Player_State::Going_Left;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)				//Crouch
+		{
+			/*if (p1.state != falling_P1)						//THIS HERE
+			{
+
+			}*/
+
+			player_state = Player_State::Crouching;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)				//Jump
+		{
+			if (player.grounded == true)
+			{
+				player_state = Player_State::Jumping;
+			}
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)				//Drop from platform
+		{
+			player.platformDrop = true;
+		}
+		else
+		{
+			player.platformDrop = false;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)					//Teleport
+		{
+			player_state = Player_State::Teleporting;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)				//Suicide Button
+		{
+			player_state = Player_State::Dying;
+		}
+	}
+	else
+	{
+		GodModeInput();														//GodMode 
+	}
+}
+
+void j1Player1::PlayerMovement(Player_State player_state, float dt)
+{
+	switch (player.state)							//REVISE THIS HERE Can this be put in the  j1Player? Maybe it is simmilar to OnCollision and needs to be here.
+	{
+	case Player_State::Idle:
+
+		animation = &idle;
+		player.isCrouching = false;
+
+		break;
+
+	case Player_State::Going_Right:
+
+		if (player.againstLeftWall == false)
+		{
+			position.x += speed.x * dt;
+
+			player.flip = false;
+			player.isGoingRight = true;
+
+			if (speed.y > 2)
+			{
+				animation = &falling;
+			}
+			else
+			{
+				animation = &running;
+			}
+		}
+
+		break;
+
+	case Player_State::Going_Left:
+
+		if (player.againstRightWall == false)
+		{
+			position.x -= speed.x * dt;
+
+			player.flip = true;
+			player.isGoingLeft = true;
+
+			if (speed.y > 2)
+			{
+				animation = &falling;
+			}
+			else
+			{
+				animation = &running;
+			}
+		}
+
+		break;
+
+	case Player_State::Crouching:
+
+		/*if (player.speed.y < 2)
+		{
+			animation = &crouching;
+		}*/
+
+		animation = &crouching;
+		player.isCrouching = true;
+
+		break;
+
+	case Player_State::Jumping:
+
+		App->audio->PlayFx(5, 0);
+		speed.y = -player.acceleration.y * dt;
+		player.isJumping = true;					//Boolean for animations
+		player.airborne = true;
+		player.grounded = false;
+
+		break;
+
+	case Player_State::Falling:		//When dropping from platforms
+
+		player.airborne = true;
+		//p1.grounded = false;					//With this commented, jumping after falling off platforms is allowed.
+		animation = &falling;
+
+		break;
+
+	case Player_State::Teleporting:
+
+		TeleportP2ToP1();
+
+		break;
+
+	case Player_State::Dying:
+
+		App->audio->PlayFx(2, 0);
+		animation = &death;
+
+		if (animation->Finished())			//Only switch the isDying bool when the animation has finished. Does not work yet. Check <dying loop="">  in animations.xml.
+		{
+			player.isDying = true;
+			/*RespawnP1ToP2();*/
+		}
+
+		break;
+	}
+}
+
+void j1Player1::GodModeInput()
+{
+	player.airborne = false;
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)		//THIS HERE
+	{
+		position.x += player.godModeSpeed * App->GetDt();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	{
+		position.x -= player.godModeSpeed * App->GetDt();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+	{
+		position.y -= player.godModeSpeed * App->GetDt();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	{
+		position.y += player.godModeSpeed * App->GetDt();
+	}
+}
+
+// ---------------------------------------------- PLAYER 1 METHODS ----------------------------------------------
 void j1Player1::TeleportP2ToP1()		//Method that teleports P2 directly in front of P1. Takes into account which direction P1 is facing. Can trigger some fun interactions between players :)
 {
 	if (!player.tpInCd)
@@ -613,7 +646,7 @@ void j1Player1::SetPlayer1Position()
 	}
 }
 
-//---------------------------------------------- General Checks ----------------------------------------------
+//---------------------------------------------- GENERAL CHECKS ----------------------------------------------
 void j1Player1::LivesCheck(int lives)	//REVISE THIS HERE. Can it be put in the j1Player?
 {
 	if (lives == 0)
@@ -637,26 +670,4 @@ void j1Player1::Restart()
 {
 	position = player.spawn_position;		//THIS HERE
 	player.isAlive = true;
-}
-
-void j1Player1::GodModeInput()
-{
-	player.airborne = false;
-
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)		//THIS HERE
-	{
-		position.x += player.godModeSpeed * App->GetDt();
-	}
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-	{
-		position.x -= player.godModeSpeed * App->GetDt();
-	}
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-	{
-		position.y -= player.godModeSpeed * App->GetDt();
-	}
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-	{
-		position.y += player.godModeSpeed * App->GetDt();
-	}
 }
