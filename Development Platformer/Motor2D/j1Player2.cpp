@@ -69,7 +69,8 @@ bool j1Player2::Update(float dt, bool doLogic)
 {
 	PlayerMovement(player.state, dt);
 
-	//if (position.x > App->entityManager->player->position.x && App->entityManager->player->player.state == Player_State::Crouching) //LAST THING TO USE
+	//Use iPoints/fPoints and DistanceNoSqrt() to check distances. 
+	//if (position.x >= App->entityManager->player->position.x && App->entityManager->player->player.state == Player_State::Crouching) //LAST THING TO USE
 	//{
 	//	if (player.grounded == true)
 	//	{

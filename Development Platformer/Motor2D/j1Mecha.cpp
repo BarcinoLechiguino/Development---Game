@@ -220,66 +220,99 @@ void j1Mecha::LoadEntityAudio()
 }
 
 void j1Mecha::PathfindingLogic()
-{
+{	
+	iPoint enemyPos(App->map->WorldToMap(position.x, position.y));
+	iPoint player1Pos(App->map->WorldToMap(App->entityManager->player->position.x, App->entityManager->player->position.y));
+	iPoint player2Pos(App->map->WorldToMap(App->entityManager->player2->position.x, App->entityManager->player2->position.y));
+
+	/*if (DistanceFromPlayer(App->entityManager->player) <= detectionRadius && DistanceFromPlayer(App->entityManager->player) <= detectionRadius)
+	{
+		if (DistanceFromPlayer(App->entityManager->player) < DistanceFromPlayer(App->entityManager->player2))
+		{
+			App->pathfinding->CreatePath(enemyPos, player1Pos);
+		}
+		else
+		{
+			App->pathfinding->CreatePath(enemyPos, player2Pos);
+		}
+
+		hasTarget == true;
+	}*/
+	
 	if (DistanceFromPlayer(App->entityManager->player) <= detectionRadius)
 	{
 		iPoint enemyPos(App->map->WorldToMap(position.x, position.y));															//Enemy's position coordinates in tiles.
 		iPoint playerPos(App->map->WorldToMap(App->entityManager->player->position.x, App->entityManager->player->position.y));	//Player's position coordinates in tiles.
 
-		/*App->pathfinding->CreatePath(enemyPos, playerPos);
-		hasTarget = true;*/
-
 		if (hasTarget == false)
 		{
-			App->pathfinding->CreatePath(enemyPos, playerPos);
 			hasTarget = true;
 		}
 
 		if (hasTarget == true)
 		{
-			SetEnemyState(enemyPos, playerPos);
-		}
-	}
-	else
-	{
-		hasTarget = false;
-	}
+			//SetEnemyState(enemyPos, playerPos);
 
-	if (DistanceFromPlayer(App->entityManager->player2) <= detectionRadius)
-	{
-		if (hasTarget == false)
-		{
-			iPoint enemyPos(App->map->WorldToMap(position.x, position.y));																//Enemy's position coordinates in tiles.
-			iPoint playerPos(App->map->WorldToMap(App->entityManager->player2->position.x, App->entityManager->player2->position.y));	//Player's position coordinates in tiles.
-
-			App->pathfinding->CreatePath(enemyPos, playerPos);
-			hasTarget = true;
-
-			if (hasTarget == false)
+			if (App->entityManager->player->player.againstLeftWall == false && App->entityManager->player->player.againstRightWall == false)
 			{
-
 				App->pathfinding->CreatePath(enemyPos, playerPos);
-				hasTarget = true;
-
 			}
 
-			if (hasTarget == true)
+			const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
+	
+			for (int i = 0; i < path->Count(); ++i)
 			{
-				SetEnemyState(enemyPos, playerPos);
+				if (enemyPos.x != path->At(i)->x )
+				{
+					iPoint nextStep(path->At(i)->x, path->At(i)->y);
+					
+					SetEnemyState(enemyPos, nextStep);
+				}
 			}
+			
+			/*path->Clear();*/
 		}
 	}
 	else
 	{
-		const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
-
-		if (path != NULL)
-		{
-			//path->Clear();
-		}
-		
 		hasTarget = false;
 	}
+
+	//if (DistanceFromPlayer(App->entityManager->player2) <= detectionRadius)
+	//{
+	//	if (hasTarget == false)
+	//	{
+	//		iPoint enemyPos(App->map->WorldToMap(position.x, position.y));																//Enemy's position coordinates in tiles.
+	//		iPoint playerPos(App->map->WorldToMap(App->entityManager->player2->position.x, App->entityManager->player2->position.y));	//Player's position coordinates in tiles.
+
+	//		App->pathfinding->CreatePath(enemyPos, playerPos);
+	//		hasTarget = true;
+
+	//		if (hasTarget == false)
+	//		{
+
+	//			App->pathfinding->CreatePath(enemyPos, playerPos);
+	//			hasTarget = true;
+
+	//		}
+
+	//		if (hasTarget == true)
+	//		{
+	//			SetEnemyState(enemyPos, playerPos);
+	//		}
+	//	}
+	//}
+	//else
+	//{
+	//	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
+
+	//	if (path != NULL)
+	//	{
+	//		//path->Clear();
+	//	}
+	//	
+	//	hasTarget = false;
+	//}
 }
 
 void j1Mecha::PathfindingMovement(Entity_State state, float dt)

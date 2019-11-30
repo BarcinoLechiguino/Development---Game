@@ -203,24 +203,51 @@ void j1Alien::LoadEntityAudio()
 
 void j1Alien::PathfindingLogic()
 {
+	iPoint enemyPos(App->map->WorldToMap(position.x, position.y));																//Enemy's position coordinates in tiles.
+	iPoint player1Pos(App->map->WorldToMap(App->entityManager->player->position.x, App->entityManager->player->position.y));	//Player 1 position coordinates in tiles.
+	iPoint player2Pos(App->map->WorldToMap(App->entityManager->player2->position.x, App->entityManager->player2->position.y));	//Player 2 position coordinates in tiles.
+
+	/*if (DistanceFromPlayer(App->entityManager->player) <= detectionRadius && DistanceFromPlayer(App->entityManager->player) <= detectionRadius)
+	{
+		if (DistanceFromPlayer(App->entityManager->player) < DistanceFromPlayer(App->entityManager->player2))
+		{
+			App->pathfinding->CreatePath(enemyPos, player1Pos);
+		}
+		else
+		{
+			App->pathfinding->CreatePath(enemyPos, player2Pos);
+		}
+
+		hasTarget == true;
+	}*/
+
+	
 	if (DistanceFromPlayer(App->entityManager->player) <= detectionRadius)
 	{
-		iPoint enemyPos(App->map->WorldToMap(position.x, position.y));															//Enemy's position coordinates in tiles.
-		iPoint playerPos(App->map->WorldToMap(App->entityManager->player->position.x, App->entityManager->player->position.y));	//Player's position coordinates in tiles.
-
-		App->pathfinding->CreatePath(enemyPos, playerPos);
+		App->pathfinding->CreatePath(enemyPos, player1Pos);
 		hasTarget = true;
 
 		if (hasTarget == false)
 		{
-			App->pathfinding->CreatePath(enemyPos, playerPos);
 			hasTarget = true;
-
 		}
 
 		if (hasTarget == true)
 		{
-			SetEnemyState(enemyPos, playerPos);
+			App->pathfinding->CreatePath(enemyPos, player1Pos);
+			
+			const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
+
+			for (int i = 0; i < path->Count(); ++i)
+			{
+				if (enemyPos.x != path->At(i)->x || enemyPos.y != path->At(i)->y)
+				{
+					iPoint nextStep(path->At(i)->x, path->At(i)->y);
+					SetEnemyState(enemyPos, nextStep);
+				}
+			}
+			
+			//SetEnemyState(enemyPos, player1Pos);
 		}
 	}
 	/*else
@@ -228,28 +255,25 @@ void j1Alien::PathfindingLogic()
 		hasTarget = false;
 	}*/
 
-	if (DistanceFromPlayer(App->entityManager->player2) <= detectionRadius)
+	/*if (DistanceFromPlayer(App->entityManager->player2) <= detectionRadius)
 	{
 		if (hasTarget == false)
 		{
-			iPoint enemyPos(App->map->WorldToMap(position.x, position.y));																//Enemy's position coordinates in tiles.
-			iPoint playerPos(App->map->WorldToMap(App->entityManager->player2->position.x, App->entityManager->player2->position.y));	//Player's position coordinates in tiles.
-
-			App->pathfinding->CreatePath(enemyPos, playerPos);
+			App->pathfinding->CreatePath(enemyPos, player2Pos);
 			hasTarget = true;
 
 			if (hasTarget == false)
 			{
-				App->pathfinding->CreatePath(enemyPos, playerPos);
+				App->pathfinding->CreatePath(enemyPos, player2Pos);
 				hasTarget = true;
 			}
 
 			if (hasTarget == true)
 			{
-				SetEnemyState(enemyPos, playerPos);
+				SetEnemyState(enemyPos, player2Pos);
 			}
 		}
-	}
+	}*/
 }
 
 void j1Alien::PathfindingMovement(Entity_State state, float dt)
@@ -352,7 +376,7 @@ void j1Alien::SetEnemyState(iPoint enemyPos, iPoint playerPos)
 		state = Entity_State::PATHING_LEFT;
 	}
 
-	if (playerPos.x > enemyPos.x && playerPos.y < enemyPos.y)
+	/*if (playerPos.x > enemyPos.x && playerPos.y < enemyPos.y)
 	{
 		state = Entity_State::PATHING_UP_RIGHT;
 	}
@@ -370,5 +394,5 @@ void j1Alien::SetEnemyState(iPoint enemyPos, iPoint playerPos)
 	if (playerPos.x < enemyPos.x && playerPos.y > enemyPos.y)
 	{
 		state = Entity_State::PATHING_DOWN_LEFT;
-	}
+	}*/
 }

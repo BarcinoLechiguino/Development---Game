@@ -81,7 +81,7 @@ bool j1Scene::Start()
 		RELEASE_ARRAY(data);											//Frees all memory allocated to the data array.
 	}
 
-	path_debug_tex = App->tex->Load("maps/path2.png");					//Sets the path_debug_tex as path2.png.
+	path_debug_tex = App->tex->Load("maps/path2_centered.png");					//Sets the path_debug_tex as path2.png.
 
 	return true;
 }

@@ -10,7 +10,7 @@
 class Animation;
 
 struct Collider;
-struct SDL_Texture;
+struct SDL_Texture;	
 
 enum class ENTITY_TYPE
 {
@@ -27,7 +27,7 @@ struct EntityData
 	iPoint			position;
 };
 
-class j1Entity									//Delete module, not needed.
+class j1Entity
 {
 public:
 	j1Entity(int x, int y, ENTITY_TYPE type);	// here we will set initial position

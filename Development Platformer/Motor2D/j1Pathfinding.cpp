@@ -2,6 +2,7 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1PathFinding.h"
+#include "Brofiler\Brofiler.h"
 
 j1PathFinding::j1PathFinding() : j1Module(), map(NULL), last_path(DEFAULT_PATH_LENGTH), width(0), height(0)
 {
@@ -182,18 +183,23 @@ int PathNode::CalculateF(const iPoint& destination)
 	return g + h;
 }
 
+void j1PathFinding::EnemyBehaviour()
+{
+
+}
+
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
 // ----------------------------------------------------------------------------------
 int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
+	BROFILER_CATEGORY("CreatePath", Profiler::Color::SlateGray)
+	
 	int ret = -1;		//Revise, Should be 1?															//The value returned by the function. Done to improve readability.
-
-	//last_path.Clear();
 	
 	if (IsWalkable(origin) == false || IsWalkable(destination) == false)	//IsWalkable() checks if origin and destination are walkable tiles. IsWalkable calls GetTile(), which returns the walkability value only if the given tile is inside the map's boundaries.
 	{
-		ret = -1;
+		return ret = -1;
 	}
 
 	PathList open;																		//Declares/Creates the open list (frontier queue).
