@@ -8,7 +8,7 @@
 
 class j1Player;
 
-enum class Entity_State	//Does not go here. Is it necessary?
+enum class Entity_State
 {
 	IDLE = 0,
 	PATHING_UP,
@@ -57,9 +57,6 @@ public:
 	void LoadEntityAudio();					//Loads an entity's specific audios/sfx.
 
 	void InitEnemy();						//Initializes an enemy's specific data members.
-	void Normal_Path();						//Land Path?
-	void Chasing_Path();					//Aerial Path?
-	bool Calculate_Path();
 
 	void EnemyDebugInputs();										//Debug inputs for moving all entities around at the same time.
 	virtual void PathfindingLogic();								//Depending on how far a player is from an enemy entity, a path will be created and the enemy will path towards that player.
@@ -87,7 +84,7 @@ public:
 	
 	bool hasTarget;											//Keeps track whether an enemy entity already has a target or not.
 
-	p2DynArray<iPoint> entityPath;							//Will store the path created between the enemy entity and a player.
+	const p2DynArray<iPoint>* entity_path;					//Will store the path created between the enemy entity and a player.
 
 public:
 	pugi::xml_document	config_file;	//

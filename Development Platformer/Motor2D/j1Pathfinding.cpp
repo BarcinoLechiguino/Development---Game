@@ -225,13 +225,13 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 			while (path_node != NULL)													//While path_node is not NULL (path_node contains data)
 			{
 				last_path.PushBack(path_node->pos);										//Adds to last_path dynArray the current path_node tile (position data members).
-				LOG("Path_node at: (%d, %d)", path_node->pos.x, path_node->pos.y);
+				//LOG("Path_node at: (%d, %d)", path_node->pos.x, path_node->pos.y);
 				path_node = path_node->parent;											//Sets the data members of the current path_node as the data members of the parent node. (Backtracks one node/tile)
 			}
 
 			last_path.Flip();															//Flips the dynArray members so the first element of the array is the origin tile and the destination tile the last.
 			ret = last_path.Count();													//Returns the amount of steps the path has.
-			LOG("Number of steps: %d", last_path.Count());
+			//LOG("Number of steps: %d", last_path.Count());
 			break;
 		}
 

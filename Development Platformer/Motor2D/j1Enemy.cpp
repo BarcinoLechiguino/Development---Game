@@ -115,21 +115,6 @@ void j1Enemy::InitEnemy()
 	hasTarget			= false;
 }
 
-bool j1Enemy::Calculate_Path()
-{
-	return true;
-}
-
-void j1Enemy::Normal_Path()
-{
-
-}
-
-void j1Enemy::Chasing_Path()
-{
-
-}
-
 void j1Enemy::EnemyDebugInputs()
 {
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
@@ -176,8 +161,3 @@ int j1Enemy::DistanceFromPlayer(j1Player* player) const
 	//Used DistanceNoSqrt() because square roots have a really high computation cost over just multiplying. Calculus: (p1.x*p2.x) + (p1.y*p2.y).
 	return enemyPos.DistanceNoSqrt(playerPos);										//Calculates and returns the distance between the enemyPos point (as the origin) and the playerPos point in tiles.
 }
-
-//bool j1Enemy::Load_Entity()
-//{
-//	return true;
-//}

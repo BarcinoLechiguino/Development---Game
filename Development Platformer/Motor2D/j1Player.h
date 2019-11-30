@@ -58,6 +58,7 @@ struct Player
 	bool			againstRightWall;		//If a player is against a right wall then this returns true.
 	bool			againstLeftWall;		//If a player is against a left wall then this returns true.
 	bool			againstCeiling;			//If a player is against a ceiling then this is true.
+	bool			checkpointReached;		//Keeps track whether a player has reacked a checkpoint or not.
 	bool			fading;					//Fade character when changing scenes.
 	bool			GodMode;				//Defines whether GodMode is active or not.
 	bool			switch_sprites;			//Defines which sprite will a player have.

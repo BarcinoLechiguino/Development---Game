@@ -191,6 +191,7 @@ bool j1Player::InitPlayer()
 	player.againstRightWall		= false;
 	player.againstLeftWall		= false;
 	player.againstCeiling		= false;
+	player.checkpointReached	= false;
 	player.GodMode				= false;
 	player.switch_sprites		= false;
 

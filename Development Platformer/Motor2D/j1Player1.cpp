@@ -78,16 +78,12 @@ bool j1Player1::Update(float dt, bool doLogic)
 		ApplyGravity();
 	}
 
-	//--------------------------------------- Miscelaneous Checks ---------------------------------------
-	LivesCheck(player.lives);																	// If P1 empties the lives pool then both players die and reset their positions to the spawn point.
-
 	//--------------------------------------- Tp skill Cooldown ---------------------------------------
 	if (player.tpInCd == true)
 	{
 		SkillCooldown(player.tpInCd, player.tpCdCount, player.tpCdTime);
 	}
 
-	//THIS HERE
 	player.HitBox = animation->GetCurrentFrame(dt);											//Sets the animation cycle that P1 will have. 
 	collider->Set_Position(position.x, position.y);											//Makes P1's collider follow P1.
 	//p1.atkCollider->Set_Position(position.x + sprite_size.x, sprite_size.y);				//Makes P1's attack collider follow P1.
@@ -142,8 +138,6 @@ bool j1Player1::CleanUp()
 	{
 		animation = nullptr;
 	}
-
-	//RELEASE(App->entityManager->player);		//Player cannot be started again when a new map is loaded.
 
 	return true;
 };
@@ -200,7 +194,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			//Player colliding against solids
 			if (C2->type == Object_Type::SOLID)
 			{
-				//Player Colliding from TOP or BOTTOM. sssssa
+				//Player Colliding from TOP or BOTTOM.
 				if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x + C2->collider.y)		//The first part checks if C1 is contained in the X axis of C2. 
 				{
 					//Player Colliding from TOP.
@@ -281,31 +275,39 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 				//Player is colliding from LEFT or RIGHT.
 				if (C1->collider.y <= C2->collider.y + C2->collider.h && C1->collider.y + C1->collider.h - 4 >= C2->collider.y)		//The first part checks if C1 is contained in the Y axis of C2.
 				{
-					//Player is colliding from LEFT.
-					if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x)						//This second part checks if C1 is actually colliding from the left side of the collider.
-					{
-						//Death logic
-						player.lives--;
-						player.state = Player_State::Dying;
+					//Death logic
+					LOG("Lives at this moment: %d", player.lives);
 
-						//Antes la animacion de muerte tiene que haber finalizado - Gerard
-						RespawnP1ToP2();
-					}
+					player.lives--;
+					player.state = Player_State::Dying;
 
-					//Player is colliding from RIGHT.
-					if (C1->collider.x <= C2->collider.x + C2->collider.w && C1->collider.x >= C2->collider.x)						// This second part checks if C1 is actually colliding from the right side of the collider.
-					{
-						//Death logic
-						player.lives--;
-						player.state = Player_State::Dying;
+					//Antes la animacion de muerte tiene que haber finalizado - Gerard
+					RespawnP1ToP2();
 
-						//Antes la animacion de muerte tiene que haber finalizado - Gerard
-						RespawnP1ToP2();
-					}
+					
+					LivesCheck(player.lives);		//ALL LIVES SUBSTRACTED THIS WAY. PUT A BOOL TO CHECK IT IS ONLY DONE ONCE.
+
+					////Player is colliding from LEFT.
+					//if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x)						//This second part checks if C1 is actually colliding from the left side of the collider.
+					//{
+					//	
+					//}
+
+					////Player is colliding from RIGHT.
+					//if (C1->collider.x <= C2->collider.x + C2->collider.w && C1->collider.x >= C2->collider.x)						// This second part checks if C1 is actually colliding from the right side of the collider.
+					//{
+					//	//Death logic
+					//	player.lives--;
+					//	player.state = Player_State::Dying;
+
+
+					//	//Antes la animacion de muerte tiene que haber finalizado - Gerard
+					//	RespawnP1ToP2();
+					//}
 				}
 				else
 				{
-					//Destroy Entity;
+					//Destroy entity
 				}
 			}
 
@@ -341,8 +343,15 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			{
 				LOG("P1 HAS REACHED A CHECKPOINT");															//Call Safe() method here.
 
-				App->SaveGame("save_game.xml");
-				App->audio->PlayFx(22, 1);
+				if (player.checkpointReached == false)
+				{
+					App->SaveGame("save_game.xml");
+					App->audio->PlayFx(22, 1);
+
+					player.spawn_position = position;
+
+					player.checkpointReached = true;
+				}
 			}
 
 			//Player colliding against the Goal
@@ -383,7 +392,7 @@ void j1Player1::SetPlayerState(Player_State& player_state)
 			player_state = Player_State::Falling;
 		}
 
-		LOG("Speed y is %f", speed.y);
+		//LOG("Speed y is %f", speed.y);
 
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)				//Move Right
 		{

@@ -334,8 +334,16 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 			if (C2->type == Object_Type::CHECKPOINT)
 			{
 				LOG("P2 HAS REACHED A CHECKPOINT");															//Call Safe() method here.
-				App->SaveGame("save_game.xml");
-				App->audio->PlayFx(22, 1);
+				
+				if (player.checkpointReached == false)
+				{
+					App->SaveGame("save_game.xml");
+					App->audio->PlayFx(22, 1);
+
+					player.spawn_position = position;
+
+					player.checkpointReached = true;
+				}
 			}
 
 			//Player colliding against the Goal
@@ -372,7 +380,7 @@ void j1Player2::TeleportP1ToP2()
 		else
 		{
 			if (player.againstRightWall == false)
-			{
+			{	
 				App->entityManager->player->position.x = position.x - collider->collider.w / 2;	//THIS HERE
 				App->entityManager->player->position.y = position.y - 60;
 				App->audio->PlayFx(1, 0);

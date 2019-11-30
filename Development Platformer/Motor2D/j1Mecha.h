@@ -40,7 +40,7 @@ public:
 	void PathfindingMovement(Entity_State state, float dt);
 	void SetEnemyState(iPoint enemyPos, iPoint playerPos);
 
-	void ApplyMechaGravity();
+	void ApplyMechaGravity();				//If the mecha is airborne, this method brings it to the ground.
 
 public:
 	fPoint			mecha_speed;			//Change it later so it is a global value. Put it in entity.h

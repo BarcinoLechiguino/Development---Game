@@ -132,7 +132,7 @@ void j1Mecha::OnCollision(Collider* C1, Collider* C2)
 					speed.y = 0;
 					position.y = C2->collider.y - C1->collider.h + 1;		//THIS HERE
 					grounded = true;
-					LOG("MECHA IS COLLIDING WITH A SOLID FROM ABOVE");
+					//LOG("MECHA IS COLLIDING WITH A SOLID FROM ABOVE");
 				}
 			}
 
@@ -221,52 +221,43 @@ void j1Mecha::LoadEntityAudio()
 
 void j1Mecha::PathfindingLogic()
 {	
-	iPoint enemyPos(App->map->WorldToMap(position.x, position.y));
-	iPoint player1Pos(App->map->WorldToMap(App->entityManager->player->position.x, App->entityManager->player->position.y));
-	iPoint player2Pos(App->map->WorldToMap(App->entityManager->player2->position.x, App->entityManager->player2->position.y));
+	iPoint enemyPos(App->map->WorldToMap(position.x, position.y));																//Enemy's position coordinates in tiles.
+	iPoint player1Pos(App->map->WorldToMap(App->entityManager->player->position.x, App->entityManager->player->position.y));	//P1's position coordinates in tiles.
+	iPoint player2Pos(App->map->WorldToMap(App->entityManager->player2->position.x, App->entityManager->player2->position.y));	//P2's position coordinates in tiles.
 
-	/*if (DistanceFromPlayer(App->entityManager->player) <= detectionRadius && DistanceFromPlayer(App->entityManager->player) <= detectionRadius)
+	if (DistanceFromPlayer(App->entityManager->player) <= detectionRadius && DistanceFromPlayer(App->entityManager->player) <= detectionRadius)	//If both players are inside the detection range
 	{
-		if (DistanceFromPlayer(App->entityManager->player) < DistanceFromPlayer(App->entityManager->player2))
+		if (DistanceFromPlayer(App->entityManager->player) < DistanceFromPlayer(App->entityManager->player2))					//If P1 is closer than P2.
 		{
-			App->pathfinding->CreatePath(enemyPos, player1Pos);
+			App->pathfinding->CreatePath(enemyPos, player1Pos);																	//Creates a path with P1 as the goal.
 		}
-		else
+		else																													//If P2 is closer than P1.
 		{
-			App->pathfinding->CreatePath(enemyPos, player2Pos);
+			App->pathfinding->CreatePath(enemyPos, player2Pos);																	//Creates a path with P2 as the goal.
 		}
-
-		hasTarget == true;
-	}*/
+	}
 	
-	if (DistanceFromPlayer(App->entityManager->player) <= detectionRadius)
+	if (DistanceFromPlayer(App->entityManager->player) <= detectionRadius)														//P1 is inside the detection range.
 	{
-		iPoint enemyPos(App->map->WorldToMap(position.x, position.y));															//Enemy's position coordinates in tiles.
-		iPoint playerPos(App->map->WorldToMap(App->entityManager->player->position.x, App->entityManager->player->position.y));	//Player's position coordinates in tiles.
-
-		if (hasTarget == false)
+		if (hasTarget == false)																									//If the enemy does not have a target.
 		{
 			hasTarget = true;
 		}
 
-		if (hasTarget == true)
+		if (hasTarget == true)																									//If the enemy has a target.
 		{
-			//SetEnemyState(enemyPos, playerPos);
+			App->pathfinding->CreatePath(enemyPos, player1Pos);																	//Creates a path with the target as the goal.
 
-			if (App->entityManager->player->player.againstLeftWall == false && App->entityManager->player->player.againstRightWall == false)
-			{
-				App->pathfinding->CreatePath(enemyPos, playerPos);
-			}
-
-			const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
+			//entity_path = App->pathfinding->GetLastPath();
+			const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();													//Gets the created path (tiles).
 	
-			for (int i = 0; i < path->Count(); ++i)
-			{
-				if (enemyPos.x != path->At(i)->x )
+			for (int i = 0; i < path->Count(); ++i)																				//While there are still elements in the path.
+			{	
+				if (enemyPos.x != path->At(i)->x)																				//If the position of the enemy in x is different than the position of the i tile of the path.
 				{
-					iPoint nextStep(path->At(i)->x, path->At(i)->y);
+					iPoint nextStep(path->At(i)->x, path->At(i)->y);															//Sets an iPoint with the coordinates of the i tile of the path. Done so it can be passed as argument to SetEnemyState().
 					
-					SetEnemyState(enemyPos, nextStep);
+					SetEnemyState(enemyPos, nextStep);																			//Sets the enemy state according to the arguments passed (two iPoints).
 				}
 			}
 			
@@ -278,54 +269,45 @@ void j1Mecha::PathfindingLogic()
 		hasTarget = false;
 	}
 
-	//if (DistanceFromPlayer(App->entityManager->player2) <= detectionRadius)
-	//{
-	//	if (hasTarget == false)
-	//	{
-	//		iPoint enemyPos(App->map->WorldToMap(position.x, position.y));																//Enemy's position coordinates in tiles.
-	//		iPoint playerPos(App->map->WorldToMap(App->entityManager->player2->position.x, App->entityManager->player2->position.y));	//Player's position coordinates in tiles.
+	if (DistanceFromPlayer(App->entityManager->player2) <= detectionRadius)														//P2 is inside the detection range.
+	{
+		if (hasTarget == false)																									//If the enemy does not have a target.
+		{
+			hasTarget = true;
+		}
 
-	//		App->pathfinding->CreatePath(enemyPos, playerPos);
-	//		hasTarget = true;
+		if (hasTarget == true)																									//If the enemy has a target.
+		{
+			App->pathfinding->CreatePath(enemyPos, player2Pos);																	//Creates a path with the target as the goal.
 
-	//		if (hasTarget == false)
-	//		{
+			const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();													//Gets the created path (tiles).
 
-	//			App->pathfinding->CreatePath(enemyPos, playerPos);
-	//			hasTarget = true;
+			for (int i = 0; i < path->Count(); ++i)																				//While there are still elements in the path.
+			{
+				if (enemyPos.x != path->At(i)->x)																				//If the position of the enemy in x is different than the position of the i tile of the path.
+				{
+					iPoint nextStep(path->At(i)->x, path->At(i)->y);															//Sets an iPoint with the coordinates of the i tile of the path. Done so it can be passed as argument to SetEnemyState().
 
-	//		}
+					SetEnemyState(enemyPos, nextStep);																			//Sets the enemy state according to the arguments passed (two iPoints).
+				}
+			}
 
-	//		if (hasTarget == true)
-	//		{
-	//			SetEnemyState(enemyPos, playerPos);
-	//		}
-	//	}
-	//}
-	//else
-	//{
-	//	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
-
-	//	if (path != NULL)
-	//	{
-	//		//path->Clear();
-	//	}
-	//	
-	//	hasTarget = false;
-	//}
+			/*path->Clear();*/
+		}
+	}
 }
 
 void j1Mecha::PathfindingMovement(Entity_State state, float dt)
 {
 	switch (state)
 	{
-	case Entity_State::IDLE:
+	case Entity_State::IDLE:				//STAYING STILL
 
 		animation = &idle;
 
 		break;
 
-	case Entity_State::PATHING_UP:
+	case Entity_State::PATHING_UP:			//GOING UP
 
 		position.y -= speed.y * dt;
 		animation = &running;
@@ -333,7 +315,7 @@ void j1Mecha::PathfindingMovement(Entity_State state, float dt)
 
 		break;
 
-	case Entity_State::PATHING_DOWN:
+	case Entity_State::PATHING_DOWN:		//GOING DOWN
 
 		position.y += speed.y * dt;
 		animation = &running;
@@ -341,7 +323,7 @@ void j1Mecha::PathfindingMovement(Entity_State state, float dt)
 
 		break;
 
-	case Entity_State::PATHING_RIGHT:
+	case Entity_State::PATHING_RIGHT:		//GOING TO THE RIGHT
 
 		position.x += speed.x * dt;
 		flip = false;
@@ -350,7 +332,7 @@ void j1Mecha::PathfindingMovement(Entity_State state, float dt)
 
 		break;
 
-	case Entity_State::PATHING_LEFT:
+	case Entity_State::PATHING_LEFT:		//GOING TO THE LEFT
 
 		position.x -= speed.x * dt;
 		flip = true;
@@ -363,11 +345,14 @@ void j1Mecha::PathfindingMovement(Entity_State state, float dt)
 
 void j1Mecha::SetEnemyState(iPoint enemyPos, iPoint playerPos)
 {
-	if (playerPos.x < enemyPos.x)
+	iPoint checkRight(enemyPos.x + 1, enemyPos.y + 1);								//Coordinates of one tile to the right and one tile down from the enemy entity coordinates.
+	iPoint checkLeft(enemyPos.x - 1, enemyPos.y + 1);								//Coordinates of one tile to the left and one tile down from the enemy entity coordinates.
+	
+	if (playerPos.x < enemyPos.x && App->pathfinding->IsWalkable(checkLeft))		//Check where the player in range is and if there is any unwalkable tiles to the left.
 	{
 		state = Entity_State::PATHING_LEFT;
 	}
-	else
+	else if (playerPos.x > enemyPos.x  && App->pathfinding->IsWalkable(checkRight))	//Check where the player in range is and if there is any unwalkable tiles to the left.
 	{
 		state = Entity_State::PATHING_RIGHT;
 	}
@@ -382,5 +367,5 @@ void j1Mecha::ApplyMechaGravity()
 		speed.y = mecha_max_speed.y * App->GetDt();
 	}
 
-	position.y += speed.y;				//Refreshes the vector speed of P1 in the Y axis.
+	position.y += speed.y;
 }
