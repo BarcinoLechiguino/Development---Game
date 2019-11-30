@@ -98,7 +98,7 @@ bool j1Mecha::Update(float dt, bool doLogic)
 		position.x += speed.x * dt;
 		flip = false;
 		animation = &running;
-		App->audio->PlayFx(18, 1);
+		App->audio->PlayFx(19, 1);
 
 		break;
 
@@ -107,7 +107,7 @@ bool j1Mecha::Update(float dt, bool doLogic)
 		position.x -= speed.x * dt;
 		flip = true;
 		animation = &running;
-		App->audio->PlayFx(18, 1);
+		App->audio->PlayFx(19, 1);
 
 		break;
 	}

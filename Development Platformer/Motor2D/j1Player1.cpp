@@ -511,7 +511,8 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			{
 				LOG("P1 HAS REACHED A CHECKPOINT");															//Call Safe() method here.
 
-				//App->SaveGame();
+				App->SaveGame("save_game.xml");
+				App->audio->PlayFx(20, 1);
 			}
 
 			//Player colliding against the Goal

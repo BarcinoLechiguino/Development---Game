@@ -50475,7 +50475,7 @@
   <object id="161" name="Goal" type="goal" x="288" y="416" width="32" height="96"/>
  </objectgroup>
  <objectgroup id="19" name="Auto-Save">
-  <object id="105" name="Checkpoint" type="checkpoint" x="2431.67" y="510.333" width="64" height="63.3333"/>
+  <object id="105" name="Checkpoint" type="checkpoint" x="2450.67" y="510.333" width="29" height="63.3333"/>
  </objectgroup>
  <objectgroup id="11" name="Respawn">
   <object id="3" name="Origin" type="respawn" x="192" y="448" width="63" height="63"/>
