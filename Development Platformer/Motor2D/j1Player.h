@@ -14,7 +14,7 @@ struct Collider;
 struct SDL_Texture;
 
 
-enum Player_State
+enum class Player_State
 {
 	Idle,
 	Going_Right,
@@ -110,6 +110,8 @@ public: //P1 Variables
 	virtual bool LoadPlayerPosition(p2SString playerPosition, p2SString map);	//Loads the player's position from the config file. Takes into account which map the player is at.
 	virtual void GodModeInput();												//Enables / Disables the God Mode.
 
+	virtual void SetPlayerState(Player_State& player_state);					//Depending on the input, a player will be set in a state or another. Without "&" the state would not be chenged.
+	virtual void PlayerMovement(Player_State player_state, float dt);			//Holds all states of a player. Depending on which state a player is set, it will move, jump, teleport...
 	virtual void LivesCheck(int lives);											//Checks if the player has any lives left.
 	virtual void SkillCooldown(bool& inCd, float& cdCounter, float& cdTime);	//Keeps track of any skill's cooldown. Revise --> Pass dt as an argument?
 

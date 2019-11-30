@@ -54,106 +54,20 @@ bool j1Alien::Update(float dt, bool doLogic)
 	state = Entity_State::IDLE;
 	
 	//ALIEN DEBUG INPUTS
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-	{
-		state = Entity_State::PATHING_RIGHT;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_UP)
-	{
-		state = Entity_State::IDLE;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-	{
-		state = Entity_State::PATHING_LEFT;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_UP)
-	{
-		state = Entity_State::IDLE;
-	}
+	EnemyDebugInputs();
 
 	/*Normal_Path();
 	Chasing_Path();*/
 
 	if (doLogic == true)
 	{
-		PathfindingLogic();
+		if (App->entityManager->player->player.GodMode == false || App->entityManager->player2->player.GodMode == false)
+		{
+			PathfindingLogic();
+		}
 	}
 
-	switch (state)
-	{
-	case Entity_State::IDLE:
-
-		animation = &idle;
-
-		break;
-
-	case Entity_State::PATHING_UP:
-
-		position.y -= speed.y * dt;
-		animation = &running;
-
-		break;
-	
-	case Entity_State::PATHING_DOWN:
-
-		position.y += speed.y * dt;
-		animation = &running;
-
-		break;
-
-	case Entity_State::PATHING_RIGHT:
-		
-		position.x += speed.x * dt;
-		flip = true;						//Change the alien's orientation in the spritesheet so this can be false.
-		animation = &running;
-
-		break;
-
-	case Entity_State::PATHING_LEFT:
-		
-		position.x -= speed.x * dt;
-		flip = false;
-		animation = &running;
-
-		break;
-
-	case Entity_State::PATHING_UP_RIGHT:
-
-		position.x += speed.x * dt;
-		position.y -= speed.y * dt;
-		flip = true;
-		animation = &running;
-
-		break;
-	
-	case Entity_State::PATHING_UP_LEFT:
-
-		position.x -= speed.x * dt;
-		position.y -= speed.y * dt;
-		flip = false;
-		animation = &running;
-		
-		break;
-	
-	case Entity_State::PATHING_DOWN_RIGHT:
-
-		position.x += speed.x * dt;
-		position.y += speed.y * dt;
-		flip = true;
-		animation = &running;
-		
-		break;
-	
-	case Entity_State::PATHING_DOWN_LEFT:
-
-		position.x -= speed.x * dt;
-		position.y += speed.y * dt;
-		flip = false;
-		animation = &running;
-		
-		break;
-	}
+	PathfindingMovement(state, dt);
 
 	enemy_HitBox = animation->GetCurrentFrame(dt);				//Sets the animation cycle that the alien enemies will have. 
 	collider->Set_Position(position.x, position.y);				//Resets the position of the colliders the alien enemies
@@ -335,6 +249,84 @@ void j1Alien::PathfindingLogic()
 				SetEnemyState(enemyPos, playerPos);
 			}
 		}
+	}
+}
+
+void j1Alien::PathfindingMovement(Entity_State state, float dt)
+{
+	switch (state)
+	{
+	case Entity_State::IDLE:
+
+		animation = &idle;
+
+		break;
+
+	case Entity_State::PATHING_UP:
+
+		position.y -= speed.y * dt;
+		animation = &running;
+
+		break;
+
+	case Entity_State::PATHING_DOWN:
+
+		position.y += speed.y * dt;
+		animation = &running;
+
+		break;
+
+	case Entity_State::PATHING_RIGHT:
+
+		position.x += speed.x * dt;
+		flip = true;						//Change the alien's orientation in the spritesheet so this can be false.
+		animation = &running;
+
+		break;
+
+	case Entity_State::PATHING_LEFT:
+
+		position.x -= speed.x * dt;
+		flip = false;
+		animation = &running;
+
+		break;
+
+	case Entity_State::PATHING_UP_RIGHT:
+
+		position.x += speed.x * dt;
+		position.y -= speed.y * dt;
+		flip = true;
+		animation = &running;
+
+		break;
+
+	case Entity_State::PATHING_UP_LEFT:
+
+		position.x -= speed.x * dt;
+		position.y -= speed.y * dt;
+		flip = false;
+		animation = &running;
+
+		break;
+
+	case Entity_State::PATHING_DOWN_RIGHT:
+
+		position.x += speed.x * dt;
+		position.y += speed.y * dt;
+		flip = true;
+		animation = &running;
+
+		break;
+
+	case Entity_State::PATHING_DOWN_LEFT:
+
+		position.x -= speed.x * dt;
+		position.y += speed.y * dt;
+		flip = false;
+		animation = &running;
+
+		break;
 	}
 }
 

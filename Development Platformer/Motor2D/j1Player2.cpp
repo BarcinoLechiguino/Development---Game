@@ -53,61 +53,7 @@ bool j1Player2::Start()
 
 bool j1Player2::PreUpdate()
 {
-	if (player.GodMode == false)
-	{
-		player.state = Player_State::Idle;
-
-		if (speed.y > 2)													//For some reason the player's speed when colliding against the ground is 1.4f aprox instead of 0.
-		{
-			player.state = Player_State::Falling;
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT)			//Move Right
-		{
-			player.state = Player_State::Going_Right;
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_KP_4) == KEY_REPEAT)			//Move Left
-		{
-			player.state = Player_State::Going_Left;
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_REPEAT)			//Crouch
-		{
-			player.state = Player_State::Crouching;
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_KP_0) == KEY_DOWN)				//Jump
-		{
-			if (player.grounded == true)
-			{
-				player.state = Player_State::Jumping;
-			}
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_REPEAT)				//Drop from platform
-		{
-			player.platformDrop = true;
-		}
-		else
-		{
-			player.platformDrop = false;
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_KP_7) == KEY_DOWN)				//Teleport
-		{
-			player.state = Player_State::Teleporting;
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_N) == KEY_REPEAT)				//Suicide Button
-		{
-			player.state = Player_State::Dying;
-		}
-	}
-	else
-	{
-		GodModeInput();
-	}
+	SetPlayerState(player.state);
 
 	//Switch Sprites Method Call
 	/*if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
@@ -121,97 +67,7 @@ bool j1Player2::PreUpdate()
 
 bool j1Player2::Update(float dt, bool doLogic)
 {
-	switch (player.state)
-	{
-
-	case Player_State::Idle:
-
-		animation = &idle;
-		player.isCrouching = false;
-
-		break;
-
-	case Player_State::Going_Right:
-
-		if (player.againstLeftWall == false)
-		{
-			position.x += speed.x * dt;
-
-			player.flip = false;
-			player.isGoingRight = true;
-
-			if (speed.y > 2)
-			{
-				animation = &falling;
-			}
-			else
-			{
-				animation = &running;
-			}
-		}
-
-		break;
-
-	case Player_State::Going_Left:
-
-		if (player.againstRightWall == false)
-		{
-			position.x -= speed.x * dt;
-
-			player.flip = true;
-			player.isGoingLeft = true;
-
-			if (speed.y > 2)
-			{
-				animation = &falling;
-			}
-			else
-			{
-				animation = &running;
-			}
-		}
-
-		break;
-
-	case Player_State::Crouching:
-
-		animation = &crouching;
-		player.isCrouching = true;
-
-		break;
-
-	case Player_State::Jumping:
-
-		App->audio->PlayFx(5, 0);
-		speed.y = -player.acceleration.y * dt;
-		player.isJumping = true;						//Boolean for animations
-		player.airborne = true;
-		player.grounded = false;
-
-		break;
-
-	case Player_State::Falling:							//When dropping from platforms
-
-		player.airborne = true;
-		//p1.grounded = false;							//With this commented, jumping after falling off platforms is allowed.
-		animation = &falling;
-
-		break;
-
-	case Player_State::Teleporting:
-
-		TeleportP1ToP2();
-
-		break;
-
-	case Player_State::Dying:
-
-		App->audio->PlayFx(2, 0);
-		animation = &death;
-		player.isDying = true;
-
-		break;
-	}
+	PlayerMovement(player.state, dt);
 
 	//if (position.x > App->entityManager->player->position.x && App->entityManager->player->player.state == Player_State::Crouching) //LAST THING TO USE
 	//{
@@ -579,6 +435,183 @@ void j1Player2::SetPlayer2Position()
 	return true;
 }*/
 
+//----------------------------------------------- Player Inputs -----------------------------------------------
+void j1Player2::SetPlayerState(Player_State& player_state)
+{
+	if (player.GodMode == false)
+	{
+		player.state = Player_State::Idle;
+
+		if (speed.y > 2)													//For some reason the player's speed when colliding against the ground is 1.4f aprox instead of 0.
+		{
+			player.state = Player_State::Falling;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT)			//Move Right
+		{
+			player.state = Player_State::Going_Right;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_KP_4) == KEY_REPEAT)			//Move Left
+		{
+			player.state = Player_State::Going_Left;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_REPEAT)			//Crouch
+		{
+			player.state = Player_State::Crouching;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_KP_0) == KEY_DOWN)				//Jump
+		{
+			if (player.grounded == true)
+			{
+				player.state = Player_State::Jumping;
+			}
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_REPEAT)				//Drop from platform
+		{
+			player.platformDrop = true;
+		}
+		else
+		{
+			player.platformDrop = false;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_KP_7) == KEY_DOWN)				//Teleport
+		{
+			player.state = Player_State::Teleporting;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_N) == KEY_REPEAT)				//Suicide Button
+		{
+			player.state = Player_State::Dying;
+		}
+	}
+	else
+	{
+		GodModeInput();
+	}
+}
+
+void j1Player2::PlayerMovement(Player_State player_state, float dt)
+{
+	switch (player.state)
+	{
+
+	case Player_State::Idle:
+
+		animation = &idle;
+		player.isCrouching = false;
+
+		break;
+
+	case Player_State::Going_Right:
+
+		if (player.againstLeftWall == false)
+		{
+			position.x += speed.x * dt;
+
+			player.flip = false;
+			player.isGoingRight = true;
+
+			if (speed.y > 2)
+			{
+				animation = &falling;
+			}
+			else
+			{
+				animation = &running;
+			}
+		}
+
+		break;
+
+	case Player_State::Going_Left:
+
+		if (player.againstRightWall == false)
+		{
+			position.x -= speed.x * dt;
+
+			player.flip = true;
+			player.isGoingLeft = true;
+
+			if (speed.y > 2)
+			{
+				animation = &falling;
+			}
+			else
+			{
+				animation = &running;
+			}
+		}
+
+		break;
+
+	case Player_State::Crouching:
+
+		animation = &crouching;
+		player.isCrouching = true;
+
+		break;
+
+	case Player_State::Jumping:
+
+		App->audio->PlayFx(5, 0);
+		speed.y = -player.acceleration.y * dt;
+		player.isJumping = true;						//Boolean for animations
+		player.airborne = true;
+		player.grounded = false;
+
+		break;
+
+	case Player_State::Falling:							//When dropping from platforms
+
+		player.airborne = true;
+		//p1.grounded = false;							//With this commented, jumping after falling off platforms is allowed.
+		animation = &falling;
+
+		break;
+
+	case Player_State::Teleporting:
+
+		TeleportP1ToP2();
+
+		break;
+
+	case Player_State::Dying:
+
+		App->audio->PlayFx(2, 0);
+		animation = &death;
+		player.isDying = true;
+
+		break;
+	}
+}
+
+void j1Player2::GodModeInput()
+{
+	player.airborne = false;
+
+	if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT)		//THIS HERE
+	{
+		position.x += player.godModeSpeed * App->GetDt();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_KP_4) == KEY_REPEAT)
+	{
+		position.x -= player.godModeSpeed * App->GetDt();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_KP_8) == KEY_REPEAT)
+	{
+		position.y -= player.godModeSpeed * App->GetDt();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_REPEAT)
+	{
+		position.y += player.godModeSpeed * App->GetDt();
+	}
+}
+
 //---------------------------------------------- General Checks ----------------------------------------------
 void j1Player2::LivesCheck(int lives)
 {
@@ -603,26 +636,4 @@ void j1Player2::Restart()
 {
 	position = player.spawn_position;		//THIS HERE
 	player.isAlive = true;
-}
-
-void j1Player2::GodModeInput()
-{
-	player.airborne = false;
-
-	if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT)		//THIS HERE
-	{
-		position.x += player.godModeSpeed * App->GetDt();
-	}
-	if (App->input->GetKey(SDL_SCANCODE_KP_4) == KEY_REPEAT)
-	{
-		position.x -= player.godModeSpeed * App->GetDt();
-	}
-	if (App->input->GetKey(SDL_SCANCODE_KP_8) == KEY_REPEAT)
-	{
-		position.y -= player.godModeSpeed * App->GetDt();
-	}
-	if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_REPEAT)
-	{
-		position.y += player.godModeSpeed * App->GetDt();
-	}
 }

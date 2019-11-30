@@ -210,7 +210,18 @@ bool j1Player::InitPlayer()
 	return true;
 }*/
 
-//---------------------------------------------- General Checks ----------------------------------------------
+//----------------------------------------------- PLAYER INPUTS -----------------------------------------------
+void j1Player::SetPlayerState(Player_State& player_state)
+{
+	return;
+}
+
+void j1Player::PlayerMovement(Player_State player_state, float dt)
+{
+	return;
+}
+
+//---------------------------------------------- GENERAL CHECKS ----------------------------------------------
 void j1Player::ApplyGravity()
 {
 	speed.y += player.gravity * App->GetDt();

@@ -37,6 +37,7 @@ public:
 	//bool Load_Entity();	
 
 	void PathfindingLogic();
+	void PathfindingMovement(Entity_State state, float dt);
 	void SetEnemyState(iPoint enemyPos, iPoint playerPos);
 
 	void ApplyMechaGravity();

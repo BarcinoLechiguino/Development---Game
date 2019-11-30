@@ -61,8 +61,10 @@ public:
 	void Chasing_Path();					//Aerial Path?
 	bool Calculate_Path();
 
-	virtual void PathfindingLogic();								//
-	virtual void SetEnemyState(iPoint enemyPos, iPoint playerPos);	//
+	void EnemyDebugInputs();										//Debug inputs for moving all entities around at the same time.
+	virtual void PathfindingLogic();								//Depending on how far a player is from an enemy entity, a path will be created and the enemy will path towards that player.
+	virtual void PathfindingMovement(Entity_State state, float dt);	//Holds all the states a specific enemy entity can be in and the specific movement for each state.
+	virtual void SetEnemyState(iPoint enemyPos, iPoint playerPos);	//Depending on where a player in pathfinding range is, the enemy will be set in a state or another (Entity_State::PATHING_RIGHT).
 	int DistanceFromPlayer(j1Player* player) const;					//Calculates the distance between a player and an enemy entity.
 
 	//bool Load_Entity();
