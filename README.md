@@ -51,8 +51,8 @@ teleport the other player to his actual position.
 - Ángel González: https://github.com/BarcinoLechiguino
 
 # Work distribuation
-- Ángel González: Input, collider & camera module imlpementation, animations & gameplay logic, players implementation, camera culling, entities.
-- Gerard Romeu: Audio & FX, Map, Design of the levels, Debug Keys, animations & gameplay logic, entities, enemies implementation, UML.
+- Ángel González: Input, collider & camera module imlpementation, animations & gameplay logic, players implementation, camera culling, entities, pathfinding.
+- Gerard Romeu: Audio & FX, Map, Design of the levels, Debug Keys, animations & gameplay logic, entities, enemies implementation, UML, checkpoint.
 
 # Credits
 - https://rvros.itch.io/animated-pixel-hero
