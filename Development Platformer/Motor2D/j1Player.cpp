@@ -148,7 +148,7 @@ void j1Player::LoadEntityAudio()
 		mecha_walking = App->audio->LoadFx("audio/fx/Mecha_Walking.wav");
 		saver = App->audio->LoadFx("audio/fx/Saver.wav");
 		no_teleport = App->audio->LoadFx("audio/fx/Nope.wav");
-		ready_tp = App->audio->LoadFx("audio/fx/Analogue microwave ding.wav");
+		ready_tp = App->audio->LoadFx("audio/fx/microwave-oven-bell-1.wav");
 		audioIsLoaded = true;
 	}
 }
