@@ -50477,10 +50477,10 @@
   <object id="105" name="Checkpoint" type="checkpoint" x="2450.67" y="510.333" width="29" height="63.3333"/>
  </objectgroup>
  <objectgroup id="11" name="Respawn">
-  <object id="3" name="Origin" type="respawn" x="192" y="448" width="63" height="63"/>
+  <object id="3" name="Origin" type="respawn" x="64" y="416" width="63" height="63"/>
  </objectgroup>
  <objectgroup id="13" name="Desactivate">
-  <object id="4" name="Lasergate" type="desactivable" x="4471.75" y="832" width="95" height="224"/>
+  <object id="4" name="Lasergate" type="desactivable" x="4480" y="832" width="64" height="224"/>
  </objectgroup>
  <objectgroup color="#ff5500" id="22" name="Mecha">
   <object id="144" name="Mecha" type="mecha" x="768" y="1120" width="64" height="96"/>
@@ -50522,7 +50522,7 @@
   <object id="37" name="Ground" type="solid" x="3840" y="352" width="960" height="288"/>
   <object id="38" name="Ground" type="solid" x="4800" y="160" width="31.9997" height="160"/>
   <object id="42" name="Ground" type="solid" x="4480" y="640" width="320" height="192"/>
-  <object id="44" name="Ground" type="solid" x="4480" y="1056" width="224" height="32"/>
+  <object id="44" name="Ground" type="solid" x="4480" y="1056" width="288" height="32"/>
   <object id="45" name="Ground" type="solid" x="2560" y="1314" width="1056" height="30"/>
   <object id="46" name="Ground" type="solid" x="3616" y="1088" width="1184" height="255.997"/>
   <object id="47" name="Floor" type="solid" x="2720" y="448" width="96" height="32"/>
@@ -50553,7 +50553,7 @@
   <object id="107" name="Ground" type="solid" x="986" y="1230" width="32" height="18"/>
   <object id="108" name="Ground" type="solid" x="1024" y="1254" width="26" height="26"/>
   <object id="109" name="Ground" type="solid" x="1050" y="1262" width="32" height="18"/>
-  <object id="110" name="Ground" type="solid" x="4704" y="832" width="96" height="256"/>
+  <object id="110" name="Ground" type="solid" x="4768" y="832" width="32" height="256"/>
   <object id="111" name="Floor" type="solid" x="1024" y="672" width="288" height="32"/>
   <object id="112" name="Floor" type="solid" x="928" y="800" width="256" height="32"/>
   <object id="129" name="Ground" type="solid" x="3072" y="320" width="352" height="32.0024"/>
@@ -51503,7 +51503,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="1026"/>
    <tile gid="1026"/>
    <tile gid="1026"/>
    <tile gid="1026"/>
@@ -51653,7 +51653,6 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="1026"/>
    <tile gid="1026"/>
    <tile gid="1026"/>
@@ -51667,6 +51666,7 @@
    <tile gid="1026"/>
    <tile gid="1026"/>
    <tile gid="1026"/>
+   <tile gid="1026"/>
    <tile/>
    <tile/>
    <tile/>
@@ -51721,7 +51721,6 @@
    <tile gid="1026"/>
    <tile gid="1026"/>
    <tile gid="1026"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -51817,7 +51816,7 @@
    <tile gid="1026"/>
    <tile gid="1026"/>
    <tile gid="1026"/>
-   <tile/>
+   <tile gid="1026"/>
    <tile/>
    <tile/>
    <tile/>
@@ -51955,7 +51954,7 @@
    <tile/>
    <tile/>
    <tile gid="1026"/>
-   <tile/>
+   <tile gid="1026"/>
    <tile/>
    <tile/>
    <tile/>
@@ -52104,6 +52103,7 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="1026"/>
    <tile gid="1026"/>
    <tile/>
    <tile/>
@@ -55282,7 +55282,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="1026"/>
+   <tile/>
    <tile gid="1026"/>
    <tile gid="1026"/>
    <tile gid="1026"/>
@@ -56349,7 +56349,6 @@
    <tile gid="1026"/>
    <tile gid="1026"/>
    <tile gid="1026"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -56361,7 +56360,8 @@
    <tile gid="1026"/>
    <tile gid="1026"/>
    <tile gid="1026"/>
-   <tile/>
+   <tile gid="1026"/>
+   <tile gid="1026"/>
    <tile/>
    <tile/>
    <tile/>

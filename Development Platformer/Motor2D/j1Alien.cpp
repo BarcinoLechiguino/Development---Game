@@ -111,7 +111,7 @@ void j1Alien::OnCollision(Collider* C1, Collider* C2)
 		{
 			if (App->entityManager->player->player.isAttacking == true || App->entityManager->player2->player.isAttacking == true)
 			{
-				App->audio->PlayFx(8, 1);				//Mecha Death SFX
+				App->audio->PlayFx(8, 1);
 
 				isDying = true;
 				collider->to_delete = true;
@@ -124,25 +124,6 @@ void j1Alien::OnCollision(Collider* C1, Collider* C2)
 		//Enemy colliding against solids
 		if (C2->type == Object_Type::SOLID)
 		{
-			////Enemy Colliding from TOP or BOTTOM.
-			//if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x + C2->collider.y)		//The first part checks if C1 is contained in the X axis of C2. 
-			//{
-			//	//Enemy Colliding from TOP.
-			//	if (C1->collider.y + C1->collider.h >= C2->collider.y && C1->collider.y < C2->collider.y && speed.y != 0)			//This second part checks if C1 is actually colliding vertically down.
-			//	{
-			//		position.y = C2->collider.y - C1->collider.h + 1;		//THIS HERE
-			//		//grounded = true;
-			//		LOG("ALIEN IS COLLIDING WITH A SOLID FROM ABOVE");
-			//	}
-
-			//	//Alien Colliding from BOTTOM.
-			//	else if (C1->collider.y < C2->collider.y + C2->collider.h && C1->collider.y + 20 > C2->collider.y + C2->collider.h && C1->collider.y > C2->collider.y)	//This second part checks if C1 is actually colliding vertically down.
-			//	{
-			//		position.y = C2->collider.y + C2->collider.h + 1;		//THIS HERE
-			//		LOG("ALIEN IS COLLIDING WITH A SOLID FROM BELOW");
-			//	}
-			//}
-
 			//Enemy is colliding from LEFT or RIGHT.
 			if (C1->collider.y <= C2->collider.y + C2->collider.h && C1->collider.y + C1->collider.h - 4 >= C2->collider.y)		//The first part checks if C1 is contained in the Y axis of C2.
 			{
@@ -215,7 +196,7 @@ void j1Alien::PathfindingLogic()
 	iPoint player1Pos(App->map->WorldToMap(App->entityManager->player->position.x, App->entityManager->player->position.y));	//Player 1 position coordinates in tiles.
 	iPoint player2Pos(App->map->WorldToMap(App->entityManager->player2->position.x, App->entityManager->player2->position.y));	//Player 2 position coordinates in tiles.
 
-	enemyPos.y += 1;
+	enemyPos.y += 1;																											//Sets the origin position to the center of the alien enemy entity.
 
 	if (DistanceFromPlayer(App->entityManager->player) <= detectionRadius && DistanceFromPlayer(App->entityManager->player) <= detectionRadius)
 	{
@@ -245,23 +226,20 @@ void j1Alien::PathfindingLogic()
 		if (hasTarget == true)
 		{
 			App->pathfinding->CreatePath(enemyPos, player1Pos);
-			
-			const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
 
-			for (int i = 0; i < path->Count(); ++i)
+			entity_path = App->pathfinding->GetLastPath();
+
+			for (int i = 0; i < entity_path->Count(); ++i)																		//While there are still elements in the path.
 			{
-				if (enemyPos.x != path->At(i)->x || enemyPos.y != path->At(i)->y)
+				if (enemyPos.x != entity_path->At(i)->x)																		//If the position of the enemy in x is different than the position of the i tile of the path.
 				{
-					iPoint nextStep(path->At(i)->x, path->At(i)->y);
-					SetEnemyState(enemyPos, nextStep);
+					iPoint nextStep(entity_path->At(i)->x, entity_path->At(i)->y);												//Sets an iPoint with the coordinates of the i tile of the path. Done so it can be passed as argument to SetEnemyState().
+
+					SetEnemyState(enemyPos, nextStep);																			//Sets the enemy state according to the arguments passed (two iPoints).
 				}
 			}
 		}
 	}
-	/*else
-	{
-		hasTarget = false;
-	}*/
 
 	if (DistanceFromPlayer(App->entityManager->player2) <= detectionRadius)
 	{
@@ -277,14 +255,15 @@ void j1Alien::PathfindingLogic()
 		{
 			App->pathfinding->CreatePath(enemyPos, player1Pos);
 
-			const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
+			entity_path = App->pathfinding->GetLastPath();
 
-			for (int i = 0; i < path->Count(); ++i)
+			for (int i = 0; i < entity_path->Count(); ++i)																		//While there are still elements in the path.
 			{
-				if (enemyPos.x != path->At(i)->x || enemyPos.y != path->At(i)->y)
+				if (enemyPos.x != entity_path->At(i)->x)																		//If the position of the enemy in x is different than the position of the i tile of the path.
 				{
-					iPoint nextStep(path->At(i)->x, path->At(i)->y);
-					SetEnemyState(enemyPos, nextStep);
+					iPoint nextStep(entity_path->At(i)->x, entity_path->At(i)->y);												//Sets an iPoint with the coordinates of the i tile of the path. Done so it can be passed as argument to SetEnemyState().
+
+					SetEnemyState(enemyPos, nextStep);																			//Sets the enemy state according to the arguments passed (two iPoints).
 				}
 			}
 		}

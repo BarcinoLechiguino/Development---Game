@@ -246,23 +246,18 @@ void j1Mecha::PathfindingLogic()
 		{
 			App->pathfinding->CreatePath(enemyPos, player1Pos);																	//Creates a path with the target as the goal.
 
-			//entity_path = App->pathfinding->GetLastPath();
-			const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();													//Gets the created path (tiles).
-	
-			for (int i = 0; i < path->Count(); ++i)																				//While there are still elements in the path.
+			entity_path = App->pathfinding->GetLastPath();
+
+			for (int i = 0; i < entity_path->Count(); ++i)																		//While there are still elements in the path.
 			{	
-				if (enemyPos.x != path->At(i)->x)																				//If the position of the enemy in x is different than the position of the i tile of the path.
+				if (enemyPos.x != entity_path->At(i)->x)																		//If the position of the enemy in x is different than the position of the i tile of the path.
 				{
-					iPoint nextStep(path->At(i)->x, path->At(i)->y);															//Sets an iPoint with the coordinates of the i tile of the path. Done so it can be passed as argument to SetEnemyState().
+					iPoint nextStep(entity_path->At(i)->x, entity_path->At(i)->y);												//Sets an iPoint with the coordinates of the i tile of the path. Done so it can be passed as argument to SetEnemyState().
 					
 					SetEnemyState(enemyPos, nextStep);																			//Sets the enemy state according to the arguments passed (two iPoints).
 				}
 			}
 		}
-	}
-	else
-	{
-		hasTarget = false;
 	}
 
 	if (DistanceFromPlayer(App->entityManager->player2) <= detectionRadius)														//P2 is inside the detection range.
@@ -276,13 +271,13 @@ void j1Mecha::PathfindingLogic()
 		{
 			App->pathfinding->CreatePath(enemyPos, player2Pos);																	//Creates a path with the target as the goal.
 
-			const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();													//Gets the created path (tiles).
+			entity_path = App->pathfinding->GetLastPath();
 
-			for (int i = 0; i < path->Count(); ++i)																				//While there are still elements in the path.
+			for (int i = 0; i < entity_path->Count(); ++i)																		//While there are still elements in the path.
 			{
-				if (enemyPos.x != path->At(i)->x)																				//If the position of the enemy in x is different than the position of the i tile of the path.
+				if (enemyPos.x != entity_path->At(i)->x)																		//If the position of the enemy in x is different than the position of the i tile of the path.
 				{
-					iPoint nextStep(path->At(i)->x, path->At(i)->y);															//Sets an iPoint with the coordinates of the i tile of the path. Done so it can be passed as argument to SetEnemyState().
+					iPoint nextStep(entity_path->At(i)->x, entity_path->At(i)->y);												//Sets an iPoint with the coordinates of the i tile of the path. Done so it can be passed as argument to SetEnemyState().
 
 					SetEnemyState(enemyPos, nextStep);																			//Sets the enemy state according to the arguments passed (two iPoints).
 				}

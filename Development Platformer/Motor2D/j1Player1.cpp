@@ -97,7 +97,16 @@ bool j1Player1::Update(float dt, bool doLogic)
 
 	player.HitBox = animation->GetCurrentFrame(dt);											//Sets the animation cycle that P1 will have. 
 	collider->Set_Position(position.x, position.y);											//Makes P1's collider follow P1.
-	player.atkCollider->Set_Position(position.x + sprite_width, position.y);				//Makes P1's attack collider follow P1.
+	
+	if (player.flip == false)
+	{
+		player.atkCollider->Set_Position(position.x + sprite_width, position.y);				//Makes P1's attack collider follow P1.
+	}
+	else
+	{
+		player.atkCollider->Set_Position(position.x - sprite_width, position.y);
+	}
+	
 
 	BlitEntity(position.x, position.y, player.HitBox, player.flip);							//Blits the player on screen with the data we have given the Blit() function.
 
