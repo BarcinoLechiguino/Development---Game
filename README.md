@@ -39,6 +39,8 @@ Mutual Cooperation is a 2D Platformer developed by Gerard Romeu and √Ångel Gonz√
 
   - Animation pushbacks are now loaded from a tmx file.
 
+  - There is now a death animation for both players.
+
   - The collider rebound bug from v0.1 has been fixed.
 
   - Both Parallax and Camera Culling have been implemented.
@@ -67,6 +69,8 @@ Mutual Cooperation is a 2D Platformer developed by Gerard Romeu and √Ångel Gonz√
 
   - Both a flying and a land enemy have been implemented.
 
+  - Players now have an attack action, so enemies can be defeated.
+
   - Pathfinding has been implemented:
 
     - Now both flying and land enemies have a detection range.
@@ -92,7 +96,9 @@ Download the game file in which you will find the executable.
 
 - **Special Actions:**
 
-  - E: Teleport Player 2 to Player 1
+  - Q Key: Teleport Player 2 to Player 1
+
+  - E Key: Attack.
 
     
 
@@ -106,7 +112,8 @@ Download the game file in which you will find the executable.
 
 - **Special Actions:**
 
-  - 7 Key (Keypad): Teleport Player 1 to Player 2
+  - 9 Key (Keypad): Teleport Player 1 to Player 2
+  - 7 Key (Keypad): Attack
 
   
 
@@ -181,9 +188,13 @@ Download the game file in which you will find the executable.
 
   - UML of the Entity System.
 
-  - Enemy Entities implementation. 
+  - Enemy Entities implementation.
+
+  - Player Attack and Enemy Destruction implementation. 
 
   - Pathfinding module and entity behavior implementation.
+
+  - F3, F7, F8, F9, F10 and F11 debug keys implementation.
 
   - ReadMe.
 
@@ -196,8 +207,9 @@ Download the game file in which you will find the executable.
   - Map Transtion implementation.
   - Player Animations & enemy sprites and fx implementation.
   - j1Entity and j1EntityManager skeleton implementation. 
-  - UML 
+  - UML of the Entity System.
   - Checkpoint Autosave implementation.
+  - F1, F2, F5 and F6 debug keys implementation.
   - ReadMe.
 
   
