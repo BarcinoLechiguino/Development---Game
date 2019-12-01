@@ -62,8 +62,8 @@ Mutual Cooperation is a 2D Platformer developed by Gerard Romeu and √Ångel Gonz√
   - Implemented three new debug keys:
 
     - F7: Frees the camera and can be moved around with the arrow keys.
-    - F8: Uncaps the framerate.
-    - F11: Pathfinding Debug Mode. 
+    - F8: Pathfinding Debug Mode. 
+    - F11: Uncaps the framerate.
 
   - An entity system has been implemented.
 

@@ -199,15 +199,15 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)			//Enabling / Disabling frame cap
+	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)			//PathfindingCollisions meta layer Debug Key
 	{
-		if (App->framesAreCapped == true)
+		if (App->map->pathfindingMetaDebug == true)
 		{
-			App->framesAreCapped = false;
+			App->map->pathfindingMetaDebug = false;
 		}
 		else
 		{
-			App->framesAreCapped = true;
+			App->map->pathfindingMetaDebug = true;
 		}
 	}
 
@@ -239,15 +239,15 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)		//PathfindingCollisions meta layer Debug Key
+	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)		//Enabling / Disabling frame cap
 	{
-		if (App->map->pathfindingMetaDebug == true)
+		if (App->framesAreCapped == true)
 		{
-			App->map->pathfindingMetaDebug = false;
+			App->framesAreCapped = false;
 		}
 		else
 		{
-			App->map->pathfindingMetaDebug = true;
+			App->framesAreCapped = true;
 		}
 	}
 
