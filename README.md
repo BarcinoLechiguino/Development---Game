@@ -129,11 +129,17 @@ Download the game file in which you will find the executable.
 
     
 
-* **Skill Cooldown**
+* **Skill Cooldown:**
+
+  * The teleport skill now has a 1 second cooldown.
+  * When the teleport skill comes out of cooldown, a sfx will be reproduced.
 
   
 
-* **Checkpoint Autosave**
+* **Checkpoint Autosave:**
+
+  * The game will be automatically saved for the player who reaches the checkpoint.
+  * The respawn point of the player who reaches the checkpoint will be set to the checkpoint's position.
 
 
 

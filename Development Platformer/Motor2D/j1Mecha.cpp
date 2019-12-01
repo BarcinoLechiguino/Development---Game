@@ -78,6 +78,11 @@ bool j1Mecha::Update(float dt, bool doLogic)
 			ApplyMechaGravity();
 		}
 
+		if (isDying == true)
+		{
+			App->audio->PlayFx(7, 0);	    //Mecha Death SFX
+		}
+
 		enemy_HitBox = animation->GetCurrentFrame(dt);						//REVISE THIS HERE.
 		collider->Set_Position(position.x, position.y);
 		BlitEntity(position.x, position.y, enemy_HitBox, flip);
@@ -118,7 +123,7 @@ void j1Mecha::OnCollision(Collider* C1, Collider* C2)
 		{
 			if (App->entityManager->player->player.isAttacking == true || App->entityManager->player2->player.isAttacking == true)
 			{
-				App->audio->PlayFx(7, 0);	    //Mecha Death SFX
+				//App->audio->PlayFx(7, 0);	    //Mecha Death SFX
 
 				isDying = true;
 				collider->to_delete = true;
