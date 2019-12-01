@@ -84,7 +84,7 @@
         <gravity value="40.0f"/>
         <sprite_size w="56" h="78"/>
         <lives lives="1"/>
-        <detection_radius radius="100"/>
+        <detection_radius radius="125"/>
       </mecha>
 
       <alien>
@@ -92,7 +92,7 @@
         <speed x="200.0f" y="100.0f"/>
         <sprite_size w="38" h="52"/>
         <lives lives="1"/>
-        <detection_radius radius="100"/>
+        <detection_radius radius="125"/>
         <update_cycle_length length="0.1f"/>
       </alien>
     </enemies>
