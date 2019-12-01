@@ -54,16 +54,15 @@ bool j1Alien::Update(float dt, bool doLogic)
 	state = Entity_State::IDLE;
 	
 	//ALIEN DEBUG INPUTS
-	EnemyDebugInputs();
-
-	/*Normal_Path();
-	Chasing_Path();*/
+	if (App->map->pathfindingMetaDebug == true)
+	{
+		EnemyDebugInputs();
+	}
 
 	if (doLogic == true)
 	{
 		if (App->entityManager->player->player.GodMode == false || App->entityManager->player2->player.GodMode == false)
 		{
-			//LOG("ALIEN IS PATHFINDING");
 			PathfindingLogic();
 		}
 	}
@@ -190,7 +189,7 @@ void j1Alien::LoadEntityProperties()
 {
 	config_file.load_file("config.xml");
 
-	enemy_entity = config_file.child("config").child("entities").child("alien");
+	enemy_entity = config_file.child("config").child("entities").child("enemies").child("alien");
 	
 	//Gets all the required player variables from the config xml file
 	sprite_width	= enemy_entity.child("sprite_size").attribute("w").as_int();

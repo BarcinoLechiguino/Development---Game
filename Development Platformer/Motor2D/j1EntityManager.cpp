@@ -31,7 +31,7 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 {
 	this->config = config;
 
-	cycle_length = config.child("enemies").child("update_cycles_sec").attribute("seconds").as_float();
+	cycle_length = config.child("enemies").child("update_cycle_length").attribute("lengthsss").as_float(); //Fix pathfinding so it works with doLogic
 
 	//Iterates all entities and calls their Awake() methods.
 	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator; entity_iterator = entity_iterator->next)

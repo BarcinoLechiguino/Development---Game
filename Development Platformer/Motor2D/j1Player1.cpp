@@ -260,22 +260,27 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 				//Player is colliding from LEFT or RIGHT.
 				if (C1->collider.y <= C2->collider.y + C2->collider.h && C1->collider.y + C1->collider.h - 4 >= C2->collider.y)		//The first part checks if C1 is contained in the Y axis of C2.
 				{
-					//Player is colliding from LEFT.
-					if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x)						//This second part checks if C1 is actually colliding from the left side of the collider.
+					
+					if (player.isBoostJumping == false)
 					{
-						player.state = Player_State::Dying;
-					}
+						//Player is colliding from LEFT.
+						if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x)						//This second part checks if C1 is actually colliding from the left side of the collider.
+						{
+							player.state = Player_State::Dying;
+						}
 
-					//Player is colliding from RIGHT.
-					if (C1->collider.x <= C2->collider.x + C2->collider.w && C1->collider.x >= C2->collider.x)						// This second part checks if C1 is actually colliding from the right side of the collider.
+						//Player is colliding from RIGHT.
+						if (C1->collider.x <= C2->collider.x + C2->collider.w && C1->collider.x >= C2->collider.x)						// This second part checks if C1 is actually colliding from the right side of the collider.
+						{
+							player.state = Player_State::Dying;
+						}
+					}
+					else
 					{
-						player.state = Player_State::Dying;
+						
 					}
 				}
-				else
-				{
-					//Destroy entity
-				}
+				
 			}
 
 			//Player Colliding against an Activable Item

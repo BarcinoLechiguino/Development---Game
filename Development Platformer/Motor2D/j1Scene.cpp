@@ -90,26 +90,29 @@ bool j1Scene::Start()
 bool j1Scene::PreUpdate()
 {
 	// debug pathfing ------------------
-	static iPoint origin;
-	static bool origin_selected = false;
-
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint p = App->render->ScreenToWorld(x, y);
-	p = App->map->WorldToMap(p.x, p.y);
-
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (App->map->pathfindingMetaDebug == true)
 	{
-		if (origin_selected == true)
+		static iPoint origin;
+		static bool origin_selected = false;
+
+		int x, y;
+		App->input->GetMousePosition(x, y);
+		iPoint p = App->render->ScreenToWorld(x, y);
+		p = App->map->WorldToMap(p.x, p.y);
+
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
-			App->pathfinding->CreatePath(origin, p);
-			LOG("Tiles selected: (%d, %d) and (%d, %d)", origin.x, origin.y, p.x, p.y);
-			origin_selected = false;
-		}
-		else
-		{
-			origin = p;
-			origin_selected = true;
+			if (origin_selected == true)
+			{
+				App->pathfinding->CreatePath(origin, p);
+				LOG("Tiles selected: (%d, %d) and (%d, %d)", origin.x, origin.y, p.x, p.y);
+				origin_selected = false;
+			}
+			else
+			{
+				origin = p;
+				origin_selected = true;
+			}
 		}
 	}
 
@@ -119,25 +122,26 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)														//Receives dt as an argument.
 {
-
-	
 	BROFILER_CATEGORY("Scene Update", Profiler::Color::LavenderBlush);
 	//Camera Movement With Arrow Keys
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if (App->render->cam.camera_debug == true)
 	{
-		App->render->camera.x += ceil(cam_debug_speed * dt);	//As the value is multiplied by dt, camera movement will be adjusted to the framerate.  (100 * 0.033s (30fps), 100 * 0.066s (60fps)...)
-	}
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-	{
-		App->render->camera.x -= ceil(cam_debug_speed * dt);	//Ceil rounds up all the decimal values, returning the smallest integral value not less than the given value. 
-	}
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-	{
-		App->render->camera.y += ceil(cam_debug_speed * dt);
-	}	
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-	{
-		App->render->camera.y -= ceil(cam_debug_speed * dt);
+		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		{
+			App->render->camera.x += ceil(cam_debug_speed * dt);	//As the value is multiplied by dt, camera movement will be adjusted to the framerate.  (100 * 0.033s (30fps), 100 * 0.066s (60fps)...)
+		}
+		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		{
+			App->render->camera.x -= ceil(cam_debug_speed * dt);	//Ceil rounds up all the decimal values, returning the smallest integral value not less than the given value. 
+		}
+		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+		{
+			App->render->camera.y += ceil(cam_debug_speed * dt);
+		}
+		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		{
+			App->render->camera.y -= ceil(cam_debug_speed * dt);
+		}
 	}
 	
 	//A spritesheet switch button just for the flavour. Not functional at the moment.
@@ -261,22 +265,26 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 
 	App->map->Draw();
 
-	// Debug pathfinding ------------------------------
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint p = App->render->ScreenToWorld(x, y);
-	p = App->map->WorldToMap(p.x, p.y);
-	p = App->map->MapToWorld(p.x, p.y);
-
-	App->render->Blit(path_debug_tex, p.x, p.y);								//Should we want it, we could make a separate texture called mouse_debug_tex so the tex at mouse pos and the tex at path tile are different.
-
-	const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
-
-	for (uint i = 0; i < path->Count(); ++i)
+	if (App->map->pathfindingMetaDebug == true)
 	{
-		iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-		App->render->Blit(path_debug_tex, pos.x, pos.y);
+		// Debug pathfinding ------------------------------
+		int x, y;
+		App->input->GetMousePosition(x, y);
+		iPoint p = App->render->ScreenToWorld(x, y);
+		p = App->map->WorldToMap(p.x, p.y);
+		p = App->map->MapToWorld(p.x, p.y);
+
+		App->render->Blit(path_debug_tex, p.x, p.y);								//Should we want it, we could make a separate texture called mouse_debug_tex so the tex at mouse pos and the tex at path tile are different.
+
+		const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
+
+		for (uint i = 0; i < path->Count(); ++i)
+		{
+			iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+			App->render->Blit(path_debug_tex, pos.x, pos.y);
+		}
 	}
+	
 	//Technical title
 	/*p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d", App->map->data.width, App->map->data.height, App->map->data.tile_width, App->map->data.tile_height, App->map->data.tilesets.count());
 	App->win->SetTitle(title.GetString());*/

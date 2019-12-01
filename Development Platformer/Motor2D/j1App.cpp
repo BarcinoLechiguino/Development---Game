@@ -235,8 +235,6 @@ void j1App::FinishUpdate()
 	uint32 last_frame_ms = frame_timer.Read();						//As it is the end of the update, the frame's ms can be calculated.
 	uint32 frames_on_last_update = prev_sec_frames;					//Keeps track of how many frames were processed the last second.
 
-	static char title[256];
-	
 	if (framesAreCapped == true)
 	{
 		frameCapOnOff = "On";
@@ -245,8 +243,6 @@ void j1App::FinishUpdate()
 	{
 		frameCapOnOff = "Off";
 	}
-
-	vsyncOnOff = "On";
 
 	if (vsyncIsActive == true)
 	{
@@ -257,8 +253,10 @@ void j1App::FinishUpdate()
 		vsyncOnOff = "Off";
 	}
 
-	sprintf_s(title, 256, "Av.FPS: %.2f / Last Frame Ms: %02u / Last sec frames: %i / Last dt: %.3f / Time since startup: %.3f / Frame Count: %lu / Frame cap: %s / Vsync: %s",
-		avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count, frameCapOnOff, vsyncOnOff);
+	static char title[256];
+
+	sprintf_s(title, 256, "Av.FPS: %.2f / Last Frame Ms: %02u / Last sec frames: %i / Last dt: %.3f / Time since startup: %.3f / Frame Count: %lu / %d / Vsync: %s / Frame cap: %s",
+		avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count, vsyncOnOff, frameCapOnOff , frameCapOnOff);
 
 	App->win->SetTitle(title);
 }

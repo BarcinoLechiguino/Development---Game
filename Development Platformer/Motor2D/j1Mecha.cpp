@@ -52,15 +52,14 @@ bool j1Mecha::Start()
 bool j1Mecha::Update(float dt, bool doLogic)
 {
 	BROFILER_CATEGORY("Mecha Update", Profiler::Color::AliceBlue);
-	//CalculatePath
 
 	state = Entity_State::IDLE;
 	
 	//MECHA DEBUG INPUTS
-	EnemyDebugInputs();
-
-	/*Normal_Path();
-		Chasing_Path();*/
+	if (App->map->pathfindingMetaDebug == true)
+	{
+		EnemyDebugInputs();
+	}
 
 	if (doLogic == true)
 	{
@@ -194,7 +193,7 @@ void j1Mecha::LoadEntityProperties()
 {
 	config_file.load_file("config.xml");
 
-	enemy_entity = config_file.child("config").child("entities").child("mecha");
+	enemy_entity = config_file.child("config").child("entities").child("enemies").child("mecha");
 
 	//Gets all the required enemy variables from the config xml file
 	sprite_width			= enemy_entity.child("sprite_size").attribute("w").as_int();
@@ -240,7 +239,7 @@ void j1Mecha::PathfindingLogic()
 	if (DistanceFromPlayer(App->entityManager->player) <= detectionRadius)														//P1 is inside the detection range.
 	{
 		if (hasTarget == false)																									//If the enemy does not have a target.
-		{
+		{	
 			hasTarget = true;
 		}
 
@@ -260,8 +259,6 @@ void j1Mecha::PathfindingLogic()
 					SetEnemyState(enemyPos, nextStep);																			//Sets the enemy state according to the arguments passed (two iPoints).
 				}
 			}
-			
-			/*path->Clear();*/
 		}
 	}
 	else
@@ -291,8 +288,6 @@ void j1Mecha::PathfindingLogic()
 					SetEnemyState(enemyPos, nextStep);																			//Sets the enemy state according to the arguments passed (two iPoints).
 				}
 			}
-
-			/*path->Clear();*/
 		}
 	}
 }
