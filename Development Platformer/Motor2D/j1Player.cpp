@@ -76,6 +76,7 @@ void j1Player::LoadAnimationPushbacks()
 	frontflip.LoadAnimation("player", "frontflip");			//Player's Frontflip Animation.
 	boosted_jump.LoadAnimation("player", "boosted_jump");	//Player's Boosted Jump Animation.
 	falling.LoadAnimation("player", "falling");				//Player's Falling Animation.
+	attacking.LoadAnimation("player", "attacking");			//Player's Attack Animation.
 	death.LoadAnimation("player", "death");					//Player's Death Animation.
 
 	return;
@@ -172,7 +173,7 @@ bool j1Player::InitPlayer()
 	//Adds a collider for the player.
 	collider = App->collisions->AddCollider(player.HitBox, Object_Type::PLAYER, App->entityManager);				//The callback pointer will be pointing to the OnCollision of j1EntityManager.
 
-	//player.atkCollider = App->collisions->AddCollider(player.atkHitBox, Object_Type::ATTACK, App->entityManager);
+	player.atkCollider = App->collisions->AddCollider(player./*atk*/HitBox, Object_Type::ATTACK, App->entityManager);
 
 	//Boolean resetting
 	player.grounded				= false;
@@ -186,6 +187,7 @@ bool j1Player::InitPlayer()
 	player.isGoingLeft			= false;
 	player.platformDrop			= false;
 	player.tpInCd				= false;
+	player.isAttacking			= false;
 	player.fading				= false;
 	player.isAlive				= true;
 	player.isDying				= false;

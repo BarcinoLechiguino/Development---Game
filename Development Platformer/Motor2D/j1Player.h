@@ -23,6 +23,7 @@ enum class Player_State
 	Jumping,
 	Falling,
 	Boost_jump,
+	Attacking,
 	Teleporting,
 	Dying
 };
@@ -51,8 +52,9 @@ struct Player
 	bool			isGoingRight;			//Keeps track of whether a player is going to the right or not.
 	bool			isGoingLeft;			//Keeps track of whether a player is going to the left or not.
 	bool			item_activated;			//Keeps track of whether a player has interacted with an item or not.
-	bool			platformDrop;			//Keeps track whether or not a player wants to drop from a platform.
-	bool			tpInCd;					//Keeps track whether or not a player's tp skill is on cooldown.
+	bool			platformDrop;			//Keeps track of whether a player wants to drop from a platform or not.
+	bool			tpInCd;					//Keeps track of whether a player's tp skill is on cooldown or not.
+	bool			isAttacking;			//Keeps track of whether a player is attacking or not.
 	bool			isAlive;				//If a player runs out of lives, then this returns false.
 	bool			isDying;				//If a player runs out of lives, then this returns true.
 	bool			againstRightWall;		//If a player is against a right wall then this returns true.
@@ -135,6 +137,7 @@ public:
 	Animation		frontflip;		//Frontflip  animation.
 	Animation		falling;		//Falling animation.
 	Animation		boosted_jump;	//Boosted Jump Animation.
+	Animation		attacking;		//Attack animation.
 	Animation		death;			//Death animation.
 
 	//Sound Variables

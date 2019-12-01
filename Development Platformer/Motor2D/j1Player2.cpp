@@ -75,6 +75,17 @@ bool j1Player2::Update(float dt, bool doLogic)
 		ApplyGravity();
 	}
 
+	if (player.isAttacking == true)
+	{
+		animation = &attacking;
+
+		if (animation->Finished())
+		{
+			animation->Reset();
+			player.isAttacking = false;
+		}
+	}
+
 	//--------------------------------------- Tp skill Cooldown ---------------------------------------
 	if (player.tpInCd == true)
 	{
@@ -82,9 +93,9 @@ bool j1Player2::Update(float dt, bool doLogic)
 	}
 	
 	//THIS HERE
-	player.HitBox = animation->GetCurrentFrame(dt);											//THIS HERE //Sets the animation cycle that P1 will have. 
-	collider->Set_Position(position.x, position.y);											//Makes P1's collider follow P1.
-	//p1.atkCollider->Set_Position(position.x + sprite_size.x, sprite_size.y);				//Makes P1's attack collider follow P1.
+	player.HitBox = animation->GetCurrentFrame(dt);											//Sets the animation cycle that P2 will have. 
+	collider->Set_Position(position.x, position.y);											//Makes P2's collider follow P2.
+	player.atkCollider->Set_Position(position.x + sprite_width, position.y);				//Makes P2's attack collider follow P2.
 
 	BlitEntity(position.x, position.y, player.HitBox, player.flip);							//Blits the player on screen with the data we have given the Blit() function.
 
@@ -364,6 +375,11 @@ void j1Player2::SetPlayerState(Player_State& player_state)
 			player.platformDrop = false;
 		}
 
+		if (App->input->GetKey(SDL_SCANCODE_KP_9) == KEY_DOWN)
+		{
+			player_state = Player_State::Attacking;
+		}
+		
 		if (App->input->GetKey(SDL_SCANCODE_KP_7) == KEY_DOWN)				//Teleport
 		{
 			player.state = Player_State::Teleporting;
@@ -394,7 +410,7 @@ void j1Player2::PlayerMovement(Player_State player_state, float dt)
 
 	case Player_State::Going_Right:
 
-		if (player.againstLeftWall == false)
+		if (player.againstLeftWall == false && player.isAttacking == false && player.isDying == false)
 		{
 			position.x += speed.x * dt;
 
@@ -415,7 +431,7 @@ void j1Player2::PlayerMovement(Player_State player_state, float dt)
 
 	case Player_State::Going_Left:
 
-		if (player.againstRightWall == false)
+		if (player.againstRightWall == false && player.isAttacking == false && player.isDying == false)
 		{
 			position.x -= speed.x * dt;
 
@@ -456,6 +472,20 @@ void j1Player2::PlayerMovement(Player_State player_state, float dt)
 		player.airborne = true;
 		//p1.grounded = false;							//With this commented, jumping after falling off platforms is allowed.
 		animation = &falling;
+
+		break;
+
+	case Player_State::Attacking:
+
+		player.isAttacking = true;
+		animation = &attacking;
+		//player.atkCollider->type = ATTACK;
+
+		if (attacking.Finished())
+		{
+			attacking.Reset();
+			player.isAttacking = false;
+		}
 
 		break;
 

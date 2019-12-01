@@ -167,6 +167,7 @@ void j1Collisions::Collider_Debug()
 
 			case Object_Type::ATTACK:		//ATTACK collider will be CYAN
 				App->render->DrawQuad(collider_iterator->data->collider, 0, 255, 255, ALPHA);
+				break;
 
 			case Object_Type::SOLID:		//SOLID collider will be BLUE
 				App->render->DrawQuad(collider_iterator->data->collider, 0, 0, 255, ALPHA);

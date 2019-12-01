@@ -53,25 +53,28 @@ bool j1Alien::Update(float dt, bool doLogic)
 
 	state = Entity_State::IDLE;
 	
-	//ALIEN DEBUG INPUTS
-	if (App->map->pathfindingMetaDebug == true)
+	if (isDying == false)
 	{
-		EnemyDebugInputs();
-	}
-
-	if (doLogic == true)
-	{
-		if (App->entityManager->player->player.GodMode == false || App->entityManager->player2->player.GodMode == false)
+		//ALIEN DEBUG INPUTS
+		if (App->map->pathfindingMetaDebug == true)
 		{
-			PathfindingLogic();
+			EnemyDebugInputs();
 		}
+
+		if (doLogic == true || hasTarget == true)
+		{
+			if (App->entityManager->player->player.GodMode == false || App->entityManager->player2->player.GodMode == false)
+			{
+				PathfindingLogic();
+			}
+		}
+
+		PathfindingMovement(state, dt);
+
+		enemy_HitBox = animation->GetCurrentFrame(dt);				//Sets the animation cycle that the alien enemies will have. 
+		collider->Set_Position(position.x, position.y);				//Resets the position of the colliders the alien enemies
+		BlitEntity(position.x, position.y, enemy_HitBox, flip);		//Blits the alien enemies on screen.
 	}
-
-	PathfindingMovement(state, dt);
-
-	enemy_HitBox = animation->GetCurrentFrame(dt);				//Sets the animation cycle that the alien enemies will have. 
-	collider->Set_Position(position.x, position.y);				//Resets the position of the colliders the alien enemies
-	BlitEntity(position.x, position.y, enemy_HitBox, flip);		//Blits the alien enemies on screen.
 
 	return true;
 }
@@ -107,7 +110,14 @@ void j1Alien::OnCollision(Collider* C1, Collider* C2)
 		if (C2->type == Object_Type::ATTACK)
 		{
 			//DeathSound
-			CleanUp();
+			if (App->entityManager->player->player.isAttacking == true || App->entityManager->player2->player.isAttacking == true)
+			{
+				isDying = true;
+				collider->to_delete = true;
+				int num = App->entityManager->entities.find(this);
+				RELEASE(App->entityManager->entities.At(num)->data);
+				App->entityManager->entities.del(App->entityManager->entities.At(num));
+			}
 		}
 
 		//Enemy colliding against solids
@@ -167,16 +177,6 @@ bool j1Alien::Save(pugi::xml_node&) const
 
 
 // ------------------------ ALIEN ENTITY METHODS ------------------------
-void j1Alien::Normal_Path()
-{
-
-}
-
-void j1Alien::Chasing_Path()
-{
-
-}
-
 void j1Alien::LoadAnimationPushbacks()
 {
 	idle.LoadAnimation("alien", "idle");

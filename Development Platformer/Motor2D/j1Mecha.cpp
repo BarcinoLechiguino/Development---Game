@@ -56,29 +56,32 @@ bool j1Mecha::Update(float dt, bool doLogic)
 	state = Entity_State::IDLE;
 	
 	//MECHA DEBUG INPUTS
-	if (App->map->pathfindingMetaDebug == true)
+	if (isDying == false)
 	{
-		EnemyDebugInputs();
-	}
-
-	if (doLogic == true)
-	{
-		if (App->entityManager->player->player.GodMode == false || App->entityManager->player2->player.GodMode == false)
+		if (App->map->pathfindingMetaDebug == true)
 		{
-			PathfindingLogic();
+			EnemyDebugInputs();
 		}
-	}
-	
-	PathfindingMovement(state, dt);
 
-	if (airborne = true)
-	{
-		ApplyMechaGravity();
-	}
+		if (doLogic == true || hasTarget == true)		//Revise this
+		{
+			if (App->entityManager->player->player.GodMode == false || App->entityManager->player2->player.GodMode == false)
+			{
+				PathfindingLogic();
+			}
+		}
 
-	enemy_HitBox = animation->GetCurrentFrame(dt);						//REVISE THIS HERE.
-	collider->Set_Position(position.x, position.y);
-	BlitEntity(position.x, position.y, enemy_HitBox, flip);
+		PathfindingMovement(state, dt);
+
+		if (airborne = true)
+		{
+			ApplyMechaGravity();
+		}
+
+		enemy_HitBox = animation->GetCurrentFrame(dt);						//REVISE THIS HERE.
+		collider->Set_Position(position.x, position.y);
+		BlitEntity(position.x, position.y, enemy_HitBox, flip);
+	}
 
 	return true;
 }
@@ -112,17 +115,36 @@ void j1Mecha::OnCollision(Collider* C1, Collider* C2)
 	//Entity_On collision function in entity
 	if (C1->type == Object_Type::ENEMY)
 	{
+		if (C2->type == Object_Type::PLAYER)
+		{
+			if (App->entityManager->player->player.isBoostJumping == true || App->entityManager->player->player.isBoostJumping == true)
+			{
+				isDying = true;
+				collider->to_delete = true;
+				int num = App->entityManager->entities.find(this);
+				RELEASE(App->entityManager->entities.At(num)->data);
+				App->entityManager->entities.del(App->entityManager->entities.At(num));
+			}
+		}
+		
 		//Enemy Colliding Against a Player
 		if (C2->type == Object_Type::ATTACK)
 		{
 			//DeathSound
-			CleanUp();
+			if (App->entityManager->player->player.isAttacking == true || App->entityManager->player2->player.isAttacking == true)
+			{
+				isDying = true;
+				collider->to_delete = true;
+				int num = App->entityManager->entities.find(this);
+				RELEASE(App->entityManager->entities.At(num)->data);
+				App->entityManager->entities.del(App->entityManager->entities.At(num));
+			}
 		}
 
 		//Enemy colliding against solids
 		if (C2->type == Object_Type::SOLID)
 		{
-			//Enemy Colliding from TOP or BOTTOM. sssssa
+			//Enemy Colliding from TOP or BOTTOM.
 			if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x + C2->collider.y)		//The first part checks if C1 is contained in the X axis of C2. 
 			{
 				//Enemy Colliding from TOP.

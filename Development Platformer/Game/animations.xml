@@ -58,27 +58,18 @@
       <pushback x="236" y="226" w="33" h="59"/>
     </falling>
 
+    <attacking speed ="20.0f" loop="false">
+      <pushback x="26" y="532" w="40" h="58"/>
+      <pushback x="26" y="532" w="40" h="58"/>
+      <pushback x="120" y="532" w="74" h="58"/>
+      <pushback x="204" y="533" w="64" h="58"/>
+      <pushback x="304" y="532" w="62" h="58"/>
+    </attacking>
+
     <death speed ="8.0f" loop ="true">
       <pushback x="10" y="1094" w="58" h="66"/>
-      <pushback x="10" y="1094" w="58" h="66"/>
-      <pushback x="10" y="1094" w="58" h="66"/>
-      <pushback x="10" y="1094" w="58" h="66"/>
-      <pushback x="10" y="1094" w="58" h="66"/>
-      <pushback x="68" y="1074" w="58" h="86"/>
-      <pushback x="68" y="1074" w="58" h="86"/>
-      <pushback x="68" y="1074" w="58" h="86"/>
-      <pushback x="68" y="1074" w="58" h="86"/>
-      <pushback x="68" y="1074" w="58" h="86"/>
-      <pushback x="68" y="1074" w="58" h="86"/>
       <pushback x="68" y="1074" w="58" h="86"/>
       <pushback x="136" y="1074" w="58" h="86"/>
-      <pushback x="136" y="1074" w="58" h="86"/>
-      <pushback x="136" y="1074" w="58" h="86"/>
-      <pushback x="136" y="1074" w="58" h="86"/>
-      <pushback x="136" y="1074" w="58" h="86"/>
-      <pushback x="193" y="1074" w="58" h="86"/>
-      <pushback x="193" y="1074" w="58" h="86"/>
-      <pushback x="193" y="1074" w="58" h="86"/>
       <pushback x="193" y="1074" w="58" h="86"/>
     </death>
   </player>

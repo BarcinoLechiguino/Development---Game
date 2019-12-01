@@ -71,11 +71,34 @@ bool j1Player1::PreUpdate()
 bool j1Player1::Update(float dt, bool doLogic)
 {
 	PlayerMovement(player.state, dt);
-	
+
 	//If P1 is in the air then this function brings them back down to the floor.
 	if (player.airborne == true)
 	{
 		ApplyGravity();
+	}
+
+	if (player.isAttacking == true)
+	{
+		animation = &attacking;
+
+		if (animation->Finished())
+		{
+			animation->Reset();
+			player.isAttacking = false;
+		}
+	}
+
+	if (player.isDying == true)
+	{
+		animation = &death;
+
+		if (animation->Finished())
+		{
+			animation->Reset();
+			player.isDying = false;
+			RespawnP1ToP2();
+		}
 	}
 
 	//--------------------------------------- Tp skill Cooldown ---------------------------------------
@@ -86,7 +109,7 @@ bool j1Player1::Update(float dt, bool doLogic)
 
 	player.HitBox = animation->GetCurrentFrame(dt);											//Sets the animation cycle that P1 will have. 
 	collider->Set_Position(position.x, position.y);											//Makes P1's collider follow P1.
-	//p1.atkCollider->Set_Position(position.x + sprite_size.x, sprite_size.y);				//Makes P1's attack collider follow P1.
+	player.atkCollider->Set_Position(position.x + sprite_width, position.y);				//Makes P1's attack collider follow P1.
 
 	BlitEntity(position.x, position.y, player.HitBox, player.flip);							//Blits the player on screen with the data we have given the Blit() function.
 
@@ -260,7 +283,6 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 				//Player is colliding from LEFT or RIGHT.
 				if (C1->collider.y <= C2->collider.y + C2->collider.h && C1->collider.y + C1->collider.h - 4 >= C2->collider.y)		//The first part checks if C1 is contained in the Y axis of C2.
 				{
-					
 					if (player.isBoostJumping == false)
 					{
 						//Player is colliding from LEFT.
@@ -275,10 +297,10 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 							player.state = Player_State::Dying;
 						}
 					}
-					else
+					/*else
 					{
 						
-					}
+					}*/
 				}
 				
 			}
@@ -394,7 +416,12 @@ void j1Player1::SetPlayerState(Player_State& player_state)
 			player.platformDrop = false;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)					//Teleport
+		if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+		{
+			player_state = Player_State::Attacking;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)					//Teleport
 		{
 			player_state = Player_State::Teleporting;
 		}
@@ -423,7 +450,7 @@ void j1Player1::PlayerMovement(Player_State player_state, float dt)
 
 	case Player_State::Going_Right:
 
-		if (player.againstLeftWall == false)
+		if (player.againstLeftWall == false && player.isAttacking == false && player.isDying == false)
 		{
 			position.x += speed.x * dt;
 
@@ -444,7 +471,7 @@ void j1Player1::PlayerMovement(Player_State player_state, float dt)
 
 	case Player_State::Going_Left:
 
-		if (player.againstRightWall == false)
+		if (player.againstRightWall == false && player.isAttacking == false && player.isDying == false)
 		{
 			position.x -= speed.x * dt;
 
@@ -493,6 +520,20 @@ void j1Player1::PlayerMovement(Player_State player_state, float dt)
 
 		break;
 
+	case Player_State::Attacking:
+		
+		player.isAttacking = true;
+		animation = &attacking;
+		//player.atkCollider->type = ATTACK;
+
+		if (attacking.Finished())
+		{
+			attacking.Reset();
+			player.isAttacking = false;
+		}
+
+		break;
+
 	case Player_State::Teleporting:
 
 		TeleportP2ToP1();
@@ -504,16 +545,12 @@ void j1Player1::PlayerMovement(Player_State player_state, float dt)
 		player.lives--;
 		
 		App->audio->PlayFx(2, 0);
-		animation = &death;
-		RespawnP1ToP2();
+		//animation = &death;
+		//RespawnP1ToP2();
 		
 		LivesCheck(player.lives);
-
-		if (animation->Finished())			//Only switch the isDying bool when the animation has finished. Does not work yet. Check <dying loop="">  in animations.xml.
-		{
-			player.isDying = true;
-			
-		}
+		
+		player.isDying = true;
 
 		break;
 	}
