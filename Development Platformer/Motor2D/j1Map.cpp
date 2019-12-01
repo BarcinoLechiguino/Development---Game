@@ -123,21 +123,6 @@ void j1Map::Draw()
 								App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
 							}
 						}
-						
-						//---------------------------TUTORIAL MAP LAYERS----------------------
-						//else if (layer->data->name == "Floor")
-						//{
-						//	App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-						//}
-						//else if (layer->data->name == "Letters")
-						//{
-						//	App->render->Blit(tileset->texture, pos.x, pos.y, &tile_rect);
-						//}
-						
-						//if (camera_collider.Check_Collision(tile_hitBox))											//Checks if the tile is inside or outside the camera boundaries by checking if there  has been a collision between the camera rect and the tile rect. 
-						//{
-
-						//}
 					}
 				}
 			}
