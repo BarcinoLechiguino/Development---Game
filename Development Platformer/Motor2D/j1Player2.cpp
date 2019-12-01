@@ -50,13 +50,6 @@ bool j1Player2::PreUpdate()
 {
 	SetPlayerState(player.state);
 
-	//Switch Sprites Method Call
-	/*if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
-	{
-		App->tex->UnLoad(p2.texture);
-		LoadPlayer2Textures();
-	}*/
-
 	return true;
 };
 
@@ -102,7 +95,15 @@ bool j1Player2::Update(float dt, bool doLogic)
 	//THIS HERE
 	player.HitBox = animation->GetCurrentFrame(dt);											//Sets the animation cycle that P2 will have. 
 	collider->Set_Position(position.x, position.y);											//Makes P2's collider follow P2.
-	player.atkCollider->Set_Position(position.x + sprite_width, position.y);				//Makes P2's attack collider follow P2.
+	
+	if (player.flip == false)
+	{
+		player.atkCollider->Set_Position(position.x + sprite_width, position.y);				//Makes P2's attack collider follow P2.
+	}
+	else
+	{
+		player.atkCollider->Set_Position(position.x - sprite_width, position.y);				//Makes P2's attack collider follow P2.
+	}
 
 	BlitEntity(position.x, position.y, player.HitBox, player.flip);							//Blits the player on screen with the data we have given the Blit() function.
 
@@ -321,7 +322,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 			{
 				LoadNextMap();													//Loads the next map
 
-				App->audio->PlayFx(6, 1);										//Sound effect of the Goal / Protal.
+				App->audio->PlayFx(6, 0);										//Sound effect of the Goal / Protal.
 			}
 		}
 	}
@@ -373,7 +374,10 @@ void j1Player2::SetPlayerState(Player_State& player_state)
 
 		if (App->input->GetKey(SDL_SCANCODE_KP_8) == KEY_DOWN)
 		{
-			player_state = Player_State::Attacking;
+			if (player.isDying == false)
+			{
+				player_state = Player_State::Attacking;
+			}
 		}
 		
 		if (App->input->GetKey(SDL_SCANCODE_KP_7) == KEY_DOWN)				//Teleport

@@ -402,7 +402,10 @@ void j1Player1::SetPlayerState(Player_State& player_state)
 
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
 		{
-			player_state = Player_State::Attacking;
+			if (player.isDying == false)
+			{
+				player_state = Player_State::Attacking;
+			}	
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)					//Teleport
