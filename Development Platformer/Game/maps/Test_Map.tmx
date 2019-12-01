@@ -50472,7 +50472,6 @@
  <objectgroup id="10" name="End">
   <object id="1" name="Goal" type="goal" x="4672" y="928" width="32" height="96"/>
   <object id="119" name="Goal" type="goal" x="1024" y="960" width="32" height="32"/>
-  <object id="161" name="Goal" type="goal" x="288" y="416" width="32" height="96"/>
  </objectgroup>
  <objectgroup id="19" name="Auto-Save">
   <object id="105" name="Checkpoint" type="checkpoint" x="2450.67" y="510.333" width="29" height="63.3333"/>

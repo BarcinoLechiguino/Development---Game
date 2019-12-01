@@ -176,8 +176,6 @@ Download the game file in which you will find the executable.
 
   - Both Player 1 and Player 2 module and gameplay logic (inputs, skills...) implementation.
 
-  - Map Transition implementation.
-
   - Animations implementation (Animation pushbacks loaded from an xml file).
 
   - Parallax and Camera Culling implementation
@@ -186,15 +184,13 @@ Download the game file in which you will find the executable.
 
   - Entity System implementation.
 
-  - UML of the Entity System.
-
   - Enemy Entities implementation.
 
   - Player Attack and Enemy Destruction implementation. 
 
   - Pathfinding module and entity behavior implementation.
 
-  - F3, F7, F8, F9, F10 and F11 debug keys implementation.
+  - F7, F8, F9, F10 and F11 debug keys implementation.
 
   - ReadMe.
 
@@ -203,13 +199,23 @@ Download the game file in which you will find the executable.
 - **Gerard Romeu:** 
 
   - Audio & FX 
+
   - Level design.
+
   - Map Transtion implementation.
+
   - Player Animations & enemy sprites and fx implementation.
-  - j1Entity and j1EntityManager skeleton implementation. 
+
+  - j1Entity and j1EntityManager implementation. 
+
   - UML of the Entity System.
+
   - Checkpoint Autosave implementation.
-  - F1, F2, F5 and F6 debug keys implementation.
+
+  - Load & Save Implementation
+
+  - F1, F2, F3, F5 and F6 debug keys implementation.
+
   - ReadMe.
 
   

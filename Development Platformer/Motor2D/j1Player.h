@@ -152,6 +152,8 @@ public:
 	uint			saver;
 	uint			no_teleport;
 	uint			ready_tp;
+	uint			alien_walking;
+	uint			attack;
 
 	bool			audioIsLoaded;	//Keeps track whether the audio has already been loaded.
 };

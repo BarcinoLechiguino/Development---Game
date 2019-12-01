@@ -130,7 +130,7 @@ void j1Mecha::OnCollision(Collider* C1, Collider* C2)
 		{
 			if (App->entityManager->player->player.isAttacking == true || App->entityManager->player2->player.isAttacking == true)
 			{
-				//Mecha Death SFX
+				App->audio->PlayFx(7, 0);	    //Mecha Death SFX
 
 				isDying = true;
 				collider->to_delete = true;
@@ -327,7 +327,7 @@ void j1Mecha::PathfindingMovement(Entity_State state, float dt)
 
 		position.y -= speed.y * dt;
 		animation = &running;
-		App->audio->PlayFx(21, 1);
+		App->audio->PlayFx(9, 1);
 
 		break;
 
@@ -335,7 +335,7 @@ void j1Mecha::PathfindingMovement(Entity_State state, float dt)
 
 		position.y += speed.y * dt;
 		animation = &running;
-		App->audio->PlayFx(21, 1);
+		App->audio->PlayFx(9, 1);
 
 		break;
 
@@ -344,7 +344,7 @@ void j1Mecha::PathfindingMovement(Entity_State state, float dt)
 		position.x += speed.x * dt;
 		flip = false;
 		animation = &running;
-		App->audio->PlayFx(21, 1);
+		App->audio->PlayFx(9, 1);
 
 		break;
 
@@ -353,7 +353,7 @@ void j1Mecha::PathfindingMovement(Entity_State state, float dt)
 		position.x -= speed.x * dt;
 		flip = true;
 		animation = &running;
-		App->audio->PlayFx(21, 1);
+		App->audio->PlayFx(9, 1);
 
 		break;
 	}
