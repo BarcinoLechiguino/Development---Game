@@ -231,7 +231,7 @@ void j1Alien::PathfindingLogic()
 
 			for (int i = 0; i < entity_path->Count(); ++i)																		//While there are still elements in the path.
 			{
-				if (enemyPos.x != entity_path->At(i)->x)																		//If the position of the enemy in x is different than the position of the i tile of the path.
+				if (enemyPos.x != entity_path->At(i)->x || enemyPos.y != entity_path->At(i)->y)									//If the position of the enemy in x is different than the position of the i tile of the path.
 				{
 					iPoint nextStep(entity_path->At(i)->x, entity_path->At(i)->y);												//Sets an iPoint with the coordinates of the i tile of the path. Done so it can be passed as argument to SetEnemyState().
 
@@ -259,7 +259,7 @@ void j1Alien::PathfindingLogic()
 
 			for (int i = 0; i < entity_path->Count(); ++i)																		//While there are still elements in the path.
 			{
-				if (enemyPos.x != entity_path->At(i)->x)																		//If the position of the enemy in x is different than the position of the i tile of the path.
+				if (enemyPos.x != entity_path->At(i)->x || enemyPos.y != entity_path->At(i)->y)									//If the position of the enemy in x is different than the position of the i tile of the path.
 				{
 					iPoint nextStep(entity_path->At(i)->x, entity_path->At(i)->y);												//Sets an iPoint with the coordinates of the i tile of the path. Done so it can be passed as argument to SetEnemyState().
 
@@ -383,59 +383,59 @@ void j1Alien::SetEnemyState(iPoint enemyPos, iPoint playerPos)
 		state = Entity_State::PATHING_LEFT;
 	}
 
-	if (playerPos.x > enemyPos.x && playerPos.y < enemyPos.y && App->pathfinding->IsWalkable(checkRight))
+	if (playerPos.x > enemyPos.x && playerPos.y < enemyPos.y && App->pathfinding->IsWalkable(checkRight) /*&& App->pathfinding->IsWalkable(checkUp)*/)
 	{
-		state = Entity_State::PATHING_UP_RIGHT;
+		//state = Entity_State::PATHING_UP_RIGHT;
 
-		/*if (App->pathfinding->IsWalkable(checkUp))
+		if (App->pathfinding->IsWalkable(checkUp))
 		{
 			state = Entity_State::PATHING_UP_RIGHT;
 		}
 		else
 		{
 			state = Entity_State::PATHING_RIGHT;
-		}*/
+		}
 	}
 
-	if (playerPos.x < enemyPos.x && playerPos.y < enemyPos.y && App->pathfinding->IsWalkable(checkLeft))
+	if (playerPos.x < enemyPos.x && playerPos.y < enemyPos.y && App->pathfinding->IsWalkable(checkLeft) /*&& App->pathfinding->IsWalkable(checkUp)*/)
 	{
-		state = Entity_State::PATHING_UP_LEFT;
+		//state = Entity_State::PATHING_UP_LEFT;
 		
-		/*if (App->pathfinding->IsWalkable(checkUp))
+		if (App->pathfinding->IsWalkable(checkUp))
 		{
 			state = Entity_State::PATHING_UP_LEFT;
 		}
 		else
 		{
 			state = Entity_State::PATHING_LEFT;
-		}*/
+		}
 	}
 
-	if (playerPos.x > enemyPos.x && playerPos.y > enemyPos.y && App->pathfinding->IsWalkable(checkRight))
+	if (playerPos.x > enemyPos.x && playerPos.y > enemyPos.y && App->pathfinding->IsWalkable(checkRight) /*&& App->pathfinding->IsWalkable(checkDown)*/)
 	{
-		state = Entity_State::PATHING_DOWN_RIGHT;
+		//state = Entity_State::PATHING_DOWN_RIGHT;
 		
-		/*if (App->pathfinding->IsWalkable(checkDown))
+		if (App->pathfinding->IsWalkable(checkDown))
 		{
 			state = Entity_State::PATHING_DOWN_RIGHT;
 		}
 		else
 		{
 			state = Entity_State::PATHING_RIGHT;
-		}*/
+		}
 	}
 
-	if (playerPos.x < enemyPos.x && playerPos.y > enemyPos.y && App->pathfinding->IsWalkable(checkLeft))
+	if (playerPos.x < enemyPos.x && playerPos.y > enemyPos.y && App->pathfinding->IsWalkable(checkLeft) /*&& App->pathfinding->IsWalkable(checkDown)*/)
 	{
-		state = Entity_State::PATHING_DOWN_LEFT;
+		//state = Entity_State::PATHING_DOWN_LEFT;
 		
-		/*if (App->pathfinding->IsWalkable(checkDown))
+		if (App->pathfinding->IsWalkable(checkDown))
 		{
 			state = Entity_State::PATHING_DOWN_LEFT;
 		}
 		else
 		{
 			state = Entity_State::PATHING_LEFT;
-		}*/
+		}
 	}
 }

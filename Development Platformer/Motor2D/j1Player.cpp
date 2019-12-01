@@ -275,6 +275,7 @@ void j1Player::LoadNextMap()										//REVISE THIS HERE. Loads the map but coll
 	if (App ->scene->secondMap == false)
 	{
 		App->fadescene->FadeToBlack("Test_map_2.tmx");
+		//App->audio->PlayMusic(App->map->data.music_File.GetString());
 	}	
 }
 

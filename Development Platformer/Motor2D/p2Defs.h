@@ -65,9 +65,8 @@ inline const char* const PATH(const char* folder, const char* file)
 #define PERF_START(timer) timer.Start();
 #define PERF_PEEK(timer) LOG("%s took %f ms", __FUNCTION__, timer.ReadMs())
 
-//Own Definitions --> Revise which are needed.
+//Own Definitions
 #define ALPHA 80
-#define GOAL_Y 96
-#define GOAL_HEIGHT 160
+#define FLIP_MARGIN 20
 
 #endif

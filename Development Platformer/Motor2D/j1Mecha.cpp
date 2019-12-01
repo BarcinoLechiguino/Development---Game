@@ -84,7 +84,16 @@ bool j1Mecha::Update(float dt, bool doLogic)
 		}
 
 		enemy_HitBox = animation->GetCurrentFrame(dt);						//REVISE THIS HERE.
-		collider->Set_Position(position.x, position.y);
+		
+		if (flip == false)
+		{
+			collider->Set_Position(position.x, position.y);
+		}
+		else
+		{
+			collider->Set_Position(position.x - FLIP_MARGIN, position.y);
+		}
+		
 		BlitEntity(position.x, position.y, enemy_HitBox, flip);
 	}
 
