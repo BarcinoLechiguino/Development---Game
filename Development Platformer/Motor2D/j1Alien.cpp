@@ -305,7 +305,7 @@ void j1Alien::PathfindingMovement(Entity_State state, float dt)
 
 		position.y -= speed.y * dt;
 		animation = &running;
-		App->audio->PlayFx(13, 1);
+		App->audio->PlayFx(13, 0);
 
 		break;
 
@@ -313,7 +313,7 @@ void j1Alien::PathfindingMovement(Entity_State state, float dt)
 
 		position.y += speed.y * dt;
 		animation = &running;
-		App->audio->PlayFx(13, 1);
+		App->audio->PlayFx(13, 0);
 
 		break;
 
@@ -322,7 +322,7 @@ void j1Alien::PathfindingMovement(Entity_State state, float dt)
 		position.x += speed.x * dt;
 		flip = true;						//Change the alien's orientation in the spritesheet so this can be false.
 		animation = &running;
-		App->audio->PlayFx(13, 1);
+		App->audio->PlayFx(13, 0);
 
 		break;
 
@@ -341,7 +341,7 @@ void j1Alien::PathfindingMovement(Entity_State state, float dt)
 		position.y -= speed.y * dt;
 		flip = true;
 		animation = &running;
-		App->audio->PlayFx(13, 1);
+		App->audio->PlayFx(13, 0);
 
 		break;
 
@@ -351,7 +351,7 @@ void j1Alien::PathfindingMovement(Entity_State state, float dt)
 		position.y -= speed.y * dt;
 		flip = false;
 		animation = &running;
-		App->audio->PlayFx(13, 1);
+		App->audio->PlayFx(13, 0);
 
 		break;
 
@@ -361,7 +361,7 @@ void j1Alien::PathfindingMovement(Entity_State state, float dt)
 		position.y += speed.y * dt;
 		flip = true;
 		animation = &running;
-		App->audio->PlayFx(13, 1);
+		App->audio->PlayFx(13, 0);
 
 		break;
 
@@ -371,7 +371,7 @@ void j1Alien::PathfindingMovement(Entity_State state, float dt)
 		position.y += speed.y * dt;
 		flip = false;
 		animation = &running;
-		App->audio->PlayFx(13, 1);
+		App->audio->PlayFx(13, 0);
 
 		break;
 	}
