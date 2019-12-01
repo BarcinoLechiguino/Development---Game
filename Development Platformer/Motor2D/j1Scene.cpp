@@ -163,6 +163,7 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)			//Load First Level Key
 	{
 		App->fadescene->FadeToBlack("Test_map.tmx");
+		
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)			//Load Second Level Key
@@ -362,6 +363,7 @@ bool j1Scene::Save(pugi::xml_node& data) const
 bool j1Scene::Load_lvl(int time)
 {
 	App->map->SwitchMaps(map_names[time]);
+	
 	return false;
 }
 

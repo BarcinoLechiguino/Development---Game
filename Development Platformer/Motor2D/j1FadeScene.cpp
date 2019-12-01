@@ -96,6 +96,8 @@ bool j1Fade_Scene ::FadeToBlack(const char* mapname, float time)
 		ret = true;
 	}
 	
+	
+
 	return ret;
 }
 
