@@ -50,7 +50,7 @@
       <max_speed x="240.0f" y="500.0f"/>
       <acceleration x="60.0f" y="450.0f"/>
       <gravity value="40.0f"/>
-      <boost_jump x="0"  y="700.0f"/>
+      <boost_jump x="0"  y="700.0f" threshold="1000"/>
       <frontflip start="-6.0f" end="6.0f"/>
       <sprite_size w="38" h="58"/>
       <lives lives="3"/>
@@ -64,13 +64,11 @@
       <PassFX name = "Pass.wav"/>
 
       <player_1 name="player_1">
-        <!-- <position x="225" y="1125"/> -->
         <factoryMap mapName="factoryMap" x="192.0f" y="400.0f"/>
         <forestMap mapName="forestMap" x="192.0f" y="1088.0f"/>
       </player_1>
 
       <player_2 name="player_2">
-        <!-- <position x="200" y="1150"/> -->
         <factoryMap mapName="factoryMap" x="182.0f" y="400.0f"/>
         <forestMap mapName="forestMap" x="182.0f" y="1088.0f"/>
       </player_2>

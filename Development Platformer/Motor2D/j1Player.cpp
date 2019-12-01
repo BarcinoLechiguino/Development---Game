@@ -118,6 +118,7 @@ void j1Player::LoadEntityProperties()
 
 	player.boost_jump.x		= player_entity.child("boost_jump").attribute("x").as_float();
 	player.boost_jump.y		= player_entity.child("boost_jump").attribute("y").as_float();	
+	player.boostThreshold	= player_entity.child("boost_jump").attribute("threshold").as_int();
 
 	player.frontflipStart	= player_entity.child("frontflip").attribute("start").as_float();
 	player.frontflipEnd		= player_entity.child("frontflip").attribute("end").as_float();

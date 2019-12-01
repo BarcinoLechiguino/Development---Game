@@ -63,6 +63,7 @@ struct Player
 	bool			GodMode;				//Defines whether GodMode is active or not.
 	bool			switch_sprites;			//Defines which sprite will a player have.
 
+	int				boostThreshold;			//Threshold from within which the boost jump is activated. Temporal
 	p2SString		mapTag;					//Depending on the mapTag, the initial position loaded from the xml file of the player will be one or another. mapTag = "factoryMap" --> Origin Pos in the factory map.
 
 	SDL_Rect		HitBox;					//Rectangle that represents a player.

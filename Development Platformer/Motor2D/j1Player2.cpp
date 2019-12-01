@@ -68,31 +68,12 @@ bool j1Player2::PreUpdate()
 bool j1Player2::Update(float dt, bool doLogic)
 {
 	PlayerMovement(player.state, dt);
-
-	//Use iPoints/fPoints and DistanceNoSqrt() to check distances. 
-	//if (position.x >= App->entityManager->player->position.x && App->entityManager->player->player.state == Player_State::Crouching) //LAST THING TO USE
-	//{
-	//	if (player.grounded == true)
-	//	{
-	//		speed.y -= player.boost_jump.y * App->GetDt();
-	//		LOG("boost jump speed is");
-	//		player.isBoostJumping = true;
-	//		player.airborne = true;
-	//		player.grounded = false;
-	//		player.platformDrop = false;
-	//		App->audio->PlayFx(3, 0);
-	//	}
-	//}
 	
 	//If P2 is in the air then this function brings them back down to the floor.
 	if (player.airborne == true)
 	{
 		ApplyGravity();
 	}
-
-	//--------------------------------------- Miscelaneous Checks ---------------------------------------
-	LivesCheck(player.lives);																// If P1 empties the lives pool then both players die and reset their positions to the spawn point.
-
 
 	//--------------------------------------- Tp skill Cooldown ---------------------------------------
 	if (player.tpInCd == true)
@@ -269,12 +250,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 
 			if (C2->type == Object_Type::HAZARD)
 			{
-				//Death logic
-				player.lives--;
 				player.state = Player_State::Dying;
-
-				//Antes la animacion de muerte tiene que haber finalizado - Gerard
-				RespawnP2ToP1();
 			}
 
 			if (C2->type == Object_Type::ENEMY)
@@ -285,23 +261,13 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 					//Player is colliding from LEFT.
 					if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x)						//This second part checks if C1 is actually colliding from the left side of the collider.
 					{
-						//Death logic
-						player.lives--;
 						player.state = Player_State::Dying;
-
-						//Antes la animacion de muerte tiene que haber finalizado - Gerard
-						RespawnP2ToP1();
 					}
 
 					//Player is colliding from RIGHT.
 					if (C1->collider.x <= C2->collider.x + C2->collider.w && C1->collider.x >= C2->collider.x)						// This second part checks if C1 is actually colliding from the right side of the collider.
 					{
-						//Death logic
-						player.lives--;
 						player.state = Player_State::Dying;
-
-						//Antes la animacion de muerte tiene que haber finalizado - Gerard
-						RespawnP2ToP1();
 					}
 				}
 				else
@@ -324,10 +290,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 			{
 				if (player.item_activated == false || App->entityManager->player->player.item_activated == false)
 				{
-					player.lives--;
 					player.state = Player_State::Dying;
-					
-					RespawnP2ToP1();
 				}
 			}
 
@@ -357,95 +320,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 	}
 }
 
-void j1Player2::TeleportP1ToP2()
-{
-	//App->entityManager->player->p1.grounded = false;
-	
-	if (!player.tpInCd)
-	{
-		if (player.flip == false)			//The players will be always teleported directly in front of one another. 
-		{
-			if (player.againstLeftWall == false)
-			{
-				App->entityManager->player->position.x = position.x + collider->collider.w;
-				App->entityManager->player->position.y = position.y - 60;
-				App->audio->PlayFx(1, 0);
-				player.tpInCd = true;
-			}
-			else
-			{
-				App->audio->PlayFx(23, 0);     //Sfx indicating that teleport cannot be used.
-			}
-		}
-		else
-		{
-			if (player.againstRightWall == false)
-			{	
-				App->entityManager->player->position.x = position.x - collider->collider.w / 2;	//THIS HERE
-				App->entityManager->player->position.y = position.y - 60;
-				App->audio->PlayFx(1, 0);
-				player.tpInCd = true;
-			}
-			else
-			{
-				App->audio->PlayFx(23, 0);     //Sfx indicating that teleport cannot be used.
-			}
-		}
-	}
-}
-
-void j1Player2::RespawnP2ToP1()		//Method that, on death, will respawn P2 behind P1.
-{
-	if (player.flip == true)			//The players will be always respawned directly behind of one another. 
-	{
-		position.x = App->entityManager->player->position.x + App->entityManager->player->collider->collider.w;
-		position.y = App->entityManager->player->position.y - 40;
-	}
-	else
-	{
-		position.x = App->entityManager->player->position.x + App->entityManager->player->collider->collider.w / 2;
-		position.y = App->entityManager->player->position.y - 40;
-	}
-}
-
-void j1Player2::SetPlayer2Position()
-{
-	config_file.load_file("config.xml");				//REVISE THIS HERE  Can a pugi object be reused as a copy in another class?
-
-	player_entity = config_file.child("config").child("entities").child("player").child("player_2");
-
-	nameTag = player_entity.attribute("name").as_string();
-
-	if (App->scene->firstMap == true)
-	{
-		//LoadPlayerPosition("player_1", "factoryMap");		//Change this so strings arent hardcoded //Loads Player 1's position on the map //REVISE THIS HERE For now it is set to the position in the first map, maybe in scene it can be switched? 
-		player.mapTag = player_entity.child("factoryMap").attribute("mapName").as_string();
-		LoadPlayerPosition(nameTag.GetString(), player.mapTag.GetString());
-	}
-	if (App->scene->secondMap == true)
-	{
-		//LoadPlayerPosition("player_1", "forestMap");		//Change this so strings arent hardcoded //Loads Player 1's position on the map //REVISE THIS HERE For now it is set to the position in the first map, maybe in scene it can be switched? 
-		player.mapTag = player_entity.child("forestMap").attribute("mapName").as_string();
-		LoadPlayerPosition(nameTag.GetString(), player.mapTag.GetString());
-	}
-}
-
-/*bool j1Player2::LoadPlayer2Textures()
-{
-	//Loads the textures of P2. Switches them according to switch_sprites
-	if (p2.switch_sprites == true)
-	{
-		p2.texture = App->tex->Load("textures/Spritesheets/Character 2/Character_Spritesheet2_Buena.png");
-	}
-	else
-	{
-		p2.texture = App->tex->Load("textures/Spritesheets/Character 1/character_spritesheet_I_Buena.png");
-	}
-
-	return true;
-}*/
-
-//----------------------------------------------- Player Inputs -----------------------------------------------
+//----------------------------------------------- PLAYER 2 INPUTS -----------------------------------------------
 void j1Player2::SetPlayerState(Player_State& player_state)
 {
 	if (player.GodMode == false)
@@ -592,11 +467,37 @@ void j1Player2::PlayerMovement(Player_State player_state, float dt)
 
 	case Player_State::Dying:
 
-		App->audio->PlayFx(2, 0);
-		animation = &death;
-		player.isDying = true;
+		player.lives--;
+		
+		if (player.lives > 0)
+		{
+			App->audio->PlayFx(2, 0);
+			animation = &death;
+			RespawnP2ToP1();
+		}
+		else
+		{
+			LivesCheck(player.lives);
+		}
+
+		//player.isDying = true;
 
 		break;
+	}
+
+	//Sorry for this dirty fix.
+	if (position.DistanceNoSqrt(App->entityManager->player->position) <= player.boostThreshold && App->entityManager->player->player.state == Player_State::Crouching) //LAST THING TO USE
+	{
+		if (player.grounded == true)
+		{
+			speed.y -= player.boost_jump.y * dt;
+			LOG("boost jump speed is");
+			player.isBoostJumping = true;
+			player.airborne = true;
+			player.grounded = false;
+			player.platformDrop = false;
+			App->audio->PlayFx(3, 0);
+		}
 	}
 }
 
@@ -622,10 +523,99 @@ void j1Player2::GodModeInput()
 	}
 }
 
+// ---------------------------------------------- PLAYER 2 METHODS ----------------------------------------------
+void j1Player2::SetPlayer2Position()
+{
+	config_file.load_file("config.xml");				//REVISE THIS HERE  Can a pugi object be reused as a copy in another class?
+
+	player_entity = config_file.child("config").child("entities").child("player").child("player_2");
+
+	nameTag = player_entity.attribute("name").as_string();
+
+	if (App->scene->firstMap == true)
+	{
+		player.mapTag = player_entity.child("factoryMap").attribute("mapName").as_string();
+		LoadPlayerPosition(nameTag.GetString(), player.mapTag.GetString());
+	}
+	if (App->scene->secondMap == true)
+	{
+		player.mapTag = player_entity.child("forestMap").attribute("mapName").as_string();
+		LoadPlayerPosition(nameTag.GetString(), player.mapTag.GetString());
+	}
+}
+
+void j1Player2::TeleportP1ToP2()
+{
+	//App->entityManager->player->p1.grounded = false;
+	
+	if (!player.tpInCd)
+	{
+		if (player.flip == false)			//The players will be always teleported directly in front of one another. 
+		{
+			if (player.againstLeftWall == false)
+			{
+				App->entityManager->player->position.x = position.x + collider->collider.w;
+				App->entityManager->player->position.y = position.y - 60;
+				App->audio->PlayFx(1, 0);
+				player.tpInCd = true;
+			}
+			else
+			{
+				App->audio->PlayFx(23, 0);     //Sfx indicating that teleport cannot be used.
+			}
+		}
+		else
+		{
+			if (player.againstRightWall == false)
+			{	
+				App->entityManager->player->position.x = position.x - collider->collider.w / 2;	//THIS HERE
+				App->entityManager->player->position.y = position.y - 60;
+				App->audio->PlayFx(1, 0);
+				player.tpInCd = true;
+			}
+			else
+			{
+				App->audio->PlayFx(23, 0);     //Sfx indicating that teleport cannot be used.
+			}
+		}
+	}
+}
+
+void j1Player2::RespawnP2ToP1()			//Method that, on death, will respawn P2 behind P1.
+{
+	if (player.flip == true)			//The players will be always respawned directly behind of one another. 
+	{
+		position.x = App->entityManager->player->position.x + App->entityManager->player->collider->collider.w;
+		position.y = App->entityManager->player->position.y - 40;
+	}
+	else
+	{
+		position.x = App->entityManager->player->position.x + App->entityManager->player->collider->collider.w / 2;
+		position.y = App->entityManager->player->position.y - 40;
+	}
+}
+
+/*bool j1Player2::LoadPlayer2Textures()
+{
+	//Loads the textures of P2. Switches them according to switch_sprites
+	if (p2.switch_sprites == true)
+	{
+		p2.texture = App->tex->Load("textures/Spritesheets/Character 2/Character_Spritesheet2_Buena.png");
+	}
+	else
+	{
+		p2.texture = App->tex->Load("textures/Spritesheets/Character 1/character_spritesheet_I_Buena.png");
+	}
+
+	return true;
+}*/
+
 //---------------------------------------------- General Checks ----------------------------------------------
 void j1Player2::LivesCheck(int lives)
 {
-	if (lives == 0)
+	LOG("Lives at live check %d", lives);
+	
+	if (lives <= 0)
 	{
 		player.isAlive = false;
 		App->entityManager->player->player.isAlive = false;
@@ -638,8 +628,6 @@ void j1Player2::LivesCheck(int lives)
 			player.lives = player.max_lives;
 		}
 	}
-
-	return;
 }
 
 void j1Player2::Restart()

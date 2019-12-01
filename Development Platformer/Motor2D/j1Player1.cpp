@@ -142,11 +142,11 @@ bool j1Player1::CleanUp()
 	return true;
 };
 
-//Collision Handling ---------------------------------------
+// --------------------------------------- COLLISION HANDLING ---------------------------------------
 void j1Player1::OnCollision(Collider* C1, Collider* C2)
 {
 	if (player.GodMode == false)
-	{	
+	{
 		if (C2->type == Object_Type::PLAYER)
 		{
 			Collider* temp = C1;
@@ -165,16 +165,6 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			{
 				if (C1->collider.x + C1->collider.w > C2->collider.x || C1->collider.x < C2->collider.x + C2->collider.w) //As the boost can be done even if P1 is static, this allows for more precise jumps... hopefully.
 				{
-					/*if (player.grounded == true)
-					{
-						speed.y -= player.boost_jump.y * App->GetDt();
-						player.isBoostJumping = true;
-						player.airborne = true;
-						player.grounded = false;
-						player.platformDrop = false;
-						App->audio->PlayFx(3, 0);
-					}*/
-
 					if (App->entityManager->player2->player.state == Player_State::Crouching)
 					{
 						if (player.grounded == true)
@@ -262,12 +252,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 
 			if (C2->type == Object_Type::HAZARD)
 			{
-				//Death logic
-				player.lives--;
 				player.state = Player_State::Dying;
-
-				//Antes la animacion de muerte tiene que haber finalizado - Gerard
-				RespawnP1ToP2();
 			}
 
 			if (C2->type == Object_Type::ENEMY)		//Change this when using the attack collider? Change it in the enemies.cpp.
@@ -275,35 +260,17 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 				//Player is colliding from LEFT or RIGHT.
 				if (C1->collider.y <= C2->collider.y + C2->collider.h && C1->collider.y + C1->collider.h - 4 >= C2->collider.y)		//The first part checks if C1 is contained in the Y axis of C2.
 				{
-					//Death logic
-					LOG("Lives at this moment: %d", player.lives);
+					//Player is colliding from LEFT.
+					if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x)						//This second part checks if C1 is actually colliding from the left side of the collider.
+					{
+						player.state = Player_State::Dying;
+					}
 
-					player.lives--;
-					player.state = Player_State::Dying;
-
-					//Antes la animacion de muerte tiene que haber finalizado - Gerard
-					RespawnP1ToP2();
-
-					
-					LivesCheck(player.lives);		//ALL LIVES SUBSTRACTED THIS WAY. PUT A BOOL TO CHECK IT IS ONLY DONE ONCE.
-
-					////Player is colliding from LEFT.
-					//if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x)						//This second part checks if C1 is actually colliding from the left side of the collider.
-					//{
-					//	
-					//}
-
-					////Player is colliding from RIGHT.
-					//if (C1->collider.x <= C2->collider.x + C2->collider.w && C1->collider.x >= C2->collider.x)						// This second part checks if C1 is actually colliding from the right side of the collider.
-					//{
-					//	//Death logic
-					//	player.lives--;
-					//	player.state = Player_State::Dying;
-
-
-					//	//Antes la animacion de muerte tiene que haber finalizado - Gerard
-					//	RespawnP1ToP2();
-					//}
+					//Player is colliding from RIGHT.
+					if (C1->collider.x <= C2->collider.x + C2->collider.w && C1->collider.x >= C2->collider.x)						// This second part checks if C1 is actually colliding from the right side of the collider.
+					{
+						player.state = Player_State::Dying;
+					}
 				}
 				else
 				{
@@ -314,14 +281,13 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			//Player Colliding against an Activable Item
 			if (C2->type == Object_Type::ITEM)
 			{
-				//if (player.item_activated == false)
-				//{
-				//	App->audio->PlayFx(4, 0);					//Item Activation sfx.
-				//}
-
-				player.item_activated = true;				//Records that P1 (or P2) has activated the item.
+				player.item_activated = true;									//Records that P1 (or P2) has activated the item.
 				App->entityManager->player2->player.item_activated = true;		//Activates P2's boolean as well. THIS HERE Change all player2 by App->entitymanager->player2->player.pos...
-				App->audio->PlayFx(4, 0);
+
+				if (player.item_activated == false)
+				{
+					App->audio->PlayFx(4, 0);									//Item Activation sfx.
+				}
 			}
 
 			//Player colliding against Deactivable surfaces. 
@@ -331,17 +297,14 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 				{
 					if (player.item_activated == false || App->entityManager->player->player.item_activated == false)
 					{
-						player.lives--;
 						player.state = Player_State::Dying;
-
-						RespawnP1ToP2();
 					}
 				}
 			}
 
 			if (C2->type == Object_Type::CHECKPOINT)
 			{
-				LOG("P1 HAS REACHED A CHECKPOINT");															//Call Safe() method here.
+				LOG("P1 HAS REACHED A CHECKPOINT");									//Call Save() method here.
 
 				if (player.checkpointReached == false)
 				{
@@ -355,11 +318,11 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			}
 
 			//Player colliding against the Goal
-			if (C2->type == Object_Type::GOAL)		//CHANGE THIS, USE SwitchMaps() or ChangeMaps()
+			if (C2->type == Object_Type::GOAL)
 			{
-				LoadNextMap();						//Loads the next map.
+				LoadNextMap();														//Loads the next map.
 
-				App->audio->PlayFx(6, 1);										//Sound effect of the Goal / Protal.
+				App->audio->PlayFx(6, 1);											//Sound effect of the Goal / Protal.
 			}
 		}
 	}
@@ -396,31 +359,16 @@ void j1Player1::SetPlayerState(Player_State& player_state)
 
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)				//Move Right
 		{
-			/*if (p1.againstLeftWall == false)
-			{
-				state = goingRight_P1;
-			}*/
-
 			player_state = Player_State::Going_Right;
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)				//Move Left
 		{
-			/*if (p1.againstRightWall == false)				//THIS HERE, for some reason the bool here is always set to false now that the entity system has been implemented
-			{
-				p1.state = goingLeft_P1;
-			}*/
-
 			player_state = Player_State::Going_Left;
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)				//Crouch
 		{
-			/*if (p1.state != falling_P1)						//THIS HERE
-			{
-
-			}*/
-
 			player_state = Player_State::Crouching;
 		}
 
@@ -446,7 +394,7 @@ void j1Player1::SetPlayerState(Player_State& player_state)
 			player_state = Player_State::Teleporting;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)				//Suicide Button
+		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)					//Suicide Button
 		{
 			player_state = Player_State::Dying;
 		}
@@ -548,13 +496,18 @@ void j1Player1::PlayerMovement(Player_State player_state, float dt)
 
 	case Player_State::Dying:
 
+		player.lives--;
+		
 		App->audio->PlayFx(2, 0);
 		animation = &death;
+		RespawnP1ToP2();
+		
+		LivesCheck(player.lives);
 
 		if (animation->Finished())			//Only switch the isDying bool when the animation has finished. Does not work yet. Check <dying loop="">  in animations.xml.
 		{
 			player.isDying = true;
-			/*RespawnP1ToP2();*/
+			
 		}
 
 		break;
@@ -584,6 +537,26 @@ void j1Player1::GodModeInput()
 }
 
 // ---------------------------------------------- PLAYER 1 METHODS ----------------------------------------------
+void j1Player1::SetPlayer1Position()
+{
+	config_file.load_file("config.xml");
+
+	player_entity = config_file.child("config").child("entities").child("player").child("player_1");
+
+	nameTag = player_entity.attribute("name").as_string();
+
+	if (App->scene->firstMap == true)
+	{
+		player.mapTag = player_entity.child("factoryMap").attribute("mapName").as_string();
+		LoadPlayerPosition(nameTag.GetString(), player.mapTag.GetString());
+	}
+	if (App->scene->secondMap == true)
+	{
+		player.mapTag = player_entity.child("forestMap").attribute("mapName").as_string();
+		LoadPlayerPosition(nameTag.GetString(), player.mapTag.GetString());
+	}
+}
+
 void j1Player1::TeleportP2ToP1()		//Method that teleports P2 directly in front of P1. Takes into account which direction P1 is facing. Can trigger some fun interactions between players :)
 {
 	if (!player.tpInCd)
@@ -633,32 +606,12 @@ void j1Player1::RespawnP1ToP2()		//Method that, on death, will respawn P1 behind
 	}
 }
 
-void j1Player1::SetPlayer1Position()
-{
-	config_file.load_file("config.xml");				//REVISE THIS HERE  Can a pugi object be reused as a copy in another class?
-
-	player_entity = config_file.child("config").child("entities").child("player").child("player_1");
-
-	nameTag = player_entity.attribute("name").as_string();
-
-	if (App->scene->firstMap == true)
-	{
-		//LoadPlayerPosition("player_1", "factoryMap");		//Change this so strings arent hardcoded //Loads Player 1's position on the map //REVISE THIS HERE For now it is set to the position in the first map, maybe in scene it can be switched? 
-		player.mapTag = player_entity.child("factoryMap").attribute("mapName").as_string();
-		LoadPlayerPosition(nameTag.GetString(), player.mapTag.GetString());
-	}
-	if (App->scene->secondMap == true)
-	{
-		//LoadPlayerPosition("player_1", "forestMap");		//Change this so strings arent hardcoded //Loads Player 1's position on the map //REVISE THIS HERE For now it is set to the position in the first map, maybe in scene it can be switched? 
-		player.mapTag = player_entity.child("forestMap").attribute("mapName").as_string();
-		LoadPlayerPosition(nameTag.GetString(), player.mapTag.GetString());
-	}
-}
-
 //---------------------------------------------- GENERAL CHECKS ----------------------------------------------
 void j1Player1::LivesCheck(int lives)	//REVISE THIS HERE. Can it be put in the j1Player?
 {
-	if (lives == 0)
+	LOG("Lives at live check %d", lives);
+
+	if (lives <= 0)
 	{
 		player.isAlive = false;
 		App->entityManager->player2->player.isAlive = false;
@@ -671,8 +624,6 @@ void j1Player1::LivesCheck(int lives)	//REVISE THIS HERE. Can it be put in the j
 			player.lives = player.max_lives;
 		}
 	}
-	
-	return;
 }
 
 void j1Player1::Restart()
