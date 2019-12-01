@@ -327,17 +327,6 @@ bool j1Scene::CleanUp()
 		App->entityManager->player2->CleanUp();				//Deletes all data related to P2.
 	}
 
-	/*if (firstMap == true)									//Resets the booleans depending on which map was loaded  / deleted.
-	{
-		firstMap	= false;
-		secondMap	= true;
-	}
-	else
-	{
-		firstMap	= true;
-		secondMap	= false;
-	}*/
-
 	return true;
 }
 
