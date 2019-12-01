@@ -32,14 +32,9 @@ public:
 	void LoadEntityProperties();
 	void LoadEntityAudio();
 
-	void Chasing_Path();
-	void Normal_Path();
-
 	void PathfindingLogic();
 	void PathfindingMovement(Entity_State state, float dt);
 	void SetEnemyState(iPoint enemyPos, iPoint playerPos);
-
-	//bool Load_Entity();
 
 public:
 	Animation	idle;				//Idle animation.

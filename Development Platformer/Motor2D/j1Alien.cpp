@@ -331,7 +331,7 @@ void j1Alien::PathfindingMovement(Entity_State state, float dt)
 		position.x -= speed.x * dt;
 		flip = false;
 		animation = &running;
-		App->audio->PlayFx(13, 1);
+		App->audio->PlayFx(13, 0);
 
 		break;
 

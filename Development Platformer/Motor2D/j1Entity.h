@@ -52,7 +52,7 @@ public:
 	virtual void Restart();								//Maybe not needed THIS HERE REVISE, CHANGE
 	
 	virtual void BlitEntity(int x, int y, SDL_Rect entity_rect, bool flip);
-	virtual void OnCollision(Collider* c1, Collider* c2); /*{};*/				//If {} are used then the OnCollision on the entity.cpp needs to be erased.
+	virtual void OnCollision(Collider* c1, Collider* c2);						//If {} are used then the OnCollision on the entity.cpp needs to be erased.
 	virtual void LoadAnimationPushbacks();										//Loads an entity's specific animations.
 	virtual void LoadEntityProperties();										//Loads an entity's specific properties.
 	virtual void LoadEntityAudio();												//Loads an entity's specific audios.
@@ -64,8 +64,6 @@ public:
 	fPoint			speed;					//Movement speed of the entity.
 	uint			sprite_width;			//Width of the sprite. Applied to the entity's collider width.
 	uint			sprite_height;			//Height of the sprite. Applied to the entity's collider height.
-
-	//SDL_Rect		HitBox;					//REVISE THIS HERE, TEMPORAL MEASURE FOR ENEMIES
 
 	SDL_Texture*	entity_sprite;			//Sprite / Spritesheet of the entity.
 	Collider*		collider;				//Collider of the entity.

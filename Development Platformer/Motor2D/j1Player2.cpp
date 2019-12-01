@@ -24,11 +24,6 @@ j1Player2::~j1Player2()  //Destructor. Called at the last frame.
 
 };
 
-bool j1Player2::Init()
-{
-	return true;
-};
-
 bool j1Player2::Awake(pugi::xml_node& config)
 {
 	return true;
@@ -83,6 +78,18 @@ bool j1Player2::Update(float dt, bool doLogic)
 		{
 			animation->Reset();
 			player.isAttacking = false;
+		}
+	}
+
+	if (player.isDying == true)
+	{
+		animation = &death;
+
+		if (animation->Finished())
+		{
+			animation->Reset();
+			player.isDying = false;
+			RespawnP2ToP1();
 		}
 	}
 
@@ -261,30 +268,19 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 
 			if (C2->type == Object_Type::HAZARD)
 			{
-				player.state = Player_State::Dying;
+				if (player.isDying == false)
+				{
+					player.state = Player_State::Dying;
+				}
 			}
 
 			if (C2->type == Object_Type::ENEMY)
 			{
-				//Player is colliding from LEFT or RIGHT.
-				if (C1->collider.y <= C2->collider.y + C2->collider.h && C1->collider.y + C1->collider.h - 4 >= C2->collider.y)		//The first part checks if C1 is contained in the Y axis of C2.
+				if (player.isDying == false)
 				{
-					//Player is colliding from LEFT.
-					if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x)						//This second part checks if C1 is actually colliding from the left side of the collider.
-					{
-						player.state = Player_State::Dying;
-					}
-
-					//Player is colliding from RIGHT.
-					if (C1->collider.x <= C2->collider.x + C2->collider.w && C1->collider.x >= C2->collider.x)						// This second part checks if C1 is actually colliding from the right side of the collider.
-					{
-						player.state = Player_State::Dying;
-					}
+					player.state = Player_State::Dying;
 				}
-				else
-				{
-					//Destroy Entity;
-				}
+				
 			}
 
 			//Player Colliding against an Activable Item
@@ -299,7 +295,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 			//Player colliding against Deactivable surfaces. 
 			if (C2->type == Object_Type::DEACTIVABLE)
 			{
-				if (player.item_activated == false || App->entityManager->player->player.item_activated == false)
+				if ((player.item_activated == false || App->entityManager->player->player.item_activated == false) && player.isDying == false)
 				{
 					player.state = Player_State::Dying;
 				}
@@ -491,19 +487,12 @@ void j1Player2::PlayerMovement(Player_State player_state, float dt)
 	case Player_State::Dying:
 
 		player.lives--;
-		
-		if (player.lives > 0)
-		{
-			App->audio->PlayFx(2, 0);
-			animation = &death;
-			RespawnP2ToP1();
-		}
-		else
-		{
-			LivesCheck(player.lives);
-		}
 
-		//player.isDying = true;
+		App->audio->PlayFx(2, 0);
+
+		LivesCheck(player.lives);
+
+		player.isDying = true;
 
 		break;
 	}

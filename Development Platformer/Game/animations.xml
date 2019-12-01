@@ -71,11 +71,11 @@
       <pushback x="332" y="818" w="34" h="65"/>
     </wallslide>
 
-    <death speed ="8.0f" loop ="true">
-      <pushback x="10" y="1094" w="58" h="66"/>
-      <pushback x="68" y="1074" w="58" h="86"/>
-      <pushback x="136" y="1074" w="58" h="86"/>
-      <pushback x="193" y="1074" w="58" h="86"/>
+    <death speed ="4.0f" loop ="true">
+      <!--<pushback x="10" y="1094" w="58" h="66"/>-->
+      <pushback x="69" y="1074" w="58" h="86"/>
+      <pushback x="134" y="1074" w="58" h="86"/>
+      <pushback x="195" y="1074" w="58" h="86"/>
     </death>
   </player>
   

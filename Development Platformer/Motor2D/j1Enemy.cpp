@@ -24,11 +24,6 @@ j1Enemy::~j1Enemy()  //Destructor. Called at the last frame.
 
 };
 
-bool j1Enemy::Init()
-{
-	return true;
-};
-
 bool j1Enemy::Awake(pugi::xml_node& config)
 {
 	return true;

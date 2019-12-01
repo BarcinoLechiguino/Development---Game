@@ -112,19 +112,7 @@ void j1Mecha::OnCollision(Collider* C1, Collider* C2)
 {
 	//Entity_On collision function in entity
 	if (C1->type == Object_Type::ENEMY)
-	{
-		if (C2->type == Object_Type::PLAYER)
-		{
-			/*if (App->entityManager->player->player.isBoostJumping == true || App->entityManager->player->player.isBoostJumping == true)
-			{
-				isDying = true;
-				collider->to_delete = true;
-				int num = App->entityManager->entities.find(this);
-				RELEASE(App->entityManager->entities.At(num)->data);
-				App->entityManager->entities.del(App->entityManager->entities.At(num));
-			}*/
-		}
-		
+	{	
 		//Enemy Colliding Against a Player
 		if (C2->type == Object_Type::ATTACK)
 		{
@@ -191,16 +179,6 @@ bool j1Mecha::Save(pugi::xml_node&) const
 
 
 // ------------------------ MECHA ENTITY METHODS ------------------------
-void j1Mecha::Normal_Path()
-{
-
-}
-
-void j1Mecha::Chasing_Path()
-{
-
-}
-
 void j1Mecha::LoadAnimationPushbacks()
 {
 	idle.LoadAnimation("mecha", "idle");
