@@ -179,17 +179,12 @@ int PathNode::CalculateF(const iPoint& destination)
 {
 	g = parent->g + 1;
 
-	int x_distance = abs(pos.x - destination.x);
-	int y_distance = abs(pos.y - destination.y);
+	int distance_X = abs(pos.x - destination.x);
+	int distance_Y = abs(pos.y - destination.y);
 
-	h = (x_distance + y_distance) * min(x_distance, y_distance);
+	h = (distance_X + distance_Y) * min(distance_X, distance_Y);
 
 	return g + h;
-}
-
-void j1PathFinding::EnemyBehaviour()
-{
-
 }
 
 // ----------------------------------------------------------------------------------
