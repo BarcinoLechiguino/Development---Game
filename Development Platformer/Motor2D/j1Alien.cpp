@@ -383,59 +383,111 @@ void j1Alien::SetEnemyState(iPoint enemyPos, iPoint playerPos)
 		state = Entity_State::PATHING_LEFT;
 	}
 
-	if (playerPos.x > enemyPos.x && playerPos.y < enemyPos.y && App->pathfinding->IsWalkable(checkRight) /*&& App->pathfinding->IsWalkable(checkUp)*/)
+	if (playerPos.x > enemyPos.x && playerPos.y < enemyPos.y /*&& App->pathfinding->IsWalkable(checkRight)*/ /*&& App->pathfinding->IsWalkable(checkUp)*/)
 	{
 		//state = Entity_State::PATHING_UP_RIGHT;
 
-		if (App->pathfinding->IsWalkable(checkUp))
+		/*if (App->pathfinding->IsWalkable(checkUp))
 		{
 			state = Entity_State::PATHING_UP_RIGHT;
 		}
 		else
 		{
 			state = Entity_State::PATHING_RIGHT;
+		}*/
+
+		if (App->pathfinding->IsWalkable(checkUp) && App->pathfinding->IsWalkable(checkRight))
+		{
+			state = Entity_State::PATHING_UP_RIGHT;
+		}
+		else if (!App->pathfinding->IsWalkable(checkUp) && App->pathfinding->IsWalkable(checkRight))
+		{
+			state = Entity_State::PATHING_RIGHT;
+		}
+		else if (App->pathfinding->IsWalkable(checkUp) && !App->pathfinding->IsWalkable(checkRight))
+		{
+			state = Entity_State::PATHING_UP;
 		}
 	}
 
-	if (playerPos.x < enemyPos.x && playerPos.y < enemyPos.y && App->pathfinding->IsWalkable(checkLeft) /*&& App->pathfinding->IsWalkable(checkUp)*/)
+	if (playerPos.x < enemyPos.x && playerPos.y < enemyPos.y /*&& App->pathfinding->IsWalkable(checkLeft)*/ /*&& App->pathfinding->IsWalkable(checkUp)*/)
 	{
 		//state = Entity_State::PATHING_UP_LEFT;
 		
-		if (App->pathfinding->IsWalkable(checkUp))
+		/*if (App->pathfinding->IsWalkable(checkUp))
 		{
 			state = Entity_State::PATHING_UP_LEFT;
 		}
 		else
 		{
 			state = Entity_State::PATHING_LEFT;
+		}*/
+
+		if (App->pathfinding->IsWalkable(checkUp) && App->pathfinding->IsWalkable(checkLeft))
+		{
+			state = Entity_State::PATHING_UP_LEFT;
+		}
+		else if (!App->pathfinding->IsWalkable(checkUp) && App->pathfinding->IsWalkable(checkLeft))
+		{
+			state = Entity_State::PATHING_LEFT;
+		}
+		else if (App->pathfinding->IsWalkable(checkUp) && !App->pathfinding->IsWalkable(checkLeft))
+		{
+			state = Entity_State::PATHING_UP;
 		}
 	}
 
-	if (playerPos.x > enemyPos.x && playerPos.y > enemyPos.y && App->pathfinding->IsWalkable(checkRight) /*&& App->pathfinding->IsWalkable(checkDown)*/)
+	if (playerPos.x > enemyPos.x && playerPos.y > enemyPos.y /*&& App->pathfinding->IsWalkable(checkRight)*/ /*&& App->pathfinding->IsWalkable(checkDown)*/)
 	{
 		//state = Entity_State::PATHING_DOWN_RIGHT;
 		
-		if (App->pathfinding->IsWalkable(checkDown))
+		/*if (App->pathfinding->IsWalkable(checkDown))
 		{
 			state = Entity_State::PATHING_DOWN_RIGHT;
 		}
 		else
 		{
 			state = Entity_State::PATHING_RIGHT;
+		}*/
+		
+		if (App->pathfinding->IsWalkable(checkDown) && App->pathfinding->IsWalkable(checkRight))
+		{
+			state = Entity_State::PATHING_DOWN_RIGHT;
+		}
+		else if (!App->pathfinding->IsWalkable(checkDown) && App->pathfinding->IsWalkable(checkRight))
+		{
+			state = Entity_State::PATHING_RIGHT;
+		}
+		else if (App->pathfinding->IsWalkable(checkDown) && !App->pathfinding->IsWalkable(checkRight))
+		{
+			state = Entity_State::PATHING_DOWN;
 		}
 	}
 
-	if (playerPos.x < enemyPos.x && playerPos.y > enemyPos.y && App->pathfinding->IsWalkable(checkLeft) /*&& App->pathfinding->IsWalkable(checkDown)*/)
+	if (playerPos.x < enemyPos.x && playerPos.y > enemyPos.y /*&& App->pathfinding->IsWalkable(checkLeft)*/ /*&& App->pathfinding->IsWalkable(checkDown)*/)
 	{
 		//state = Entity_State::PATHING_DOWN_LEFT;
 		
-		if (App->pathfinding->IsWalkable(checkDown))
+		/*if (App->pathfinding->IsWalkable(checkDown))
 		{
 			state = Entity_State::PATHING_DOWN_LEFT;
 		}
 		else
 		{
 			state = Entity_State::PATHING_LEFT;
+		}*/
+
+		if (App->pathfinding->IsWalkable(checkDown) && App->pathfinding->IsWalkable(checkLeft))
+		{
+			state = Entity_State::PATHING_DOWN_LEFT;
+		}
+		else if (!App->pathfinding->IsWalkable(checkDown) && App->pathfinding->IsWalkable(checkLeft))
+		{
+			state = Entity_State::PATHING_LEFT;
+		}
+		else if (App->pathfinding->IsWalkable(checkDown) && !App->pathfinding->IsWalkable(checkLeft))
+		{
+			state = Entity_State::PATHING_DOWN;
 		}
 	}
 }

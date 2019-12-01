@@ -89,7 +89,7 @@
 
       <alien>
         <position x="212" y="400"/>
-        <speed x="200.0f" y="100.0f"/>
+        <speed x="200.0f" y="125.0f"/>
         <sprite_size w="38" h="52"/>
         <lives lives="1"/>
         <detection_radius radius="125"/>
