@@ -83,8 +83,6 @@ public://methods
 	// Destructor
 	virtual ~j1Player();
 
-	bool Init();
-
 	bool Awake(pugi::xml_node&);
 
 	bool Start();
@@ -138,6 +136,7 @@ public:
 	Animation		falling;		//Falling animation.
 	Animation		boosted_jump;	//Boosted Jump Animation.
 	Animation		attacking;		//Attack animation.
+	Animation		wallslide;		//Wallslide animation.
 	Animation		death;			//Death animation.
 
 	//Sound Variables

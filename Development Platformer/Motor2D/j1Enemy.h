@@ -36,8 +36,6 @@ public:
 
 	bool Start();
 
-	bool Init();
-
 	bool PreUpdate();
 
 	bool Update(float dt,  bool doLogic);

@@ -52,15 +52,12 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
-	//j1Entity* GetPlayer() const;
-
 public:
 	pugi::xml_node	config;
 	
 	p2List<j1Entity*>		entities;			//List of entities. Each created entity will be added to this list and then iterated in the class methods (Update()...)
 	j1Player*				player;				//Pointer to the j1Player class. Will represent P1. The pointer will be from the mother class and later it will be setted to player 1 (CreateEntity())
 	j1Player*				player2;			//Pointer to the j1Player class. Will represent P2.
-	//j1Player*				player2Copy;		//Pointer to the j1Player class. Will represent P2.
 
 	p2List<EntityData*>		entityData_list;	//List of the position and ENTITY_TYPE data members of enemy entities.  Change for an array, its faster.
 

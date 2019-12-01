@@ -25,11 +25,6 @@ j1Player1::~j1Player1()  //Destructor. Called at the last frame.
 
 };
 
-bool j1Player1::Init()
-{
-	return true;
-};
-
 bool j1Player1::Awake(pugi::xml_node& config)
 {
 	return true;
@@ -268,12 +263,20 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 
 			if (C2->type == Object_Type::HAZARD)
 			{
-				player.state = Player_State::Dying;
+				if (player.isDying == false)
+				{
+					App->audio->PlayFx(2, 0);
+					player.state = Player_State::Dying;
+				}
 			}
 
 			if (C2->type == Object_Type::ENEMY)		//Change this when using the attack collider? Change it in the enemies.cpp.
 			{
-				player.state = Player_State::Dying;
+				if (player.isDying == false)
+				{
+					App->audio->PlayFx(2, 0);
+					player.state = Player_State::Dying;
+				}
 			}
 
 			//Player Colliding against an Activable Item
@@ -293,8 +296,9 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			{
 				if (C2->type == Object_Type::DEACTIVABLE)
 				{
-					if (player.item_activated == false || App->entityManager->player->player.item_activated == false)
+					if ((player.item_activated == false || App->entityManager->player->player.item_activated == false) && player.isDying == false)
 					{
+						App->audio->PlayFx(2, 0);
 						player.state = Player_State::Dying;
 					}
 				}
@@ -442,23 +446,20 @@ void j1Player1::PlayerMovement(Player_State player_state, float dt)
 
 	case Player_State::Going_Left:
 
-		if (player.grounded == true)
+		if (player.againstRightWall == false && player.isAttacking == false && player.isDying == false)
 		{
-			if (player.againstRightWall == false && player.isAttacking == false && player.isDying == false)
+			position.x -= speed.x * dt;
+
+			player.flip = true;
+			player.isGoingLeft = true;
+
+			if (speed.y > 2)
 			{
-				position.x -= speed.x * dt;
-
-				player.flip = true;
-				player.isGoingLeft = true;
-
-				if (speed.y > 2)
-				{
-					animation = &falling;
-				}
-				else
-				{
-					animation = &running;
-				}
+				animation = &falling;
+			}
+			else
+			{
+				animation = &running;
 			}
 		}
 		
@@ -485,6 +486,7 @@ void j1Player1::PlayerMovement(Player_State player_state, float dt)
 
 		player.airborne = true;
 		//p1.grounded = false;					//With this commented, jumping after falling off platforms is allowed.
+		
 		animation = &falling;
 
 		break;

@@ -25,11 +25,6 @@ j1Player::~j1Player()  //Destructor. Called at the last frame.
 
 };
 
-bool j1Player::Init()
-{
-	return true;
-};
-
 bool j1Player::Awake(pugi::xml_node& config)
 {
 	return true;
@@ -77,6 +72,7 @@ void j1Player::LoadAnimationPushbacks()
 	boosted_jump.LoadAnimation("player", "boosted_jump");	//Player's Boosted Jump Animation.
 	falling.LoadAnimation("player", "falling");				//Player's Falling Animation.
 	attacking.LoadAnimation("player", "attacking");			//Player's Attack Animation.
+	wallslide.LoadAnimation("player", "wallslide");			//Player's Wallslide Animation.
 	death.LoadAnimation("player", "death");					//Player's Death Animation.
 
 	return;

@@ -21,8 +21,6 @@ public://methods
 	// Destructor
 	virtual ~j1Player1();
 
-	bool Init();
-
 	bool Awake(pugi::xml_node&);
 
 	bool Start();
