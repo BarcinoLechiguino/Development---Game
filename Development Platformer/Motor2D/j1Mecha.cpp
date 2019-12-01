@@ -104,8 +104,6 @@ bool j1Mecha::CleanUp()
 	{
 		animation = nullptr;
 	}
-
-	//RELEASE(App->entityManager->mecha);					//Breaks everything
 	
 	return true;
 }
@@ -117,22 +115,23 @@ void j1Mecha::OnCollision(Collider* C1, Collider* C2)
 	{
 		if (C2->type == Object_Type::PLAYER)
 		{
-			if (App->entityManager->player->player.isBoostJumping == true || App->entityManager->player->player.isBoostJumping == true)
+			/*if (App->entityManager->player->player.isBoostJumping == true || App->entityManager->player->player.isBoostJumping == true)
 			{
 				isDying = true;
 				collider->to_delete = true;
 				int num = App->entityManager->entities.find(this);
 				RELEASE(App->entityManager->entities.At(num)->data);
 				App->entityManager->entities.del(App->entityManager->entities.At(num));
-			}
+			}*/
 		}
 		
 		//Enemy Colliding Against a Player
 		if (C2->type == Object_Type::ATTACK)
 		{
-			//DeathSound
 			if (App->entityManager->player->player.isAttacking == true || App->entityManager->player2->player.isAttacking == true)
 			{
+				//Mecha Death SFX
+
 				isDying = true;
 				collider->to_delete = true;
 				int num = App->entityManager->entities.find(this);

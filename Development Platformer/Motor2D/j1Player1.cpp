@@ -58,13 +58,6 @@ bool j1Player1::PreUpdate()
 {	
 	SetPlayerState(player.state);
 
-	//Switch Sprites Method Call
-	/*if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
-	{
-		App->tex->UnLoad(p1.texture);
-		LoadPlayer1Textures();
-	}*/
-
 	return true;
 };
 
@@ -280,29 +273,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 
 			if (C2->type == Object_Type::ENEMY)		//Change this when using the attack collider? Change it in the enemies.cpp.
 			{
-				//Player is colliding from LEFT or RIGHT.
-				if (C1->collider.y <= C2->collider.y + C2->collider.h && C1->collider.y + C1->collider.h - 4 >= C2->collider.y)		//The first part checks if C1 is contained in the Y axis of C2.
-				{
-					if (player.isBoostJumping == false)
-					{
-						//Player is colliding from LEFT.
-						if (C1->collider.x + C1->collider.w >= C2->collider.x && C1->collider.x <= C2->collider.x)						//This second part checks if C1 is actually colliding from the left side of the collider.
-						{
-							player.state = Player_State::Dying;
-						}
-
-						//Player is colliding from RIGHT.
-						if (C1->collider.x <= C2->collider.x + C2->collider.w && C1->collider.x >= C2->collider.x)						// This second part checks if C1 is actually colliding from the right side of the collider.
-						{
-							player.state = Player_State::Dying;
-						}
-					}
-					/*else
-					{
-						
-					}*/
-				}
-				
+				player.state = Player_State::Dying;
 			}
 
 			//Player Colliding against an Activable Item
@@ -416,12 +387,12 @@ void j1Player1::SetPlayerState(Player_State& player_state)
 			player.platformDrop = false;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
 		{
 			player_state = Player_State::Attacking;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)					//Teleport
+		if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)					//Teleport
 		{
 			player_state = Player_State::Teleporting;
 		}
@@ -471,31 +442,29 @@ void j1Player1::PlayerMovement(Player_State player_state, float dt)
 
 	case Player_State::Going_Left:
 
-		if (player.againstRightWall == false && player.isAttacking == false && player.isDying == false)
+		if (player.grounded == true)
 		{
-			position.x -= speed.x * dt;
-
-			player.flip = true;
-			player.isGoingLeft = true;
-
-			if (speed.y > 2)
+			if (player.againstRightWall == false && player.isAttacking == false && player.isDying == false)
 			{
-				animation = &falling;
-			}
-			else
-			{
-				animation = &running;
+				position.x -= speed.x * dt;
+
+				player.flip = true;
+				player.isGoingLeft = true;
+
+				if (speed.y > 2)
+				{
+					animation = &falling;
+				}
+				else
+				{
+					animation = &running;
+				}
 			}
 		}
-
+		
 		break;
 
 	case Player_State::Crouching:
-
-		/*if (player.speed.y < 2)
-		{
-			animation = &crouching;
-		}*/
 
 		animation = &crouching;
 		player.isCrouching = true;
@@ -523,14 +492,6 @@ void j1Player1::PlayerMovement(Player_State player_state, float dt)
 	case Player_State::Attacking:
 		
 		player.isAttacking = true;
-		animation = &attacking;
-		//player.atkCollider->type = ATTACK;
-
-		if (attacking.Finished())
-		{
-			attacking.Reset();
-			player.isAttacking = false;
-		}
 
 		break;
 
@@ -545,8 +506,6 @@ void j1Player1::PlayerMovement(Player_State player_state, float dt)
 		player.lives--;
 		
 		App->audio->PlayFx(2, 0);
-		//animation = &death;
-		//RespawnP1ToP2();
 		
 		LivesCheck(player.lives);
 		

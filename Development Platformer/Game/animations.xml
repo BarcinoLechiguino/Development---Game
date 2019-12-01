@@ -66,6 +66,11 @@
       <pushback x="304" y="532" w="62" h="58"/>
     </attacking>
 
+    <wallslide speed ="20.0f" loop="true">
+      <pushback x="232" y="820" w="34" h="62"/>
+      <pushback x="332" y="818" w="34" h="65"/>
+    </wallslide>
+
     <death speed ="8.0f" loop ="true">
       <pushback x="10" y="1094" w="58" h="66"/>
       <pushback x="68" y="1074" w="58" h="86"/>
@@ -77,7 +82,7 @@
   <mecha>
     <idle speed =" 1.0f" loop="true">
       <!--<pushback x="20" y="16" w="47" h="64"/>-->
-      <pushback x="25" y="21" w="58" h="79"/>
+      <pushback x="25" y="21" w="58" h="82"/>
     </idle>
     <running speed ="7.0f" loop ="true">
       <!--<pushback x="20" y="16" w="47" h="64"/>

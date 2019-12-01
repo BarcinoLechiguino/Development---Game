@@ -375,7 +375,7 @@ void j1Player2::SetPlayerState(Player_State& player_state)
 			player.platformDrop = false;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_KP_9) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_KP_8) == KEY_DOWN)
 		{
 			player_state = Player_State::Attacking;
 		}
@@ -398,7 +398,7 @@ void j1Player2::SetPlayerState(Player_State& player_state)
 
 void j1Player2::PlayerMovement(Player_State player_state, float dt)
 {
-	switch (player.state)
+	switch (player_state)
 	{
 
 	case Player_State::Idle:
@@ -478,14 +478,6 @@ void j1Player2::PlayerMovement(Player_State player_state, float dt)
 	case Player_State::Attacking:
 
 		player.isAttacking = true;
-		animation = &attacking;
-		//player.atkCollider->type = ATTACK;
-
-		if (attacking.Finished())
-		{
-			attacking.Reset();
-			player.isAttacking = false;
-		}
 
 		break;
 

@@ -109,9 +109,10 @@ void j1Alien::OnCollision(Collider* C1, Collider* C2)
 		//Enemy Colliding Against a Player
 		if (C2->type == Object_Type::ATTACK)
 		{
-			//DeathSound
 			if (App->entityManager->player->player.isAttacking == true || App->entityManager->player2->player.isAttacking == true)
 			{
+				//Mecha Death SFX
+
 				isDying = true;
 				collider->to_delete = true;
 				int num = App->entityManager->entities.find(this);
