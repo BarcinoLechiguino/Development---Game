@@ -62,8 +62,6 @@ public:
 	virtual void SetEnemyState(iPoint enemyPos, iPoint playerPos);	//Depending on where a player in pathfinding range is, the enemy will be set in a state or another (Entity_State::PATHING_RIGHT).
 	int DistanceFromPlayer(j1Player* player) const;					//Calculates the distance between a player and an enemy entity.
 
-	//bool Load_Entity();
-
 public:
 	Entity_State	state;									//State in which the entity is in any given moment.
 	SDL_Rect		enemy_HitBox;							//Rectangle that will represent the enemy in the world. Used to create colliders, 

@@ -32,10 +32,6 @@ public:
 	void LoadEntityProperties();
 	void LoadEntityAudio();
 
-	void Normal_Path();
-	void Chasing_Path();
-	//bool Load_Entity();	
-
 	void PathfindingLogic();
 	void PathfindingMovement(Entity_State state, float dt);
 	void SetEnemyState(iPoint enemyPos, iPoint playerPos);
@@ -43,7 +39,6 @@ public:
 	void ApplyMechaGravity();				//If the mecha is airborne, this method brings it to the ground.
 
 public:
-	fPoint			mecha_speed;			//Change it later so it is a global value. Put it in entity.h
 	fPoint			mecha_max_speed;
 	fPoint			mecha_acceleration;
 	float			mecha_gravity;
@@ -51,8 +46,6 @@ public:
 public:
 	Animation	idle;				//Idle animation.
 	Animation	running;			//Running animation.
-
-
 };
 
 #endif // __j1MECHA_H__
