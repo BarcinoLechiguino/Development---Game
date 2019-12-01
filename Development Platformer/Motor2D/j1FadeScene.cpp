@@ -96,7 +96,7 @@ bool j1Fade_Scene ::FadeToBlack(const char* mapname, float time)
 		ret = true;
 	}
 	
-	
+	App->audio->PlayMusic(App->map->data.music_File.GetString());
 
 	return ret;
 }
