@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="150" height="42" tilewidth="32" tileheight="32" infinite="0" nextlayerid="25" nextobjectid="260">
+<map version="1.2" tiledversion="1.3.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="150" height="42" tilewidth="32" tileheight="32" infinite="0" nextlayerid="25" nextobjectid="261">
  <properties>
   <property name="BackgroundMusic" value="GrasslandsTheme.ogg"/>
   <property name="P1_PositionX" value="192"/>
@@ -56905,6 +56905,7 @@
   <object id="157" name="Alien" type="alien" x="608" y="192" width="64" height="64"/>
   <object id="158" name="Alien" type="alien" x="1440" y="320" width="64" height="64"/>
   <object id="165" name="Alien" type="alien" x="3616" y="608" width="64" height="64"/>
+  <object id="260" name="Alien" type="alien" x="2432" y="1024" width="64" height="64"/>
  </objectgroup>
  <objectgroup id="16" name="Hazards">
   <object id="5" name="Spikes" type="hazard" x="3203.97" y="512" width="54.0345" height="5.99066"/>
