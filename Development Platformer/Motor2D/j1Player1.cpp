@@ -307,7 +307,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 				if (player.checkpointReached == false)
 				{
 					App->SaveGame("save_game.xml");
-					App->audio->PlayFx(22, 1);
+					App->audio->PlayFx(10, 1);
 
 					player.spawn_position = position;
 
@@ -492,6 +492,7 @@ void j1Player1::PlayerMovement(Player_State player_state, float dt)
 	case Player_State::Attacking:
 		
 		player.isAttacking = true;
+		App->audio->PlayFx(14, 0);
 
 		break;
 
@@ -573,7 +574,7 @@ void j1Player1::TeleportP2ToP1()		//Method that teleports P2 directly in front o
 			}
 			else
 			{
-				App->audio->PlayFx(23, 0);	//Sfx indicating that teleport cannot be used.
+				App->audio->PlayFx(11, 0);	//Sfx indicating that teleport cannot be used.
 			}
 		}
 		else
@@ -587,7 +588,7 @@ void j1Player1::TeleportP2ToP1()		//Method that teleports P2 directly in front o
 			}
 			else
 			{
-				App->audio->PlayFx(23, 0);   //Sfx indicating that teleport cannot be used.
+				App->audio->PlayFx(11, 0);   //Sfx indicating that teleport cannot be used.
 			}
 		}
 	}

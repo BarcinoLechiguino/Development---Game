@@ -146,11 +146,13 @@ void j1Player::LoadEntityAudio()
 		tpFX = App->audio->LoadFx("audio/fx/TP.wav");
 		goalFX = App->audio->LoadFx("audio/fx/Pass.wav");
 		mecha_die = App->audio->LoadFx("audio/fx/Mecha die.wav");
-		alien_die = App->audio->LoadFx("audio/fx/Alien die.wav");
+		alien_die = App->audio->LoadFx("audio/fx/Alien_Flap.wav");
 		mecha_walking = App->audio->LoadFx("audio/fx/Mecha_Walking.wav");
 		saver = App->audio->LoadFx("audio/fx/Saver.wav");
 		no_teleport = App->audio->LoadFx("audio/fx/Nope.wav");
 		ready_tp = App->audio->LoadFx("audio/fx/microwave-oven-bell-1.wav");
+		alien_walking = App->audio->LoadFx("audio/fx/Alien_Walking.wav");
+		attack = App->audio->LoadFx("audio/fx/Attack.wav");
 		audioIsLoaded = true;
 	}
 }
@@ -293,7 +295,7 @@ void j1Player::SkillCooldown(bool& inCd, float& cdCounter, float& cdTime)			//Ar
 	{
 		inCd = false;						//Resets the bool so tp can be used again.
 		cdCounter = 0;						//Resets the count so it can be used the next time tp is in cd.
-		App->audio->PlayFx(24, 0);
+		App->audio->PlayFx(12, 0);
 	}
 }
 
