@@ -47,7 +47,7 @@ Mutual Cooperation is a 2D Platformer developed by Gerard Romeu and √Ångel Gonz√
 
   - Framerate control has been implemented (Avg FPS, measurement of frames in ms...).
 
-  - Frames are now capped at 30 without Vsync. To uncap them press F8.
+  - Frames are now capped at 30 without Vsync. To uncap them press F11.
 
   - All in-game movement has been normalized using dt.
 
@@ -156,13 +156,13 @@ Download the game file in which you will find the executable.
 
 - **F7**: Camera Debug Mode (Camera can be moved around with the arrow keys).
 
-- **F8**: Enable/Disable frame cap.
+- **F8**: Pathfinding Debug Mode (Paths are visible and can be created with 2 right clicks).
 
 - **F9**: Collider Debug Mode (Makes all colliders visible). 
 
 - **F10**: God Mode (Players are invincible, can go through walls and have free movement). 
 
-- **F11**: Pathfinding Debug Mode (Paths are visible and can be created with 2 right clicks).
+- **F11**: Enable/Disable frame cap.
 
   
 
