@@ -79,6 +79,9 @@
     <ClCompile Include="mmgr\mmgr.cpp">
       <Filter>Desenvolupament  ========\Sources</Filter>
     </ClCompile>
+    <ClCompile Include="UiItem.cpp">
+      <Filter>Desenvolupament  ========\Modules\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -176,6 +179,9 @@
     </ClInclude>
     <ClInclude Include="j1Alien.h">
       <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="UiItem.h">
+      <Filter>Desenvolupament  ========\Modules\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
