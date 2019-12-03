@@ -24,7 +24,6 @@
 //	void Draw(const float&) override;
 //	void ClickUp() override;
 //	void ClickDown() override;
-//
 //};
 //
-//#endif
+//#endif // !UIITEM_BUTTON_H

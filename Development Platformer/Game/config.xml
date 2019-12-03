@@ -160,10 +160,10 @@
       </images>
       
       <labels>
-        <label text="SETTINGS" font="CooperPlateBI36" pos_x="0" pos_y ="0" >
+        <label text="SETTINGS" font="CopperPlateBI36" pos_x="0" pos_y ="0" >
           <color r="255" g="255" b="255" a="255"/>
         </label>
-        <label text="MUSIC VOLUME" font="CooperPlateBI24" pos_x="0" pos_y ="0" >
+        <label text="MUSIC VOLUME" font="CopperPlateBI24" pos_x="0" pos_y ="0" >
           <color r="255" g="255" b="255" a="255"/>
         </label>
       </labels>
@@ -206,7 +206,7 @@
         <idle x="0" y="0" w="0" h="0" />
         <childs>
           <labels>
-            <label text="Resume" font="CooperPlateBI24" pos_x="0" pos_y ="0">
+            <label text="Resume" font="CopperPlateBI24" pos_x="0" pos_y ="0">
               <color r="255" g="255" b="255" a="255"/>
               <hover>
                 <color r="255" g="255" b="255" a="255"/>
@@ -256,7 +256,7 @@
           <idle x="0" y="0" w="0" h="0"/>
           <childs>
             <labels>
-              <label text="Back" font="CooperPlateBI24" pos_x="0" pos_y ="0">
+              <label text="Back" font="CopperPlateBI24" pos_x="0" pos_y ="0">
                 <color r="255" g="255" b="255" a="255"/>
                 <hover>
                   <color r="255" g="255" b="255" a="255"/>

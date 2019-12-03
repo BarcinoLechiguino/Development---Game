@@ -10,8 +10,8 @@
 //
 //UiItem_Button::UiItem_Button(SDL_Rect hitBox, const SDL_Rect * idle, const SDL_Rect * click, const SDL_Rect * hover, p2Point<int> pos, UiItem* const parent) : UiItem(hitBox, parent, pos)	//Prints on screen the button depending on whic state is the button
 //{
-//	while (parent != nullptr)
-//	{
+//	assert (parent != nullptr);
+//	
 //		frames[IDLE] = *idle;
 //		
 //			if (click)
@@ -23,7 +23,7 @@
 //				frames[HOVER] = *hover;
 //			else
 //				frames[HOVER] = *idle;
-//	}
+//	
 //	
 //}
 //
@@ -45,7 +45,7 @@
 //void UiItem_Button::Draw(const float&)  // Draws the button on screen
 //{
 //	
-//		App->render->Blit((SDL_Texture*)App->Gui->getTexture(), hitBox.x - pivot.x, hitBox.y - pivot.y, &frames[state], SDL_FLIP_NONE, 0.0f);
+//		App->render->Blit((SDL_Texture*)App->Gui->getTexture(), hitBox.x - pos.x, hitBox.y - pos.y, &frames[state], SDL_FLIP_NONE, 0.0f);
 //}
 //
 //void UiItem_Button::ClickDown() // Detects if the mouse is on click down state

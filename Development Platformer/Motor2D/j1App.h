@@ -21,6 +21,7 @@ class j1Collisions;
 class j1EntityManager;
 class j1Player1;
 class j1Player2;
+class j1Fonts;
 
 class j1App
 {
@@ -90,6 +91,7 @@ public:
 	j1Render*			render;
 	j1Textures*			tex;
 	j1Audio*			audio;
+	j1Fonts*			font;
 	j1Scene*			scene;
 	j1Map*				map;
 	j1PathFinding*		pathfinding;
