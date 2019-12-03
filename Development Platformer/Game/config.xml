@@ -235,7 +235,7 @@
       </images>
 
       <labels>
-        <label name="Lifes" text="x 0" font="OpenSAnsSB12" pos_x="9" pos_y ="0" >
+        <label name="Lifes" text="x 0" font="OpenSAnsSB12" pos_x="0" pos_y ="0" >
           <color r="255" g="255" b="255" a="255"/>
         </label>
       </labels>
@@ -267,9 +267,10 @@
           </button>
           </buttons>
           <Text>
-            README
+            Instructions of the game
           </Text>
     </CreditsPanel>
+    
     <map_name name="Test_map.tmx"></map_name>
     <map_name name="Test_map_2.tmx"></map_name>
     <fade_time value="1"/>

@@ -82,6 +82,12 @@
     <ClCompile Include="UiItem.cpp">
       <Filter>Desenvolupament  ========\Modules\UI</Filter>
     </ClCompile>
+    <ClCompile Include="UiItem_Bar.cpp">
+      <Filter>Desenvolupament  ========\Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UiItem_Button.cpp">
+      <Filter>Desenvolupament  ========\Modules\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -181,6 +187,12 @@
       <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="UiItem.h">
+      <Filter>Desenvolupament  ========\Modules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UiItem_Bar.h">
+      <Filter>Desenvolupament  ========\Modules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UiItem_Button.h">
       <Filter>Desenvolupament  ========\Modules\UI</Filter>
     </ClInclude>
   </ItemGroup>
