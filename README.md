@@ -96,7 +96,7 @@ Download the game file in which you will find the executable.
 
 - **Special Actions:**
 
-  - E Key: Teleport Player 2 to Player 1
+  - E Key: Teleport Player 2 to Player 1.
 
   - W Key: Attack.
 
@@ -112,8 +112,8 @@ Download the game file in which you will find the executable.
 
 - **Special Actions:**
 
-  - 7 Key (Keypad): Teleport Player 1 to Player 2
-  - 8 Key (Keypad): Attack
+  - 7 Key (Keypad): Teleport Player 1 to Player 2.
+  - 8 Key (Keypad): Attack.
 
   
 

@@ -100,7 +100,7 @@ bool j1Player1::Update(float dt, bool doLogic)
 	
 	if (player.flip == false)
 	{
-		player.atkCollider->Set_Position(position.x + sprite_width, position.y);				//Makes P1's attack collider follow P1.
+		player.atkCollider->Set_Position(position.x + sprite_width, position.y);			//Makes P1's attack collider follow P1.
 	}
 	else
 	{
