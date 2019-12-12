@@ -243,7 +243,7 @@ Download the game file in which you will find the executable.
 
   
 
-# Link to repository
+# Link to Repository
 https://github.com/BarcinoLechiguino/Development---Game
 
 
