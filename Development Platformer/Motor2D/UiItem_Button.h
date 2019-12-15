@@ -1,29 +1,41 @@
-//#ifndef UIITEM_BUTTON_H
-//#define UIITEM_BUTTON_H
-//
-//#include "UiItem.h"
-//#include "p2Point.h"
-//#include "j1Textures.h"
-//#include <string>
-//#include <map>
-//
-//
-//class UiItem_Button :public UiItem
-//{
-//protected: // Protected because OnClick functions are overriding from other UI classee from UiItem module
-//
-//	SDL_Rect frames[MAX_STATES];
-//	void(*functionClickDown) () = nullptr;
-//	void(*functionClickUp)() = nullptr;
-//
-//public:
-//	UiItem_Button(SDL_Rect hitBox, const SDL_Rect * idle,  const SDL_Rect * click = nullptr, const SDL_Rect * hover = nullptr, p2Point<int> pos = { 0,0 }, UiItem* const parent); // All parameters are from config.xml
-//
-//	void AddFunction(p2SString & string, bool Down = true);
-//
-//	void Draw(const float&) override;
-//	void ClickUp() override;
-//	void ClickDown() override;
-//};
-//
-//#endif // !UIITEM_BUTTON_H
+#ifndef _UI_BUTTON__H
+#define _UI_BUTTON__H
+
+#include "p2Defs.h"
+#include "UiItem.h"
+#include "SDL/include/SDL.h"
+
+enum Button_Type //Types of buttons
+{
+	PLAY,
+	SETTINGS,
+	CONTINUE,
+	CREDIT,
+	MUTE,
+	UNMUTE,
+	BACK,
+	SAVE,
+	LOAD,
+	EXIT
+};
+
+class  UIitem_Button :public UI_Item
+{
+public:
+	UIitem_Button(const char* text, Button_Type type, SDL_Rect idle_rect, SDL_Rect* rect_hover, SDL_Rect* rect_click, UI_Item* parent);
+	~UIitem_Button();
+
+	bool Start();
+	bool PostUpdate();
+	Button_Type	GetType();
+
+	bool OnHover(); // To know the if the button is OnHoverState
+
+
+private:
+	SDL_Rect	button_rect[MAX_STATE]; //Rect of the button
+	p2SString	button_text; // Text inside the button
+	Button_Type	button_type; // Type of the button
+};
+
+#endif  // !_UI_BUTTON__H

@@ -2,7 +2,7 @@
 
 #include "p2Defs.h"
 #include "p2Log.h"
-
+#include "j1Gui.h"
 #include "j1Window.h"
 #include "j1Input.h"
 #include "j1Render.h"
@@ -41,6 +41,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	entityManager = new j1EntityManager();
 	fadescene = new j1Fade_Scene();
 	font = new j1Fonts();
+	gui = new j1Gui();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -55,7 +56,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entityManager);				//entityManager is called after the module scene (where the player is created) is called.
 	AddModule(collisions);
 	AddModule(fadescene);
-	
+	AddModule(gui);
 
 	// render last to swap buffer
 	AddModule(render);
