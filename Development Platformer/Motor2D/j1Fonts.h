@@ -6,24 +6,10 @@
 
 #define DEFAULT_FONT "fonts/open_sans/OpenSans-Regular.ttf"
 #define DEFAULT_FONT_SIZE 12
-#include "SDL_TTF\include\SDL_ttf.h"
-#include "p2List.h"
-#include "p2Map.h"
 
 struct SDL_Texture;
 struct _TTF_Font;
 
-enum TypeFont
-{
-	BASE_FONT,
-	COPPERPLATE_B_I_12,
-	COPPERPLATE_B_I_24,
-	COPPERPLATE_B_I_36,
-	COPPERPLATE_B_I_48,
-	OPENSANS_S_B_12,
-	
-	MAX_FONTS
-};
 class j1Fonts : public j1Module
 {
 public:
@@ -35,6 +21,8 @@ public:
 
 	// Called before render is available
 	bool Awake(pugi::xml_node&);
+
+	bool Start();
 
 	// Called before quitting
 	bool CleanUp();
@@ -48,15 +36,14 @@ public:
 	bool CalcSize(const char* text, int& width, int& height, _TTF_Font* font = NULL) const;
 
 public:
-	p2List<TTF_Font*> fonts;
-	p2Map<TTF_Font*> mapOfFonts;
+
+	p2List<_TTF_Font*>	fonts;
 	_TTF_Font*			default;
-	TTF_Font* getFont(p2SString& string)
-	{
-		int aux = mapOfFonts.Find(string);
-		assert(aux != -1);
-		return mapOfFonts.At(aux);
-	}
+	_TTF_Font*			title_buttons;
+	_TTF_Font*			title_config;
+	_TTF_Font*			title_settings;
+	_TTF_Font*			main_title;
+	_TTF_Font*			credits;
 };
 
 

@@ -1,65 +1,88 @@
-//#include "UiItem_Button.h"
-//#include "j1App.h"
-//#include "j1Render.h"
-//#include "j1Gui.h"
-//#include "p2Point.h"
-//#include "j1Scene.h"
-//#include "j1FadeScene.h"
-//#include "j1Map.h"
-//#include "Brofiler\Brofiler.h"
-//
-//UiItem_Button::UiItem_Button(SDL_Rect hitBox, const SDL_Rect * idle, const SDL_Rect * click, const SDL_Rect * hover, p2Point<int> pos, UiItem* const parent) : UiItem(hitBox, parent, pos)	//Prints on screen the button depending on whic state is the button
-//{
-//	assert (parent != nullptr);
-//	
-//		frames[IDLE] = *idle;
-//		
-//			if (click)
-//				frames[CLICK] = *click;
-//			else
-//				frames[CLICK] = *idle;
-//		
-//			if (hover)
-//				frames[HOVER] = *hover;
-//			else
-//				frames[HOVER] = *idle;
-//	
-//	
-//}
-//
-//
-//void UiItem_Button::AddFunction(p2SString & string, bool ClickDown)  //Adds the function that is suposed to execute that certain button, detects the string from xml and checks the state of the mouse
-//{
-//	BROFILER_CATEGORY("AddFunctionOnButton.cpp", Profiler::Color::Fuchsia)
-//
-//		if (&string != nullptr)
-//		{
-//			uint num = App->Gui->mapOfFunctions.Find(string);
-//			if (ClickDown)
-//				this->functionClickDown = App->Gui->mapOfFunctions.At(num);
-//			else
-//				this->functionClickUp = App->Gui->mapOfFunctions.At(num);
-//		}
-//}
-//
-//void UiItem_Button::Draw(const float&)  // Draws the button on screen
-//{
-//	
-//		App->render->Blit((SDL_Texture*)App->Gui->getTexture(), hitBox.x - pos.x, hitBox.y - pos.y, &frames[state], SDL_FLIP_NONE, 0.0f);
-//}
-//
-//void UiItem_Button::ClickDown() // Detects if the mouse is on click down state
-//{
-//	if (functionClickDown)
-//	{
-//		functionClickDown();
-//	}
-//}
-//
-//void UiItem_Button::ClickUp()  // Detects if the mouse is on click up state
-//{
-//	if (functionClickUp)
-//	{
-//		functionClickUp();
-//	}
-//}
+#include "j1App.h"
+#include "p2Log.h"
+#include "UiItem.h"
+#include "j1Gui.h"
+#include "j1Window.h"
+#include "j1Render.h"
+#include "j1Input.h"
+#include "UIitem_Button.h"
+
+UIitem_Button::UIitem_Button(const char* text, Button_Type type, SDL_Rect idle_rect, SDL_Rect* rect_hover, SDL_Rect* rect_click, UI_Item* parent)
+{
+	button_rect[IDLE] = idle_rect;
+
+	if (rect_hover == NULL)
+	{
+		button_rect[HOVER] = idle_rect;
+	}
+	else
+	{
+		button_rect[HOVER] = *rect_hover;
+	}
+
+	if (rect_click == NULL)
+	{
+		button_rect[CLICK] = *rect_hover;
+	}
+	else
+	{
+		button_rect[CLICK] = *rect_click;
+	}
+
+
+	button_text.create(text);
+	button_type = type;
+	this->parent = parent;
+}
+
+UIitem_Button::~UIitem_Button()
+{
+}
+
+bool UIitem_Button::Start()
+{
+	if (button_text.Length() > 0)
+		App->gui->CreateLabel({ pos.x + 10, pos.y + 5 }, button_text.GetString(), CONFIG, { 0,0,0,0 }, static_object, this);
+	return true;
+}
+
+bool UIitem_Button::PostUpdate()
+{
+	bool ret = true;
+
+	switch (state)
+	{
+	case IDLE:
+		ret = App->render->Blit(App->gui->GetAtlas(), position.x, position.y, &button_rect[IDLE]); 
+		break;
+
+	case HOVER:
+		ret = App->render->Blit(App->gui->GetAtlas(), position.x, position.y, &button_rect[HOVER]);
+		break;
+
+	case CLICK:
+		ret = App->render->Blit(App->gui->GetAtlas(), position.x, position.y, &button_rect[CLICK]);
+		break;
+	}
+
+	return ret;
+}
+
+Button_Type UIitem_Button::GetType()
+{
+	return button_type;
+}
+
+bool UIitem_Button::OnHover()
+{
+	return position.x < mouse_position.x && position.y  < mouse_position.y && position.x + button_rect[state].w > mouse_position.x && position.y + button_rect[state].h > mouse_position.y;
+
+}
+
+
+
+
+
+
+
+

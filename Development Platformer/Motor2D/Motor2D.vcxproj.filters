@@ -88,14 +88,20 @@
     <ClCompile Include="UiItem_Button.cpp">
       <Filter>Desenvolupament  ========\Modules\UI</Filter>
     </ClCompile>
-    <ClCompile Include="UiItem_Image.cpp">
-      <Filter>Desenvolupament  ========\Modules\UI</Filter>
-    </ClCompile>
     <ClCompile Include="UiItem_Label.cpp">
       <Filter>Desenvolupament  ========\Modules\UI</Filter>
     </ClCompile>
     <ClCompile Include="j1Fonts.cpp">
       <Filter>Desenvolupament  ========\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Sprite.cpp">
+      <Filter>Desenvolupament  ========\Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UiItem_Thumb.cpp">
+      <Filter>Desenvolupament  ========\Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Scene_UI.cpp">
+      <Filter>Desenvolupament  ========\Modules\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -204,17 +210,20 @@
     <ClInclude Include="UiItem_Button.h">
       <Filter>Desenvolupament  ========\Modules\UI</Filter>
     </ClInclude>
-    <ClInclude Include="UiItem_Image.h">
-      <Filter>Desenvolupament  ========\Modules\UI</Filter>
-    </ClInclude>
     <ClInclude Include="UiItem_Label.h">
       <Filter>Desenvolupament  ========\Modules\UI</Filter>
     </ClInclude>
     <ClInclude Include="j1Fonts.h">
       <Filter>Desenvolupament  ========\Core</Filter>
     </ClInclude>
-    <ClInclude Include="p2Map.h">
-      <Filter>Programacio 2 ===========</Filter>
+    <ClInclude Include="UI_Sprite.h">
+      <Filter>Desenvolupament  ========\Modules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UiItem_Thumb.h">
+      <Filter>Desenvolupament  ========\Modules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Scene_UI.h">
+      <Filter>Desenvolupament  ========\Modules\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

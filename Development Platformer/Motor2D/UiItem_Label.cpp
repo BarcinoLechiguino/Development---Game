@@ -1,88 +1,127 @@
-//#include "UiItem_Label.h"
-//#include "UiItem.h"
-//
-//#include "j1App.h"
-//#include "j1Fonts.h"
-//#include "j1Textures.h"
-//#include "j1Render.h"
-//#include "p2Defs.h"
-//#include "Brofiler\Brofiler.h"
-//
-//UiItem_Label::UiItem_Label(p2SString text, SDL_Color color, TTF_Font * font, p2Point<int> position, UiItem * const parent) :UiItem(position, parent)
-//{
-//	assert(parent != nullptr);
-//	//hitBox.x = position.x;
-//	//hitBox.y = position.y;
-//	texture = App->font->Print(text.GetString(), color, font);
-//	textureHover = texture;
-//	App->tex->GetSize(texture, (uint &)hitBox.w, (uint &)hitBox.h);
-//
-//	this->text = text;
-//	this->font = font;
-//	this->color = color;
-//}
-//
-//bool UiItem_Label::ChangeTextureHover(const p2SString * string, const SDL_Color * color, const TTF_Font * font)
-//{
-//	BROFILER_CATEGORY("ChangeTextureHover_Label.cpp", Profiler::Color::Azure)
-//		bool ret = false;
-//	assert(string != NULL || color != NULL || font != NULL);
-//
-//	const char* txt = (string != NULL) ? string->GetString() : this->text.GetString();
-//	SDL_Color col = (color != NULL) ? *color : this->color;
-//	TTF_Font * f = (font != NULL) ? (TTF_Font *)font : this->font;
-//
-//	SDL_Texture* aux = App->font->Print(txt, col, f);
-//
-//	if (ret = (aux != nullptr) ? true : false)
-//	{
-//		if (texture != textureHover)
-//			App->tex->UnLoad(textureHover);
-//
-//		textureHover = aux;
-//	}
-//
-//	return ret;
-//
-//
-//}
-//bool UiItem_Label::ChangeTextureIdle(const p2SString * string, const SDL_Color * color, const TTF_Font * font)
-//{
-//	BROFILER_CATEGORY("ChangeTextureHover_Label.cpp", Profiler::Color::Azure)
-//		bool ret = false;
-//	assert(string != NULL || color != NULL || font != NULL);
-//
-//	const char* txt = (string != NULL) ? string->GetString() : this->text.GetString();
-//	SDL_Color col = (color != NULL) ? *color : this->color;
-//	TTF_Font * f = (font != NULL) ? (TTF_Font *)font : this->font;
-//
-//	SDL_Texture* aux = App->font->Print(txt, col, f);
-//	assert(aux != nullptr);
-//	if (ret = (aux != nullptr) ? true : false)
-//	{
-//
-//		if (texture != nullptr)
-//		{
-//			App->tex->UnLoad(texture);
-//			texture = nullptr;
-//		}
-//
-//		texture = aux;
-//	}
-//	return ret;
-//
-//
-//}
-//
-//
-//void UiItem_Label::Draw(const float&)
-//{
-//	BROFILER_CATEGORY("Draw_Bar.cpp", Profiler::Color::AliceBlue)
-//		bool idle = (state == IDLE) ? true : false;
-//
-//	if (idle)
-//		App->render->Blit(texture, hitBox.x, hitBox.y, NULL, SDL_FLIP_NONE, 0.0F);
-//	else
-//		App->render->Blit(textureHover, hitBox.x, hitBox.y, NULL, SDL_FLIP_NONE, 0.0F);
-//
-//}
+#include "UiItem_Label.h"
+#include "UiItem.h"
+#include "j1App.h"
+#include "j1Fonts.h"
+#include "j1Textures.h"
+#include "j1Render.h"
+#include "p2Defs.h"
+#include "Brofiler\Brofiler.h"
+
+UI_Label::UI_Label(const char* text, Label_Type type, SDL_Color color, UI_Item* parent)
+{
+	label_text = text;
+	label_type = type;
+	label_color = color;
+
+	this->parent = parent;
+}
+
+UI_Label::~UI_Label()
+{
+	if (tex != nullptr)
+	{
+		App->tex->UnLoad(tex);
+		tex = nullptr;
+	}
+}
+
+
+bool UI_Label::Start()
+{
+	ChangeTexture(label_color);
+	return true;
+}
+
+bool UI_Label::PostUpdate()
+{
+	App->render->Blit(tex, position.x, position.y);
+
+	switch (state)
+	{
+	case IDLE:
+		ChangeTexture({ 0,0,0,0 });
+		break;
+	case HOVER:
+		if (label_type != FONT && label_type != TITLE && label_type != CREDITS) {
+			ChangeTexture({ 230,214,144,255 });
+		}
+		break;
+
+	case CLICK:
+		break;
+	}
+
+	return true;
+}
+
+bool UI_Label::OnHover()
+{
+	uint w, h;
+	App->tex->GetSize(tex, w, h);
+	bool ret = false;
+	if (parent != nullptr)
+	{
+		ret = parent->OnHover();
+	}
+	return ((position.x < mouse_position.x && position.y < mouse_position.y && position.x + (int)w > mouse_position.x && position.y + (int)h > mouse_position.y) || ret);
+}
+
+void UI_Label::ChangeTexture(SDL_Color color)
+{
+	if (tex != nullptr)
+	{
+		App->tex->UnLoad(tex);
+		tex = nullptr;
+	}
+
+
+	label_color = color;
+
+	switch (label_type) {
+	case TITLE:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->main_title);
+		break;
+	case FONT:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->title_settings);
+		break;
+	case CONFIG:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->title_config);
+		break;
+	case CREDITS:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->credits);
+		break;
+	case BUTTON:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->title_buttons);
+		break;
+	}
+}
+
+void UI_Label::ChangeText(const char * text)
+{
+	if (tex != nullptr)
+	{
+		App->tex->UnLoad(tex);
+		tex = nullptr;
+	}
+
+	label_text.Clear();
+	label_text.create(text);
+
+	switch (label_type) {
+	case TITLE:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->main_title);
+		break;
+	case FONT:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->title_settings);
+		break;
+	case CONFIG:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->title_config);
+		break;
+	case CREDITS:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->credits);
+		break;
+	case BUTTON:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->title_buttons);
+		break;
+	}
+}

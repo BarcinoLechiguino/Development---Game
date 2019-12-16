@@ -5,12 +5,12 @@
 #include "j1Fonts.h"
 
 #include "SDL\include\SDL.h"
-
+#include "SDL_TTF\include\SDL_ttf.h"
 #pragma comment( lib, "SDL_ttf/libx86/SDL2_ttf.lib" )
 
 j1Fonts::j1Fonts() : j1Module()
 {
-
+	name.create("fonts");
 }
 
 // Destructor
@@ -20,7 +20,6 @@ j1Fonts::~j1Fonts()
 // Called before render is available
 bool j1Fonts::Awake(pugi::xml_node& conf)
 {
-	name.create("fonts");
 	LOG("Init True Type Font library");
 	bool ret = true;
 
@@ -34,24 +33,18 @@ bool j1Fonts::Awake(pugi::xml_node& conf)
 		const char* path = conf.child("default_font").attribute("file").as_string(DEFAULT_FONT);
 		int size = conf.child("default_font").attribute("size").as_int(DEFAULT_FONT_SIZE);
 		default = Load(path, size);
-		mapOfFonts.PushBack("defaultFont", default);
-
-		TTF_Font* aux = Load("fonts/CopperPlate/CopperPlate_BoldItalic.ttf", 48);
-		mapOfFonts.PushBack("CooperPlateBI48", aux);
-
-		aux = App->font->Load("fonts/CopperPlate/CopperPlate_BoldItalic.ttf", 24);
-		mapOfFonts.PushBack("CooperPlateBI24", aux);
-
-		aux = App->font->Load("fonts/CopperPlate/CopperPlate_BoldItalic.ttf", 12);
-		mapOfFonts.PushBack("CooperPlateBI12", aux);
-
-		aux = App->font->Load("fonts/CopperPlate/CopperPlate_BoldItalic.ttf", 36);
-		mapOfFonts.PushBack("CooperPlateBI36", aux);
-
-		aux = App->font->Load("fonts/open_sans/OpenSans-Bold.ttf", 12);
-		mapOfFonts.PushBack("OpenSAnsSB12", aux);
 	}
 
+	return ret;
+}
+
+bool j1Fonts::Start()
+{
+	main_title = Load("fonts/kenvector_future.ttf", 19);
+	credits = Load("fonts/arial.ttf", 10);
+	title_settings = Load("fonts/kenvector_future.ttf", 14);
+	title_config = Load("fonts/kenvector_future.ttf", 14);
+	title_buttons = Load("fonts/kenvector_future.ttf", 23);
 	return true;
 }
 
@@ -90,8 +83,7 @@ TTF_Font* const j1Fonts::Load(const char* path, int size)
 }
 
 // Print text using font
-
-SDL_Texture * j1Fonts::Print(const char * text, SDL_Color color, _TTF_Font * font)
+SDL_Texture* j1Fonts::Print(const char* text, SDL_Color color, _TTF_Font* font)
 {
 	SDL_Texture* ret = NULL;
 	SDL_Surface* surface = TTF_RenderText_Blended((font) ? font : default, text, color);

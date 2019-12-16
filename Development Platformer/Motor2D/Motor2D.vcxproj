@@ -14,7 +14,7 @@
     <ProjectGuid>{2AF9969B-F202-497B-AF30-7BEF9CE8005E}</ProjectGuid>
     <RootNamespace>programacio_2</RootNamespace>
     <ProjectName>Motor 2D</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -98,6 +98,7 @@
     <ClCompile Include="j1Player1.cpp" />
     <ClCompile Include="j1Player2.cpp" />
     <ClCompile Include="j1Scene.cpp" />
+    <ClCompile Include="j1Scene_UI.cpp" />
     <ClCompile Include="j1Timer.cpp" />
     <ClCompile Include="j1Mecha.cpp" />
     <ClCompile Include="mmgr\mmgr.cpp" />
@@ -110,7 +111,8 @@
     <ClCompile Include="UiItem.cpp" />
     <ClCompile Include="UiItem_Bar.cpp" />
     <ClCompile Include="UiItem_Button.cpp" />
-    <ClCompile Include="UiItem_Image.cpp" />
+    <ClCompile Include="UiItem_Thumb.cpp" />
+    <ClCompile Include="UI_Sprite.cpp" />
     <ClCompile Include="UiItem_Label.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +131,7 @@
     <ClInclude Include="j1Player1.h" />
     <ClInclude Include="j1Player2.h" />
     <ClInclude Include="j1Scene.h" />
+    <ClInclude Include="j1Scene_UI.h" />
     <ClInclude Include="j1Timer.h" />
     <ClInclude Include="j1Mecha.h" />
     <ClInclude Include="p2DynArray.h" />
@@ -139,7 +142,6 @@
     <ClInclude Include="p2Defs.h" />
     <ClInclude Include="p2List.h" />
     <ClInclude Include="j1Module.h" />
-    <ClInclude Include="p2Map.h" />
     <ClInclude Include="p2Point.h" />
     <ClInclude Include="j1Render.h" />
     <ClInclude Include="j1Textures.h" />
@@ -151,7 +153,8 @@
     <ClInclude Include="UiItem.h" />
     <ClInclude Include="UiItem_Bar.h" />
     <ClInclude Include="UiItem_Button.h" />
-    <ClInclude Include="UiItem_Image.h" />
+    <ClInclude Include="UiItem_Thumb.h" />
+    <ClInclude Include="UI_Sprite.h" />
     <ClInclude Include="UiItem_Label.h" />
   </ItemGroup>
   <ItemGroup>
