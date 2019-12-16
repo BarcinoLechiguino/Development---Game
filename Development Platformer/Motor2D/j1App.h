@@ -119,7 +119,7 @@ private:
 	mutable p2SString	save_game;
 
 	//Framerate
-	uint64				frame_count;			//Calcultes the amount of frames per second. frames++ after each Update() loop.
+	uint64				frame_count;			//Calculates the amount of frames per second. frames++ after each Update() loop.
 	j1Timer				startup_timer;			//Creates a pointer to j1Timer tool. Gives acces to j1Timer's elements. Used to keep track of time since app start.
 	j1Timer				frame_timer;			//Keeps track of everything time related in the span of a frame.
 	j1PerfTimer			perf_timer;				//Creates a pointer to j1PerfTimer tool. Gives access to j1PerfTimer's elements. Used to keep track of time since app start.
