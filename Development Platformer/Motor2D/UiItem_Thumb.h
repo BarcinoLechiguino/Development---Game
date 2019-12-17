@@ -17,11 +17,11 @@ public:
 	bool PostUpdate();
 
 	bool OnHover();
-	void MoveThumb();
+	void MoveThumb(); // Function to move the thumb through the slider
 
 public:
-	SDL_Rect thumb_box;
-	iPoint click_position;
+	SDL_Rect thumb_box; // Rect of the thumb
+	iPoint click_position; // Detects where the mouse is clicking
 };
 
 #endif  // !_UI_THUMB__H

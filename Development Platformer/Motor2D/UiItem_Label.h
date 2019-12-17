@@ -5,7 +5,7 @@
 #include "UiItem.h"
 #include "SDL/include/SDL.h"
 
-enum Label_Type {
+enum Label_Type { // Types of labels
 	TITLE,
 	FONT,
 	CONFIG,
@@ -23,8 +23,8 @@ public:
 	bool PostUpdate();
 
 	bool OnHover();
-	void ChangeTexture(SDL_Color color);
-	void ChangeText(const char* text);
+	void ChangeTexture(SDL_Color color); // Change the color of the label, when hover or click state
+	void ChangeText(const char* text); // Change the text of the label, in this case it is going to have the same but with a different color
 
 private:
 	Label_Type label_type;
@@ -33,7 +33,7 @@ private:
 
 public:
 
-	mutable SDL_Texture* tex = nullptr;
+	mutable SDL_Texture* tex = nullptr; //?
 
 };
 

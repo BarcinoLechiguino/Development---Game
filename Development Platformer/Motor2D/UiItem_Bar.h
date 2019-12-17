@@ -20,7 +20,7 @@ public:
 	float GetThumbValue();
 
 private:
-	UiItem_Thumb*	thumb = nullptr; //The thumb is the circle in the middle to regulate
+	UiItem_Thumb*	thumb = nullptr;
 	SDL_Rect	box;
 public:
 	SDL_Rect s_box; // Slider box

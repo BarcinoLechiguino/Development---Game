@@ -17,8 +17,6 @@
 
 UiItem_Thumb::UiItem_Thumb(SDL_Rect s_thumb, UI_Item* parent)
 {
-
-
 	thumb_box = s_thumb;
 	this->parent = parent;
 }

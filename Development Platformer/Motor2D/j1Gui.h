@@ -59,12 +59,12 @@ public:
 	bool Save(pugi::xml_node&)const;
 
 public:
-	p2List<UI_Item*> gui_list;
-	uint			fx_buton_pressed;
+	p2List<UI_Item*> gui_list; // List of items
+	uint			fx_buton_pressed; // FX
 private:
 	SDL_Texture*	atlas;
 	p2SString		atlas_file_name;
-	p2SString		fx_button_pressed_string;
+	p2SString		fx_button_pressed_string; // STring when the button is pressed
 
 
 
