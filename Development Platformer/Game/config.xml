@@ -99,10 +99,15 @@
   </entities>
 
   <gui>
-    <UITexture file="textures/gui/sprites_UI.png"/>
+    <atlas file="textures/gui/UI_sprites.png"/>
     <fx_button>audio/fx/Mouse Click.wav</fx_button>
   </gui>
-  
+
+  <scene_menu>
+    <map path="Tutorial_Level.tmx"/>
+    <audio path="music/Background music.ogg"/>
+  </scene_menu>
+
   <scene>
     <map_name name="Test_map.tmx"></map_name>
     <map_name name="Test_map_2.tmx"></map_name>

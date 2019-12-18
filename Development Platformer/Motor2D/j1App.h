@@ -13,7 +13,9 @@ class j1Input;
 class j1Render;
 class j1Textures;
 class j1Audio;
+class j1SceneMenu;
 class j1Scene;
+class j1Scene_UI;
 class j1Map;
 class j1PathFinding;
 class j1Fade_Scene;
@@ -93,7 +95,9 @@ public:
 	j1Textures*			tex;
 	j1Audio*			audio;
 	j1Fonts*			font;
+	j1SceneMenu*		scene_menu;
 	j1Scene*			scene;
+	j1Scene_UI*			scene_ui;
 	j1Map*				map;
 	j1PathFinding*		pathfinding;
 	j1EntityManager*	entityManager;
@@ -105,6 +109,7 @@ public:
 
 	bool				framesAreCapped;		//Keeps track whether the frame cap is on or off.
 	bool				vsyncIsActive;			//Keeps track whether Vsync is on or off.
+	bool				paused = false;
 
 private:
 

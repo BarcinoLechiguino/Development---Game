@@ -29,6 +29,7 @@ public:
 
 	//New, must change.
 	bool FadeToBlack(const char* mapname, float time = 2.0f);
+	bool FadeToBlack2(j1Module* module_off, j1Module* module_on, float time = 1.0f);
 
 private:
 
@@ -50,7 +51,8 @@ private:
 	uint total_time = 0;
 	SDL_Rect screen;
 	const char* mapName;
-
+	j1Module* to_enable = nullptr;
+	j1Module* to_disable = nullptr;
 
 };
 #endif // ! _MODULE_SCENECHANGE_

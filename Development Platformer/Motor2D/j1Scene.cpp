@@ -9,9 +9,11 @@
 #include "j1Map.h"
 #include "j1FadeScene.h"
 #include "j1Scene.h"
+#include "j1Scene_UI.h"
 #include "j1Collisions.h"
 #include "j1EntityManager.h"
 #include "j1Player1.h"
+#include "j1App.h"
 #include "j1Player2.h"
 #include "j1Pathfinding.h"
 #include "Brofiler\Brofiler.h"
@@ -82,6 +84,8 @@ bool j1Scene::Start()
 	}
 
 	path_debug_tex = App->tex->Load("maps/path2_centered.png");					//Sets the path_debug_tex as path2.png.
+
+	App->gui->Enable();
 
 	return true;
 }
@@ -264,6 +268,7 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 		App->audio->SetVolumeMusic();
 	}
 
+	App->scene_ui->Update(dt);
 	App->map->Draw();
 
 	if (App->map->pathfindingMetaDebug == true)
@@ -305,6 +310,7 @@ bool j1Scene::PostUpdate()
 		ret = false;
 	}
 
+	App->scene_ui->PostUpdate();
 	return ret;
 }
 
@@ -326,6 +332,8 @@ bool j1Scene::CleanUp()
 	{
 		App->entityManager->player2->CleanUp();				//Deletes all data related to P2.
 	}
+
+	App->scene_ui->CleanUp();
 
 	return true;
 }

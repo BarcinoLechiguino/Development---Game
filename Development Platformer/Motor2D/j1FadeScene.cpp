@@ -82,6 +82,23 @@ bool j1Fade_Scene::Update(float dt)
 	return true;
 }
 
+bool j1Fade_Scene::FadeToBlack2(j1Module* module_off, j1Module* module_on, float time)
+{
+	bool ret = false;
+
+	if (current_step == fade_step::none)
+	{
+		current_step = fade_step::fade_to_black;
+		start_time = SDL_GetTicks();
+		total_time = (Uint32)(time * 0.5f * 1000.0f);
+		to_enable = module_on;
+		to_disable = module_off;
+		ret = true;
+	}
+
+	return ret;
+}
+
 bool j1Fade_Scene ::FadeToBlack(const char* mapname, float time)
 {
 	bool ret = false;

@@ -39,7 +39,7 @@ public:
 	bool CleanUp();
 
 private:
-	void ChangeVisibility();
+	void ChangeVisibility(); // When pause menu is displayed and closed
 
 public:
 
@@ -52,7 +52,7 @@ public:
 	UI_Label*	timer_label = nullptr;
 
 	p2List<UIitem_Button*>	button_list;
-	p2List<UI_Item*>		pause_ui_list;
+	p2List<UI_Item*>		pause_ui_list; //Pause menu when esc pressed
 
 private:
 	p2SString			path;
