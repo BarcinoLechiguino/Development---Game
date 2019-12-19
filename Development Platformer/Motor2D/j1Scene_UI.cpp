@@ -41,23 +41,15 @@ bool j1Scene_UI::Start()
 	bool ret = true;
 
 	App->gui->CreateSprite({ 0,0 }, { 649,203,451,24 }, true);
-	App->gui->CreateLabel({ 220, 5 }, "SCORE", Label_Type::FONT, { 255,255,255,255 }, true);
-	score_label = App->gui->CreateLabel({ 290,5 }, player_score_string, Label_Type::CONFIG, { 255,255,255,255 }, true);
-	App->gui->CreateLabel({ 80, 5 }, "TIMER", Label_Type::FONT, { 255,255,255,255 }, true);
-	timer_label = App->gui->CreateLabel({ 165,5 }, timer_string, Label_Type::CONFIG, { 255,255,255,255 }, true);
 
-	hearts[0] = (App->gui->CreateSprite({ 0,0 }, { 706,6,14,13 }, true));
+	App->gui->CreateLabel({ 520, 5 }, "SCORE", Label_Type::FONT, { 255,255,255,255 }, true);
+	score_label = App->gui->CreateLabel({ 590,5 }, player_score_string, Label_Type::CONFIG, { 255,255,255,255 }, true);
+	App->gui->CreateLabel({ 380, 5 }, "TIMER", Label_Type::FONT, { 255,255,255,255 }, true);
+	timer_label = App->gui->CreateLabel({ 465,5 }, timer_string, Label_Type::CONFIG, { 255,255,255,255 }, true);
+
+	hearts[0] = (App->gui->CreateSprite({520,5 }, { 706,6,14,13 }, true));
 	hearts[1] = (App->gui->CreateSprite({ 0,0 }, { 706,6,14,13 }, true));
 	hearts[2] = (App->gui->CreateSprite({ 0,0 }, { 706,6,14,13 }, true));
-
-	pause_ui_list.add(App->gui->CreateSprite({ 80, 30 }, { 649,228,158,26 }, true));
-	pause_ui_list.add(App->gui->CreateSprite({ 80,70 }, { 824, 6, 157, 151 }, true));
-	pause_ui_list.add(App->gui->CreateLabel({ 100,35 }, "Pause Menu", FONT, { 255,255,255,255 }, true));
-	SDL_Rect button_rect[3] = { { 705,20,115,29 }, { 705,51,115,29 }, { 705,82,115,29 } };
-	button_list.add(App->gui->CreateButton({ 102,75 }, Button_Type::PLAY, button_rect[0], &button_rect[1], &button_rect[2], "Resume", true));
-	button_list.add(App->gui->CreateButton({ 102,108 }, Button_Type::SAVE, button_rect[0], &button_rect[1], &button_rect[2], "Save", true));
-	button_list.add(App->gui->CreateButton({ 102, 141 }, Button_Type::LOAD, button_rect[0], &button_rect[1], &button_rect[2], "Load", true));
-	button_list.add(App->gui->CreateButton({ 102, 185 }, Button_Type::EXIT, button_rect[0], &button_rect[1], &button_rect[2], "Exit", true));
 
 	p2List_item<UIitem_Button*>* button_item = button_list.start;
 	while (button_item != NULL)

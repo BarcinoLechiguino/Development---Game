@@ -37,8 +37,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new j1Textures();
 	audio = new j1Audio();
 	scene_menu = new j1SceneMenu();
-	scene = new j1Scene();
 	scene_ui = new j1Scene_UI();
+	scene = new j1Scene();
 	map = new j1Map();
 	pathfinding = new j1PathFinding();
 	collisions = new j1Collisions();

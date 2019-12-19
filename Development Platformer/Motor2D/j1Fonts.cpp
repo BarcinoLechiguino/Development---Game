@@ -40,11 +40,11 @@ bool j1Fonts::Awake(pugi::xml_node& conf)
 
 bool j1Fonts::Start()
 {
-	main_title = Load("fonts/kenvector_future.ttf", 19);
-	credits = Load("fonts/arial.ttf", 10);
-	title_settings = Load("fonts/kenvector_future.ttf", 14);
-	title_config = Load("fonts/kenvector_future.ttf", 14);
-	title_buttons = Load("fonts/kenvector_future.ttf", 23);
+	main_title = Load("fonts/CopperPlate_BoldItalic", 19);
+	credits = Load("fonts/CopperPlate_BoldItalic", 19);
+	title_settings = Load("fonts/CopperPlate_BoldItalic", 19);
+	title_config = Load("fonts/CopperPlate_BoldItalic", 19);
+	title_buttons = Load("fonts/CopperPlate_BoldItalic", 19);
 	return true;
 }
 
