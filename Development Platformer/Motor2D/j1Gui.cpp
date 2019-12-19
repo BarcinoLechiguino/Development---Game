@@ -12,7 +12,7 @@
 #include "UiItem.h"
 #include "UiItem_Label.h"
 #include "UiItem_Bar.h"
-#include "UI_Sprite.h"
+#include "UI_Image.h"
 #include "UiItem_Thumb.h"
 #include "j1Scene_UI.h"
 #include "SDL/include/SDL.h"
@@ -133,10 +133,10 @@ UI_Label* j1Gui::CreateLabel(iPoint pos, const char * text, Label_Type type, SDL
 	return (UI_Label*)label;
 }
 
-UI_Item* j1Gui::CreateSprite(iPoint pos, SDL_Rect rect, bool static_obj, UI_Item* parent)
+UI_Item* j1Gui::CreateImage(iPoint pos, SDL_Rect rect, bool static_obj, UI_Item* parent)
 {
 	UI_Item* sprite = nullptr;
-	sprite = new UI_Sprite(rect, parent);
+	sprite = new UI_Image(rect, parent);
 	sprite->pos.x = pos.x;
 	sprite->pos.y = pos.y;
 

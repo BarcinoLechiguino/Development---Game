@@ -9,7 +9,7 @@
 #include "j1Fonts.h"
 #include "UiItem_Thumb.h"
 #include "UiItem_Bar.h"
-#include "UI_Sprite.h"
+#include "UI_Image.h"
 #include "UiItem_Button.h"
 
 UiItem_Bar::UiItem_Bar(SDL_Rect slider_box, UI_Item* parent /*p2Point<int> pivo*/)

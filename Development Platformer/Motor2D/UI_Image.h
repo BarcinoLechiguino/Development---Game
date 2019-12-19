@@ -5,11 +5,11 @@
 #include "j1Gui.h"
 #include "SDL/include/SDL.h"
 
-class UI_Sprite : public UI_Item
+class UI_Image : public UI_Item
 {
 public:
-	UI_Sprite(SDL_Rect rect, UI_Item* parent);
-	~UI_Sprite() {};
+	UI_Image(SDL_Rect rect, UI_Item* parent);
+	~UI_Image() {};
 
 	bool PostUpdate();
 

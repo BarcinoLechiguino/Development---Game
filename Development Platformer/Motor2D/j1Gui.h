@@ -7,7 +7,7 @@
 #include "UiItem_Label.h"
 #include "UiItem_Button.h"
 #include "UiItem_Bar.h"
-#include "UI_Sprite.h"
+#include "UI_Image.h"
 #include "UiItem_Thumb.h"
 #include "SDL/include/SDL.h"
 
@@ -48,7 +48,7 @@ public:
 	// TODO 2: Create the factory methods
 	// Gui creation functions
 
-	UI_Item* CreateSprite(iPoint pos, SDL_Rect rect, bool static_obj = false, UI_Item * parent = nullptr);
+	UI_Item* CreateImage(iPoint pos, SDL_Rect rect, bool static_obj = false, UI_Item * parent = nullptr);
 	UIitem_Button* CreateButton(iPoint pos, Button_Type type, SDL_Rect idle_rect, SDL_Rect* idle_hover = NULL, SDL_Rect* idle_click = NULL, const char* text = "", bool static_obj = false, UI_Item* parent = nullptr);
 	UI_Label* CreateLabel(iPoint pos, const char* text, Label_Type type, SDL_Color color = { 0,0,0,0 }, bool static_obj = false, UI_Item* parent = nullptr);
 	UiItem_Thumb* CreateThumb(SDL_Rect s_thumb, UI_Item* parent = nullptr);
