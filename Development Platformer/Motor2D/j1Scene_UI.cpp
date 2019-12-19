@@ -49,7 +49,7 @@ bool j1Scene_UI::Start()
 
 	hearts[0] = (App->gui->CreateSprite({520,5 }, { 706,6,14,13 }, true));
 	hearts[1] = (App->gui->CreateSprite({ 0,0 }, { 706,6,14,13 }, true));
-	hearts[2] = (App->gui->CreateSprite({ 0,0 }, { 706,6,14,13 }, true));
+	hearts[2] = (App->gui->CreateSprite({ 10,0 }, { 706,6,14,13 }, true));
 
 	p2List_item<UIitem_Button*>* button_item = button_list.start;
 	while (button_item != NULL)
