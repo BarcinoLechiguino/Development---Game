@@ -99,7 +99,7 @@
   </entities>
 
   <gui>
-    <atlas file="textures/Spritesheets/UI/UI_sprites.png"/>
+    <atlas file="textures/Spritesheets/UI/UI_sprites_resized.png"/>
     <fx_button>audio/fx/Mouse Click.wav</fx_button>
   </gui>
 

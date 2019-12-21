@@ -41,33 +41,33 @@ bool j1Scene_UI::Start()
 	bool ret = true;
 
 	// Upper bar
-	App->gui->CreateImage({ 0,0 }, { 649,203,451,24 }, true);
-	App->gui->CreateImage({ 0,24 }, { 649,203,451,24 }, true);
-	App->gui->CreateImage({ 451,0 }, { 649,203,451,24 }, true);
-	App->gui->CreateImage({ 451,24 }, { 649,203,451,24 }, true);
-	App->gui->CreateImage({ 902,0 }, { 649,203,251,24 }, true);
-	App->gui->CreateImage({ 902,24 }, { 649,203,251,24 }, true);
+	App->gui->CreateImage({ 0,0 }, { 973,305,677,36 }, true);
+	App->gui->CreateImage({ 0,36 }, { 973,305,677,36 }, true);
+	App->gui->CreateImage({ 676,0 }, { 973,305,677,36 }, true);
+	App->gui->CreateImage({ 676,36 }, { 973,305,677,36 }, true);
+	App->gui->CreateImage({ 1352,0 }, { 973,305,377,36 }, true);
+	App->gui->CreateImage({ 1352,36 }, { 973,305,377,36 }, true);
 
 	// Character faces
-	App->gui->CreateImage({ 70,10 }, { 988,95,23,21 }, true);
-	App->gui->CreateImage({ 950,10 }, { 1019,95,25,22 }, true);
+	App->gui->CreateImage({ 70,20 }, { 1481,142,36,33 }, true);
+	App->gui->CreateImage({ 935,20 }, { 1528,142,39,33 }, true);
 
 	// Tiemr, score, etc
-	App->gui->CreateLabel({ 10, 7 }, "Timm", Label_Type::FONT, { 255,255,255,255 }, true);
-	App->gui->CreateLabel({ 980, 7 }, "Joe", Label_Type::FONT, { 255,255,255,255 }, true);
-	App->gui->CreateLabel({ 225, 7 }, "Score", Label_Type::FONT, { 255,255,255,255 }, true);
-	score_label = App->gui->CreateLabel({ 300,9 }, player_score_string, Label_Type::CONFIG, { 255,255,255,255 }, true);
-	App->gui->CreateLabel({ 710, 7 }, "Timer", Label_Type::FONT, { 255,255,255,255 }, true);
-	timer_label = App->gui->CreateLabel({ 785,5 }, timer_string, Label_Type::CONFIG, { 255,255,255,255 }, true);
-	App->gui->CreateLabel({ 410, 7 }, "MUTUAL COOPERATION", Label_Type::FONT, { 255,255,255,255 }, true);
+	App->gui->CreateLabel({ 10, 20 }, "Timm", Label_Type::FONT, { 255,255,255,255 }, true);
+	App->gui->CreateLabel({ 980, 20 }, "Joe", Label_Type::FONT, { 255,255,255,255 }, true);
+	App->gui->CreateLabel({ 225, 20 }, "Score", Label_Type::FONT, { 255,255,255,255 }, true);
+	score_label = App->gui->CreateLabel({ 300,20 }, player_score_string, Label_Type::CONFIG, { 255,255,255,255 }, true);
+	App->gui->CreateLabel({ 710, 20 }, "Timer", Label_Type::FONT, { 255,255,255,255 }, true);
+	timer_label = App->gui->CreateLabel({ 785,20 }, timer_string, Label_Type::CONFIG, { 255,255,255,255 }, true);
+	App->gui->CreateLabel({ 410, 20 }, "MUTUAL COOPERATION", Label_Type::FONT, { 255,255,255,255 }, true);
 
 	// Lifes player 1 & player 2
-	hearts[0] = (App->gui->CreateImage({110,15 }, { 706,6,14,13 }, true));
-	hearts[1] = (App->gui->CreateImage({ 130,15 }, { 706,6,14,13 }, true));
-	hearts[2] = (App->gui->CreateImage({ 150,15 }, { 706,6,14,13 }, true));
-	hearts[3] = (App->gui->CreateImage({ 920,15 }, { 706,6,14,13 }, true));
-	hearts[4] = (App->gui->CreateImage({ 900,15 }, { 706,6,14,13 }, true));
-	hearts[5] = (App->gui->CreateImage({ 880,15 }, { 706,6,14,13 }, true));
+	hearts[0] = (App->gui->CreateImage({110,30 }, { 1058,8,24,21 }, true));
+	hearts[1] = (App->gui->CreateImage({ 135,30 }, { 1058,8,24,21 }, true));
+	hearts[2] = (App->gui->CreateImage({ 160,30 }, { 1058,8,24,21 }, true));
+	hearts[3] = (App->gui->CreateImage({ 910,30 }, { 1058,8,24,21 }, true));
+	hearts[4] = (App->gui->CreateImage({ 885,30 }, { 1058,8,24,21 }, true));
+	hearts[5] = (App->gui->CreateImage({ 860,30 }, { 1058,8,24,21 }, true));
 
 	p2List_item<UIitem_Button*>* button_item = button_list.start;
 	while (button_item != NULL)
