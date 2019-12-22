@@ -69,19 +69,6 @@ bool j1Scene_UI::Start()
 	hearts[4] = (App->gui->CreateImage({ 885,30 }, { 1058,8,24,21 }, true));
 	hearts[5] = (App->gui->CreateImage({ 860,30 }, { 1058,8,24,21 }, true));
 
-	p2List_item<UIitem_Button*>* button_item = button_list.start;
-	while (button_item != NULL)
-	{
-		button_item->data->visible = false;
-		button_item = button_item->next;
-	}
-	p2List_item<UI_Item*>* ui_item = pause_ui_list.start;
-	while (ui_item != NULL)
-	{
-		ui_item->data->visible = false;
-		ui_item = ui_item->next;
-	}
-
 	return ret;
 }
 
@@ -98,34 +85,42 @@ bool j1Scene_UI::Update(float dt)
 	float timer = (float)ptimer.ReadMs() / 1000;
 	sprintf_s(timer_string, 20, "%.2f", timer);
 	timer_label->ChangeText(timer_string);
-
-	// if condiotioning with lifes here
-
-	/*App->entityManager->player->player.lives;*/
-
-	p2List_item<UIitem_Button*>* button_item = button_list.start;
-	while (button_item != NULL)
+	
+	if (App->entityManager->player->player.lives == 3 || App->entityManager->player2->player.lives == 3)
 	{
-		if (button_item->data->OnClick())
-		{
-			switch (button_item->data->GetType())
-			{
-			case PLAY:
-				ChangeVisibility();
-				App->paused = false;
-				break;
-			case SAVE:
-				App->SaveGame("save_game.xml");
-				break;
-			case LOAD:
-				App->LoadGame("save_game.xml");
-				break;
-			case EXIT:
-				App->fadescene->FadeToBlack2(App->scene, App->scene_menu);
-				break;
-			}
-		}
-		button_item = button_item->next;
+		hearts[0]->visible = true;
+		hearts[1]->visible = true;
+		hearts[2]->visible = true;
+		hearts[3]->visible = true;
+		hearts[4]->visible = true;
+		hearts[5]->visible = true;
+	}
+	if (App->entityManager->player->player.lives == 2 || App->entityManager->player2->player.lives == 2)
+	{
+		hearts[0]->visible = true;
+		hearts[1]->visible = true;
+		hearts[2]->visible = false;
+		hearts[3]->visible = true;
+		hearts[4]->visible = true;
+		hearts[5]->visible = false;
+	}
+	if (App->entityManager->player->player.lives == 1 || App->entityManager->player2->player.lives == 1)
+	{
+		hearts[0]->visible = true;
+		hearts[1]->visible = false;
+		hearts[2]->visible = false;
+		hearts[3]->visible = true;
+		hearts[4]->visible = false;
+		hearts[5]->visible = false;
+	}
+	if (App->entityManager->player->player.lives == 0 || App->entityManager->player2->player.lives == 0)
+	{
+		hearts[0]->visible = true;
+		hearts[1]->visible = true;
+		hearts[2]->visible = true;
+		hearts[3]->visible = true;
+		hearts[4]->visible = true;
+		hearts[5]->visible = true;
 	}
 
 	return true;
