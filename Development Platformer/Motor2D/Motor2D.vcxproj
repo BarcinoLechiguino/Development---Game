@@ -100,7 +100,6 @@
     <ClCompile Include="j1Scene.cpp" />
     <ClCompile Include="j1SceneMenu.cpp" />
     <ClCompile Include="j1Scene_Credits.cpp" />
-    <ClCompile Include="j1Scene_UI.cpp" />
     <ClCompile Include="j1Timer.cpp" />
     <ClCompile Include="j1Mecha.cpp" />
     <ClCompile Include="mmgr\mmgr.cpp" />
@@ -135,7 +134,6 @@
     <ClInclude Include="j1Scene.h" />
     <ClInclude Include="j1SceneMenu.h" />
     <ClInclude Include="j1Scene_Credits.h" />
-    <ClInclude Include="j1Scene_UI.h" />
     <ClInclude Include="j1Timer.h" />
     <ClInclude Include="j1Mecha.h" />
     <ClInclude Include="p2DynArray.h" />

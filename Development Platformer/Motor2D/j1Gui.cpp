@@ -14,7 +14,6 @@
 #include "UiItem_Bar.h"
 #include "UI_Image.h"
 #include "UiItem_Thumb.h"
-#include "j1Scene_UI.h"
 #include "SDL/include/SDL.h"
 
 j1Gui::j1Gui() : j1Module()

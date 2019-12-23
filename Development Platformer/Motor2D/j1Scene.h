@@ -2,6 +2,13 @@
 #define __j1SCENE_H__
 
 #include "j1Module.h"
+#include "j1PerfTimer.h"
+#include "j1Timer.h"
+#include "p2List.h"
+#include "j1Gui.h"
+#include "UiItem_Button.h"
+#include "UI_Image.h"
+#include "UiItem_Label.h"
 
 struct SDL_Texture;
 
@@ -57,6 +64,27 @@ private:
 	//SDL_Texture*		mouse_debug_tex;	//Texture that will appear at mouse position when pathfinding is being debugged.
 	SDL_Texture*		path_debug_tex;		//Texture that will appear at the path tiles when pathfinding is being debugged.
 
+	// UI VARIABLES
+private:
+	void ChangeVisibility(); // When pause menu is displayed and closed
+
+public:
+
+	char		player_score_string[5] = "0";
+	char		timer_string[20] = "0";
+	uint        player_lifes = 3;
+	UI_Item*     hearts[6] = { nullptr,nullptr,nullptr };
+	uint		player_score = 0;
+	UI_Label*	score_label = nullptr;
+	UI_Label*	timer_label = nullptr;
+
+	p2List<UIitem_Button*>	button_list;
+	p2List<UI_Item*>		pause_ui_list; //Pause menu when esc pressed
+
+private:
+	p2SString			path;
+	p2List<j1Module*>	current_level;
+	j1PerfTimer			ptimer;
 };
 
 #endif // __j1SCENE_H__

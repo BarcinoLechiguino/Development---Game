@@ -20,7 +20,7 @@ UiItem_Bar::UiItem_Bar(SDL_Rect slider_box, UI_Item* parent /*p2Point<int> pivo*
 
 bool UiItem_Bar::Start()
 {
-	thumb = App->gui->CreateThumb({ 619,182,24,22 }, this);
+	thumb = App->gui->CreateThumb({ 671,273,37,37 }, this);
 	return true;
 }
 
@@ -29,8 +29,6 @@ bool UiItem_Bar::PostUpdate()
 	bool ret = true;
 
 	ret = App->render->Blit(App->gui->GetAtlas(), position.x, position.y, &s_box);
-
-
 
 	return ret;
 }

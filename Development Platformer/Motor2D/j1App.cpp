@@ -7,7 +7,6 @@
 #include "j1Input.h"
 #include "j1Render.h"
 #include "j1Textures.h"
-#include "j1Scene_UI.h"
 #include "j1Scene_Credits.h"
 #include "j1Audio.h"
 #include "j1SceneMenu.h"
@@ -38,7 +37,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new j1Textures();
 	audio = new j1Audio();
 	scene_menu = new j1SceneMenu();
-	scene_ui = new j1Scene_UI();
 	scene = new j1Scene();
 	scene_credits = new j1Scene_Credits();
 	map = new j1Map();
@@ -60,7 +58,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(font);
 	AddModule(scene_menu);
 	AddModule(scene);
-	AddModule(scene_ui);
 	AddModule(scene_credits);
 	AddModule(gui);
 	AddModule(entityManager);				//entityManager is called after the module scene (where the player is created) is called.

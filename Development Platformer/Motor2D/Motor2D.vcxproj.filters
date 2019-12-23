@@ -97,9 +97,6 @@
     <ClCompile Include="UiItem_Thumb.cpp">
       <Filter>Desenvolupament  ========\Modules\UI</Filter>
     </ClCompile>
-    <ClCompile Include="j1Scene_UI.cpp">
-      <Filter>Desenvolupament  ========\Modules\Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="j1SceneMenu.cpp">
       <Filter>Desenvolupament  ========\Modules\Scenes</Filter>
     </ClCompile>
@@ -224,9 +221,6 @@
     </ClInclude>
     <ClInclude Include="UiItem_Thumb.h">
       <Filter>Desenvolupament  ========\Modules\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Scene_UI.h">
-      <Filter>Desenvolupament  ========\Modules\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="j1SceneMenu.h">
       <Filter>Desenvolupament  ========\Modules\Scenes</Filter>
