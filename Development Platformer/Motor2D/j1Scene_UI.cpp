@@ -37,25 +37,25 @@ bool j1Scene_UI::Awake(pugi::xml_node& config)
 bool j1Scene_UI::Start()
 {
 	// Upper bar
-	App->gui->CreateImage({ 0,0 }, { 973,305,677,36 }, true);
-	App->gui->CreateImage({ 0,36 }, { 973,305,677,36 }, true);
-	App->gui->CreateImage({ 676,0 }, { 973,305,677,36 }, true);
-	App->gui->CreateImage({ 676,36 }, { 973,305,677,36 }, true);
-	App->gui->CreateImage({ 1352,0 }, { 973,305,377,36 }, true);
-	App->gui->CreateImage({ 1352,36 }, { 973,305,377,36 }, true);
+	hud_list.add(App->gui->CreateImage({ 0,0 }, { 973,305,677,36 }, true));
+	hud_list.add(App->gui->CreateImage({ 0,36 }, { 973,305,677,36 }, true));
+	hud_list.add(App->gui->CreateImage({ 676,0 }, { 973,305,677,36 }, true));
+	hud_list.add(App->gui->CreateImage({ 676,36 }, { 973,305,677,36 }, true));
+	hud_list.add(App->gui->CreateImage({ 1352,0 }, { 973,305,377,36 }, true));
+	hud_list.add(App->gui->CreateImage({ 1352,36 }, { 973,305,377,36 }, true));
 
 	// Character faces
-	App->gui->CreateImage({ 70,20 }, { 1481,142,36,33 }, true);
-	App->gui->CreateImage({ 935,20 }, { 1528,142,39,33 }, true);
+	hud_list.add(App->gui->CreateImage({ 70,20 }, { 1481,142,36,33 }, true));
+	hud_list.add(App->gui->CreateImage({ 935,20 }, { 1528,142,39,33 }, true));
 
 	// Tiemr, score, etc
-	App->gui->CreateLabel({ 10, 20 }, "Timm", Label_Type::FONT, { 255,255,255,255 }, true);
-	App->gui->CreateLabel({ 980, 20 }, "Joe", Label_Type::FONT, { 255,255,255,255 }, true);
-	App->gui->CreateLabel({ 225, 20 }, "Score", Label_Type::FONT, { 255,255,255,255 }, true);
+	hud_list.add(App->gui->CreateLabel({ 10, 20 }, "Timm", Label_Type::FONT, { 255,255,255,255 }, true));
+	hud_list.add(App->gui->CreateLabel({ 980, 20 }, "Joe", Label_Type::FONT, { 255,255,255,255 }, true));
+	hud_list.add(App->gui->CreateLabel({ 225, 20 }, "Score", Label_Type::FONT, { 255,255,255,255 }, true));
 	score_label = App->gui->CreateLabel({ 300,20 }, player_score_string, Label_Type::CONFIG, { 255,255,255,255 }, true);
-	App->gui->CreateLabel({ 710, 20 }, "Timer", Label_Type::FONT, { 255,255,255,255 }, true);
+	hud_list.add(App->gui->CreateLabel({ 710, 20 }, "Timer", Label_Type::FONT, { 255,255,255,255 }, true));
 	timer_label = App->gui->CreateLabel({ 785,20 }, timer_string, Label_Type::CONFIG, { 255,255,255,255 }, true);
-	App->gui->CreateLabel({ 410, 20 }, "MUTUAL COOPERATION", Label_Type::FONT, { 255,255,255,255 }, true);
+	hud_list.add(App->gui->CreateLabel({ 410, 20 }, "MUTUAL COOPERATION", Label_Type::FONT, { 255,255,255,255 }, true));
 
 	// Lifes player 1 & player 2
 	hearts[0] = (App->gui->CreateImage({ 110,30 }, { 1058,8,24,21 }, true));
@@ -71,10 +71,10 @@ bool j1Scene_UI::Start()
 	pause_ui_list.add(App->gui->CreateLabel({ 453,182 }, "PAUSE MENU", FONT, { 255,255,255,255 }, true));
 
 	SDL_Rect button_rect[3] = { { 0,74,284,66 }, { 285,74,284,66 }, { 0,142,284,66 } };
-	button_list.add(App->gui->CreateButton({ 370,245 }, Button_Type::PLAY, button_rect[0], &button_rect[1], &button_rect[2], "                   Resume", true));
-	button_list.add(App->gui->CreateButton({ 370,315 }, Button_Type::SAVE, button_rect[0], &button_rect[1], &button_rect[2], "                      Save", true));
-	button_list.add(App->gui->CreateButton({ 370,385 }, Button_Type::LOAD, button_rect[0], &button_rect[1], &button_rect[2], "                       Load", true));
-	button_list.add(App->gui->CreateButton({ 370,455 }, Button_Type::EXIT, button_rect[0], &button_rect[1], &button_rect[2], "                       Exit", true));
+	button_list.add(App->gui->CreateButton({ 370,247 }, Button_Type::PLAY, button_rect[0], &button_rect[1], &button_rect[2], "                Resume", true));
+	button_list.add(App->gui->CreateButton({ 370,317 }, Button_Type::SAVE, button_rect[0], &button_rect[1], &button_rect[2], "                   Save", true));
+	button_list.add(App->gui->CreateButton({ 370,387 }, Button_Type::LOAD, button_rect[0], &button_rect[1], &button_rect[2], "                    Load", true));
+	button_list.add(App->gui->CreateButton({ 370,457 }, Button_Type::EXIT, button_rect[0], &button_rect[1], &button_rect[2], "                    Exit", true));
 
 	SDL_Rect mute_rect_button[3] = { { 1479, 9, 57, 57 }, { 986,6,57,57 }, { 294, 143, 57, 57 } };
 	button_list.add(App->gui->CreateButton({ 670, 650 }, MUTE, mute_rect_button[0], &mute_rect_button[1], &mute_rect_button[2]));
@@ -93,6 +93,12 @@ bool j1Scene_UI::Start()
 	{
 		ui_item->data->visible = false;
 		ui_item = ui_item->next;
+	}
+	p2List_item<UI_Item*>* ui_item2 = hud_list.start;
+	while (ui_item2 != NULL)
+	{
+		ui_item2->data->visible = false;
+		ui_item2 = ui_item2->next;
 	}
 
 	return true;
@@ -160,7 +166,7 @@ bool j1Scene_UI::Update(float dt)
 			switch (button_item->data->GetType())
 			{
 			case PLAY:
-				ChangeVisibility();
+				ChangeVisibility_ESC();
 				App->paused = false;
 				break;
 			case SAVE:
@@ -191,7 +197,7 @@ bool j1Scene_UI::PostUpdate()
 {
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
 	{
-		ChangeVisibility();
+		ChangeVisibility_ESC();
 		App->paused = true;
 	}
 
@@ -209,7 +215,7 @@ bool j1Scene_UI::CleanUp()
 	return true;
 }
 
-void j1Scene_UI::ChangeVisibility()
+void j1Scene_UI::ChangeVisibility_ESC()
 {
 	p2List_item<UIitem_Button*>* button_item = button_list.start;
 	while (button_item != NULL)
@@ -218,6 +224,18 @@ void j1Scene_UI::ChangeVisibility()
 		button_item = button_item->next;
 	}
 	p2List_item<UI_Item*>* ui_item = pause_ui_list.start;
+	while (ui_item != NULL)
+	{
+		ui_item->data->visible = !ui_item->data->visible;
+		ui_item = ui_item->next;
+
+	}
+}
+
+void j1Scene_UI::ChangeVisibility_HUD()
+{
+
+	p2List_item<UI_Item*>* ui_item = hud_list.start;
 	while (ui_item != NULL)
 	{
 		ui_item->data->visible = !ui_item->data->visible;

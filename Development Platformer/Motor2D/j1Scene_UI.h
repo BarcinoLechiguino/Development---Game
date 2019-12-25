@@ -37,8 +37,9 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-private:
-	void ChangeVisibility(); // When pause menu is displayed and closed
+public:
+	void ChangeVisibility_ESC(); // When pause menu is displayed and closed
+	void ChangeVisibility_HUD();
 
 public:
 
@@ -52,6 +53,7 @@ public:
 
 	p2List<UIitem_Button*>	button_list;
 	p2List<UI_Item*>		pause_ui_list; //Pause menu when esc pressed
+	p2List<UI_Item*>		hud_list;
 
 private:
 	p2SString			path;

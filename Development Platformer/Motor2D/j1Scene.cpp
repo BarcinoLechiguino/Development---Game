@@ -93,7 +93,7 @@ bool j1Scene::Start()
 	return true;
 
 	// UI
-	App->scene_ui->Enable();
+
 }
 
 // Called each loop iteration

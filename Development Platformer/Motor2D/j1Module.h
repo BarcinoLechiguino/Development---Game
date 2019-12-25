@@ -76,18 +76,18 @@ public:
 
 	void Enable()
 	{
-		if (enabled == false)
+		if (active == false)
 		{
-			enabled = true;
+			active = true;
 			Start();
 		}
 	}
 
 	void Disable()
 	{
-		if (enabled == true)
+		if (active == true)
 		{
-			enabled = false;
+			active = false;
 			CleanUp();
 		}
 	}

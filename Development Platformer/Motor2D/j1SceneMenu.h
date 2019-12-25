@@ -38,11 +38,12 @@ public:
 	bool CleanUp();
 
 private:
-	//void ChangeVisibility(); 
+	void ChangeVisibility_MENU(); 
 
 public:
 
 	p2List<UIitem_Button*>	button_list;
+	p2List<UI_Item*>		menu_ui_list;
 };
 
 
