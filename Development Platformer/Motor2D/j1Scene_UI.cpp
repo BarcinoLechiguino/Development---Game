@@ -176,7 +176,7 @@ bool j1Scene_UI::Update(float dt)
 				App->audio->volume = 0;
 				break;
 			case UNMUTE:
-				App->audio->volume = 26;
+				App->audio->volume = 100;
 				break;
 			}
 		}

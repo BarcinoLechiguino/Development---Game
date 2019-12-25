@@ -38,7 +38,7 @@ bool j1Audio::Awake(pugi::xml_node& config)
 	int flags = MIX_INIT_OGG;
 	int init = Mix_Init(flags);
 
-	volume = config.child("volume").attribute("value").as_int(26);
+	volume = config.child("volume").attribute("value").as_int(96);
 	volume_fx = config.child("volume_fx").attribute("value").as_int(26);
 
 	if((init & flags) != flags)
