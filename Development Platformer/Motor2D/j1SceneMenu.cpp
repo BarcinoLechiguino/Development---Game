@@ -22,7 +22,6 @@
 
 j1SceneMenu::j1SceneMenu() : j1Module()
 {
-	name.create("scene_menu");
 }
 
 // Destructor
@@ -32,12 +31,7 @@ j1SceneMenu::~j1SceneMenu()
 // Called before render is available
 bool j1SceneMenu::Awake(pugi::xml_node& config)
 {
-	LOG("Loading Scene Intro");
-	bool ret = true;
-	path.create(config.child("path").child_value());
-	map_path.create(config.child("map").attribute("path").as_string());
-	music_path.create(config.child("audio").attribute("path").as_string());
-	return ret;
+	return true;
 }
 
 // Called before the first frame
@@ -45,25 +39,19 @@ bool j1SceneMenu::Start()
 {
 	bool ret = true;
 
-	LoadLevel();
-
-	App->gui->Enable();
-
 	return ret;
 }
 
 // Called each loop iteration
 bool j1SceneMenu::PreUpdate(float dt)
 {
-	BROFILER_CATEGORY("PreUpdate_SceneIntro", Profiler::Color::NavajoWhite);
-
 	return true;
 }
 
 // Called each loop iteration
 bool j1SceneMenu::Update(float dt)
 {
-	BROFILER_CATEGORY("Update_SceneIntro", Profiler::Color::NavajoWhite);
+	BROFILER_CATEGORY("Update_SceneMenu", Profiler::Color::NavajoWhite);
 	bool ret = true;
 
 	return ret;
@@ -72,7 +60,7 @@ bool j1SceneMenu::Update(float dt)
 // Called each loop iteration
 bool j1SceneMenu::PostUpdate()
 {
-	BROFILER_CATEGORY("PostUpdate_SceneIntro", Profiler::Color::NavajoWhite);
+	BROFILER_CATEGORY("PostUpdate_SceneMenu", Profiler::Color::NavajoWhite);
 
 	bool ret = true;
 
@@ -84,17 +72,4 @@ bool j1SceneMenu::CleanUp()
 	LOG("Freeing Scene Menu");
 
 	return true;
-}
-
-bool j1SceneMenu::Load(pugi::xml_node& node)
-{
-	
-	return true;
-}
-
-//Load Level
-void j1SceneMenu::LoadLevel()
-{
-	App->map->Load(map_path.GetString());
-	App->audio->PlayMusic(music_path.GetString());
 }

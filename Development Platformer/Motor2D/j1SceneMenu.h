@@ -1,11 +1,14 @@
-#ifndef __j1SCENE_INTRO_H__
-#define __j1SCENE_INTRO_H__
+#ifndef _SCENE_MENU__H
+#define _SCENE_MENU__H
 
 #include "j1Module.h"
+#include "j1PerfTimer.h"
+#include "j1Timer.h"
+#include "p2List.h"
 #include "j1Gui.h"
 #include "UiItem_Button.h"
-
-struct SDL_Texture;
+#include "UI_Image.h"
+#include "UiItem_Label.h"
 
 class j1SceneMenu : public j1Module
 {
@@ -34,20 +37,13 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	//Load Game State
-	bool Load(pugi::xml_node&);
-
-	//Load Level
-	void LoadLevel();
-
 private:
-	p2SString			path;
-	p2SString			map_path;
-	p2SString           music_path;
-	p2List<j1Module*>	current_level;
+	//void ChangeVisibility(); 
+
+public:
 
 	p2List<UIitem_Button*>	button_list;
-
 };
 
-#endif // __j1SCENE_INTRO_H__
+
+#endif // !_SCENE_MENU__H

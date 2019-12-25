@@ -4,7 +4,7 @@
 	<window />
 	<textures />
 	<audio>
-		<volume value="26" />
+		<volume value="100" />
 	</audio>
 	<map />
 	<pathfinding />
