@@ -40,11 +40,10 @@ bool j1Fonts::Awake(pugi::xml_node& conf)
 
 bool j1Fonts::Start()
 {
-	main_title = Load("fonts/CopperPlate_BoldItalic", 19);
-	credits = Load("fonts/CopperPlate_BoldItalic", 19);
-	title_settings = Load("fonts/CopperPlate_BoldItalic", 19);
-	title_config = Load("fonts/CopperPlate_BoldItalic", 19);
-	title_buttons = Load("fonts/CopperPlate_BoldItalic", 19);
+	main_title = Load("fonts/Old School Adventures.ttf", 19);
+	title_buttons = Load("fonts/kenvector_future.ttf", 19);
+	hud = Load("fonts/CopperPlate_BoldItalic.ttf", 19);
+	titles_other = Load("fonts/OpenSans-BoldItalic.ttf", 19);
 	return true;
 }
 

@@ -6,11 +6,10 @@
 #include "SDL/include/SDL.h"
 
 enum Label_Type { // Types of labels
-	TITLE,
-	FONT,
-	CONFIG,
-	CREDITS,
-	BUTTON
+	MAIN_TITLE,
+	TITLE_BUTTON,
+	HUD,
+	OTHER_TITLES,
 };
 
 class UI_Label : public UI_Item

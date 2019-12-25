@@ -42,7 +42,7 @@ bool UI_Label::PostUpdate()
 		ChangeTexture({ 0,0,0,0 });
 		break;
 	case HOVER:
-		if (label_type != FONT && label_type != TITLE && label_type != CREDITS) {
+		if (label_type != MAIN_TITLE && label_type != OTHER_TITLES && label_type != HUD) {
 			ChangeTexture({ 230,214,144,255 });
 		}
 		break;
@@ -78,20 +78,17 @@ void UI_Label::ChangeTexture(SDL_Color color)
 	label_color = color;
 
 	switch (label_type) {
-	case TITLE:
+	case MAIN_TITLE:
 		tex = App->font->Print(label_text.GetString(), label_color, App->font->main_title);
 		break;
-	case FONT:
-		tex = App->font->Print(label_text.GetString(), label_color, App->font->title_settings);
-		break;
-	case CONFIG:
-		tex = App->font->Print(label_text.GetString(), label_color, App->font->title_config);
-		break;
-	case CREDITS:
-		tex = App->font->Print(label_text.GetString(), label_color, App->font->credits);
-		break;
-	case BUTTON:
+	case TITLE_BUTTON:
 		tex = App->font->Print(label_text.GetString(), label_color, App->font->title_buttons);
+		break;
+	case HUD:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->hud);
+		break;
+	case OTHER_TITLES:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->titles_other);
 		break;
 	}
 }
@@ -108,20 +105,17 @@ void UI_Label::ChangeText(const char * text)
 	label_text.create(text);
 
 	switch (label_type) {
-	case TITLE:
+	case MAIN_TITLE:
 		tex = App->font->Print(label_text.GetString(), label_color, App->font->main_title);
 		break;
-	case FONT:
-		tex = App->font->Print(label_text.GetString(), label_color, App->font->title_settings);
-		break;
-	case CONFIG:
-		tex = App->font->Print(label_text.GetString(), label_color, App->font->title_config);
-		break;
-	case CREDITS:
-		tex = App->font->Print(label_text.GetString(), label_color, App->font->credits);
-		break;
-	case BUTTON:
+	case TITLE_BUTTON:
 		tex = App->font->Print(label_text.GetString(), label_color, App->font->title_buttons);
+		break;
+	case HUD:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->hud);
+		break;
+	case OTHER_TITLES:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->titles_other);
 		break;
 	}
 }

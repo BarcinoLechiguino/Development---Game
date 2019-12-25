@@ -4,7 +4,7 @@
 #include "j1Module.h"
 #include "SDL\include\SDL_pixels.h"
 
-#define DEFAULT_FONT "fonts/OpenSans-BoldItalic.ttf"
+#define DEFAULT_FONT "fonts/arial.ttf"
 #define DEFAULT_FONT_SIZE 22
 
 struct SDL_Texture;
@@ -40,10 +40,9 @@ public:
 	p2List<_TTF_Font*>	fonts;
 	_TTF_Font*			default;
 	_TTF_Font*			title_buttons;
-	_TTF_Font*			title_config;
-	_TTF_Font*			title_settings;
 	_TTF_Font*			main_title;
-	_TTF_Font*			credits;
+	_TTF_Font*			titles_other;
+	_TTF_Font*			hud;
 };
 
 

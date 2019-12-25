@@ -44,9 +44,9 @@ bool j1SceneMenu::Start()
 	menu_ui_list.add(App->gui->CreateImage({ 45,0 }, { 1654,56,915,768 }, true));
 	menu_ui_list.add(App->gui->CreateImage({ 280,180 }, { 0, 388, 466, 447 }, true));
 	menu_ui_list.add(App->gui->CreateImage({ 323, 100 }, { 1078,242,382,61 }, true));
-	menu_ui_list.add(App->gui->CreateLabel({ 395,110 }, "MUTUAL COOPERATION", FONT, { 255,255,255,255 }, true));
+	menu_ui_list.add(App->gui->CreateLabel({ 395,110 }, "MUTUAL COOPERATION", MAIN_TITLE, { 255,255,255,255 }, true));
 	menu_ui_list.add(App->gui->CreateImage({ 393, 145 }, { 973,342,237,39 }, true));
-	menu_ui_list.add(App->gui->CreateLabel({ 395,140 }, "Can you trust your friend?", FONT, { 255,255,255,255 }, true));
+	menu_ui_list.add(App->gui->CreateLabel({ 395,140 }, "Can you trust your friend?", MAIN_TITLE, { 255,255,255,255 }, true));
 
 	// Menu buttons
 	SDL_Rect button_rect[3] = { { 1166,418,423,107 }, { 1166,556,423,107 }, { 1166,702,423,107 } };

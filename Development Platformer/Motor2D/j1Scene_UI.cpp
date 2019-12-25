@@ -49,13 +49,13 @@ bool j1Scene_UI::Start()
 	hud_list.add(App->gui->CreateImage({ 935,20 }, { 1528,142,39,33 }, true));
 
 	// Tiemr, score, etc
-	hud_list.add(App->gui->CreateLabel({ 10, 20 }, "Timm", Label_Type::FONT, { 255,255,255,255 }, true));
-	hud_list.add(App->gui->CreateLabel({ 980, 20 }, "Joe", Label_Type::FONT, { 255,255,255,255 }, true));
-	hud_list.add(App->gui->CreateLabel({ 225, 20 }, "Score", Label_Type::FONT, { 255,255,255,255 }, true));
-	score_label = App->gui->CreateLabel({ 300,20 }, player_score_string, Label_Type::CONFIG, { 255,255,255,255 }, true);
-	hud_list.add(App->gui->CreateLabel({ 710, 20 }, "Timer", Label_Type::FONT, { 255,255,255,255 }, true));
-	timer_label = App->gui->CreateLabel({ 785,20 }, timer_string, Label_Type::CONFIG, { 255,255,255,255 }, true);
-	hud_list.add(App->gui->CreateLabel({ 410, 20 }, "MUTUAL COOPERATION", Label_Type::FONT, { 255,255,255,255 }, true));
+	hud_list.add(App->gui->CreateLabel({ 10, 20 }, "Timm", Label_Type::HUD, { 255,255,255,255 }, true));
+	hud_list.add(App->gui->CreateLabel({ 980, 20 }, "Joe", Label_Type::HUD, { 255,255,255,255 }, true));
+	hud_list.add(App->gui->CreateLabel({ 225, 20 }, "Score", Label_Type::HUD, { 255,255,255,255 }, true));
+	score_label = App->gui->CreateLabel({ 300,20 }, player_score_string, Label_Type::HUD, { 255,255,255,255 }, true);
+	hud_list.add(App->gui->CreateLabel({ 710, 20 }, "Timer", Label_Type::HUD, { 255,255,255,255 }, true));
+	timer_label = App->gui->CreateLabel({ 785,20 }, timer_string, Label_Type::HUD, { 255,255,255,255 }, true);
+	hud_list.add(App->gui->CreateLabel({ 410, 20 }, "MUTUAL COOPERATION", Label_Type::HUD, { 255,255,255,255 }, true));
 
 	// Lifes player 1 & player 2
 	hearts[0] = (App->gui->CreateImage({ 110,30 }, { 1058,8,24,21 }, true));
@@ -68,7 +68,7 @@ bool j1Scene_UI::Start()
 	// Menu in-game
 	pause_ui_list.add(App->gui->CreateImage({ 280,180 }, { 0, 388, 466, 447 }, true));
 	pause_ui_list.add(App->gui->CreateImage({ 323, 170 }, { 1078,242,382,61 }, true));
-	pause_ui_list.add(App->gui->CreateLabel({ 453,182 }, "PAUSE MENU", FONT, { 255,255,255,255 }, true));
+	pause_ui_list.add(App->gui->CreateLabel({ 453,182 }, "PAUSE MENU", OTHER_TITLES, { 255,255,255,255 }, true));
 
 	SDL_Rect button_rect[3] = { { 0,74,284,66 }, { 285,74,284,66 }, { 0,142,284,66 } };
 	button_list.add(App->gui->CreateButton({ 370,247 }, Button_Type::PLAY, button_rect[0], &button_rect[1], &button_rect[2], "                Resume", true));
