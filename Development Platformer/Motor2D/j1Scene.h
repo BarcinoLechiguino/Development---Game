@@ -55,7 +55,7 @@ public:
 	p2List<p2SString*>	map_names;
 	float				fade_time;
 	bool				to_end;
-
+	p2SString			music_path;
 	bool				firstMap;			//Keeps track of which map is loaded. In this case this one keeps track of the first map.
 	bool				secondMap;			//Keeps track of which map is loaded. In this case this one keeps track of the second map.
 

@@ -50,6 +50,8 @@ bool j1Scene::Awake(pugi::xml_node& config)
 		map_names.add(data);
 	}
 
+	music_path.create(config.child("audio").attribute("path").as_string());
+
 	return ret;
 }
 
@@ -58,6 +60,8 @@ bool j1Scene::Start()
 {
 	bool ret;
 
+	App->audio->PlayMusic(music_path.GetString());
+
 	to_end = false;
 	
 	firstMap	= true;
@@ -65,8 +69,6 @@ bool j1Scene::Start()
 
 	ret = App->map->Load(map_names.start->data->GetString());
 	LOG("Map Name: %s", map_names.start->data->GetString());
-
-	App->audio->PlayMusic(App->map->data.music_File.GetString());
 
 	//if (App->entityManager->player == nullptr && App->entityManager->player2) == nullptr) { App->entityManager->CreatePlayers(); } //Use this if App->Scene->Start() is called in the ChangeMap() function.
 	App->entityManager->CreatePlayers();								//THIS HERE
@@ -257,19 +259,6 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 		{
 			App->framesAreCapped = true;
 		}
-	}
-
-	//Volume Change
-	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
-	{
-		App->audio->general_volume += 5;
-		App->audio->SetVolumeMusic();
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
-	{
-		App->audio->general_volume -= 5;
-		App->audio->SetVolumeMusic();
 	}
 
 	App->map->Draw();

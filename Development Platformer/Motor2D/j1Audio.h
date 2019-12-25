@@ -25,6 +25,9 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	bool PreUpdate(float dt);
+	bool Update(float dt);
+
 	// Play a music file
 	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);
 
@@ -38,16 +41,15 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
-	//Set volume
-	void SetVolumeMusic();
-
 private:
 
 	_Mix_Music*			music;
 	p2List<Mix_Chunk*>	fx;
+	
+	uint				volume_fx;
 
 public:
-
+	float				volume;
 	p2SString			music_folder;
 	p2SString			sfx_folder;
 	uint general_volume;

@@ -22,13 +22,9 @@
   </window>
 
   <audio>
-    <default_volume value="100"/>
-    <music>
       <folder>audio/music/</folder>
-    </music>
-    <sfx>
-      <folder>audio/fx/</folder>
-    </sfx>
+      <volume value = "26"/>
+    <volume_fx value="26"/>
   </audio>
 
   <file_system>
@@ -107,6 +103,7 @@
     <!--<map_name name="Tutorial_Level.tmx"></map_name>-->
     <map_name name="Test_map.tmx"></map_name>
     <map_name name="Test_map_2.tmx"></map_name>
+    <audio path="Combat Heavy.ogg"/>
     <fade_time value="1"/>
   </scene>
 

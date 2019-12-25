@@ -2,6 +2,7 @@
 #include "j1Scene_UI.h"
 #include "j1Scene.h"
 #include "j1SceneMenu.h"
+#include "j1Audio.h"
 #include "p2Log.h"
 #include "j1Player1.h"
 #include "j1Player2.h"
@@ -170,6 +171,12 @@ bool j1Scene_UI::Update(float dt)
 				break;
 			case EXIT:
 				App->fadescene->FadeToBlack2(App->scene, App->scene_menu);
+				break;
+			case MUTE:
+				App->audio->volume = 0;
+				break;
+			case UNMUTE:
+				App->audio->volume = 26;
 				break;
 			}
 		}
