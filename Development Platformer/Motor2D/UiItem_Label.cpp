@@ -96,6 +96,9 @@ void UI_Label::ChangeTexture(SDL_Color color)
 	case MAIN_TITLE_BUTTON:
 		tex = App->font->Print(label_text.GetString(), label_color, App->font->main_title_buttons);
 		break;
+	case DEFAULT:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->default);
+		break;
 	}
 }
 
@@ -128,6 +131,9 @@ void UI_Label::ChangeText(const char * text)
 		break;
 	case MAIN_TITLE_BUTTON:
 		tex = App->font->Print(label_text.GetString(), label_color, App->font->main_title_buttons);
+		break;
+	case DEFAULT:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->default);
 		break;
 	}
 }

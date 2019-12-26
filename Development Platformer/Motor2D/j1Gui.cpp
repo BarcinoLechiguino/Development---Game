@@ -160,7 +160,7 @@ UIitem_Button* j1Gui::CreateButton(iPoint pos, Button_Type type, SDL_Rect idle_r
 
 	return (UIitem_Button*)button;
 }
-UiItem_Bar * j1Gui::CreateSlider(iPoint pos, SDL_Rect slider_box, UI_Item* parent)
+UiItem_Bar * j1Gui::CreateSlider(iPoint pos, SDL_Rect slider_box, bool static_obj, UI_Item* parent )
 {
 	UI_Item*slider = nullptr;
 	slider = new UiItem_Bar(slider_box, parent);

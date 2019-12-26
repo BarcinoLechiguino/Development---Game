@@ -79,11 +79,11 @@ bool j1Scene_UI::Start()
 
 	// Mute button
 	SDL_Rect mute_rect_button[3] = { { 1479, 9, 57, 57 }, { 986,6,57,57 }, { 294, 143, 57, 57 } };
-	button_list.add(App->gui->CreateButton({ 670, 650 }, MUTE, mute_rect_button[0], &mute_rect_button[1], &mute_rect_button[2]));
-
+	button_list.add(App->gui->CreateButton({ 300, 550 }, MUTE, mute_rect_button[0], &mute_rect_button[1], &mute_rect_button[2], "", true));
+	
 	// Unmute button
 	SDL_Rect unmute_rect_button[3] = { { 512,147,57,57 }, {342,98,57,57},{ 986,48,57,57 } };
-	button_list.add(App->gui->CreateButton({ 300, 650 }, UNMUTE, unmute_rect_button[0], &unmute_rect_button[1], &unmute_rect_button[2]));
+	button_list.add(App->gui->CreateButton({ 670, 550 }, UNMUTE, unmute_rect_button[0], &unmute_rect_button[1], &unmute_rect_button[2], "", true));
 
 	// Labels in-game menu
 	pause_ui_list.add(App->gui->CreateLabel({ 465,267 }, "RESUME", TITLE_BUTTON, { 255,255,255,255 }, true));
@@ -91,6 +91,8 @@ bool j1Scene_UI::Start()
 	pause_ui_list.add(App->gui->CreateLabel({ 480,407 }, "LOAD", TITLE_BUTTON, { 255,255,255,255 }, true));
 	pause_ui_list.add(App->gui->CreateLabel({ 480,477 }, "EXIT", TITLE_BUTTON, { 255,255,255,255 }, true));
 	
+	pause_ui_list.add(App->gui->CreateSlider({ 440,659 }, { 674,273,143,38 }, true));
+
 	p2List_item<UIitem_Button*>* button_item = button_list.start;
 	while (button_item != NULL)
 	{

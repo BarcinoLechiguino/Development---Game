@@ -14,13 +14,13 @@
 		<currentMap num="0" />
 	</scene>
 	<:anonymous />
-	<:anonymous />
+	<scene_menu />
 	<gui>
 		<score value="0" />
 	</gui>
 	<entities>
 		<player>
-			<position x="310.649963" y="456.359985" />
+			<position x="441.899872" y="1160.35999" />
 		</player>
 		<player2>
 			<position x="182" y="456.359985" />
@@ -31,6 +31,6 @@
 	<collisions />
 	<:anonymous />
 	<renderer>
-		<camera x="0" y="-101" />
+		<camera x="0" y="-453" />
 	</renderer>
 </game_state>

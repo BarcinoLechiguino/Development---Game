@@ -10,6 +10,7 @@ enum Label_Type { // Types of labels
 	TITLE_BUTTON,
 	HUD,
 	SUBTITLES,
+	DEFAULT,
 	OTHER_TITLES,
 	MAIN_TITLE_BUTTON
 };

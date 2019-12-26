@@ -40,6 +40,7 @@ bool j1Fonts::Awake(pugi::xml_node& conf)
 
 bool j1Fonts::Start()
 {
+	default = Load("fonts/arial.ttf", 12);
 	main_title = Load("fonts/Old School Adventures.ttf", 18);
 	title_buttons = Load("fonts/kenvector_future.ttf", 19);
 	subtitle = Load("fonts/Old School Adventures.ttf", 11);

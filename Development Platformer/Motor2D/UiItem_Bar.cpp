@@ -20,7 +20,8 @@ UiItem_Bar::UiItem_Bar(SDL_Rect slider_box, UI_Item* parent /*p2Point<int> pivo*
 
 bool UiItem_Bar::Start()
 {
-	thumb = App->gui->CreateThumb({ 671,273,37,37 }, this);
+	thumb = App->gui->CreateThumb({ 928,272,37,34 }, this);
+
 	return true;
 }
 
