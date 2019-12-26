@@ -4,12 +4,12 @@
 	<window />
 	<textures />
 	<audio>
-		<volume value="100" />
+		<volume value="70" />
 	</audio>
 	<map />
 	<pathfinding />
 	<fonts />
-	<scene_menu />
+	<:anonymous />
 	<scene>
 		<currentMap num="0" />
 	</scene>
@@ -18,10 +18,10 @@
 	<gui />
 	<entities>
 		<player>
-			<position x="192" y="456.359985" />
+			<position x="192" y="456.399994" />
 		</player>
 		<player2>
-			<position x="182" y="456.359985" />
+			<position x="182" y="456.399994" />
 		</player2>
 		<mecha />
 		<alien />

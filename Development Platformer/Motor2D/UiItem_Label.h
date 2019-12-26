@@ -9,7 +9,9 @@ enum Label_Type { // Types of labels
 	MAIN_TITLE,
 	TITLE_BUTTON,
 	HUD,
+	SUBTITLES,
 	OTHER_TITLES,
+	MAIN_TITLE_BUTTON
 };
 
 class UI_Label : public UI_Item

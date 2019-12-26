@@ -49,13 +49,13 @@ bool j1Scene_UI::Start()
 	hud_list.add(App->gui->CreateImage({ 935,20 }, { 1528,142,39,33 }, true));
 
 	// Tiemr, score, etc
-	hud_list.add(App->gui->CreateLabel({ 10, 20 }, "Timm", Label_Type::HUD, { 255,255,255,255 }, true));
-	hud_list.add(App->gui->CreateLabel({ 980, 20 }, "Joe", Label_Type::HUD, { 255,255,255,255 }, true));
-	hud_list.add(App->gui->CreateLabel({ 225, 20 }, "Score", Label_Type::HUD, { 255,255,255,255 }, true));
-	score_label = App->gui->CreateLabel({ 300,20 }, player_score_string, Label_Type::HUD, { 255,255,255,255 }, true);
-	hud_list.add(App->gui->CreateLabel({ 710, 20 }, "Timer", Label_Type::HUD, { 255,255,255,255 }, true));
-	timer_label = App->gui->CreateLabel({ 785,20 }, timer_string, Label_Type::HUD, { 255,255,255,255 }, true);
-	hud_list.add(App->gui->CreateLabel({ 410, 20 }, "MUTUAL COOPERATION", Label_Type::HUD, { 255,255,255,255 }, true));
+	hud_list.add(App->gui->CreateLabel({ 10,30 }, "Timm", Label_Type::HUD, { 255,255,255,255 }, true));
+	hud_list.add(App->gui->CreateLabel({ 980, 30 }, "Joe", Label_Type::HUD, { 255,255,255,255 }, true));
+	hud_list.add(App->gui->CreateLabel({ 210, 30 }, "Score", Label_Type::HUD, { 255,255,255,255 }, true));
+	score_label = App->gui->CreateLabel({ 285,30 }, player_score_string, Label_Type::HUD, { 255,255,255,255 }, true);
+	hud_list.add(App->gui->CreateLabel({ 695, 30 }, "Timer", Label_Type::HUD, { 255,255,255,255 }, true));
+	timer_label = App->gui->CreateLabel({ 770,30 }, timer_string, Label_Type::HUD, { 255,255,255,255 }, true);
+	hud_list.add(App->gui->CreateLabel({ 375, 30 }, "MUTUAL COOPERATION", Label_Type::HUD, { 255,255,255,255 }, true));
 
 	// Lifes player 1 & player 2
 	hearts[0] = (App->gui->CreateImage({ 110,30 }, { 1058,8,24,21 }, true));
@@ -68,20 +68,29 @@ bool j1Scene_UI::Start()
 	// Menu in-game
 	pause_ui_list.add(App->gui->CreateImage({ 280,180 }, { 0, 388, 466, 447 }, true));
 	pause_ui_list.add(App->gui->CreateImage({ 323, 170 }, { 1078,242,382,61 }, true));
-	pause_ui_list.add(App->gui->CreateLabel({ 453,182 }, "PAUSE MENU", OTHER_TITLES, { 255,255,255,255 }, true));
+	pause_ui_list.add(App->gui->CreateLabel({ 440,182 }, "PAUSE MENU", OTHER_TITLES, { 255,255,255,255 }, true));
 
+	// Buttons menu in-game
 	SDL_Rect button_rect[3] = { { 0,74,284,66 }, { 285,74,284,66 }, { 0,142,284,66 } };
-	button_list.add(App->gui->CreateButton({ 370,247 }, Button_Type::PLAY, button_rect[0], &button_rect[1], &button_rect[2], "                Resume", true));
-	button_list.add(App->gui->CreateButton({ 370,317 }, Button_Type::SAVE, button_rect[0], &button_rect[1], &button_rect[2], "                   Save", true));
-	button_list.add(App->gui->CreateButton({ 370,387 }, Button_Type::LOAD, button_rect[0], &button_rect[1], &button_rect[2], "                    Load", true));
-	button_list.add(App->gui->CreateButton({ 370,457 }, Button_Type::EXIT, button_rect[0], &button_rect[1], &button_rect[2], "                    Exit", true));
+	button_list.add(App->gui->CreateButton({ 370,247 }, Button_Type::PLAY, button_rect[0], &button_rect[1], &button_rect[2], "", true));
+	button_list.add(App->gui->CreateButton({ 370,317 }, Button_Type::SAVE, button_rect[0], &button_rect[1], &button_rect[2], "", true));
+	button_list.add(App->gui->CreateButton({ 370,387 }, Button_Type::LOAD, button_rect[0], &button_rect[1], &button_rect[2], "", true));
+	button_list.add(App->gui->CreateButton({ 370,457 }, Button_Type::EXIT, button_rect[0], &button_rect[1], &button_rect[2], "", true));
 
+	// Mute button
 	SDL_Rect mute_rect_button[3] = { { 1479, 9, 57, 57 }, { 986,6,57,57 }, { 294, 143, 57, 57 } };
 	button_list.add(App->gui->CreateButton({ 670, 650 }, MUTE, mute_rect_button[0], &mute_rect_button[1], &mute_rect_button[2]));
 
+	// Unmute button
 	SDL_Rect unmute_rect_button[3] = { { 512,147,57,57 }, {342,98,57,57},{ 986,48,57,57 } };
 	button_list.add(App->gui->CreateButton({ 300, 650 }, UNMUTE, unmute_rect_button[0], &unmute_rect_button[1], &unmute_rect_button[2]));
 
+	// Labels in-game menu
+	pause_ui_list.add(App->gui->CreateLabel({ 465,267 }, "RESUME", TITLE_BUTTON, { 255,255,255,255 }, true));
+	pause_ui_list.add(App->gui->CreateLabel({ 480,337 }, "SAVE", TITLE_BUTTON, { 255,255,255,255 }, true));
+	pause_ui_list.add(App->gui->CreateLabel({ 480,407 }, "LOAD", TITLE_BUTTON, { 255,255,255,255 }, true));
+	pause_ui_list.add(App->gui->CreateLabel({ 480,477 }, "EXIT", TITLE_BUTTON, { 255,255,255,255 }, true));
+	
 	p2List_item<UIitem_Button*>* button_item = button_list.start;
 	while (button_item != NULL)
 	{
@@ -174,6 +183,7 @@ bool j1Scene_UI::Update(float dt)
 				break;
 			case LOAD:
 				App->LoadGame("save_game.xml");
+				ChangeVisibility_ESC();
 				break;
 			case EXIT:
 				App->fadescene->FadeToBlack2(App->scene, App->scene_menu);

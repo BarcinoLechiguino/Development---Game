@@ -40,24 +40,31 @@ bool j1SceneMenu::Start()
 {
 	bool ret = true;
 
-	// Background image
-	menu_ui_list.add(App->gui->CreateImage({ 45,0 }, { 1654,56,915,768 }, true));
-	menu_ui_list.add(App->gui->CreateImage({ 280,180 }, { 0, 388, 466, 447 }, true));
-	menu_ui_list.add(App->gui->CreateImage({ 323, 100 }, { 1078,242,382,61 }, true));
-	menu_ui_list.add(App->gui->CreateLabel({ 395,110 }, "MUTUAL COOPERATION", MAIN_TITLE, { 255,255,255,255 }, true));
-	menu_ui_list.add(App->gui->CreateImage({ 393, 145 }, { 973,342,237,39 }, true));
-	menu_ui_list.add(App->gui->CreateLabel({ 395,140 }, "Can you trust your friend?", MAIN_TITLE, { 255,255,255,255 }, true));
+	//// Background image & titles
+	//menu_ui_list.add(App->gui->CreateImage({ 45,0 }, { 1654,56,915,768 }, true));
+	//menu_ui_list.add(App->gui->CreateImage({ 280,180 }, { 0, 388, 466, 447 }, true));
+	//menu_ui_list.add(App->gui->CreateImage({ 323, 100 }, { 1078,242,382,61 }, true));
+	//menu_ui_list.add(App->gui->CreateLabel({ 338,113 }, "MUTUAL COOPERATION", MAIN_TITLE, { 255,255,255,255 }, true));
+	//menu_ui_list.add(App->gui->CreateImage({ 393, 145 }, { 973,342,237,39 }, true));
+	//menu_ui_list.add(App->gui->CreateLabel({ 398,155 }, "Can you trust your friend?", SUBTITLES, { 255,255,255,255 }, true));
 
-	// Menu buttons
-	SDL_Rect button_rect[3] = { { 1166,418,423,107 }, { 1166,556,423,107 }, { 1166,702,423,107 } };
-	button_list.add(App->gui->CreateButton({ 305, 289 }, PLAY, button_rect[0], &button_rect[1], &button_rect[2], "                         Play"));
-	button_list.add(App->gui->CreateButton({ 305, 394 }, SETTINGS, button_rect[0], &button_rect[1], &button_rect[2], "                         Settings"));
-	button_list.add(App->gui->CreateButton({ 305, 499 }, CONTINUE, button_rect[0], &button_rect[1], &button_rect[2], "                         Continue"));
-	button_list.add(App->gui->CreateButton({ 305, 606 }, EXIT, button_rect[0], &button_rect[1], &button_rect[2], "                          Exit"));
+	//// Menu buttons
+	//SDL_Rect button_rect[3] = { { 1166,418,423,107 }, { 1166,556,423,107 }, { 1166,702,423,107 } };
+	//button_list.add(App->gui->CreateButton({ 305, 289 }, PLAY, button_rect[0], &button_rect[1], &button_rect[2], ""));
+	//button_list.add(App->gui->CreateButton({ 305, 394 }, SETTINGS, button_rect[0], &button_rect[1], &button_rect[2], ""));
+	//button_list.add(App->gui->CreateButton({ 305, 499 }, CONTINUE, button_rect[0], &button_rect[1], &button_rect[2], ""));
+	//button_list.add(App->gui->CreateButton({ 305, 606 }, EXIT, button_rect[0], &button_rect[1], &button_rect[2], ""));
 
-	// Credit button
-	SDL_Rect credit_rect_button[3] = { { 744,320,58,58 }, {496,213,58,58},{ 541,213,58,58 } };
-	button_list.add(App->gui->CreateButton({ 130, 713 }, CREDIT, credit_rect_button[0], &credit_rect_button[1], &credit_rect_button[2]));
+	//// Credit button
+	//SDL_Rect credit_rect_button[3] = { { 744,320,58,58 }, {810,319,58,58},{ 880,319,58,58 } };
+	//button_list.add(App->gui->CreateButton({ 130, 713 }, CREDIT, credit_rect_button[0], &credit_rect_button[1], &credit_rect_button[2]));
+
+	//// Labels buttons
+	//menu_ui_list.add(App->gui->CreateLabel({ 465, 219 }, "PLAY", MAIN_TITLE_BUTTON, { 255,255,255,255 }, true));
+	//menu_ui_list.add(App->gui->CreateLabel({ 435, 329 }, "SETTINGS", MAIN_TITLE_BUTTON, { 255,255,255,255 }, true));
+	//menu_ui_list.add(App->gui->CreateLabel({ 435, 429 }, "CONTINUE", MAIN_TITLE_BUTTON, { 255,255,255,255 }, true));
+	//menu_ui_list.add(App->gui->CreateLabel({ 480, 535 }, "EXIT", MAIN_TITLE_BUTTON, { 255,255,255,255 }, true));
+
 	return ret;
 }
 

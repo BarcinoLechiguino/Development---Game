@@ -42,7 +42,7 @@ bool UI_Label::PostUpdate()
 		ChangeTexture({ 0,0,0,0 });
 		break;
 	case HOVER:
-		if (label_type != MAIN_TITLE && label_type != OTHER_TITLES && label_type != HUD) {
+		if (label_type != MAIN_TITLE && label_type != OTHER_TITLES && label_type != HUD && label_type != SUBTITLES) {
 			ChangeTexture({ 230,214,144,255 });
 		}
 		break;
@@ -90,6 +90,12 @@ void UI_Label::ChangeTexture(SDL_Color color)
 	case OTHER_TITLES:
 		tex = App->font->Print(label_text.GetString(), label_color, App->font->titles_other);
 		break;
+	case SUBTITLES:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->subtitle);
+		break;
+	case MAIN_TITLE_BUTTON:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->main_title_buttons);
+		break;
 	}
 }
 
@@ -116,6 +122,12 @@ void UI_Label::ChangeText(const char * text)
 		break;
 	case OTHER_TITLES:
 		tex = App->font->Print(label_text.GetString(), label_color, App->font->titles_other);
+		break;
+	case SUBTITLES:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->subtitle);
+		break;
+	case MAIN_TITLE_BUTTON:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->main_title_buttons);
 		break;
 	}
 }
