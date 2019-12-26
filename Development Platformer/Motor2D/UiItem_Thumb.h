@@ -17,7 +17,6 @@ public:
 	bool PostUpdate();
 
 	bool OnHover();
-	void MoveThumb(); // Function to move the thumb through the slider
 
 public:
 	SDL_Rect thumb_box; // Rect of the thumb

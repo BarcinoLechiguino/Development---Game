@@ -40,7 +40,7 @@ bool j1SceneMenu::Start()
 {
 	bool ret = true;
 
-	//// Background image & titles
+	// Background image & titles
 	//menu_ui_list.add(App->gui->CreateImage({ 45,0 }, { 1654,56,915,768 }, true));
 	//menu_ui_list.add(App->gui->CreateImage({ 280,180 }, { 0, 388, 466, 447 }, true));
 	//menu_ui_list.add(App->gui->CreateImage({ 323, 100 }, { 1078,242,382,61 }, true));
@@ -55,16 +55,42 @@ bool j1SceneMenu::Start()
 	//button_list.add(App->gui->CreateButton({ 305, 499 }, CONTINUE, button_rect[0], &button_rect[1], &button_rect[2], ""));
 	//button_list.add(App->gui->CreateButton({ 305, 606 }, EXIT, button_rect[0], &button_rect[1], &button_rect[2], ""));
 
-	//// Credit button
-	//SDL_Rect credit_rect_button[3] = { { 744,320,58,58 }, {810,319,58,58},{ 880,319,58,58 } };
-	//button_list.add(App->gui->CreateButton({ 130, 713 }, CREDIT, credit_rect_button[0], &credit_rect_button[1], &credit_rect_button[2]));
-
 	//// Labels buttons
 	//menu_ui_list.add(App->gui->CreateLabel({ 465, 219 }, "PLAY", MAIN_TITLE_BUTTON, { 255,255,255,255 }, true));
 	//menu_ui_list.add(App->gui->CreateLabel({ 435, 329 }, "SETTINGS", MAIN_TITLE_BUTTON, { 255,255,255,255 }, true));
 	//menu_ui_list.add(App->gui->CreateLabel({ 435, 429 }, "CONTINUE", MAIN_TITLE_BUTTON, { 255,255,255,255 }, true));
 	//menu_ui_list.add(App->gui->CreateLabel({ 480, 535 }, "EXIT", MAIN_TITLE_BUTTON, { 255,255,255,255 }, true));
 
+	// Settings menu
+	menu_ui_list.add(App->gui->CreateImage({ 280,180 }, { 0, 388, 466, 447 }, true));
+	menu_ui_list.add(App->gui->CreateImage({ 323, 160 }, { 1078,242,382,61 }, true));
+	
+	// Mute button
+	SDL_Rect mute_rect_button[3] = { { 1479, 9, 57, 57 }, { 986,6,57,57 }, { 294, 143, 57, 57 } };
+	button_list.add(App->gui->CreateButton({ 670, 400 }, MUTE, mute_rect_button[0], &mute_rect_button[1], &mute_rect_button[2]));
+
+	// Unmute button
+	SDL_Rect unmute_rect_button[3] = { { 512,147,57,57 }, {342,98,57,57},{ 986,48,57,57 } };
+	button_list.add(App->gui->CreateButton({ 300, 400 }, UNMUTE, unmute_rect_button[0], &unmute_rect_button[1], &unmute_rect_button[2]));
+	
+	// Back button
+	SDL_Rect button_rect[3] = { { 0,74,284,66 }, { 285,74,284,66 }, { 0,142,284,66 } };
+	button_list.add(App->gui->CreateButton({ 370,550 }, BACK, button_rect[0], &button_rect[1], &button_rect[2], "", true));
+
+	//Capto30
+	SDL_Rect capto30_rect_button[3] = { { 633,323,53,53 }, { 687,323,53,53 }, { 571,54,53,53 } };
+	button_list.add(App->gui->CreateButton({ 560, 519 }, CAPTO30, capto30_rect_button[0], &capto30_rect_button[1], &capto30_rect_button[2]));
+
+	// Credit button
+	SDL_Rect credit_rect_button[3] = { { 744,320,58,58 }, {810,319,58,58},{ 880,319,58,58 } };
+	button_list.add(App->gui->CreateButton({ 300, 655 }, CREDIT, credit_rect_button[0], &credit_rect_button[1], &credit_rect_button[2]));
+
+	// Text settings menu
+	menu_ui_list.add(App->gui->CreateLabel({ 365, 173 }, "SETTINGS MENU", MAIN_TITLE_BUTTON, { 255,255,255,255 }, true));
+	menu_ui_list.add(App->gui->CreateLabel({ 415, 253 }, "Sound Settings", TITLE_BUTTON, { 255,255,255,255 }, true));
+	menu_ui_list.add(App->gui->CreateLabel({ 480, 573 }, "BACK", TITLE_BUTTON, { 255,255,255,255 }, true));
+	menu_ui_list.add(App->gui->CreateLabel({ 300, 533 }, "Cap to 30 FPS", TITLE_BUTTON, { 255, 255, 255, 255 }));
+	
 	return ret;
 }
 
@@ -80,6 +106,56 @@ bool j1SceneMenu::Update(float dt)
 	BROFILER_CATEGORY("Update_SceneMenu", Profiler::Color::NavajoWhite);
 	bool ret = true;
 
+	p2List_item<UIitem_Button*>* button_item = button_list.start;
+	while (button_item != NULL)
+	{
+		if (button_item->data->OnClick())
+		{
+			switch (button_item->data->GetType())
+			{
+			case PLAY:
+				ChangeVisibility_MENU();
+				App->scene_ui->ChangeVisibility_HUD();
+			
+				break;
+			case SETTINGS:
+				
+				break;
+			case CONTINUE:
+				App->LoadGame("save_game.xml");
+				
+				break;
+			case CREDIT:
+				
+			case EXIT:
+				ret = false;
+				break;
+			case MUTE:
+				App->audio->volume = 0;
+				break;
+			case UNMUTE:
+				App->audio->volume = 26;
+				break;
+			case CAPTO30:
+				if (App->framesAreCapped == true)
+				{
+					App->framesAreCapped = false;
+				}
+				else
+				{
+					App->framesAreCapped = true;
+				}
+				break;
+			case BACK:
+		
+				break;
+			}
+		}
+
+		button_item = button_item->next;
+	}
+
+
 	return ret;
 }
 
@@ -90,6 +166,12 @@ bool j1SceneMenu::PostUpdate()
 
 	bool ret = true;
 
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	{
+		ret = false;
+	}
+		
+
 	return ret;
 }
 
@@ -97,10 +179,25 @@ bool j1SceneMenu::CleanUp()
 {
 	LOG("Freeing Scene Menu");
 
+	button_list.clear();
+
 	return true;
 }
 
 void j1SceneMenu::ChangeVisibility_MENU()
 {
+	p2List_item<UI_Item*>* ui_item = menu_ui_list.start;
+	while (ui_item != NULL)
+	{
+		ui_item->data->visible = !ui_item->data->visible;
+		ui_item = ui_item->next;
 
+	}
+
+	p2List_item<UIitem_Button*>* button_item = button_list.start;
+	while (button_item != NULL)
+	{
+		button_item->data->visible = !button_item->data->visible;
+		button_item = button_item->next;
+	}
 }

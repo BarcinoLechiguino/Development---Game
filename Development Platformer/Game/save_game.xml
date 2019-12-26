@@ -15,13 +15,15 @@
 	</scene>
 	<:anonymous />
 	<:anonymous />
-	<gui />
+	<gui>
+		<score value="0" />
+	</gui>
 	<entities>
 		<player>
-			<position x="192" y="456.399994" />
+			<position x="310.649963" y="456.359985" />
 		</player>
 		<player2>
-			<position x="182" y="456.399994" />
+			<position x="182" y="456.359985" />
 		</player2>
 		<mecha />
 		<alien />

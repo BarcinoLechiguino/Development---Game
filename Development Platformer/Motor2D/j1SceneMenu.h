@@ -37,7 +37,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-private:
+public:
 	void ChangeVisibility_MENU(); 
 
 public:

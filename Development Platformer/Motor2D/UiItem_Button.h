@@ -14,6 +14,7 @@ enum Button_Type //Types of buttons
 	MUTE,
 	UNMUTE,
 	BACK,
+	CAPTO30,
 	SAVE,
 	LOAD,
 	EXIT
