@@ -60,8 +60,11 @@ bool j1Scene::Start()
 {
 	bool ret;
 
-	App->audio->PlayMusic(music_path.GetString());
-
+	
+	
+	
+	
+	
 	to_end = false;
 	
 	firstMap	= true;

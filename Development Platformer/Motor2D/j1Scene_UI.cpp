@@ -46,8 +46,8 @@ bool j1Scene_UI::Start()
 	hud_list.add(App->gui->CreateImage({ 1352,36 }, { 973,305,377,36 }, true));
 
 	// Character faces
-	hud_list.add(App->gui->CreateImage({ 70,20 }, { 1481,142,36,33 }, true));
-	hud_list.add(App->gui->CreateImage({ 935,20 }, { 1528,142,39,33 }, true));
+	hud_list.add(App->gui->CreateImage({ 80,30 }, { 1270,210,25,21 }, true));
+	hud_list.add(App->gui->CreateImage({ 945,30 }, { 1301,210,26,21 }, true));
 
 	// Tiemr, score, etc
 	hud_list.add(App->gui->CreateLabel({ 10,30 }, "Timm", Label_Type::HUD, { 255,255,255,255 }, true));
@@ -202,6 +202,7 @@ bool j1Scene_UI::Update(float dt)
 					App->scene_menu->in_game = false;
 					App->scene_menu->menu = true;
 					App->scene_menu->ChangeVisibility_IMG();
+					App->scene_menu->play_music = true;
 					break;
 				case MUTE:
 					App->audio->volume = 0;
