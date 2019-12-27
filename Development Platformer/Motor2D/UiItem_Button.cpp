@@ -42,8 +42,10 @@ UIitem_Button::~UIitem_Button()
 bool UIitem_Button::Start()
 {
 	if (button_text.Length() > 0)
+	{
 		App->gui->CreateLabel({ pos.x + 10, pos.y + 5 }, button_text.GetString(), HUD, { 0,0,0,0 }, static_object, this);
-	return true;
+	}
+		return true;
 }
 
 bool UIitem_Button::PostUpdate()
