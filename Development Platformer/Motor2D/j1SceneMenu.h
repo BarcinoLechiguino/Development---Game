@@ -41,6 +41,7 @@ public:
 	void ChangeVisibility_MENU(); 
 	void ChangeVisibility_SETT();
 	void ChangeVisibility_IMG();
+	void ChangeVisibility_CRED();
 
 public:
 
@@ -51,10 +52,13 @@ public:
 	p2List<UIitem_Button*>	button_list_sett;
 	p2List<UI_Item*>		sett_ui_list;
 
+	p2List<UIitem_Button*>	button_list_credit;
+	p2List<UI_Item*>		credit_ui_list;
+
+
 	bool					menu = false;
 	bool					settings = false;
 	bool					in_game = false;
-	bool					hud = false;
 	bool					credits = false;
 };
 

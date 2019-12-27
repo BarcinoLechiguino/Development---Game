@@ -34,7 +34,6 @@ bool j1SceneMenu::Awake(pugi::xml_node& config)
 	menu = true;
 	settings = false;
 	in_game = false;
-	hud = false;
 	credits = false;
 
 	return true;
@@ -111,6 +110,39 @@ bool j1SceneMenu::Start()
 	
 	//-----------------------------------------------------------------------------------
 
+	// Credits
+	// Back
+	credit_ui_list.add(App->gui->CreateImage({ 280,180 }, { 0, 388, 466, 447 }, true));
+	credit_ui_list.add(App->gui->CreateImage({ 288,188 }, { 561, 383, 446, 427 }, true));
+	
+	// Titles
+	credit_ui_list.add(App->gui->CreateImage({ 323, 160 }, { 1078,242,382,61 }, true));
+	credit_ui_list.add(App->gui->CreateLabel({ 430, 173 }, "CREDITS", MAIN_TITLE_BUTTON, { 255,255,255,255 }, true));
+
+	// Back Button
+	SDL_Rect button_back_rect_cred[3] = { { 1057,30,173,45 }, { 1057,76,173,45 }, { 1057,126,173,45 } };
+	button_list_credit.add(App->gui->CreateButton({ 430,570 }, BACK, button_back_rect_cred[0], &button_back_rect_cred[1], &button_back_rect_cred[2], "", true));
+	credit_ui_list.add(App->gui->CreateLabel({ 490, 580 }, "BACK", TITLE_BUTTON, { 255,255,255,255 }, true));
+
+	// Instructions
+	credit_ui_list.add(App->gui->CreateLabel({ 300, 250 }, "MIT License Copyright(c)[2019][Gerard Romeu, Ángel González]", DEFAULT_BIGGER, { 255,255,255,255 }, true));
+	credit_ui_list.add(App->gui->CreateLabel({ 298, 300 }, "Permission is hereby granted, free of charge, to any person obtaining a copy", DEFAULT, { 255,255,255,255 }, true));
+	credit_ui_list.add(App->gui->CreateLabel({ 298, 315 }, "of this software and associated documentation files(the Software), to deal in", DEFAULT, { 255,255,255,255 }, true));
+	credit_ui_list.add(App->gui->CreateLabel({ 298, 330 }, "the Software without restriction, including without limitation the rights to use,", DEFAULT, { 255,255,255,255 }, true));
+	credit_ui_list.add(App->gui->CreateLabel({ 298, 345 }, "copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the ", DEFAULT, { 255,255,255,255 }, true));
+	credit_ui_list.add(App->gui->CreateLabel({ 298, 360 }, "Software, and to permit persons to whom the Software is furnished to do so, ", DEFAULT, { 255,255,255,255 }, true));
+	credit_ui_list.add(App->gui->CreateLabel({ 298, 375 }, "subject to the following conditions : ", DEFAULT, { 255,255,255,255 }, true));
+	credit_ui_list.add(App->gui->CreateLabel({ 298, 390 }, "The above copyright notice and this permission notice shall be included in all ", DEFAULT, { 255,255,255,255 }, true));
+	credit_ui_list.add(App->gui->CreateLabel({ 298, 405 }, "copies or substantial portions of the Software. ", DEFAULT, { 255,255,255,255 }, true));
+	credit_ui_list.add(App->gui->CreateLabel({ 298, 430 }, "THE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, ", DEFAULT, { 255,255,255,255 }, true));
+	credit_ui_list.add(App->gui->CreateLabel({ 298, 445 }, "EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES ", DEFAULT, { 255,255,255,255 }, true));
+	credit_ui_list.add(App->gui->CreateLabel({ 298, 460 }, "OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON  ", DEFAULT, { 255,255,255,255 }, true));
+	credit_ui_list.add(App->gui->CreateLabel({ 298, 475 }, "INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT ", DEFAULT, { 255,255,255,255 }, true));
+	credit_ui_list.add(App->gui->CreateLabel({ 298, 490 }, " HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, ", DEFAULT, { 255,255,255,255 }, true));
+	credit_ui_list.add(App->gui->CreateLabel({ 298, 505 }, "WHETHER IN AN  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING ", DEFAULT, { 255,255,255,255 }, true));
+	credit_ui_list.add(App->gui->CreateLabel({ 298, 520 }, "FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR ", DEFAULT, { 255,255,255,255 }, true));
+	credit_ui_list.add(App->gui->CreateLabel({ 298, 535 }, "OTHER DEALINGS IN THE SOFTWARE. ", DEFAULT, { 255,255,255,255 }, true));
+
 	p2List_item<UIitem_Button*>* button_item = button_list_sett.start;
 	while (button_item != NULL)
 	{
@@ -122,6 +154,18 @@ bool j1SceneMenu::Start()
 	{
 		ui_item->data->visible = false;
 		ui_item = ui_item->next;
+	}
+	p2List_item<UIitem_Button*>* button_item2 = button_list_credit.start;
+	while (button_item2 != NULL)
+	{
+		button_item2->data->visible = false;
+		button_item2 = button_item2->next;
+	}
+	p2List_item<UI_Item*>* ui_item2 = credit_ui_list.start;
+	while (ui_item2 != NULL)
+	{
+		ui_item2->data->visible = false;
+		ui_item2 = ui_item2->next;
 	}
 
 	return ret;
@@ -164,6 +208,12 @@ bool j1SceneMenu::Update(float dt)
 						App->framesAreCapped = true;
 					}
 					break;
+				case CREDIT:
+					ChangeVisibility_SETT();
+					ChangeVisibility_CRED();
+					credits = true;
+					settings = false;
+					break;
 				case BACK:
 					settings = false;
 					menu = true;
@@ -205,9 +255,6 @@ bool j1SceneMenu::Update(float dt)
 					menu = false;
 					ChangeVisibility_IMG();
 					break;
-				case CREDIT:
-					// Move Camera
-					menu = false;
 				case EXIT:
 					ret = false;
 					break;
@@ -215,6 +262,28 @@ bool j1SceneMenu::Update(float dt)
 			}
 
 			button_item = button_item->next;
+		}
+	}
+
+	if (credits)
+	{
+		p2List_item<UIitem_Button*>* button_item_cred = button_list_credit.start;
+		while (button_item_cred != NULL)
+		{
+			if (button_item_cred->data->OnClick())
+			{
+				switch (button_item_cred->data->GetType())
+				{
+				case BACK:
+					ChangeVisibility_CRED();
+					ChangeVisibility_SETT();
+					credits = false;
+					settings = true;
+					break;
+				}
+			}
+
+			button_item_cred = button_item_cred->next;
 		}
 	}
 
@@ -289,5 +358,23 @@ void j1SceneMenu::ChangeVisibility_IMG()
 		ui_item->data->visible = !ui_item->data->visible;
 		ui_item = ui_item->next;
 
+	}
+}
+
+void j1SceneMenu::ChangeVisibility_CRED()
+{
+	p2List_item<UI_Item*>* ui_item = credit_ui_list.start;
+	while (ui_item != NULL)
+	{
+		ui_item->data->visible = !ui_item->data->visible;
+		ui_item = ui_item->next;
+
+	}
+
+	p2List_item<UIitem_Button*>* button_item = button_list_credit.start;
+	while (button_item != NULL)
+	{
+		button_item->data->visible = !button_item->data->visible;
+		button_item = button_item->next;
 	}
 }
