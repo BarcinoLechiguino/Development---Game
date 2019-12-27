@@ -13,7 +13,6 @@
 #include "j1Map.h"
 #include "j1Fonts.h"
 #include "j1Scene.h"
-#include "j1Scene_Credits.h"
 #include "j1Audio.h"
 #include "j1FadeScene.h"
 #include "j1EntityManager.h"
@@ -32,6 +31,12 @@ j1SceneMenu::~j1SceneMenu()
 // Called before render is available
 bool j1SceneMenu::Awake(pugi::xml_node& config)
 {
+	menu = true;
+	settings = false;
+	in_game = false;
+	hud = false;
+	credits = false;
+
 	return true;
 }
 
@@ -40,8 +45,11 @@ bool j1SceneMenu::Start()
 {
 	bool ret = true;
 
-	// Background image & titles
-	menu_ui_list.add(App->gui->CreateImage({ 45,0 }, { 1654,56,915,768 }, true));
+	// Menu
+	// Background image
+	image_ui_list.add(App->gui->CreateImage({ 45,0 }, { 1654,56,915,768 }, true));
+
+	// Titles
 	menu_ui_list.add(App->gui->CreateImage({ 280,180 }, { 0, 388, 466, 447 }, true));
 	menu_ui_list.add(App->gui->CreateImage({ 323, 100 }, { 1078,242,382,61 }, true));
 	menu_ui_list.add(App->gui->CreateLabel({ 338,113 }, "MUTUAL COOPERATION", MAIN_TITLE, { 255,255,255,255 }, true));
@@ -61,9 +69,9 @@ bool j1SceneMenu::Start()
 	menu_ui_list.add(App->gui->CreateLabel({ 435, 429 }, "CONTINUE", MAIN_TITLE_BUTTON, { 255,255,255,255 }, true));
 	menu_ui_list.add(App->gui->CreateLabel({ 480, 535 }, "EXIT", MAIN_TITLE_BUTTON, { 255,255,255,255 }, true));
 
+	//-------------------------------------------------------------------------------------------------------------------------
 
-
-
+	// Settings
 	// Settings menu
 	sett_ui_list.add(App->gui->CreateImage({ 280,180 }, { 0, 388, 466, 447 }, true));
 	sett_ui_list.add(App->gui->CreateImage({ 323, 160 }, { 1078,242,382,61 }, true));
@@ -88,14 +96,20 @@ bool j1SceneMenu::Start()
 	SDL_Rect credit_rect_button[3] = { { 744,320,58,58 }, {810,319,58,58},{ 880,319,58,58 } };
 	button_list_sett.add(App->gui->CreateButton({ 300, 555 }, CREDIT, credit_rect_button[0], &credit_rect_button[1], &credit_rect_button[2], "", true));
 
+	// Git button
+	SDL_Rect git_rect_button[3] = { { 1066,178,58,58 }, {1066,178,58,58},{ 1066,178,58,58 } };
+	button_list_sett.add(App->gui->CreateButton({ 670, 555 }, GITHUB, git_rect_button[0], &git_rect_button[1], &git_rect_button[2], "", true));
+
 	// Text settings menu
 	sett_ui_list.add(App->gui->CreateLabel({ 365, 173 }, "SETTINGS MENU", MAIN_TITLE_BUTTON, { 255,255,255,255 }, true));
 	sett_ui_list.add(App->gui->CreateLabel({ 415, 253 }, "Sound Settings", TITLE_BUTTON, { 255,255,255,255 }, true));
 	sett_ui_list.add(App->gui->CreateLabel({ 480, 573 }, "BACK", TITLE_BUTTON, { 255,255,255,255 }, true));
 	sett_ui_list.add(App->gui->CreateLabel({ 300, 433 }, "Cap to 30 FPS", TITLE_BUTTON, { 255, 255, 255, 255 }, true));
 	
-
+	// Slider
 	sett_ui_list.add(App->gui->CreateSlider({ 430,409 }, { 674,273,143,38 }, true));
+	
+	//-----------------------------------------------------------------------------------
 
 	p2List_item<UIitem_Button*>* button_item = button_list_sett.start;
 	while (button_item != NULL)
@@ -125,69 +139,85 @@ bool j1SceneMenu::Update(float dt)
 	BROFILER_CATEGORY("Update_SceneMenu", Profiler::Color::NavajoWhite);
 	bool ret = true;
 
-	p2List_item<UIitem_Button*>* button_item = button_list.start;
-	while (button_item != NULL)
+	if (settings)
 	{
-		if (button_item->data->OnClick())
+		p2List_item<UIitem_Button*>* button_item_sett = button_list_sett.start;
+		while (button_item_sett != NULL)
 		{
-			switch (button_item->data->GetType())
+			if (button_item_sett->data->OnClick())
 			{
-			case PLAY:
-				ChangeVisibility_MENU();
-				App->scene_ui->ChangeVisibility_HUD();
-			
-				break;
-			case SETTINGS:
-				// Move Camera
-				break;
-			case CONTINUE:
-				App->LoadGame("save_game.xml");
-				ChangeVisibility_MENU();
-				App->scene_ui->ChangeVisibility_HUD();
-				break;
-			case CREDIT:
-				// Move Camera
-			case EXIT:
-				ret = false;
-				break;
-			}
-		}
+				switch (button_item_sett->data->GetType())
+				{
+				case MUTE:
+					App->audio->volume = 0;
+					break;
+				case UNMUTE:
+					App->audio->volume = 100;
+					break;
+				case CAPTO30:
+					if (App->framesAreCapped == true)
+					{
+						App->framesAreCapped = false;
+					}
+					else
+					{
+						App->framesAreCapped = true;
+					}
+					break;
+				case BACK:
+					settings = false;
+					menu = true;
+					break;
+				case GITHUB:
+					ShellExecuteA(NULL, "open", "https://github.com/BarcinoLechiguino/Game---Development", NULL, NULL, SW_SHOWNORMAL);
+				}
 
-		button_item = button_item->next;
+			}
+			button_item_sett = button_item_sett->next;
+		}
 	}
 
-
-	p2List_item<UIitem_Button*>* button_item_sett = button_list_sett.start;
-	while (button_item_sett != NULL)
+	if (menu)
 	{
-		if (button_item_sett->data->OnClick())
+		p2List_item<UIitem_Button*>* button_item = button_list.start;
+		while (button_item != NULL)
 		{
-			switch (button_item_sett->data->GetType())
+			if (button_item->data->OnClick())
 			{
-			case MUTE:
-				App->audio->volume = 0;
-				break;
-			case UNMUTE:
-				App->audio->volume = 26;
-				break;
-			case CAPTO30:
-				if (App->framesAreCapped == true)
+				switch (button_item->data->GetType())
 				{
-					App->framesAreCapped = false;
+				case PLAY:
+					ChangeVisibility_MENU();
+					App->scene_ui->ChangeVisibility_HUD();
+					ChangeVisibility_IMG();
+					menu = false;
+					break;
+				case SETTINGS:
+					ChangeVisibility_MENU();
+					ChangeVisibility_SETT();
+					settings = true;
+					menu = false;
+					break;
+				case CONTINUE:
+					App->LoadGame("save_game.xml");
+					ChangeVisibility_MENU();
+					App->scene_ui->ChangeVisibility_HUD();
+					menu = false;
+					ChangeVisibility_IMG();
+					break;
+				case CREDIT:
+					// Move Camera
+					menu = false;
+				case EXIT:
+					ret = false;
+					break;
 				}
-				else
-				{
-					App->framesAreCapped = true;
-				}
-				break;
-			case BACK:
-				// Move camera
-				break;
 			}
-			
+
+			button_item = button_item->next;
 		}
-		button_item_sett = button_item_sett->next;
 	}
+
 	return ret;
 }
 
@@ -203,7 +233,6 @@ bool j1SceneMenu::PostUpdate()
 		ret = false;
 	}
 		
-
 	return ret;
 }
 
@@ -249,5 +278,16 @@ void j1SceneMenu::ChangeVisibility_SETT()
 	{
 		button_item->data->visible = !button_item->data->visible;
 		button_item = button_item->next;
+	}
+}
+
+void j1SceneMenu::ChangeVisibility_IMG()
+{
+	p2List_item<UI_Item*>* ui_item = image_ui_list.start;
+	while (ui_item != NULL)
+	{
+		ui_item->data->visible = !ui_item->data->visible;
+		ui_item = ui_item->next;
+
 	}
 }

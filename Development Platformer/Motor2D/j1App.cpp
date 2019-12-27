@@ -7,7 +7,6 @@
 #include "j1Input.h"
 #include "j1Render.h"
 #include "j1Textures.h"
-#include "j1Scene_Credits.h"
 #include "j1Audio.h"
 #include "j1SceneMenu.h"
 #include "j1Scene.h"
@@ -40,7 +39,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	scene_menu = new j1SceneMenu();
 	scene = new j1Scene();
 	scene_ui = new j1Scene_UI();
-	scene_credits = new j1Scene_Credits();
 	map = new j1Map();
 	pathfinding = new j1PathFinding();
 	collisions = new j1Collisions();
@@ -61,7 +59,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene_menu);
 	AddModule(scene);
 	AddModule(scene_ui);
-	AddModule(scene_credits);
 	AddModule(gui);
 	AddModule(entityManager);				//entityManager is called after the module scene (where the player is created) is called.
 	AddModule(collisions);

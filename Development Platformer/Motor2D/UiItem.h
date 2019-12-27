@@ -28,6 +28,7 @@ public:
 
 	virtual bool OnHover() { return true; }; //To know if a button is onHover
 	bool OnClick(); //Same but with click state
+	bool OnClick2();
 
 public:
 	UI_State	state = IDLE; //Initial state

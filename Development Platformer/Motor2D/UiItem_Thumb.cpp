@@ -33,7 +33,7 @@ bool UiItem_Thumb::PostUpdate()
 
 	ret = App->render->Blit(App->gui->GetAtlas(), position.x, position.y, &thumb_box);
 
-	if (OnClick())
+	if (OnClick2())
 	{
 		drag = true;
 		if (position.x > parent->position.x)

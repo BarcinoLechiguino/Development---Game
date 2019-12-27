@@ -40,14 +40,22 @@ public:
 public:
 	void ChangeVisibility_MENU(); 
 	void ChangeVisibility_SETT();
+	void ChangeVisibility_IMG();
 
 public:
 
 	p2List<UIitem_Button*>	button_list;
 	p2List<UI_Item*>		menu_ui_list;
+	p2List<UI_Item*>		image_ui_list;
 
 	p2List<UIitem_Button*>	button_list_sett;
 	p2List<UI_Item*>		sett_ui_list;
+
+	bool					menu = false;
+	bool					settings = false;
+	bool					in_game = false;
+	bool					hud = false;
+	bool					credits = false;
 };
 
 

@@ -72,14 +72,31 @@ bool UI_Item::OnClick()
 
 	if (!App->fadescene->IsChanging() && OnHover())
 	{
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
+			App->audio->PlayFx(App->gui->fx_buton_pressed);
 			ret = true;
 		}
-		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	}
+	return ret;
+}
+
+bool UI_Item::OnClick2()
+{
+	bool ret = false;
+
+	if (!App->fadescene->IsChanging() && OnHover())
+	{
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+		{
+			
+			ret = true;
+		}
+		else if(App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
 			App->audio->PlayFx(App->gui->fx_buton_pressed);
 		}
 	}
 	return ret;
 }
+

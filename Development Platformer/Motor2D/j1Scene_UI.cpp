@@ -36,6 +36,7 @@ bool j1Scene_UI::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene_UI::Start()
 {
+	// HUD
 	// Upper bar
 	hud_list.add(App->gui->CreateImage({ 0,0 }, { 973,305,677,36 }, true));
 	hud_list.add(App->gui->CreateImage({ 0,36 }, { 973,305,677,36 }, true));
@@ -65,6 +66,9 @@ bool j1Scene_UI::Start()
 	hearts[4] = (App->gui->CreateImage({ 885,30 }, { 1058,8,24,21 }, true));
 	hearts[5] = (App->gui->CreateImage({ 860,30 }, { 1058,8,24,21 }, true));
 
+	// -------------------------------------------------------------------------------------------------------------------------------
+
+	// In-game menu
 	// Menu in-game
 	pause_ui_list.add(App->gui->CreateImage({ 280,180 }, { 0, 388, 466, 447 }, true));
 	pause_ui_list.add(App->gui->CreateImage({ 323, 170 }, { 1078,242,382,61 }, true));
@@ -91,6 +95,7 @@ bool j1Scene_UI::Start()
 	pause_ui_list.add(App->gui->CreateLabel({ 480,407 }, "LOAD", TITLE_BUTTON, { 255,255,255,255 }, true));
 	pause_ui_list.add(App->gui->CreateLabel({ 480,477 }, "EXIT", TITLE_BUTTON, { 255,255,255,255 }, true));
 	
+	// Slider
 	pause_ui_list.add(App->gui->CreateSlider({ 440,659 }, { 674,273,143,38 }, true));
 
 	p2List_item<UIitem_Button*>* button_item = button_list.start;
@@ -169,50 +174,65 @@ bool j1Scene_UI::Update(float dt)
 		hearts[5]->visible = true;
 	}
 
-	p2List_item<UIitem_Button*>* button_item = button_list.start;
-	while (button_item != NULL)
+	if (App->scene_menu->in_game)
 	{
-		if (button_item->data->OnClick())
+		p2List_item<UIitem_Button*>* button_item = button_list.start;
+		while (button_item != NULL)
 		{
-			switch (button_item->data->GetType())
+			if (button_item->data->OnClick())
 			{
-			case PLAY:
-				ChangeVisibility_ESC();
-				App->paused = false;
-				break;
-			case SAVE:
-				App->SaveGame("save_game.xml");
-				break;
-			case LOAD:
-				App->LoadGame("save_game.xml");
-				ChangeVisibility_ESC();
-				break;
-			case EXIT:
-				App->fadescene->FadeToBlack2(App->scene, App->scene_menu);
-				break;
-			case MUTE:
-				App->audio->volume = 0;
-				break;
-			case UNMUTE:
-				App->audio->volume = 100;
-				break;
+				switch (button_item->data->GetType())
+				{
+				case PLAY:
+					ChangeVisibility_ESC();
+					App->scene_menu->in_game = false;
+					break;
+				case SAVE:
+					App->SaveGame("save_game.xml");
+					break;
+				case LOAD:
+					App->LoadGame("save_game.xml");
+					ChangeVisibility_ESC();
+					App->scene_menu->in_game = false;
+					break;
+				case EXIT:
+					ChangeVisibility_HUD();
+					ChangeVisibility_ESC();
+					App->scene_menu->ChangeVisibility_MENU();
+					App->scene_menu->in_game = false;
+					App->scene_menu->menu = true;
+					App->scene_menu->ChangeVisibility_IMG();
+					break;
+				case MUTE:
+					App->audio->volume = 0;
+					break;
+				case UNMUTE:
+					App->audio->volume = 100;
+					break;
+				}
 			}
+			button_item = button_item->next;
 		}
-		button_item = button_item->next;
 	}
-
 	return true;
 }
 
 // Called each loop iteration
 bool j1Scene_UI::PostUpdate()
 {
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	if (App->scene_menu->menu == false)
 	{
-		ChangeVisibility_ESC();
-		App->paused = true;
+		if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN && App->scene_menu->in_game == false)
+		{
+			ChangeVisibility_ESC();
+			App->scene_menu->in_game = true;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN && App->scene_menu->in_game == true)
+		{
+			ChangeVisibility_ESC();
+			App->scene_menu->in_game = false;
+		}
 	}
-
 	return true;
 
 }
