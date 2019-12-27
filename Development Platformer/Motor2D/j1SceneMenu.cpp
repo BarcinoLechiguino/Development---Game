@@ -22,6 +22,7 @@
 
 j1SceneMenu::j1SceneMenu() : j1Module()
 {
+	name.create("scene_menu");
 }
 
 // Destructor
@@ -35,6 +36,9 @@ bool j1SceneMenu::Awake(pugi::xml_node& config)
 	settings = false;
 	in_game = false;
 	credits = false;
+	play_music = true;
+
+	music_path_menu.create(config.child("audio").attribute("path").as_string());
 
 	return true;
 }
@@ -47,6 +51,15 @@ bool j1SceneMenu::Start()
 	// Menu
 	// Background image
 	image_ui_list.add(App->gui->CreateImage({ 45,0 }, { 1654,56,915,768 }, true));
+
+	// Side bars
+	menu_ui_list.add(App->gui->CreateImage({ 0,0 }, { 1601, 347, 45, 486 }, true));
+	menu_ui_list.add(App->gui->CreateImage({ 0,486 }, { 1601, 347, 45, 486 }, true));
+
+	menu_ui_list.add(App->gui->CreateImage({ 960,0 }, { 1601, 347, 45, 486 }, true));
+	menu_ui_list.add(App->gui->CreateImage({ 1005,0 }, { 1601, 347, 45, 486 }, true));
+	menu_ui_list.add(App->gui->CreateImage({ 960,486 }, { 1601, 347, 45, 486 }, true));
+	menu_ui_list.add(App->gui->CreateImage({ 1005,486 }, { 1601, 347, 45, 486 }, true));
 
 	// Titles
 	menu_ui_list.add(App->gui->CreateImage({ 280,180 }, { 0, 388, 466, 447 }, true));
@@ -183,6 +196,12 @@ bool j1SceneMenu::Update(float dt)
 	BROFILER_CATEGORY("Update_SceneMenu", Profiler::Color::NavajoWhite);
 	bool ret = true;
 
+	if ((menu == true || settings == true || credits == true) &&( play_music == true))
+	{
+		App->audio->PlayMusic(music_path_menu.GetString());
+		play_music = false;
+	}
+
 	if (settings)
 	{
 		p2List_item<UIitem_Button*>* button_item_sett = button_list_sett.start;
@@ -225,6 +244,8 @@ bool j1SceneMenu::Update(float dt)
 			}
 			button_item_sett = button_item_sett->next;
 		}
+
+		
 	}
 
 	if (menu)
@@ -241,6 +262,8 @@ bool j1SceneMenu::Update(float dt)
 					App->scene_ui->ChangeVisibility_HUD();
 					ChangeVisibility_IMG();
 					menu = false;
+					no_music();
+					App->audio->PlayMusic(App->scene->music_path.GetString());
 					break;
 				case SETTINGS:
 					ChangeVisibility_MENU();
@@ -254,6 +277,8 @@ bool j1SceneMenu::Update(float dt)
 					App->scene_ui->ChangeVisibility_HUD();
 					menu = false;
 					ChangeVisibility_IMG();
+					no_music();
+					App->audio->PlayMusic(App->scene->music_path.GetString());
 					break;
 				case EXIT:
 					ret = false;
@@ -377,4 +402,9 @@ void j1SceneMenu::ChangeVisibility_CRED()
 		button_item->data->visible = !button_item->data->visible;
 		button_item = button_item->next;
 	}
+}
+
+void j1SceneMenu::no_music()
+{
+	Mix_HaltMusic();
 }

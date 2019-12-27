@@ -17,6 +17,8 @@
 #include "UiItem_Thumb.h"
 #include "SDL/include/SDL.h"
 
+#include "Brofiler/Brofiler.h"
+
 j1Gui::j1Gui() : j1Module()
 {
 	name.create("gui");
@@ -57,6 +59,8 @@ bool j1Gui::Start()
 // Update all guis
 bool j1Gui::PreUpdate(float dt)
 {
+	BROFILER_CATEGORY("Update_SceneMenu", Profiler::Color::NavajoWhite);
+
 	p2List_item<UI_Item*>* item_gui = gui_list.start;
 	while (item_gui != nullptr)
 	{

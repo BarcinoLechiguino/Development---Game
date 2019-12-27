@@ -44,6 +44,9 @@ public:
 	void ChangeVisibility_CRED();
 
 public:
+	void no_music();
+
+public:
 
 	p2List<UIitem_Button*>	button_list;
 	p2List<UI_Item*>		menu_ui_list;
@@ -60,6 +63,10 @@ public:
 	bool					settings = false;
 	bool					in_game = false;
 	bool					credits = false;
+
+	bool					play_music = false;
+
+	p2SString				music_path_menu;
 };
 
 
