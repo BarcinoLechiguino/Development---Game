@@ -19,7 +19,7 @@
 
 j1Mecha::j1Mecha(int x, int y, ENTITY_TYPE type) : j1Enemy(x, y, ENTITY_TYPE::MECHA)
 {	
-	position.x = x;					//REVISE THIS. SPAWNING THE ENEMIES AT THEIR RESPECTIVE POSITIONS
+	position.x = x;
 	position.y = y;
 
 	LoadAnimationPushbacks();
@@ -73,7 +73,7 @@ bool j1Mecha::Update(float dt, bool doLogic)
 
 		PathfindingMovement(state, dt);
 
-		if (airborne = true)
+		if (airborne == true)
 		{
 			ApplyMechaGravity();
 		}

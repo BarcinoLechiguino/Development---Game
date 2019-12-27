@@ -106,6 +106,9 @@
     <ClCompile Include="j1Scene_UI.cpp">
       <Filter>Desenvolupament  ========\Modules\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="j1Coin.cpp">
+      <Filter>Desenvolupament  ========\Modules\Entities\Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -231,6 +234,9 @@
     <ClInclude Include="j1Scene_UI.h">
       <Filter>Desenvolupament  ========\Modules\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="j1Coin.h">
+      <Filter>Desenvolupament  ========\Modules\Entities\Items</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\animations.xml">
@@ -299,6 +305,9 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Sources">
       <UniqueIdentifier>{2c952b81-74fb-4fef-9e28-a7299a9498f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Modules\Entities\Items">
+      <UniqueIdentifier>{2221d245-abf6-4795-bb24-3da41d925eca}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

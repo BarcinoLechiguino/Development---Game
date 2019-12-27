@@ -93,7 +93,7 @@ void j1Enemy::InitEnemy()
 	enemy_HitBox.w = sprite_width;
 	enemy_HitBox.h = sprite_height;
 
-	collider = App->collisions->AddCollider(enemy_HitBox, Object_Type::ENEMY, App->entityManager);				//THIS HERE This one loads the enemy collider (orange)
+	collider = App->collisions->AddCollider(enemy_HitBox, Object_Type::ENEMY, App->entityManager);				//THIS HERE This one loads the enemy collider.
 
 	// ------------------- ENEMY STATUS BOOLS -------------------
 	isAlive				= true;

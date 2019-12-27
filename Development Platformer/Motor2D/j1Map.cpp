@@ -591,7 +591,7 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 		}
 		else if (object_type == "item")
 		{
-			objectgroup->object[index].type = ITEM;						//As the object type string matches "item" the object's type will be set to ITEM.
+			objectgroup->object[index].type = SWITCH;						//As the object type string matches "item" the object's type will be set to ITEM.
 		}
 		else if (object_type == "desactivable")
 		{
@@ -623,6 +623,12 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 			App->entityManager->AddEnemy(ENTITY_TYPE::ALIEN , object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
 			LOG("Added Alien Enemy at Position %d, %d", object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
 
+			objectgroup->object[index].type = NONE;
+		}
+		// -------------------------------------------- LOADING COINS FROM THE MAP --------------------------------------------
+		else if (object_type == "coin")
+		{
+			App->entityManager->AddItems(ENTITY_TYPE::COIN, object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
 			objectgroup->object[index].type = NONE;
 		}
 		// --------------------------------------------------------------------------------------------------------------------

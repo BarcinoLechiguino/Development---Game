@@ -289,7 +289,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			}
 
 			//Player Colliding against an Activable Item
-			if (C2->type == Object_Type::ITEM)
+			if (C2->type == Object_Type::SWITCH)
 			{
 				player.item_activated = true;									//Records that P1 (or P2) has activated the item.
 				App->entityManager->player2->player.item_activated = true;		//Activates P2's boolean as well. THIS HERE Change all player2 by App->entitymanager->player2->player.pos...
@@ -303,14 +303,16 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			//Player colliding against Deactivable surfaces. 
 			if (C2->type == Object_Type::DEACTIVABLE)
 			{
-				if (C2->type == Object_Type::DEACTIVABLE)
+				if ((player.item_activated == false || App->entityManager->player->player.item_activated == false) && player.isDying == false)
 				{
-					if ((player.item_activated == false || App->entityManager->player->player.item_activated == false) && player.isDying == false)
-					{
-						App->audio->PlayFx(2, 0);
-						player.state = Player_State::Dying;
-					}
+					App->audio->PlayFx(2, 0);
+					player.state = Player_State::Dying;
 				}
+			}
+
+			if (C2->type == Object_Type::ITEM)
+			{
+				player.points += 100;
 			}
 
 			if (C2->type == Object_Type::CHECKPOINT)

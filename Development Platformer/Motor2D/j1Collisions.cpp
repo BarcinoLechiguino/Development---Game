@@ -53,11 +53,6 @@ bool j1Collisions::PreUpdate()
 		{	
 			RELEASE(collider_iterator->data);
 			collider_list.del(collider_iterator);				//Using the list's properties all colliders set to delete will be deleted from memory.
-			
-			//int index = collider_list.find(collider_iterator->data);
-			//RELEASE(collider_list.At(index)->data);
-			//collider_list.del(collider_list.At(index));				//Using the list's properties all colliders set to delete will be deleted from memory.
-
 		}
 
 		collider_iterator = collider_iterator->next;			//Gets the next collider that will be deleted.
@@ -181,11 +176,15 @@ void j1Collisions::Collider_Debug()
 				App->render->DrawQuad(collider_iterator->data->collider, 255, 0, 0, ALPHA);
 				break;
 
-			case Object_Type::ITEM:			//ITEM collider will be YELLOW
-				App->render->DrawQuad(collider_iterator->data->collider, 255, 150, 0, ALPHA);
+			case Object_Type::SWITCH:		//SWITCH collider will be PINK
+				App->render->DrawQuad(collider_iterator->data->collider, 255, 150, 255, ALPHA);
 				break;
 
-			case Object_Type::DEACTIVABLE:	//DEACTIVABLE collider will be YELLOW
+			case Object_Type::DEACTIVABLE:	//DEACTIVABLE collider will be PINK	
+				App->render->DrawQuad(collider_iterator->data->collider, 255, 150, 255, ALPHA);
+				break;
+
+			case Object_Type::ITEM:			//ITEM collider will be YELLOW
 				App->render->DrawQuad(collider_iterator->data->collider, 255, 255, 0, ALPHA);
 				break;
 
@@ -196,8 +195,8 @@ void j1Collisions::Collider_Debug()
 			case Object_Type::CHECKPOINT:	//CHECKPOINT collider wil be BLACK
 				App->render->DrawQuad(collider_iterator->data->collider, 0, 0, 0, ALPHA);
 
-			case Object_Type::GOAL:			//GOAL collider will be PINK
-				App->render->DrawQuad(collider_iterator->data->collider, 255, 0, 150, ALPHA);
+			case Object_Type::GOAL:			//GOAL collider will be PURPLE
+				App->render->DrawQuad(collider_iterator->data->collider, 255, 0, 255, ALPHA);
 				break;
 
 			case Object_Type::NONE:

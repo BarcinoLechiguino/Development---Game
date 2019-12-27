@@ -10,6 +10,7 @@
 #include "j1Player2.h"
 #include "j1Mecha.h"
 #include "j1Alien.h"
+#include "j1Coin.h"
 #include "j1Window.h"
 #include "Brofiler\Brofiler.h"
 
@@ -44,10 +45,18 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 
 bool j1EntityManager::Start()
 {
+	int i = 0;
+
 	//Iterates all entities in the entities list and calls their Start() method.
 	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
 	{
 		entity_iterator->data->Start();
+
+		if (entity_iterator->data->type == ENTITY_TYPE::COIN)
+		{
+			LOG("Coin Start() call n %d", i);
+			i++;
+		}
 	}
 
 	return true;
@@ -75,6 +84,7 @@ bool j1EntityManager::Update(float dt)
 		doLogic = true;
 	}
 
+	int i = 0;
 	//Calls the Update method of all entities. Passes dt and doLogic as arguments (mainly for pathfinding enemies).
 	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
 	{
@@ -217,8 +227,13 @@ j1Entity* j1EntityManager::CreateEntity(ENTITY_TYPE type, int x, int y)
 	case ENTITY_TYPE::MECHA:							//If the ENTITT_TYPE passed as argument is a MECHA.
 		ret = new j1Mecha(x, y, type);
 		break;
+
 	case ENTITY_TYPE::ALIEN:							//If the ENTITT_TYPE passed as argument is an ALIEN.
 		ret = new j1Alien(x, y, type);
+		break;
+
+	case ENTITY_TYPE::COIN:								//If the ENTITY_TYPE passed as argument is a COIN.
+		ret = new j1Coin(x, y, type);
 		break;
 	}
 	//ret->type = type;
@@ -233,10 +248,8 @@ j1Entity* j1EntityManager::CreateEntity(ENTITY_TYPE type, int x, int y)
 
 void j1EntityManager::CreatePlayers()
 {
-	player = (j1Player1*)CreateEntity(ENTITY_TYPE::PLAYER);	//Revise 0, 0. Maybe default x and y of the CreateEntity method to 0.
-	//playere = (j1Player1*)CreateEntity(ENTITY_TYPE::PLAYER);
-	//player2Copy = (j1Player2*)CreateEntity(ENTITY_TYPE::PLAYER2);
-	player2 = (j1Player2*)CreateEntity(ENTITY_TYPE::PLAYER2);//REVISE THIS HERE. Check if we can pass only j1Player and thats it or if both can be ENTITY_TYPE PLAYER
+	player = (j1Player1*)CreateEntity(ENTITY_TYPE::PLAYER);
+	player2 = (j1Player2*)CreateEntity(ENTITY_TYPE::PLAYER2);
 }
 
 void j1EntityManager::AddEnemy(ENTITY_TYPE type, int x, int y)
@@ -254,36 +267,24 @@ void j1EntityManager::AddEnemy(ENTITY_TYPE type, int x, int y)
 	entityData_list.add(data);
 }
 
-void j1EntityManager::SpawnEnemies(/*EntityData& data*/)
+void j1EntityManager::SpawnEnemies()
 {
 	
 	p2List_item<EntityData*>* enemy_iterator = entityData_list.start;
 
 	for (enemy_iterator; enemy_iterator != NULL; enemy_iterator = enemy_iterator->next)												//Iterates the entityData_list.
 	{
-		int i = 0, j = 0;
-		LOG("Spawning enemy %d", i);
-		i++;
 		j1Entity * enemy = nullptr;																									//Pointer that will be assigned to each enemy entity.
-
-		if (enemy_iterator->data->type == ENTITY_TYPE::MECHA)
-		{
-			LOG("Creating a Mecha type enemy");
-		}
 
 		switch (enemy_iterator->data->type)			//REVISE TYPE, maybe it will not work.
 		{
 		case ENTITY_TYPE::MECHA:
 			enemy = new j1Mecha(enemy_iterator->data->position.x, enemy_iterator->data->position.y, enemy_iterator->data->type);	//Spawns a MECHA type enemy.
-			//enemy = (j1Mecha*)CreateEntity(enemy_iterator->data->type, enemy_iterator->data->position.x, enemy_iterator->data->position.y);
-			//enemy->Start();
 
 			break;
 
 		case ENTITY_TYPE::ALIEN:
 			enemy = new j1Alien(enemy_iterator->data->position.x, enemy_iterator->data->position.y, enemy_iterator->data->type);	//Spawns an ALIEN type enemy.
-			//enemy = (j1Alien*)CreateEntity(ENTITY_TYPE::ALIEN, enemy_iterator->data->position.x, enemy_iterator->data->position.y);
-			//enemy->Start();
 
 			break;
 		}
@@ -299,6 +300,11 @@ void j1EntityManager::SpawnEnemies(/*EntityData& data*/)
 	}
  
 	entityData_list.clear();						//Once all enemies have been spawned, the list is cleared.
+}
+
+void j1EntityManager::AddItems(ENTITY_TYPE type, int x, int y)
+{
+	(j1Coin*)CreateEntity(type, x, y);
 }
 
 void j1EntityManager::DestroyEntities()

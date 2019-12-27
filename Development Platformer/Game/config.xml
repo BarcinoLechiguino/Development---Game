@@ -50,6 +50,7 @@
       <frontflip start="-6.0f" end="6.0f"/>
       <sprite_size w="38" h="58"/>
       <lives lives="3"/>
+      <points points="0"/>
       <tpCooldown timer="0.0f" cd="1.0f"/>
       <godspeed gspeed ="450.0f"/>
       <jumpFX name ="Jump.wav"/>
@@ -92,6 +93,15 @@
         <update_cycle_length length="0.1f"/>
       </alien>
     </enemies>
+
+    <items>
+      <coin>
+        <position x ="0" y ="0"/>
+        <static_coin x="2" y="2" w="32" h="32"/>
+        <sprite_size w="32" h="32"/>
+        <points value ="100"/>
+      </coin>
+    </items>
   </entities>
 
   <gui>

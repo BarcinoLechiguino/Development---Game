@@ -25,7 +25,6 @@ UI_Label::~UI_Label()
 	}
 }
 
-
 bool UI_Label::Start()
 {
 	ChangeTexture(label_color);

@@ -4,6 +4,7 @@
 #include "j1Module.h"
 #include "p2Point.h"
 #include "p2DynArray.h"
+#include "SDL/include/SDL_rect.h"
 #include "j1Timer.h"
 
 
@@ -11,6 +12,7 @@ class Animation;
 
 struct Collider;
 struct SDL_Texture;	
+struct SDL_Rect;
 
 enum class ENTITY_TYPE
 {
@@ -19,6 +21,7 @@ enum class ENTITY_TYPE
 	PLAYER2,
 	MECHA,
 	ALIEN,
+	COIN
 };
 
 struct EntityData

@@ -21,7 +21,7 @@ enum Button_Type //Types of buttons
 	EXIT
 };
 
-class  UIitem_Button :public UI_Item
+class  UIitem_Button : public UI_Item
 {
 public:
 	UIitem_Button(const char* text, Button_Type type, SDL_Rect idle_rect, SDL_Rect* rect_hover, SDL_Rect* rect_click, UI_Item* parent);
