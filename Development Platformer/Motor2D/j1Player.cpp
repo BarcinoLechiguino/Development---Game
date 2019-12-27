@@ -237,10 +237,10 @@ void j1Player::ApplyGravity()
 		speed.y = player.max_speed.y * App->GetDt();
 	}
 
-	position.y += speed.y;				//Refreshes the vector speed of P1 in the Y axis.
+	position.y += speed.y;								//Refreshes the vector speed of P1 in the Y axis.
 
 	//Jump animation modifications.
-	if (player.isBoostJumping == true)				//If P1 is boost jumping then this set of animations is played.
+	if (player.isBoostJumping == true)					//If P1 is boost jumping then this set of animations is played.
 	{
 		if (speed.y < player.frontflipStart)
 		{
@@ -255,7 +255,7 @@ void j1Player::ApplyGravity()
 			animation = &falling;
 		}
 	}
-	else if (player.isJumping == true)				//If P1 is jumping then this set of animations is played.
+	else if (player.isJumping == true)					//If P1 is jumping then this set of animations is played.
 	{
 		if (speed.y < 0)
 		{
