@@ -11,6 +11,7 @@ enum Label_Type { // Types of labels
 	HUD,
 	SUBTITLES,
 	DEFAULT,
+	DEFAULT_BIGGER,
 	OTHER_TITLES,
 	MAIN_TITLE_BUTTON
 };

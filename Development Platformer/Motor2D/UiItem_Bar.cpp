@@ -12,10 +12,9 @@
 #include "UI_Image.h"
 #include "UiItem_Button.h"
 
-UiItem_Bar::UiItem_Bar(SDL_Rect slider_box, UI_Item* parent /*p2Point<int> pivo*/)
+UiItem_Bar::UiItem_Bar(SDL_Rect slider_box, UI_Item* parent)
 {
 	s_box = slider_box;
-
 }
 
 bool UiItem_Bar::Start()

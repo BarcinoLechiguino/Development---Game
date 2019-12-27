@@ -98,6 +98,9 @@ void UI_Label::ChangeTexture(SDL_Color color)
 	case DEFAULT:
 		tex = App->font->Print(label_text.GetString(), label_color, App->font->default);
 		break;
+	case DEFAULT_BIGGER:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->default_bigger);
+		break;
 	}
 }
 
@@ -133,6 +136,9 @@ void UI_Label::ChangeText(const char * text)
 		break;
 	case DEFAULT:
 		tex = App->font->Print(label_text.GetString(), label_color, App->font->default);
+		break;
+	case DEFAULT_BIGGER:
+		tex = App->font->Print(label_text.GetString(), label_color, App->font->default_bigger);
 		break;
 	}
 }

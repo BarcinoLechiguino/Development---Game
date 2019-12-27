@@ -39,6 +39,7 @@ public:
 
 	p2List<_TTF_Font*>	fonts;
 	_TTF_Font*			default;
+	_TTF_Font*			default_bigger;
 	_TTF_Font*			title_buttons;
 	_TTF_Font*			main_title_buttons;
 	_TTF_Font*			main_title;
