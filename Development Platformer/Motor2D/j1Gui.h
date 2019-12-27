@@ -45,6 +45,10 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	bool Load(pugi::xml_node&);
+
+	bool Save(pugi::xml_node&)const;
+
 	// TODO 2: Create the factory methods
 	// Gui creation functions
 
@@ -54,9 +58,6 @@ public:
 	UiItem_Thumb* CreateThumb(SDL_Rect s_thumb, UI_Item* parent = nullptr);
 	UiItem_Bar* CreateSlider(iPoint pos, SDL_Rect slider_box, bool static_obj = false, UI_Item * parent = nullptr);
 	SDL_Texture* GetAtlas() const;
-
-	bool Load(pugi::xml_node&);
-	bool Save(pugi::xml_node&)const;
 
 public:
 	p2List<UI_Item*> gui_list; // List of items
