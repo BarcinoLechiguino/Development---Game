@@ -84,14 +84,14 @@ void j1Coin::OnCollision(Collider* C1, Collider* C2)
 				{
 					if (C1->collider.x < C2->collider.x - (C2->collider.w * 0.4f))
 					{
-						App->audio->PlayFx(7, 0);	    //Coin Acquisition sfx.
+						App->audio->PlayFx(11, 0);	    //Coin Acquisition sfx.
 
 						collider->to_delete = true;
 						int num = App->entityManager->entities.find(this);
 						RELEASE(App->entityManager->entities.At(num)->data);
 						App->entityManager->entities.del(App->entityManager->entities.At(num));
 	
-						App->entityManager->player->player.points += 100;
+						App->entityManager->player->player.points += points;
 						LOG("Player1 points %d", App->entityManager->player->player.points);
 					}
 				}
@@ -99,12 +99,14 @@ void j1Coin::OnCollision(Collider* C1, Collider* C2)
 				{
 					if (C1->collider.x + C1->collider.w > C2->collider.x + C2->collider.w + (C2->collider.w * 0.4f))
 					{
-						App->audio->PlayFx(7, 0);	    //Coin Acquisition sfx.
+						App->audio->PlayFx(11, 0);	    //Coin Acquisition sfx.
 	
 						collider->to_delete = true;
 						int num = App->entityManager->entities.find(this);
 						RELEASE(App->entityManager->entities.At(num)->data);
 						App->entityManager->entities.del(App->entityManager->entities.At(num));
+
+						App->entityManager->player->player.points += points;
 					}
 				}
 			}
@@ -115,26 +117,29 @@ void j1Coin::OnCollision(Collider* C1, Collider* C2)
 				{
 					if (C1->collider.x < C2->collider.x - (C2->collider.w * 0.4f))
 					{
-						App->audio->PlayFx(7, 0);	    //Coin Acquisition sfx.
+						App->audio->PlayFx(11, 0);	    //Coin Acquisition sfx.
 	
 						collider->to_delete = true;
 						int num = App->entityManager->entities.find(this);
 						RELEASE(App->entityManager->entities.At(num)->data);
 						App->entityManager->entities.del(App->entityManager->entities.At(num));
 
-
+						App->entityManager->player2->player.points += points;
+						LOG("Player2 points %d", App->entityManager->player2->player.points);
 					}
 				}
 				else
 				{
 					if (C1->collider.x + C1->collider.w > C2->collider.x + C2->collider.w + (C2->collider.w * 0.4f))
 					{
-						App->audio->PlayFx(7, 0);	    //Coin Acquisition sfx.
+						App->audio->PlayFx(11, 0);	    //Coin Acquisition sfx.
 	
 						collider->to_delete = true;
 						int num = App->entityManager->entities.find(this);
 						RELEASE(App->entityManager->entities.At(num)->data);
 						App->entityManager->entities.del(App->entityManager->entities.At(num));
+
+						App->entityManager->player2->player.points += points;
 					}
 				}
 			}
@@ -165,11 +170,6 @@ void j1Coin::LoadEntityProperties()
 	// Get all the required coin entity variables from the xml file.
 	sprite_width		= item_entity.child("sprite_size").attribute("w").as_int();
 	sprite_height		= item_entity.child("sprite_size").attribute("h").as_int();
-	
-	static_coin_rect.x	= item_entity.child("static_coin").attribute("x").as_int();
-	static_coin_rect.y	= item_entity.child("static_coin").attribute("y").as_int();
-	static_coin_rect.w	= item_entity.child("static_coin").attribute("w").as_int();
-	static_coin_rect.h	= item_entity.child("static_coin").attribute("h").as_int();
 	
 	points				= item_entity.child("points").attribute("value").as_int();
 }

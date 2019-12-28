@@ -197,7 +197,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 							App->audio->PlayFx(4, 0);
 						}
 					}
-					LOG("P1 IS COLLIDING WITH P2 FROM THE LEFT");
+					//LOG("P1 IS COLLIDING WITH P2 FROM THE LEFT");
 				}
 			}
 
@@ -215,7 +215,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 						player.isJumping = false;
 						player.isBoostJumping = false;
 						player.grounded = true;
-						LOG("P1 IS COLLIDING WITH A SOLID FROM ABOVE");
+						//LOG("P1 IS COLLIDING WITH A SOLID FROM ABOVE");
 					}
 
 					//Player Colliding from BOTTOM.
@@ -225,7 +225,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 						position.y = C2->collider.y + C2->collider.h + 1;		//THIS HERE
 
 						player.againstCeiling = true;
-						LOG("P1 IS COLLIDING WITH A SOLID FROM BELOW");
+						//LOG("P1 IS COLLIDING WITH A SOLID FROM BELOW");
 					}
 				}
 
@@ -237,7 +237,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 					{
 						player.againstLeftWall = true;
 						player.againstRightWall = false;
-						LOG("P1 IS COLLIDING WITH A SOLID FROM THE LEFT");
+						//LOG("P1 IS COLLIDING WITH A SOLID FROM THE LEFT");
 					}
 
 					//Player is colliding from RIGHT.
@@ -245,7 +245,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 					{
 						player.againstRightWall = true;
 						player.againstLeftWall = false;
-						LOG("P1 IS COLLIDING WITH A SOLID FROM THE RIGHT");
+						//LOG("P1 IS COLLIDING WITH A SOLID FROM THE RIGHT");
 					}
 				}
 			}
@@ -264,7 +264,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 							player.isJumping = false;
 							player.isBoostJumping = false;
 							player.grounded = true;
-							LOG("P1 IS COLLIDING WITH A SOLID FROM ABOVE");
+							//LOG("P1 IS COLLIDING WITH A SOLID FROM ABOVE");
 						}
 					}
 				}
@@ -291,13 +291,13 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 			//Player Colliding against an Activable Item
 			if (C2->type == Object_Type::SWITCH)
 			{
-				player.item_activated = true;									//Records that P1 (or P2) has activated the item.
-				App->entityManager->player2->player.item_activated = true;		//Activates P2's boolean as well. THIS HERE Change all player2 by App->entitymanager->player2->player.pos...
-
-				if (player.item_activated == false)
+				if (!player.item_activated)
 				{
 					App->audio->PlayFx(5, 0);									//Item Activation sfx.
 				}
+
+				player.item_activated = true;									//Records that P1 (or P2) has activated the item.
+				App->entityManager->player2->player.item_activated = true;		//Activates P2's boolean as well. THIS HERE Change all player2 by App->entitymanager->player2->player.pos...
 			}
 
 			//Player colliding against Deactivable surfaces. 
@@ -341,21 +341,6 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 		}
 	}
 }
-
-/*bool j1Player1::LoadPlayer1Textures()
-{
-	//Loads the textures of P1. Switches them according to switch_sprites
-	if (p1.switch_sprites == true)
-	{
-		p1.texture = App->tex->Load("textures/Spritesheets/Character 1/character_spritesheet_I_Buena.png");
-	}
-	else
-	{
-		p1.texture = App->tex->Load("textures/Spritesheets/Character 2/Character_Spritesheet2_Buena.png");
-	}
-
-	return true;
-}*/
 
 //----------------------------------------------- PLAYER 1 INPUTS -----------------------------------------------
 void j1Player1::SetPlayerState(Player_State& player_state)

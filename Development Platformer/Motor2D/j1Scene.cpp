@@ -58,7 +58,7 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
-	bool ret;
+	bool ret = false;
 
 	to_end = false;
 	
@@ -68,13 +68,12 @@ bool j1Scene::Start()
 	ret = App->map->Load(map_names.start->data->GetString());
 	LOG("Map Name: %s", map_names.start->data->GetString());
 
-	//if (App->entityManager->player == nullptr && App->entityManager->player2) == nullptr) { App->entityManager->CreatePlayers(); } //Use this if App->Scene->Start() is called in the ChangeMap() function.
 	App->entityManager->CreatePlayers();								//THIS HERE
 	/*App->entityManager->SpawnEnemies();*/								//If SpawnEnemies is called here then it should not be called in the PreUpdate()
 
 	cam_debug_speed = App->render->cam.camera_debug_speed;				//Sets the camera speed in debug mode.
 
-	if (App->map->Load(map_names.start->data->GetString()) == true)		//If the first map is loaded then create the walkability map for it.
+	if (ret == true)													//If the first map is loaded then create the walkability map for it.
 	{
 		int w, h;
 		uchar* data = NULL;
@@ -88,7 +87,7 @@ bool j1Scene::Start()
 
 	path_debug_tex = App->tex->Load("maps/path2_centered.png");					//Sets the path_debug_tex as path2.png.
 
-	return true;
+	return ret;
 
 	// UI
 
@@ -151,21 +150,6 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 			App->render->camera.y -= ceil(cam_debug_speed * dt);
 		}
 	}
-	
-	//A spritesheet switch button just for the flavour. Not functional at the moment.
-	/*if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
-	{
-		if (App->player1->player.switch_sprites == false || App->player2->p2.switch_sprites == false)
-		{
-			App->player1->player.switch_sprites == true;
-			App->player2->p2.switch_sprites == true;
-		}
-		else
-		{
-			App->player1->player.switch_sprites == false;
-			App->player2->p2.switch_sprites == false;
-		}
-	}*/
 
 	// ---------------------------------------- DEBUG KEYS ----------------------------------------
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)			//Load First Level Key

@@ -35,7 +35,6 @@ public:
 
 public:
 	SDL_Rect	coin_HitBox;
-	SDL_Rect	static_coin_rect;
 	int			points;
 
 public:

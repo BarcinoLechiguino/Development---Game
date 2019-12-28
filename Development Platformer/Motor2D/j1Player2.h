@@ -46,8 +46,6 @@ public: //P2 Variables
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
-	//bool LoadPlayer2Textures();					//Loads P2's textures on screen.
-
 	void Restart();									//Resets P2's position to where P2 started the level. 
 	void GodModeInput();							//Enables / Disables the God Mode.
 };

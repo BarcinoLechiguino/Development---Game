@@ -132,7 +132,7 @@ void j1Alien::OnCollision(Collider* C1, Collider* C2)
 				{
 					againstLeftWall = true;
 					againstRightWall = false;
-					LOG("ALIEN IS COLLIDING WITH A SOLID FROM THE LEFT");
+					//LOG("ALIEN IS COLLIDING WITH A SOLID FROM THE LEFT");
 				}
 
 				//Enemy is colliding from RIGHT.
@@ -140,7 +140,7 @@ void j1Alien::OnCollision(Collider* C1, Collider* C2)
 				{
 					againstRightWall = true;
 					againstLeftWall = false;
-					LOG("ALIEN IS COLLIDING WITH A SOLID FROM THE RIGHT");
+					//LOG("ALIEN IS COLLIDING WITH A SOLID FROM THE RIGHT");
 				}
 			}
 		}

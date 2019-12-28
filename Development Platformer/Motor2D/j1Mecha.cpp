@@ -166,7 +166,7 @@ void j1Mecha::OnCollision(Collider* C1, Collider* C2)
 				{
 					againstLeftWall = true;
 					againstRightWall = false;
-					LOG("MECHA IS COLLIDING WITH A SOLID FROM THE LEFT");
+					//LOG("MECHA IS COLLIDING WITH A SOLID FROM THE LEFT");
 				}
 
 				//Enemy is colliding from RIGHT.
@@ -174,7 +174,7 @@ void j1Mecha::OnCollision(Collider* C1, Collider* C2)
 				{
 					againstRightWall = true;
 					againstLeftWall = false;
-					LOG("MECHA IS COLLIDING WITH A SOLID FROM THE RIGHT");
+					//LOG("MECHA IS COLLIDING WITH A SOLID FROM THE RIGHT");
 				}
 			}
 		}

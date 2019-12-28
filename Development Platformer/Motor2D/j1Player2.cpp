@@ -184,17 +184,16 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 						if (player.grounded == true)
 						{
 							speed.y -= player.boost_jump.y;
-							LOG("boost jump speed is");
 							player.isBoostJumping = true;
 							player.airborne = true;
 							player.grounded = false;
 							player.platformDrop = false;
 							App->audio->PlayFx(4, 0);
 
-							LOG("P2 IS BOOST JUMPING");
+							//LOG("P2 IS BOOST JUMPING");
 						}
 					}
-					LOG("P2 IS COLLIDING WITH P1 FROM THE LEFT");
+					//LOG("P2 IS COLLIDING WITH P1 FROM THE LEFT");
 				}
 			}
 
@@ -212,7 +211,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 						player.isJumping = false;
 						player.isBoostJumping = false;
 						player.grounded = true;
-						LOG("P2 IS COLLIDING WITH A SOLID FROM ABOVE");
+						//LOG("P2 IS COLLIDING WITH A SOLID FROM ABOVE");
 					}
 
 					//Player Colliding from BOTTOM.
@@ -222,7 +221,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 						position.y = C2->collider.y + C2->collider.h + 1;		//THIS HERE
 
 						player.againstCeiling = true;
-						LOG("P2 IS COLLIDING WITH A SOLID FROM BELOW");
+						//LOG("P2 IS COLLIDING WITH A SOLID FROM BELOW");
 					}
 				}
 
@@ -234,7 +233,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 					{
 						player.againstLeftWall = true;
 						player.againstRightWall = false;
-						LOG("P2 IS COLLIDING WITH A SOLID FROM THE LEFT");
+						//LOG("P2 IS COLLIDING WITH A SOLID FROM THE LEFT");
 					}
 
 					//Player is colliding from RIGHT.
@@ -242,7 +241,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 					{
 						player.againstRightWall = true;
 						player.againstLeftWall = false;
-						LOG("P2 IS COLLIDING WITH A SOLID FROM THE RIGHT");
+						//LOG("P2 IS COLLIDING WITH A SOLID FROM THE RIGHT");
 					}
 				}
 			}
@@ -261,7 +260,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 							player.isJumping = false;
 							player.isBoostJumping = false;
 							player.grounded = true;
-							LOG("P2 IS COLLIDING WITH A SOLID FROM ABOVE");
+							//LOG("P2 IS COLLIDING WITH A SOLID FROM ABOVE");
 						}
 					}
 				}
@@ -287,10 +286,13 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 			//Player Colliding against an Activable Item
 			if (C2->type == Object_Type::SWITCH)
 			{
+				if (!player.item_activated)
+				{
+					App->audio->PlayFx(5, 0);
+				}
+
 				player.item_activated = true;				//Records that P1 (or P2) has activated the item.
 				App->entityManager->player->player.item_activated = true;		//Activates P2's boolean as well. THIS HERE Change all player2 by App->entitymanager->player2->player.pos...
-
-				App->audio->PlayFx(5, 0);					//Item Activation sfx.
 			}
 
 			//Player colliding against Deactivable surfaces. 
@@ -304,8 +306,8 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 
 			if (C2->type == Object_Type::ITEM)
 			{
-				player.points += 100;
-				LOG("Player2 points %d", player.points);
+				//player.points += 100;
+				//LOG("Player2 points %d", player.points);
 			}
 
 			if (C2->type == Object_Type::CHECKPOINT)
@@ -513,7 +515,7 @@ void j1Player2::PlayerMovement(Player_State player_state, float dt)
 		if (player.grounded == true)
 		{
 			speed.y -= player.boost_jump.y;
-			LOG("boost jump speed is");
+			//LOG("boost jump speed is");
 			player.isBoostJumping = true;
 			player.airborne = true;
 			player.grounded = false;
@@ -616,21 +618,6 @@ void j1Player2::RespawnP2ToP1()			//Method that, on death, will respawn P2 behin
 		position.y = App->entityManager->player->position.y - 40;
 	}
 }
-
-/*bool j1Player2::LoadPlayer2Textures()
-{
-	//Loads the textures of P2. Switches them according to switch_sprites
-	if (p2.switch_sprites == true)
-	{
-		p2.texture = App->tex->Load("textures/Spritesheets/Character 2/Character_Spritesheet2_Buena.png");
-	}
-	else
-	{
-		p2.texture = App->tex->Load("textures/Spritesheets/Character 1/character_spritesheet_I_Buena.png");
-	}
-
-	return true;
-}*/
 
 //---------------------------------------------- General Checks ----------------------------------------------
 void j1Player2::LivesCheck(int lives)

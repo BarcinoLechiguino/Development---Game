@@ -56,9 +56,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(pathfinding);
 	AddModule(font);
-	AddModule(scene_menu);
+	//AddModule(scene_menu);
 	AddModule(scene);
-	AddModule(scene_ui);
+	//AddModule(scene_ui);
 	AddModule(gui);
 	AddModule(entityManager);				//entityManager is called after the module scene (where the player is created) is called.
 	AddModule(collisions);
@@ -203,7 +203,7 @@ void j1App::PrepareUpdate()
 	dt = frame_timer.ReadSec();						//Keeps track of the amount of time that has passed since last frame in seconds (processing time of a frame: Frame 1: 0.033secs, ...).
 	frame_timer.Start();							//Starts the frame timer. Used to calculate ms per frame.
 
-	LOG("The differential time since last frame: %f", dt);
+	//LOG("The differential time since last frame: %f", dt);
 }
 
 // ---------------------------------------------
@@ -236,7 +236,7 @@ void j1App::FinishUpdate()
 
 			int intended_delay = frame_cap_ms - current_frame_ms;	//Done for readability. Set as the value of the intended delay.
 
-			LOG("We waited for %d milliseconds and got back in %f", intended_delay, true_delay_timer.ReadMs());
+			//LOG("We waited for %d milliseconds and got back in %f", intended_delay, true_delay_timer.ReadMs());
 		}
 	}
 	

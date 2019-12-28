@@ -49,8 +49,6 @@ public: //P1 Variables
 
 	void Restart();												//Resets P1's position to where P1 started the level. 
 	void GodModeInput();										//Enables / Disables the God Mode.
-
-	//bool LoadPlayer1Textures();								//Loads P1's textures on screen.
 };
 
 #endif // __j1Player_1_H__

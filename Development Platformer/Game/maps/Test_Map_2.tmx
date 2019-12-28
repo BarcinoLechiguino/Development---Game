@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="150" height="42" tilewidth="32" tileheight="32" infinite="0" nextlayerid="26" nextobjectid="297">
+<map version="1.2" tiledversion="1.3.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="150" height="42" tilewidth="32" tileheight="32" infinite="0" nextlayerid="26" nextobjectid="299">
  <properties>
   <property name="BackgroundMusic" value="GrasslandsTheme.ogg"/>
   <property name="P1_PositionX" value="192"/>
@@ -56922,6 +56922,8 @@
   <object id="245" name="Floor" type="solid" x="4384" y="1312" width="384" height="32"/>
   <object id="247" name="Platform" type="platform" x="1120" y="224" width="224.003" height="12"/>
   <object id="248" name="Platform" type="platform" x="832" y="352" width="64" height="12"/>
+  <object id="297" name="Floor" type="solid" x="1120" y="480" width="160" height="32"/>
+  <object id="298" name="Floor" type="solid" x="1184" y="352" width="160" height="32"/>
  </objectgroup>
  <objectgroup id="24" name="Auto-Save">
   <object id="259" name="Checkpoint" type="checkpoint" x="2293.5" y="288.333" width="29" height="63.3333"/>
@@ -56955,7 +56957,7 @@
   <object id="30" name="Spikes" type="hazard" x="710.091" y="442" width="22" height="6"/>
   <object id="31" name="Spikes" type="hazard" x="416" y="1226" width="6" height="86"/>
   <object id="36" name="Spikes" type="hazard" x="762" y="1226" width="6" height="86"/>
-  <object id="39" name="Spikes" type="hazard" x="3098" y="1002.04" width="6" height="80.0274"/>
+  <object id="39" name="Spikes" type="hazard" x="3098" y="1024" width="6" height="58.0419"/>
   <object id="43" name="Spikes" type="hazard" x="3834" y="262" width="6" height="52"/>
   <object id="111" name="Spikes" type="hazard" x="4422" y="90" width="53.9163" height="5.99066"/>
   <object id="112" name="Spikes" type="hazard" x="4355.94" y="123" width="28.0625" height="4.95652"/>

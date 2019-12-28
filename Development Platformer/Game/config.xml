@@ -97,9 +97,8 @@
     <items>
       <coin>
         <position x ="0" y ="0"/>
-        <static_coin x="2" y="2" w="32" h="32"/>
         <sprite_size w="32" h="32"/>
-        <points value ="100"/>
+        <points value ="1"/>
       </coin>
     </items>
   </entities>

@@ -45,18 +45,10 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 
 bool j1EntityManager::Start()
 {
-	int i = 0;
-
 	//Iterates all entities in the entities list and calls their Start() method.
 	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
 	{
 		entity_iterator->data->Start();
-
-		if (entity_iterator->data->type == ENTITY_TYPE::COIN)
-		{
-			LOG("Coin Start() call n %d", i);
-			i++;
-		}
 	}
 
 	return true;
@@ -84,17 +76,10 @@ bool j1EntityManager::Update(float dt)
 		doLogic = true;
 	}
 
-	int i = 0;
 	//Calls the Update method of all entities. Passes dt and doLogic as arguments (mainly for pathfinding enemies).
 	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
 	{
 		entity_iterator->data->Update(dt, doLogic);
-
-		if (entity_iterator->data->type == ENTITY_TYPE::COIN)
-		{
-			LOG("Coin Update call n %d", i);
-			i++;
-		}
 	}
 
 	if (doLogic == true)				//Resets the doLogic timer.
@@ -247,16 +232,6 @@ j1Entity* j1EntityManager::CreateEntity(ENTITY_TYPE type, int x, int y)
 		entities.add(ret);								//Adds the generated entity to the entities list.
 	}
 
-	/*int i = 0;
-	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
-	{
-		if (entity_iterator->data->type == ENTITY_TYPE::COIN)
-		{
-			LOG("Coins in the entities list at coin Creation n %d", i);
-			i++;
-		}
-	}*/
-
 	return ret;
 }
 
@@ -295,23 +270,19 @@ void j1EntityManager::SpawnEnemies()
 		{
 		case ENTITY_TYPE::MECHA:
 			enemy = new j1Mecha(enemy_iterator->data->position.x, enemy_iterator->data->position.y, enemy_iterator->data->type);	//Spawns a MECHA type enemy.
-
 			break;
 
 		case ENTITY_TYPE::ALIEN:
 			enemy = new j1Alien(enemy_iterator->data->position.x, enemy_iterator->data->position.y, enemy_iterator->data->type);	//Spawns an ALIEN type enemy.
-		
 			break;
 
 		case ENTITY_TYPE::COIN:
 			enemy = new j1Coin(enemy_iterator->data->position.x, enemy_iterator->data->position.y, enemy_iterator->data->type);
-			LOG("Coins in the entities list at coin Addition n %d", i);
-			i++;
 			
 			break;
 		}
 
-		if (enemy != NULL)						//Uncomment when entities can be spawned.
+		if (enemy != NULL)							//Uncomment when entities can be spawned.
 		{
 			entities.add(enemy);																									//The entity is added to the entities list
 			enemy->Start();																											//The entity's start method is called.
@@ -358,20 +329,3 @@ void j1EntityManager::DestroyEntities()
 		}
 	}
 }
-
-
-//j1Entity* j1EntityManager::GetPlayer() const
-//{
-//	j1Entity* ret = nullptr;
-//
-//	for (p2List_item<j1Entity*>* entity = entities.start; entity; entity = entity->next)
-//	{
-//		if (entity->data->type == ENTITY_TYPE::PLAYER)
-//		{
-//			ret = entity->data;
-//			break;
-//		}
-//	}
-//
-//	return ret;
-//}

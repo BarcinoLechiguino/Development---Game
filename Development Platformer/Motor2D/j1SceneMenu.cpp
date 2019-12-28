@@ -193,7 +193,7 @@ bool j1SceneMenu::PreUpdate(float dt)
 // Called each loop iteration
 bool j1SceneMenu::Update(float dt)
 {
-	BROFILER_CATEGORY("Update_SceneMenu", Profiler::Color::NavajoWhite);
+	BROFILER_CATEGORY("Update_SceneMenu", Profiler::Color::AntiqueWhite);
 	bool ret = true;
 
 	if ((menu == true || settings == true || credits == true) &&( play_music == true))
@@ -318,7 +318,7 @@ bool j1SceneMenu::Update(float dt)
 // Called each loop iteration
 bool j1SceneMenu::PostUpdate()
 {
-	BROFILER_CATEGORY("PostUpdate_SceneMenu", Profiler::Color::NavajoWhite);
+	//BROFILER_CATEGORY("PostUpdate_SceneMenu", Profiler::Color::NavajoWhite);
 
 	bool ret = true;
 
