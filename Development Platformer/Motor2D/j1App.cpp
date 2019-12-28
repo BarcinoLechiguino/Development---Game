@@ -383,7 +383,7 @@ const char* j1App::GetOrganization() const
 
 float j1App::GetDt()
 {
-	LOG("dt is: %f", dt);
+	//LOG("dt is: %f", dt);
 	return dt;
 }
 

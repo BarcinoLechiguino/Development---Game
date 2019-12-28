@@ -119,7 +119,8 @@ public: //P1 Variables
 	virtual void SkillCooldown(bool& inCd, float& cdCounter, float& cdTime);	//Keeps track of any skill's cooldown. Revise --> Pass dt as an argument?
 
 	void ApplyGravity();														//If a player is airborne then this function brings her/him down to the ground.
-	void LoadNextMap();															//When a player reaches the goal, the next map will be loaded. (firstMap & secondMap)
+	fPoint SpeedFactor();														//Returns the current speed factor. Its a completely arbitrary calculation (speed * 0.1f). Simplifies calculus.
+	void LoadNextMap();															//When a player reaches the goal, the next map will be loaded. (firstMap & secondMap).
 
 	//bool LoadPlayer1Textures();												//Loads P1's textures on screen.
 	//void Restart();															//Resets P1's position to where P1 started the level. 

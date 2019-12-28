@@ -43,11 +43,11 @@
   <entities>
     <player>
       <speed x="350.0f" y="0"/>
-      <max_speed x="240.0f" y="500.0f"/>
-      <acceleration x="60.0f" y="450.0f"/>
-      <gravity value="40.0f"/>
-      <boost_jump x="0"  y="700.0f" threshold="1000"/>
-      <frontflip start="-6.0f" end="6.0f"/>
+      <max_speed x="240.0f" y="700.0f"/>          <!--40000.0f-->            <!--500.0f-->  <!--1000.0f-->
+      <acceleration x="60.0f" y="450.0f"/>               <!--450.0f-->  <!--625.0f-->
+      <gravity value="1200.0f"/>
+      <boost_jump x="0"  y="650.0f" threshold="1000"/>   <!--700.0f--> <!--950.0f-->
+      <frontflip start="-75.0f" end="75.0f"/>
       <sprite_size w="38" h="58"/>
       <lives lives="3"/>
       <points points="0"/>

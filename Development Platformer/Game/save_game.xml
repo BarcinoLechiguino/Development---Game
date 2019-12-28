@@ -9,7 +9,7 @@
 	<map />
 	<pathfinding />
 	<fonts />
-	<:anonymous />
+	<scene_menu />
 	<scene>
 		<currentMap num="0" />
 	</scene>
@@ -19,10 +19,10 @@
 	</gui>
 	<entities>
 		<player>
-			<position x="2464.09839" y="465.160034" />
+			<position x="2419.44946" y="519" />
 		</player>
 		<player2>
-			<position x="2257.7959" y="519.640015" />
+			<position x="2457.44946" y="455.935425" />
 		</player2>
 		<mecha />
 		<alien />
@@ -30,6 +30,6 @@
 	<collisions />
 	<:anonymous />
 	<renderer>
-		<camera x="-1886" y="-137" />
+		<camera x="-1964" y="-132" />
 	</renderer>
 </game_state>

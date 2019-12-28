@@ -229,18 +229,26 @@ void j1Player::PlayerMovement(Player_State player_state, float dt)
 
 //---------------------------------------------- GENERAL CHECKS ----------------------------------------------
 void j1Player::ApplyGravity()
-{
-	speed.y += player.gravity * App->GetDt();
+{	
+	//position.y += speed.y * App->GetDt();								//Refreshes the vector speed of P1 in the Y axis.
+	//speed.y += player.acceleration.y * App->GetDt();
+	
+	position.y += speed.y * App->GetDt();								//Refreshes the vector speed of P1 in the Y axis.
 
-	if (speed.y > player.max_speed.y * App->GetDt())
+	speed.y += player.gravity * App->GetDt();							//FRAME-MOVEMENT SEPARATION
+
+	LOG("Falling Speed %.2f", speed.y);
+	
+	if (speed.y * App->GetDt() > player.max_speed.y * App->GetDt())
 	{
-		speed.y = player.max_speed.y * App->GetDt();
+		speed.y = player.max_speed.y;
 	}
 
-	position.y += speed.y;								//Refreshes the vector speed of P1 in the Y axis.
+	//position.y += speed.y;												//Refreshes the vector speed of P1 in the Y axis.
+
 
 	//Jump animation modifications.
-	if (player.isBoostJumping == true)					//If P1 is boost jumping then this set of animations is played.
+	if (player.isBoostJumping == true)									//If P1 is boost jumping then this set of animations is played.
 	{
 		if (speed.y < player.frontflipStart)
 		{
@@ -266,6 +274,16 @@ void j1Player::ApplyGravity()
 			animation = &falling;
 		}
 	}
+}
+
+fPoint j1Player::SpeedFactor()
+{
+	fPoint speedFactor;
+
+	speedFactor.x = speed.x * 0.1f;
+	speedFactor.y = speed.y * 0.1f;
+
+	return speedFactor;
 }
 
 void j1Player::LoadNextMap()										//REVISE THIS HERE. Loads the map but collider goal disappears.

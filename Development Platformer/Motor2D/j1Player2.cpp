@@ -183,7 +183,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 					{	
 						if (player.grounded == true)
 						{
-							speed.y -= player.boost_jump.y * App->GetDt();
+							speed.y -= player.boost_jump.y;
 							LOG("boost jump speed is");
 							player.isBoostJumping = true;
 							player.airborne = true;
@@ -340,7 +340,7 @@ void j1Player2::SetPlayerState(Player_State& player_state)
 	{
 		player.state = Player_State::Idle;
 
-		if (speed.y > 2)													//For some reason the player's speed when colliding against the ground is 1.4f aprox instead of 0.
+		if (SpeedFactor().y > Y_SPEED_LIMIT)								//For some reason the player's speed when colliding against the ground is 1.4f aprox instead of 0.
 		{
 			player.state = Player_State::Falling;
 		}
@@ -422,7 +422,7 @@ void j1Player2::PlayerMovement(Player_State player_state, float dt)
 			player.flip = false;
 			player.isGoingRight = true;
 
-			if (speed.y > 2)
+			if (SpeedFactor().y > Y_SPEED_LIMIT)
 			{
 				animation = &falling;
 			}
@@ -443,7 +443,7 @@ void j1Player2::PlayerMovement(Player_State player_state, float dt)
 			player.flip = true;
 			player.isGoingLeft = true;
 
-			if (speed.y > 2)
+			if (SpeedFactor().y > Y_SPEED_LIMIT)
 			{
 				animation = &falling;
 			}
@@ -465,7 +465,7 @@ void j1Player2::PlayerMovement(Player_State player_state, float dt)
 	case Player_State::Jumping:
 
 		App->audio->PlayFx(5, 0);
-		speed.y = -player.acceleration.y * dt;
+		speed.y = -player.acceleration.y;
 		player.isJumping = true;						//Boolean for animations
 		player.airborne = true;
 		player.grounded = false;
@@ -511,7 +511,7 @@ void j1Player2::PlayerMovement(Player_State player_state, float dt)
 	{
 		if (player.grounded == true)
 		{
-			speed.y -= player.boost_jump.y * dt;
+			speed.y -= player.boost_jump.y;
 			LOG("boost jump speed is");
 			player.isBoostJumping = true;
 			player.airborne = true;
@@ -576,7 +576,7 @@ void j1Player2::TeleportP1ToP2()
 			if (player.againstLeftWall == false)
 			{
 				App->entityManager->player->position.x = position.x + collider->collider.w;
-				App->entityManager->player->position.y = position.y - 60;
+				App->entityManager->player->position.y = this->position.y - 60;
 				App->audio->PlayFx(1, 0);
 				player.tpInCd = true;
 			}

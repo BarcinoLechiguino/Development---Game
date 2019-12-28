@@ -189,7 +189,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 					{
 						if (player.grounded == true)
 						{
-							speed.y -= player.boost_jump.y * App->GetDt();
+							speed.y -= player.boost_jump.y;
 							player.isBoostJumping = true;
 							player.airborne = true;
 							player.grounded = false;
@@ -363,12 +363,10 @@ void j1Player1::SetPlayerState(Player_State& player_state)
 	{
 		player_state = Player_State::Idle;
 
-		if (speed.y > 2)													//For some reason the player's speed when colliding against the ground is 1.4f aprox instead of 0.
+		if (SpeedFactor().y > Y_SPEED_LIMIT)									//For some reason the player's speed when colliding against the ground is not 0.0f.
 		{
 			player_state = Player_State::Falling;
 		}
-
-		//LOG("Speed y is %f", speed.y);
 
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)				//Move Right
 		{
@@ -446,7 +444,7 @@ void j1Player1::PlayerMovement(Player_State player_state, float dt)
 			player.flip = false;
 			player.isGoingRight = true;
 
-			if (speed.y > 2)
+			if (SpeedFactor().y > Y_SPEED_LIMIT)
 			{
 				animation = &falling;
 			}
@@ -467,7 +465,7 @@ void j1Player1::PlayerMovement(Player_State player_state, float dt)
 			player.flip = true;
 			player.isGoingLeft = true;
 
-			if (speed.y > 2)
+			if (SpeedFactor().y > Y_SPEED_LIMIT)
 			{
 				animation = &falling;
 			}
@@ -489,7 +487,7 @@ void j1Player1::PlayerMovement(Player_State player_state, float dt)
 	case Player_State::Jumping:
 
 		App->audio->PlayFx(5, 0);
-		speed.y = -player.acceleration.y * dt;
+		speed.y = -player.acceleration.y;										//FRAME-MOVEMENT SEPARATION
 		player.isJumping = true;					//Boolean for animations
 		player.airborne = true;
 		player.grounded = false;

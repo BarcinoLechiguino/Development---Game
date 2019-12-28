@@ -68,5 +68,6 @@ inline const char* const PATH(const char* folder, const char* file)
 //Own Definitions
 #define ALPHA 80
 #define FLIP_MARGIN 20
+#define Y_SPEED_LIMIT 4
 
 #endif
