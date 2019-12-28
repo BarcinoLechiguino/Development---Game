@@ -76,7 +76,7 @@ void j1Coin::OnCollision(Collider* C1, Collider* C2)
 	{
 		if (C2->type == Object_Type::PLAYER || C2->type == Object_Type::PLAYER2)
 		{
-			//App->audio->PlayFx(7, 0);	    //Coin Acquisition sfx.
+			//App->audio->PlayFx(11, 0);	    //Coin Acquisition sfx.
 
 			collider->to_delete = true;
 			int num = App->entityManager->entities.find(this);

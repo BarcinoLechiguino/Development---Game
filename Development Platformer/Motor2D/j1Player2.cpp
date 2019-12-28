@@ -189,7 +189,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 							player.airborne = true;
 							player.grounded = false;
 							player.platformDrop = false;
-							App->audio->PlayFx(3, 0);
+							App->audio->PlayFx(4, 0);
 
 							LOG("P2 IS BOOST JUMPING");
 						}
@@ -290,7 +290,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 				player.item_activated = true;				//Records that P1 (or P2) has activated the item.
 				App->entityManager->player->player.item_activated = true;		//Activates P2's boolean as well. THIS HERE Change all player2 by App->entitymanager->player2->player.pos...
 
-				App->audio->PlayFx(4, 0);					//Item Activation sfx.
+				App->audio->PlayFx(5, 0);					//Item Activation sfx.
 			}
 
 			//Player colliding against Deactivable surfaces. 
@@ -314,7 +314,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 				if (player.checkpointReached == false)
 				{
 					App->SaveGame("save_game.xml");
-					App->audio->PlayFx(10, 1);
+					App->audio->PlayFx(11, 1);
 
 					player.spawn_position = position;
 
@@ -327,7 +327,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 			{
 				LoadNextMap();													//Loads the next map
 
-				App->audio->PlayFx(6, 0);										//Sound effect of the Goal / Protal.
+				App->audio->PlayFx(7, 0);										//Sound effect of the Goal / Protal.
 			}
 		}
 	}
@@ -464,7 +464,7 @@ void j1Player2::PlayerMovement(Player_State player_state, float dt)
 
 	case Player_State::Jumping:
 
-		App->audio->PlayFx(5, 0);
+		App->audio->PlayFx(6, 0);
 		speed.y = -player.acceleration.y;
 		player.isJumping = true;						//Boolean for animations
 		player.airborne = true;
@@ -483,7 +483,7 @@ void j1Player2::PlayerMovement(Player_State player_state, float dt)
 	case Player_State::Attacking:
 
 		player.isAttacking = true;
-		App->audio->PlayFx(14, 0);
+		App->audio->PlayFx(15, 0);
 
 		break;
 
@@ -497,7 +497,7 @@ void j1Player2::PlayerMovement(Player_State player_state, float dt)
 
 		player.lives--;
 
-		App->audio->PlayFx(2, 0);
+		App->audio->PlayFx(3, 0);
 
 		LivesCheck(player.lives);
 
@@ -517,7 +517,7 @@ void j1Player2::PlayerMovement(Player_State player_state, float dt)
 			player.airborne = true;
 			player.grounded = false;
 			player.platformDrop = false;
-			App->audio->PlayFx(3, 0);
+			App->audio->PlayFx(4, 0);
 		}
 	}
 }
@@ -577,12 +577,12 @@ void j1Player2::TeleportP1ToP2()
 			{
 				App->entityManager->player->position.x = position.x + collider->collider.w;
 				App->entityManager->player->position.y = this->position.y - 60;
-				App->audio->PlayFx(1, 0);
+				App->audio->PlayFx(2, 0);
 				player.tpInCd = true;
 			}
 			else
 			{
-				App->audio->PlayFx(11, 0);     //Sfx indicating that teleport cannot be used.
+				App->audio->PlayFx(12, 0);     //Sfx indicating that teleport cannot be used.
 			}
 		}
 		else
@@ -591,12 +591,12 @@ void j1Player2::TeleportP1ToP2()
 			{	
 				App->entityManager->player->position.x = position.x - collider->collider.w / 2;	//THIS HERE
 				App->entityManager->player->position.y = position.y - 60;
-				App->audio->PlayFx(1, 0);
+				App->audio->PlayFx(2, 0);
 				player.tpInCd = true;
 			}
 			else
 			{
-				App->audio->PlayFx(11, 0);     //Sfx indicating that teleport cannot be used.
+				App->audio->PlayFx(13, 0);     //Sfx indicating that teleport cannot be used.
 			}
 		}
 	}
@@ -643,7 +643,7 @@ void j1Player2::LivesCheck(int lives)
 
 		if (player.isAlive == false && App->entityManager->player->player.isAlive == false)
 		{
-			App->audio->PlayFx(2, 0);					//THIS HERE Death sound
+			App->audio->PlayFx(3, 0);					//THIS HERE Death sound
 			Restart();
 			App->entityManager->player->Restart();
 			player.lives = player.max_lives;
