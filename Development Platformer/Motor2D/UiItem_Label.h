@@ -29,14 +29,14 @@ public:
 	void ChangeTexture(SDL_Color color); // Change the color of the label, when hover or click state
 	void ChangeText(const char* text); // Change the text of the label, in this case it is going to have the same but with a different color
 
-private:
-	Label_Type label_type;
-	p2SString label_text;
-	SDL_Color label_color;
+public:
+	Label_Type label_type; // Type of label
+	p2SString label_text; // Text of the label
+	SDL_Color label_color; // Color font
 
 public:
 
-	mutable SDL_Texture* tex = nullptr; //?
+	mutable SDL_Texture* tex = nullptr;
 
 };
 

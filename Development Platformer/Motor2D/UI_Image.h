@@ -13,7 +13,7 @@ public:
 
 	bool PostUpdate();
 
-private:
+public:
 	SDL_Rect sprite_rect;
 
 };

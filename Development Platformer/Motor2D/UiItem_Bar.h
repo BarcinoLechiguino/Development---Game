@@ -19,7 +19,7 @@ public:
 
 	float GetThumbValue();
 
-private:
+public:
 	UiItem_Thumb*	thumb = nullptr;
 	SDL_Rect	box;
 public:

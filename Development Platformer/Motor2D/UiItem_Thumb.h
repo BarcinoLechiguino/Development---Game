@@ -20,7 +20,7 @@ public:
 
 public:
 	SDL_Rect thumb_box; // Rect of the thumb
-	iPoint click_position; // Detects where the mouse is clicking
+	iPoint click_position; // Where the mouse is clicking
 };
 
 #endif  // !_UI_THUMB__H

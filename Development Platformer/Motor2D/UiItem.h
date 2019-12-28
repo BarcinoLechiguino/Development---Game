@@ -26,9 +26,9 @@ public:
 
 
 
-	virtual bool OnHover() { return true; }; //To know if a button is onHover
+	virtual bool OnHover() { return true; }; //To do an action on hover
 	bool OnClick(); //Same but with click state
-	bool OnClick2();
+	bool OnClick2(); //Click on thumb to drag 
 
 public:
 	UI_State	state = IDLE; //Initial state
@@ -36,7 +36,6 @@ public:
 	iPoint		position;
 	iPoint		mouse_position;
 	UI_Item*		parent = nullptr; //Global item
-	p2Point<int> pivot = { 0,0 };
 
 	bool		drag = false; //For draggable objects
 	bool		static_object = false; //Static button
