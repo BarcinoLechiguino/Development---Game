@@ -11,7 +11,6 @@
 #include "j1FadeScene.h"
 #include "j1Scene.h"
 #include "j1SceneMenu.h"
-#include "j1Scene_UI.h"
 #include "j1Collisions.h"
 #include "j1Gui.h"
 #include "UiItem_Label.h"

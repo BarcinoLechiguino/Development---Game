@@ -113,7 +113,7 @@ void UI_Label::ChangeText(const char * text)
 	}
 
 	//label_text.Clear();
-	//label_text.create(text);														//Crashes at map change
+	//label_text.create(text);														
 
 	switch (label_type) {
 	case MAIN_TITLE:

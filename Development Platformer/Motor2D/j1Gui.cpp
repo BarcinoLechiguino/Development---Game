@@ -6,7 +6,6 @@
 #include "j1Render.h"
 #include "j1Audio.h"
 #include "j1Textures.h"
-#include "j1Scene_UI.h"
 #include "j1Fonts.h"
 #include "j1Input.h"
 #include "j1Gui.h"
@@ -196,9 +195,9 @@ SDL_Texture* j1Gui::GetAtlas() const
 
 bool j1Gui::Load(pugi::xml_node &node)
 {
-	App->scene_ui->player_score = node.child("score").attribute("value").as_uint();
+	/*App->scene_ui->player_score = node.child("score").attribute("value").as_uint();
 	sprintf_s(App->scene_ui->player_score_string, 5, "%1d", App->scene_ui->player_score);
-	App->scene_ui->score_label->ChangeText(App->scene_ui->player_score_string);
+	App->scene_ui->score_label->ChangeText(App->scene_ui->player_score_string);*/
 
 	return true;
 }
@@ -207,6 +206,6 @@ bool j1Gui::Save(pugi::xml_node &node) const
 {
 	pugi::xml_node score = node.append_child("score");
 
-	score.append_attribute("value") = App->scene_ui->player_score;
+	/*score.append_attribute("value") = App->scene_ui->player_score;*/
 	return true;
 }

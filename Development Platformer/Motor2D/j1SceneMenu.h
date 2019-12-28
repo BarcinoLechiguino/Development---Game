@@ -67,6 +67,27 @@ public:
 	bool					play_music = false;
 
 	p2SString				music_path_menu;
+
+	// HUD and in-game menu
+public:
+	void ChangeVisibility_ESC(); // When pause menu is displayed and closed
+
+public:
+
+	char		player_score_string[5] = "0";
+	char		timer_string[20] = "0";
+	uint        player_lifes = 3;
+	UI_Item*     hearts[6] = { nullptr,nullptr,nullptr };
+	uint		player_score = 0;
+	UI_Label*	score_label = nullptr;
+	UI_Label*	timer_label = nullptr;
+
+	p2List<UIitem_Button*>	ingame_button_list;
+	p2List<UI_Item*>		pause_ui_list; //Pause menu when esc pressed
+	p2List<UI_Item*>		hud_list;
+
+private:
+	j1PerfTimer			ptimer;
 };
 
 

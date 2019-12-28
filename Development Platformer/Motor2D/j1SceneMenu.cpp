@@ -7,13 +7,14 @@
 #include "UiItem.h"
 #include "UiItem_Button.h"
 #include "j1Render.h"
-#include "j1Scene_UI.h"
 #include "UiItem_Label.h"
 #include "UiItem_Bar.h"
 #include "j1Map.h"
 #include "j1Fonts.h"
 #include "j1Scene.h"
 #include "j1Audio.h"
+#include "j1Player1.h"
+#include "j1Player2.h"
 #include "j1FadeScene.h"
 #include "j1EntityManager.h"
 
@@ -47,6 +48,83 @@ bool j1SceneMenu::Awake(pugi::xml_node& config)
 bool j1SceneMenu::Start()
 {
 	bool ret = true;
+
+	// HUD
+	// Upper bar
+	hud_list.add(App->gui->CreateImage({ 0,0 }, { 973,305,677,36 }, true));
+	hud_list.add(App->gui->CreateImage({ 0,36 }, { 973,305,677,36 }, true));
+	hud_list.add(App->gui->CreateImage({ 676,0 }, { 973,305,677,36 }, true));
+	hud_list.add(App->gui->CreateImage({ 676,36 }, { 973,305,677,36 }, true));
+	hud_list.add(App->gui->CreateImage({ 1352,0 }, { 973,305,377,36 }, true));
+	hud_list.add(App->gui->CreateImage({ 1352,36 }, { 973,305,377,36 }, true));
+
+	// Character faces
+	hud_list.add(App->gui->CreateImage({ 80,30 }, { 1270,210,25,21 }, true));
+	hud_list.add(App->gui->CreateImage({ 945,30 }, { 1301,210,26,21 }, true));
+
+	// Tiemr, score, etc
+	hud_list.add(App->gui->CreateLabel({ 10,30 }, "Timm", Label_Type::HUD, { 255,255,255,255 }, true));
+	hud_list.add(App->gui->CreateLabel({ 980, 30 }, "Joe", Label_Type::HUD, { 255,255,255,255 }, true));
+	hud_list.add(App->gui->CreateLabel({ 210, 30 }, "Score", Label_Type::HUD, { 255,255,255,255 }, true));
+	score_label = App->gui->CreateLabel({ 285,30 }, player_score_string, Label_Type::HUD, { 255,255,255,255 }, true);
+	hud_list.add(App->gui->CreateLabel({ 695, 30 }, "Timer", Label_Type::HUD, { 255,255,255,255 }, true));
+	timer_label = App->gui->CreateLabel({ 770,30 }, timer_string, Label_Type::HUD, { 255,255,255,255 }, true);
+	hud_list.add(App->gui->CreateLabel({ 375, 30 }, "MUTUAL COOPERATION", Label_Type::HUD, { 255,255,255,255 }, true));
+
+	// Lifes player 1 & player 2
+	hearts[0] = (App->gui->CreateImage({ 110,30 }, { 1058,8,24,21 }, true));
+	hearts[1] = (App->gui->CreateImage({ 135,30 }, { 1058,8,24,21 }, true));
+	hearts[2] = (App->gui->CreateImage({ 160,30 }, { 1058,8,24,21 }, true));
+	hearts[3] = (App->gui->CreateImage({ 910,30 }, { 1058,8,24,21 }, true));
+	hearts[4] = (App->gui->CreateImage({ 885,30 }, { 1058,8,24,21 }, true));
+	hearts[5] = (App->gui->CreateImage({ 860,30 }, { 1058,8,24,21 }, true));
+
+	// -------------------------------------------------------------------------------------------------------------------------------
+
+	// In-game menu
+	// Menu in-game
+	pause_ui_list.add(App->gui->CreateImage({ 280,180 }, { 0, 388, 466, 447 }, true));
+	pause_ui_list.add(App->gui->CreateImage({ 323, 170 }, { 1078,242,382,61 }, true));
+	pause_ui_list.add(App->gui->CreateLabel({ 440,182 }, "PAUSE MENU", OTHER_TITLES, { 255,255,255,255 }, true));
+
+	// Buttons menu in-game
+	SDL_Rect button_rect_ingame[3] = { { 0,74,284,66 }, { 285,74,284,66 }, { 0,142,284,66 } };
+	ingame_button_list.add(App->gui->CreateButton({ 370,247 }, Button_Type::PLAY, button_rect_ingame[0], &button_rect_ingame[1], &button_rect_ingame[2], "", true));
+	ingame_button_list.add(App->gui->CreateButton({ 370,317 }, Button_Type::SAVE, button_rect_ingame[0], &button_rect_ingame[1], &button_rect_ingame[2], "", true));
+	ingame_button_list.add(App->gui->CreateButton({ 370,387 }, Button_Type::LOAD, button_rect_ingame[0], &button_rect_ingame[1], &button_rect_ingame[2], "", true));
+	ingame_button_list.add(App->gui->CreateButton({ 370,457 }, Button_Type::EXIT, button_rect_ingame[0], &button_rect_ingame[1], &button_rect_ingame[2], "", true));
+
+	// Mute button
+	SDL_Rect mute_rect_button_ingame[3] = { { 1479, 9, 57, 57 }, { 986,6,57,57 }, { 294, 143, 57, 57 } };
+	ingame_button_list.add(App->gui->CreateButton({ 300, 550 }, MUTE, mute_rect_button_ingame[0], &mute_rect_button_ingame[1], &mute_rect_button_ingame[2], "", true));
+
+	// Unmute button
+	SDL_Rect unmute_rect_button_ingame[3] = { { 512,147,57,57 }, {342,98,57,57},{ 986,48,57,57 } };
+	ingame_button_list.add(App->gui->CreateButton({ 670, 550 }, UNMUTE, unmute_rect_button_ingame[0], &unmute_rect_button_ingame[1], &unmute_rect_button_ingame[2], "", true));
+
+	// Labels in-game menu
+	pause_ui_list.add(App->gui->CreateLabel({ 465,267 }, "RESUME", TITLE_BUTTON, { 255,255,255,255 }, true));
+	pause_ui_list.add(App->gui->CreateLabel({ 480,337 }, "SAVE", TITLE_BUTTON, { 255,255,255,255 }, true));
+	pause_ui_list.add(App->gui->CreateLabel({ 480,407 }, "LOAD", TITLE_BUTTON, { 255,255,255,255 }, true));
+	pause_ui_list.add(App->gui->CreateLabel({ 480,477 }, "EXIT", TITLE_BUTTON, { 255,255,255,255 }, true));
+
+	// Slider
+	pause_ui_list.add(App->gui->CreateSlider({ 440,659 }, { 674,273,143,38 }, true));
+
+	p2List_item<UIitem_Button*>* button_item_in = ingame_button_list.start;
+	while (button_item_in != NULL)
+	{
+		button_item_in->data->visible = false;
+		button_item_in = button_item_in->next;
+	}
+	p2List_item<UI_Item*>* ui_item_in = pause_ui_list.start;
+	while (ui_item_in != NULL)
+	{
+		ui_item_in->data->visible = false;
+		ui_item_in = ui_item_in->next;
+	}
+
+	//-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	// Menu
 	// Background image
@@ -196,6 +274,47 @@ bool j1SceneMenu::Update(float dt)
 	BROFILER_CATEGORY("Update_SceneMenu", Profiler::Color::AntiqueWhite);
 	bool ret = true;
 
+	float timer = (float)ptimer.ReadMs() / 1000;
+	sprintf_s(timer_string, 20, "%.2f", timer);
+	timer_label->ChangeText(timer_string);
+
+	if (App->entityManager->player->player.lives == 3 || App->entityManager->player2->player.lives == 3)
+	{
+		hearts[0]->visible = true;
+		hearts[1]->visible = true;
+		hearts[2]->visible = true;
+		hearts[3]->visible = true;
+		hearts[4]->visible = true;
+		hearts[5]->visible = true;
+	}
+	if (App->entityManager->player->player.lives == 2 || App->entityManager->player2->player.lives == 2)
+	{
+		hearts[0]->visible = true;
+		hearts[1]->visible = true;
+		hearts[2]->visible = false;
+		hearts[3]->visible = true;
+		hearts[4]->visible = true;
+		hearts[5]->visible = false;
+	}
+	if (App->entityManager->player->player.lives == 1 || App->entityManager->player2->player.lives == 1)
+	{
+		hearts[0]->visible = true;
+		hearts[1]->visible = false;
+		hearts[2]->visible = false;
+		hearts[3]->visible = true;
+		hearts[4]->visible = false;
+		hearts[5]->visible = false;
+	}
+	if (App->entityManager->player->player.lives == 0 || App->entityManager->player2->player.lives == 0)
+	{
+		hearts[0]->visible = true;
+		hearts[1]->visible = true;
+		hearts[2]->visible = true;
+		hearts[3]->visible = true;
+		hearts[4]->visible = true;
+		hearts[5]->visible = true;
+	}
+
 	if ((menu == true || settings == true || credits == true) &&( play_music == true))
 	{
 		App->audio->PlayMusic(music_path_menu.GetString());
@@ -259,7 +378,6 @@ bool j1SceneMenu::Update(float dt)
 				{
 				case PLAY:
 					ChangeVisibility_MENU();
-					App->scene_ui->ChangeVisibility_HUD();
 					ChangeVisibility_IMG();
 					menu = false;
 					no_music();
@@ -274,7 +392,6 @@ bool j1SceneMenu::Update(float dt)
 				case CONTINUE:
 					App->LoadGame("save_game.xml");
 					ChangeVisibility_MENU();
-					App->scene_ui->ChangeVisibility_HUD();
 					menu = false;
 					ChangeVisibility_IMG();
 					no_music();
@@ -312,6 +429,47 @@ bool j1SceneMenu::Update(float dt)
 		}
 	}
 
+	if (App->scene_menu->in_game)
+	{
+		p2List_item<UIitem_Button*>* in_button_item = ingame_button_list.start;
+		while (in_button_item != NULL)
+		{
+			if (in_button_item->data->OnClick())
+			{
+				switch (in_button_item->data->GetType())
+				{
+				case PLAY:
+					ChangeVisibility_ESC();
+					in_game = false;
+					break;
+				case SAVE:
+					App->SaveGame("save_game.xml");
+					break;
+				case LOAD:
+					App->LoadGame("save_game.xml");
+					ChangeVisibility_ESC();
+					in_game = false;
+					break;
+				case EXIT:
+					ChangeVisibility_ESC();
+					ChangeVisibility_MENU();
+					in_game = false;
+					menu = true;
+					ChangeVisibility_IMG();
+					play_music = true;
+					break;
+				case MUTE:
+					App->audio->volume = 0;
+					break;
+				case UNMUTE:
+					App->audio->volume = 100;
+					break;
+				}
+			}
+			in_button_item = in_button_item->next;
+		}
+	}
+
 	return ret;
 }
 
@@ -327,6 +485,20 @@ bool j1SceneMenu::PostUpdate()
 		ret = false;
 	}
 		
+	if (menu == false)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN && in_game == false)
+		{
+			ChangeVisibility_ESC();
+			in_game = true;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN && in_game == true)
+		{
+			ChangeVisibility_ESC();
+			in_game = false;
+		}
+	}
+
 	return ret;
 }
 
@@ -335,6 +507,12 @@ bool j1SceneMenu::CleanUp()
 	LOG("Freeing Scene Menu");
 
 	button_list.clear();
+	menu_ui_list.clear();
+	image_ui_list.clear();
+	button_list_sett.clear();
+	sett_ui_list.clear();
+	button_list_credit.clear();
+	credit_ui_list.clear();
 
 	return true;
 }
@@ -401,6 +579,23 @@ void j1SceneMenu::ChangeVisibility_CRED()
 	{
 		button_item->data->visible = !button_item->data->visible;
 		button_item = button_item->next;
+	}
+}
+
+void j1SceneMenu::ChangeVisibility_ESC()
+{
+	p2List_item<UIitem_Button*>* button_item_in = ingame_button_list.start;
+	while (button_item_in != NULL)
+	{
+		button_item_in->data->visible = !button_item_in->data->visible;
+		button_item_in = button_item_in->next;
+	}
+	p2List_item<UI_Item*>* ui_item_in = pause_ui_list.start;
+	while (ui_item_in != NULL)
+	{
+		ui_item_in->data->visible = !ui_item_in->data->visible;
+		ui_item_in = ui_item_in->next;
+
 	}
 }
 
