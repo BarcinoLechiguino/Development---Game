@@ -68,6 +68,8 @@ public:
 	bool				firstMap;			//Keeps track of which map is loaded. In this case this one keeps track of the first map.
 	bool				secondMap;			//Keeps track of which map is loaded. In this case this one keeps track of the second map.
 
+	UI_Image* test;
+
 	// Testing the UI
 	UI_Image* banner;
 	UI_Text* text;
@@ -93,7 +95,8 @@ private:
 	//SDL_Texture*		mouse_debug_tex;	//Texture that will appear at mouse position when pathfinding is being debugged.
 	SDL_Texture*		path_debug_tex;		//Texture that will appear at the path tiles when pathfinding is being debugged.
 
-	// UI VARIABLES
+public:
+	UI_Image*			main_window;
 };
 
 #endif // __j1SCENE_H__
