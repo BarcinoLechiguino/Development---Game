@@ -809,6 +809,10 @@ bool j1Map::ChangeMap(const char* newMap)
 	App->entityManager->player->Start();		//Load / Reset P1	//REVISE THIS HERE. Should players be loaded like this?
 	App->entityManager->player2->Start();		//Load / Reset P2
 
+	App->gui->Start();
+	App->scene->LoadGuiElements();
+	//App->scene->Start();
+
 	return ret;
 }
 

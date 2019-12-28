@@ -1,24 +1,22 @@
-#ifndef _UI_SPRITE__H
-#define _UI_SPRITE__H
+#ifndef __UI_IMAGE_H__
+#define __UI_IMAGE_H__
 
-#include "p2Defs.h"
-#include "j1Gui.h"
-#include "SDL/include/SDL.h"
+#include "UI.h"
 
-class UI_Image : public UI_Item
+class UI_Image : public UI
 {
 public:
-	UI_Image(SDL_Rect rect, UI_Item* parent);
-	~UI_Image() {};
+	UI_Image();
+	UI_Image(UI_Element element, int x, int y, SDL_Rect hitbox, bool isVisible = true, bool isInteractible = false, bool isDraggable = false, UI* parent = nullptr);
 
-	bool PostUpdate();
+	bool Draw();
 
-public:
-	SDL_Rect sprite_rect;
+	void CheckInput();
 
+	void CleanUp();
+
+private:
+	SDL_Texture*	tex;						//Texture of the UI_Image.
 };
 
-
-
-
-#endif  // !_UI_SPRITE__H
+#endif // !__UI_IMAGE_H__

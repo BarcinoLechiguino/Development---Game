@@ -50,11 +50,11 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
-	void LoadAnimationPushbacks();			//Loads a set of animation pushbacks.
-	void LoadEntityProperties();			//Loads an entity's specific properties.
-	void LoadEntityAudio();					//Loads an entity's specific audios/sfx.
+	void LoadAnimationPushbacks();							//Loads a set of animation pushbacks.
+	void LoadEntityProperties();							//Loads an entity's specific properties.
+	void LoadEntityAudio();									//Loads an entity's specific audios/sfx.
 
-	void InitEnemy();						//Initializes an enemy's specific data members.
+	void InitEnemy();										//Initializes an enemy's specific data members.
 
 	void EnemyDebugInputs();										//Debug inputs for moving all entities around at the same time.
 	virtual void PathfindingLogic();								//Depending on how far a player is from an enemy entity, a path will be created and the enemy will path towards that player.

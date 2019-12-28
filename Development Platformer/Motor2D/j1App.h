@@ -94,7 +94,7 @@ public:
 	j1Textures*			tex;
 	j1Audio*			audio;
 	j1Fonts*			font;
-	j1SceneMenu*		scene_menu;
+	//j1SceneMenu*		scene_menu;
 	j1Scene*			scene;
 	j1Map*				map;
 	j1PathFinding*		pathfinding;

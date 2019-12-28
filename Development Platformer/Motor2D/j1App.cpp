@@ -35,7 +35,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	render = new j1Render();
 	tex = new j1Textures();
 	audio = new j1Audio();
-	scene_menu = new j1SceneMenu();
+	//scene_menu = new j1SceneMenu();
 	scene = new j1Scene();
 	map = new j1Map();
 	pathfinding = new j1PathFinding();
@@ -54,10 +54,10 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(pathfinding);
 	AddModule(font);
-	AddModule(scene_menu);
+	//AddModule(scene_menu);
+	AddModule(gui);
 	AddModule(scene);
 	//AddModule(scene_ui);
-	AddModule(gui);
 	AddModule(entityManager);				//entityManager is called after the module scene (where the player is created) is called.
 	AddModule(collisions);
 	AddModule(fadescene);

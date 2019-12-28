@@ -6,9 +6,7 @@
 #include "j1Timer.h"
 #include "p2List.h"
 #include "j1Gui.h"
-#include "UiItem_Button.h"
 #include "UI_Image.h"
-#include "UiItem_Label.h"
 
 class j1SceneMenu : public j1Module
 {
@@ -48,7 +46,7 @@ public:
 
 public:
 
-	p2List<UIitem_Button*>	button_list;
+	/*p2List<UIitem_Button*>	button_list;
 	p2List<UI_Item*>		menu_ui_list;
 	p2List<UI_Item*>		image_ui_list;
 
@@ -56,8 +54,7 @@ public:
 	p2List<UI_Item*>		sett_ui_list;
 
 	p2List<UIitem_Button*>	button_list_credit;
-	p2List<UI_Item*>		credit_ui_list;
-
+	p2List<UI_Item*>		credit_ui_list;*/
 
 	bool					menu = false;
 	bool					settings = false;
@@ -74,17 +71,17 @@ public:
 
 public:
 
-	char		player_score_string[5] = "0";
-	char		timer_string[20] = "0";
-	uint        player_lifes = 3;
-	UI_Item*     hearts[6] = { nullptr,nullptr,nullptr };
-	uint		player_score = 0;
-	UI_Label*	score_label = nullptr;
-	UI_Label*	timer_label = nullptr;
+	//char		player_score_string[5] = "0";
+	//char		timer_string[20] = "0";
+	//uint        player_lifes = 3;
+	//UI_Item*     hearts[6] = { nullptr,nullptr,nullptr };
+	//uint		player_score = 0;
+	//UI_Label*	score_label = nullptr;
+	//UI_Label*	timer_label = nullptr;
 
-	p2List<UIitem_Button*>	ingame_button_list;
-	p2List<UI_Item*>		pause_ui_list; //Pause menu when esc pressed
-	p2List<UI_Item*>		hud_list;
+	//p2List<UIitem_Button*>	ingame_button_list;
+	//p2List<UI_Item*>		pause_ui_list; //Pause menu when esc pressed
+	//p2List<UI_Item*>		hud_list;
 
 private:
 	j1PerfTimer			ptimer;

@@ -5,6 +5,7 @@
 
 //#define NUM_KEYS 352
 #define NUM_MOUSE_BUTTONS 5
+#define MAX_SIZE 1000
 //#define LAST_KEYS_PRESSED_BUFFER 50
 
 struct SDL_Rect;
@@ -67,6 +68,28 @@ public:
 	// Get mouse / axis position
 	void GetMousePosition(int &x, int &y);
 	void GetMouseMotion(int& x, int& y);
+	void GetMousewheelScrolling(int&x, int& y);
+
+	// Text Input
+	void TextInput();
+	void EditTextInputs();
+
+	const char* GetInputText();
+	int GetInputTextLength();
+	int GetCursorIndex();
+
+	void CheckNewTextInput(const char* newTextInput);
+	void AddTextInput(const char* origin);
+	void InsertTextInput(const char* origin);
+
+	bool CutInputText(unsigned int begin, unsigned int end = 0);
+	char* GetCutText(unsigned int begin, unsigned int end = -1, bool returnFirstPart = false, bool returnLastPart = false);
+
+	void ClearTextInput();
+	void DeleteTextInput(int positionIndex);
+
+private:
+	void Allocate(int required_memory);
 
 private:
 	bool		windowEvents[WE_COUNT];
@@ -76,6 +99,14 @@ private:
 	int			mouse_motion_y;
 	int			mouse_x;
 	int			mouse_y;
+	int			mouse_scroll_x;
+	int			mouse_scroll_y;
+
+	char*		input_string;
+	int			text_size;
+	bool		textInputEnabled;
+	int			prevLength;
+	int			cursorIndex;
 };
 
 #endif // __j1INPUT_H__

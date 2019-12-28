@@ -2,23 +2,20 @@
 #define __j1GUI_H__
 
 #include "j1Module.h"
+#include "j1Textures.h"
 #include "p2List.h"
-#include "p2Point.h"
-#include "UiItem_Label.h"
-#include "UiItem_Button.h"
-#include "UiItem_Bar.h"
+#include "UI.h"
 #include "UI_Image.h"
-#include "UiItem_Thumb.h"
-#include "SDL/include/SDL.h"
+#include "UI_Text.h"
+#include "UI_Button.h"
+#include "UI_InputBox.h"
+#include "UI_Scrollbar.h"
+
+//class UI;
 
 #define CURSOR_WIDTH 2
+#define DRAG_LIMIT_OFFSET 1
 
-struct UI_Item;
-
-
-// TODO 1: Create your structure of classes
-
-// ---------------------------------------------------
 class j1Gui : public j1Module
 {
 public:
@@ -35,9 +32,7 @@ public:
 	bool Start();
 
 	// Called before all Updates
-	bool PreUpdate(float dt);
-
-	bool Update(float dt);
+	bool PreUpdate();
 
 	// Called after all Updates
 	bool PostUpdate();
@@ -45,30 +40,52 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	bool Load(pugi::xml_node&);
+public:
+	/*const*/ SDL_Texture* GetAtlas() const;
 
-	bool Save(pugi::xml_node&)const;
+	UI* CreateImage(UI_Element element, int x, int y, SDL_Rect rect, bool isVisible = false, bool isInteractible = false, bool isDraggable = false, UI* parent = nullptr);
 
-	// TODO 2: Create the factory methods
-	// Gui creation functions
+	UI* CreateText(UI_Element element, int x, int y, SDL_Rect hitbox, _TTF_Font* font, SDL_Color fontColour, bool isVisible = true, bool isInteractible = false, bool isDraggable = false,
+		UI* parent = nullptr, p2SString* string = nullptr, p2SString* hoverString = nullptr, p2SString* leftClickString = nullptr, p2SString* rightClickString = nullptr);
 
-	UI_Item* CreateImage(iPoint pos, SDL_Rect rect, bool static_obj = false, UI_Item * parent = nullptr);
-	UIitem_Button* CreateButton(iPoint pos, Button_Type type, SDL_Rect idle_rect, SDL_Rect* idle_hover = NULL, SDL_Rect* idle_click = NULL, const char* text = "", bool static_obj = false, UI_Item* parent = nullptr);
-	UI_Label* CreateLabel(iPoint pos, const char* text, Label_Type type, SDL_Color color = { 0,0,0,0 }, bool static_obj = false, UI_Item* parent = nullptr);
-	UiItem_Thumb* CreateThumb(SDL_Rect s_thumb, UI_Item* parent = nullptr);
-	UiItem_Bar* CreateSlider(iPoint pos, SDL_Rect slider_box, bool static_obj = false, UI_Item * parent = nullptr);
-	SDL_Texture* GetAtlas() const;
+	UI* CreateButton(UI_Element element, int x, int y, bool isVisible = true, bool isInteractible = true, bool isDraggable = false, UI* parent = nullptr,
+		SDL_Rect* idle = nullptr, SDL_Rect* hover = nullptr, SDL_Rect* clicked = nullptr);
+
+	UI* CreateUI_Window(UI_Element element, int x, int y, SDL_Rect hitbox, bool isVisible = true, bool isInteractible = false, bool isDraggable = false, UI* parent = nullptr);
+
+	UI* CreateInputBox(UI_Element element, int x, int y, SDL_Rect hitbox, _TTF_Font* font, SDL_Color fontColour, SDL_Rect cursor, SDL_Color cursorColour, iPoint textOffset,
+		float blinkFrequency = 0.0f, bool isVisible = true, bool isInteractible = true, bool isDraggable = false, UI* parent = nullptr, p2SString* defaultString = nullptr);
+
+	UI* CreateScrollbar(UI_Element element, int x, int y, SDL_Rect hitbox, SDL_Rect thumbSize, iPoint thumbOffset, SDL_Rect dragArea, float dragFactor, bool dragXAxis = false,
+		bool dragYAxis = true, bool invertedScrolling = false, bool isVisible = true, bool isInteractible = true, bool isDraggable = false,
+		UI* parent = nullptr, SDL_Rect* scrollMask = nullptr, iPoint maskOffset = iPoint(0, 0));
+
+
+	void OnEventCall(UI* element, UI_Event ui_event);					//This function is called whenever an new event happens, it receives the pointer of the element that caused the event and the kind of event it is.
+	void PassFocus();													//Method that passes the focus from an interactible and able to focused element to another with the same conditions.
+	bool ElementCanBeFocused(UI* focusElement) const;					//If an element fulfills all requirements (is a button or a scrollbar), then this method returns true. Used to filter which UI elements can or cannot have focus.
+	
+	UI* FirstElementUnderMouse() const;									//Returs the first element under the mouse.
+	bool ElementCanBeClicked(UI* clickedElement) const;
+
+	bool ElementHasChilds(UI* parentElement) const;						//Returns true if the element passed as argument has at least one child.
+	void UpdateChilds(UI* parentElement);								//Updates all UI Elements that have the element passed as argument as a parent.
+	void SetElementsVisibility(UI* parentElement, bool state);			//Enables/Disables the isVisible bool of a UI Element and its childs according to the passed arguments.
+
+	void Debug_UI();													//Shows on screen the different rects that compose the UI Display.
 
 public:
-	p2List<UI_Item*> gui_list; // List of items
-	uint			fx_buton_pressed; // FX
+	UI*					focusedElement;					//Change to list item
+	p2List_item<UI*>*	iteratedElement;
+
+	bool escape;										//When this bool is true the game is exited.
+	bool ui_debug;										//When this bool is true, debug mode is activated.
+
 private:
-	SDL_Texture*	atlas;
-	p2SString		atlas_file_name;
-	p2SString		fx_button_pressed_string; // STring when the button is pressed
+	SDL_Texture* atlas;									//Texture of the atlas (UI Spritesheet)
+	p2SString atlas_file_name;							//Name of the atlas in the xml file.
 
-
-
+	p2List<UI*> elements;								//List where all the UI elements in a scene will be stored at.
 };
 
 #endif // __j1GUI_H__

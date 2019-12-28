@@ -16,6 +16,9 @@ class Animation;
 
 struct Collider;
 
+class UI;
+enum class UI_Event;
+
 class j1Module
 {
 public:
@@ -94,6 +97,11 @@ public:
 
 	//Collision handling
 	virtual void OnCollision(Collider* C1, Collider* C2) {}
+
+	virtual void OnEventCall(UI* element, UI_Event ui_event)
+	{
+		return;
+	}
 
 public:
 
