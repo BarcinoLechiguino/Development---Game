@@ -89,6 +89,12 @@ bool j1EntityManager::Update(float dt)
 	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
 	{
 		entity_iterator->data->Update(dt, doLogic);
+
+		if (entity_iterator->data->type == ENTITY_TYPE::COIN)
+		{
+			LOG("Coin Update call n %d", i);
+			i++;
+		}
 	}
 
 	if (doLogic == true)				//Resets the doLogic timer.
@@ -243,6 +249,16 @@ j1Entity* j1EntityManager::CreateEntity(ENTITY_TYPE type, int x, int y)
 		entities.add(ret);								//Adds the generated entity to the entities list.
 	}
 
+	/*int i = 0;
+	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
+	{
+		if (entity_iterator->data->type == ENTITY_TYPE::COIN)
+		{
+			LOG("Coins in the entities list at coin Creation n %d", i);
+			i++;
+		}
+	}*/
+
 	return ret;
 }
 
@@ -305,6 +321,17 @@ void j1EntityManager::SpawnEnemies()
 void j1EntityManager::AddItems(ENTITY_TYPE type, int x, int y)
 {
 	(j1Coin*)CreateEntity(type, x, y);
+	LOG("There are %d entities in the entities list at Coin creation.", entities.count());
+
+	/*int i = 0;
+	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
+	{
+		if (entity_iterator->data->type == ENTITY_TYPE::COIN)
+		{
+			LOG("Coins in the entities list at coin Addition n %d", i);
+			i++;
+		}
+	}*/
 }
 
 void j1EntityManager::DestroyEntities()
