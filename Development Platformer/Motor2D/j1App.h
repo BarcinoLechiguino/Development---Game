@@ -15,7 +15,6 @@ class j1Textures;
 class j1Audio;
 class j1SceneMenu;
 class j1Scene;
-class j1Scene_UI;
 class j1Map;
 class j1PathFinding;
 class j1Fade_Scene;
@@ -97,7 +96,6 @@ public:
 	j1Fonts*			font;
 	j1SceneMenu*		scene_menu;
 	j1Scene*			scene;
-	j1Scene_UI*			scene_ui;
 	j1Map*				map;
 	j1PathFinding*		pathfinding;
 	j1EntityManager*	entityManager;
