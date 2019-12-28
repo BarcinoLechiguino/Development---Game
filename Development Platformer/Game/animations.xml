@@ -124,9 +124,9 @@
   <coin>
     <idle speed ="8.0f" loop="true">
       <pushback x="2" y="2" w="32" h="32"/>
-      <pushback x="70" y="2" w="24" h="32"/>
-      <pushback x="138" y="2" w="12" h="32"/>
-      <pushback x="198" y="2" w="24" h="32"/>
+      <pushback x="66" y="2" w="32" h="32"/>
+      <pushback x="128" y="2" w="32" h="32"/>
+      <pushback x="194" y="2" w="32" h="32"/>
     </idle>
   </coin>
 </animations>

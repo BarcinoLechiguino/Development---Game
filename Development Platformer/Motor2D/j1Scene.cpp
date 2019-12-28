@@ -60,11 +60,6 @@ bool j1Scene::Start()
 {
 	bool ret;
 
-	
-	
-	
-	
-	
 	to_end = false;
 	
 	firstMap	= true;

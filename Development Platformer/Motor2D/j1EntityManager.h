@@ -5,7 +5,7 @@
 #include "j1Entity.h"		
 #include "p2List.h"
 
-#define MAX_ENEMIES 50
+#define MAX_ENEMIES 200
 
 struct SDL_Texture;
 class j1Entity;
@@ -45,7 +45,7 @@ public:
 	void CreatePlayers();													//Creates P1 and P2. It is called in the j1Scene.cpp.
 	void AddEnemy(ENTITY_TYPE type, int x, int y);							//Creates a new entityData pointer that will hold the information passed as an argument and will be added to the entityData_list.
 	void SpawnEnemies();													//Iterates entityData_list and creates an enemy for each list item.
-	void AddItems(ENTITY_TYPE type, int x, int y);
+	//void AddItems(ENTITY_TYPE type, int x, int y);
 	void DestroyEntities();													//Calls the CleanUp() method of each entity and then it clears the entities list.
 	
 	void OnCollision(Collider* C1, Collider* C2);

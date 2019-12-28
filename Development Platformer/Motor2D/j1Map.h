@@ -213,12 +213,12 @@ public:
 
 	MapData			data;
 	p2Point<float>	spawn_position_cam;
-	Collider		camera_collider;		//Collider that will have the same position and dimensions as the camera. Will be used for camera culling.
-	uint			winWidth;				//Declared to store the window's width.
-	uint			winHeight;				//Declared to store the window's height.
+	Collider		camera_collider;				//Collider that will have the same position and dimensions as the camera. Will be used for camera culling.
+	uint			winWidth;						//Declared to store the window's width.
+	uint			winHeight;						//Declared to store the window's height.
 	
-	iPoint			cam_tilePos;			//Position of the camera in the X and Y axis in tiles.
-	int				tile_index;				//Will store the tile's index number so the correct tile is loaded.
+	iPoint			cam_tilePos;					//Position of the camera in the X and Y axis in tiles.
+	int				tile_index;						//Will store the tile's index number so the correct tile is loaded.
 	
 	bool			pathfindingMetaDebug = false;	//Keeps track of whether to load the PathfindingCollisions layer. Temporally declared here.
 

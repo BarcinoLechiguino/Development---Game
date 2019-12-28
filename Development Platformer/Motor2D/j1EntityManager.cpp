@@ -64,7 +64,7 @@ bool j1EntityManager::Start()
 
 bool j1EntityManager::PreUpdate()
 {
-	SpawnEnemies();							//Should this be here?
+	SpawnEnemies();   					//Should this be here?
 
 	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
 	{
@@ -169,7 +169,6 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 
 	for (int i = 0; i < MAX_ENEMIES; ++i)
 	{
-		
 		if (enemies[i].type == ENTITY_TYPE::MECHA) {
 			pugi::xml_node position = mecha.append_child("position");
 			position.append_attribute("x") = enemies[i].position.x;
@@ -179,8 +178,7 @@ bool j1EntityManager::Save(pugi::xml_node& data) const
 			pugi::xml_node position = alien.append_child("position");
 			position.append_attribute("x") = enemies[i].position.x;
 			position.append_attribute("y") = enemies[i].position.y;
-		}
-		
+		}	
 	}
 
 	return true;
@@ -288,6 +286,7 @@ void j1EntityManager::SpawnEnemies()
 	
 	p2List_item<EntityData*>* enemy_iterator = entityData_list.start;
 
+	int i = 0;
 	for (enemy_iterator; enemy_iterator != NULL; enemy_iterator = enemy_iterator->next)												//Iterates the entityData_list.
 	{
 		j1Entity * enemy = nullptr;																									//Pointer that will be assigned to each enemy entity.
@@ -301,11 +300,18 @@ void j1EntityManager::SpawnEnemies()
 
 		case ENTITY_TYPE::ALIEN:
 			enemy = new j1Alien(enemy_iterator->data->position.x, enemy_iterator->data->position.y, enemy_iterator->data->type);	//Spawns an ALIEN type enemy.
+		
+			break;
 
+		case ENTITY_TYPE::COIN:
+			enemy = new j1Coin(enemy_iterator->data->position.x, enemy_iterator->data->position.y, enemy_iterator->data->type);
+			LOG("Coins in the entities list at coin Addition n %d", i);
+			i++;
+			
 			break;
 		}
 
-		if (enemy != NULL)		//Uncomment when entities can be spawned.
+		if (enemy != NULL)						//Uncomment when entities can be spawned.
 		{
 			entities.add(enemy);																									//The entity is added to the entities list
 			enemy->Start();																											//The entity's start method is called.
@@ -318,21 +324,21 @@ void j1EntityManager::SpawnEnemies()
 	entityData_list.clear();						//Once all enemies have been spawned, the list is cleared.
 }
 
-void j1EntityManager::AddItems(ENTITY_TYPE type, int x, int y)
-{
-	(j1Coin*)CreateEntity(type, x, y);
-	LOG("There are %d entities in the entities list at Coin creation.", entities.count());
-
-	/*int i = 0;
-	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
-	{
-		if (entity_iterator->data->type == ENTITY_TYPE::COIN)
-		{
-			LOG("Coins in the entities list at coin Addition n %d", i);
-			i++;
-		}
-	}*/
-}
+//void j1EntityManager::AddItems(ENTITY_TYPE type, int x, int y)
+//{
+//	(j1Coin*)CreateEntity(type, x, y);
+//	LOG("There are %d entities in the entities list at Coin creation.", entities.count());
+//
+//	/*int i = 0;
+//	for (p2List_item<j1Entity*>* entity_iterator = entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
+//	{
+//		if (entity_iterator->data->type == ENTITY_TYPE::COIN)
+//		{
+//			LOG("Coins in the entities list at coin Addition n %d", i);
+//			i++;
+//		}
+//	}*/
+//}
 
 void j1EntityManager::DestroyEntities()
 {

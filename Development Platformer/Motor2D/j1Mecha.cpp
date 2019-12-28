@@ -80,7 +80,7 @@ bool j1Mecha::Update(float dt, bool doLogic)
 
 		if (isDying == true)
 		{
-			App->audio->PlayFx(7, 0);	    //Mecha Death SFX
+			App->audio->PlayFx(8, 0);	    //Mecha Death SFX
 		}
 
 		enemy_HitBox = animation->GetCurrentFrame(dt);						//REVISE THIS HERE.
@@ -314,7 +314,7 @@ void j1Mecha::PathfindingMovement(Entity_State state, float dt)
 
 		position.y -= speed.y * dt;
 		animation = &running;
-		App->audio->PlayFx(9, 1);
+		App->audio->PlayFx(10, 1);
 
 		break;
 
@@ -322,7 +322,7 @@ void j1Mecha::PathfindingMovement(Entity_State state, float dt)
 
 		position.y += speed.y * dt;
 		animation = &running;
-		App->audio->PlayFx(9, 1);
+		App->audio->PlayFx(10, 1);
 
 		break;
 
@@ -331,7 +331,7 @@ void j1Mecha::PathfindingMovement(Entity_State state, float dt)
 		position.x += speed.x * dt;
 		flip = false;
 		animation = &running;
-		App->audio->PlayFx(9, 1);
+		App->audio->PlayFx(10, 1);
 
 		break;
 
@@ -340,7 +340,7 @@ void j1Mecha::PathfindingMovement(Entity_State state, float dt)
 		position.x -= speed.x * dt;
 		flip = true;
 		animation = &running;
-		App->audio->PlayFx(9, 1);
+		App->audio->PlayFx(10, 1);
 
 		break;
 	}

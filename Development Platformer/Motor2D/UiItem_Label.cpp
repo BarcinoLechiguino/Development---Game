@@ -112,7 +112,7 @@ void UI_Label::ChangeText(const char * text)
 		tex = nullptr;
 	}
 
-	label_text.Clear();
+	//label_text.Clear();
 	//label_text.create(text);														//Crashes at map change
 
 	switch (label_type) {

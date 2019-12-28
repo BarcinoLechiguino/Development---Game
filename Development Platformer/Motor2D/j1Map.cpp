@@ -326,6 +326,11 @@ bool j1Map::Load(const char* file_name)
 		if (ret == true)
 		{
 			ret = LoadObjectLayers(objectgroup, new_objectgroup);	//Loads the data members of the objectgroup that is being iterated.
+			
+			if (new_objectgroup->name.GetString() == "Coins")
+			{
+				LOG("Creating coins from object layer %s", new_objectgroup->name.GetString());
+			}
 		}
 		data.objectGroups.add(new_objectgroup);						//Adds the object group being iterated to the list.
 	}
@@ -624,20 +629,10 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup * objectgroup)
 		// -------------------------------------------- LOADING COINS FROM THE MAP --------------------------------------------
 		else if (object_type == "coin")
 		{
-			App->entityManager->AddItems(ENTITY_TYPE::COIN, object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
+			//App->entityManager->AddItems(ENTITY_TYPE::COIN, object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
+			App->entityManager->AddEnemy(ENTITY_TYPE::COIN, object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
 			//LOG("Adding a Coin at Position %d, %d", object_iterator.attribute("x").as_int(), object_iterator.attribute("y").as_int());
-
 			objectgroup->object[index].type = NONE;
-
-			int i = 0;
-			for (p2List_item<j1Entity*>* entity_iterator = App->entityManager->entities.start; entity_iterator != NULL; entity_iterator = entity_iterator->next)
-			{
-				if (entity_iterator->data->type == ENTITY_TYPE::COIN)
-				{
-					LOG("Coins in the entities list at coin Addition n %d", i);
-					i++;
-				}
-			}
 		}
 		// --------------------------------------------------------------------------------------------------------------------
 

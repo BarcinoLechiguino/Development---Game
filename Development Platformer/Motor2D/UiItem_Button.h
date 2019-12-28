@@ -34,7 +34,7 @@ public:
 	bool OnHover(); // To know the if the button is OnHoverState
 
 
-private:
+public:
 	SDL_Rect	button_rect[MAX_STATE]; //Rect of the button
 	p2SString	button_text; // Text inside the button
 	Button_Type	button_type; // Type of the button

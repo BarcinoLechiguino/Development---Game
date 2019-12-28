@@ -24,8 +24,6 @@ public:
 	virtual bool Update(float dt);
 	virtual bool PostUpdate() { return true; };
 
-
-
 	virtual bool OnHover() { return true; }; //To do an action on hover
 	bool OnClick(); //Same but with click state
 	bool OnClick2(); //Click on thumb to drag 
