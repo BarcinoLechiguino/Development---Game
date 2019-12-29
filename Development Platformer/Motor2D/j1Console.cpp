@@ -35,6 +35,17 @@ bool j1Console::Start()
 
 bool j1Console::PreUpdate()
 {	
+	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+	{
+		if (App->input->GetInputText() == "quit")
+		{
+			//runGame = false;
+			App->gui->escape = false;
+		}
+
+		App->input->ClearTextInput();
+	}
+	
 	return true;
 }
 
@@ -187,6 +198,11 @@ void j1Console::CreateConsoleElements()
 													inverted_scrolling, scroll_isVisible, scroll_isDraggable, scroll_isInteractible, console_background, NULL, iPoint(0, 0), true);
 
 	console_scroll->LinkScroll(console_output);
+
+	if (console_background->isVisible)
+	{
+		App->gui->focusedElement = console_input;
+	}
 }
 
 void j1Console::DrawBackgroundElement()

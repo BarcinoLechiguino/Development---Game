@@ -112,6 +112,14 @@ bool j1Gui::PreUpdate()
 	{
 		SetElementsVisibility(App->console->console_background, !App->console->console_background->isVisible);
 		SetElementsVisibility(App->scene->upper_bar, !App->scene->upper_bar->isVisible);
+
+		
+		App->input->ClearTextInput();
+
+		if (App->console->console_background->isVisible)
+		{
+			focusedElement = App->console->console_input;
+		}
 	}
 	
 	return true;

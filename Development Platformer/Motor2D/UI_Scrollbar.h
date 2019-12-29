@@ -21,6 +21,8 @@ public:
 	void DrawScrollbarElements();
 	void LinkScroll(UI* element);
 	void UpdateLinkedElements();
+	bool LinkedElementsBeingHovered();
+	bool MouseWithinDragArea();
 	float GetDragFactor(UI* element);
 
 	bool GetDragXAxis() const;

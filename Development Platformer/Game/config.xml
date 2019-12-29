@@ -158,11 +158,11 @@
     <scrollbar_rect x="0" y="0" w="20" h="256"/>
     <thumb_rect x="0" y="0" w="20" h="20"/>
     <thumb_offset x="0" y="0"/>
-    <drag_area x="0" y="0" w="20" h="256"/>
+    <drag_area x="0" y="0" w="1024" h="256"/>
     <drag_factor factor="0.2f"/>
     <drag_x_axis value="false"/>
     <drag_y_axis value="true"/>
-    <inverted_scrolling value="false"/>
+    <inverted_scrolling value="true"/>
     <scroll_isVisible value="false"/>
     <scroll_isInteractible value="false"/>
     <scroll_isDraggable value="false"/>

@@ -103,6 +103,7 @@ public:
 	bool				scroll_isDraggable;
 
 
+	bool				runGame;
 	p2List<Command*>	commands;
 
 private:

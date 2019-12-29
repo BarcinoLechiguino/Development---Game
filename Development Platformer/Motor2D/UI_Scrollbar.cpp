@@ -100,6 +100,11 @@ void UI_Scrollbar::CheckInput()
 			ui_event = UI_Event::IDLE;
 		}
 		
+		if (IsHovered() || LinkedElementsBeingHovered() || MouseWithinDragArea())
+		{
+			DragThumbWithMousewheel();
+		}
+
 		if (IsFocused())
 		{
 			CheckKeyboardInputs();
@@ -219,6 +224,27 @@ void UI_Scrollbar::UpdateLinkedElements()
 							, elem->GetHitbox().h });
 		}
 	}
+}
+
+bool UI_Scrollbar::LinkedElementsBeingHovered()
+{	
+	for (p2List_item<UI*>* element = linkedElements.start; element != NULL; element = element->next)
+	{
+		if (element->data->IsHovered())
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool UI_Scrollbar::MouseWithinDragArea()
+{
+	iPoint scrollMousePos = GetMousePos();
+	
+	return (scrollMousePos.x > dragArea.x && scrollMousePos.x < dragArea.x + dragArea.w
+		&& scrollMousePos.y > dragArea.y && scrollMousePos.y < dragArea.y + dragArea.h);
 }
 
 float UI_Scrollbar::GetDragFactor(UI* element)
