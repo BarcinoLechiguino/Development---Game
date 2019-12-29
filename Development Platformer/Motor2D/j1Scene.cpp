@@ -48,6 +48,7 @@ bool j1Scene::Awake(pugi::xml_node& config)
 	}
 
 	music_path.create(config.child("audio").attribute("path").as_string());
+	music_path2.create(config.child("audio2").attribute("path").as_string());
 
 	return ret;
 }
@@ -85,6 +86,8 @@ bool j1Scene::Start()
 	path_debug_tex = App->tex->Load("maps/path2_centered.png");					//Sets the path_debug_tex as path2.png.
 
 	LoadGuiElements();
+
+	App->audio->PlayMusic(App->scene->music_path2.GetString());
 
 	return ret;
 
