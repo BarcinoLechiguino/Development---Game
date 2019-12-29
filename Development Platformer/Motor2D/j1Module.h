@@ -103,6 +103,11 @@ public:
 		return;
 	}
 
+	virtual void OnCommand(const char* command, const char* subCommand = nullptr)
+	{
+
+	}
+
 public:
 
 	p2SString name;

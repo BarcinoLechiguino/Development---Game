@@ -62,6 +62,10 @@ public:
 	void SaveGame(const char* file) const;
 	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
 
+	// Console Commands
+	void CreateAppCommands();
+	void OnCommand(const char* command, const char* subCommand = nullptr);
+
 private:
 
 	// Load config file
@@ -141,6 +145,15 @@ private:
 
 	char*				frameCapOnOff;			//String that is set to 'On' when the frame cap is on and  'Off' when it is off.
 	char*				vsyncOnOff;				//String that is set to 'On' when Vsync is on and 'Off' when it is off.
+
+	// Console Strings
+	const char*			enable_pause;
+	const char*			disable_pause;
+	const char*			enableFrameCap;
+	const char*			disableFrameCap;
+	const char*			FPS_30;
+	const char*			FPS_60;
+	const char*			FPS_120;
 };
 
 extern j1App* App; // No student is asking me about that ... odd :-S

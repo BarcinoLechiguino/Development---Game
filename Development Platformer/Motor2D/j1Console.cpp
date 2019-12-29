@@ -8,7 +8,7 @@
 #include "UI_Scrollbar.h"
 #include "j1Console.h"
 
-j1Console::j1Console() : j1Module()
+j1Console::j1Console() : j1Module(), commandWasFound(false)
 {
 	name.create("console");
 }
@@ -29,25 +29,44 @@ bool j1Console::Start()
 {
 	InitConsole();
 	CreateConsoleElements();
+	CreateConsoleCommands();
 
 	return true;
 }
 
 bool j1Console::PreUpdate()
 {	
-	const char* quitCommand = "quit";
-	
 	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
-		if (*App->input->GetInputText() == *quitCommand)
+		commandWasFound = false;
+		
+		for (p2List_item<Command*>* command = commands.start; command != NULL; command = command->next)
 		{
-			//runGame = false;
-			CreateCommand(quitCommand, this, 1, 1);
-			
-			App->gui->escape = false;
+			Command* comm = command->data;
+
+			if (*App->input->GetInputText() == *comm->command.GetString())
+			{
+				comm->callback->OnCommand(comm->command.GetString());
+				commandHistory.add(comm);
+				commandWasFound = true;
+				break;
+			}
+		}
+		
+		if (!commandWasFound)
+		{
+			console_output->RefreshTextInput("Error: COMMAND NOT FOUND");
 		}
 
 		App->input->ClearTextInput();
+	}
+
+	if (console_background->isVisible)
+	{
+		if (App->gui->focusedElement != console_input)
+		{
+
+		}
 	}
 	
 	return true;
@@ -68,6 +87,14 @@ bool j1Console::PostUpdate()
 
 bool j1Console::CleanUp()
 {
+	for (p2List_item<Command*>* command = commands.start; command != NULL; command = command->next)
+	{
+		RELEASE(command->data);
+	}
+
+	commandHistory.clear();
+	commands.clear();
+	
 	return true;
 }
 
@@ -207,6 +234,20 @@ void j1Console::CreateConsoleElements()
 	{
 		App->gui->focusedElement = console_input;
 	}
+}
+
+void j1Console::CreateConsoleCommands()
+{
+	//CreateCommand("quit", this, 1, 1);
+	CreateCommand("quit", App->gui, 1, 1);
+
+		//if (*App->input->GetInputText() == *quitCommand)
+	//{
+	//	//runGame = false;
+	//	CreateCommand(quitCommand, this, 1, 1);
+	//	
+	//	App->gui->escape = false;
+	//}
 }
 
 void j1Console::DrawBackgroundElement()

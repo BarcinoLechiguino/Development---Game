@@ -501,3 +501,28 @@ bool j1App::SavegameNow() const
 	want_to_save = false;
 	return ret;
 }
+
+void j1App::CreateAppCommands()
+{
+	enable_pause = "enable_pause";
+	disable_pause = "disable_pause";
+	enableFrameCap = "enable_frame_cap";
+	disableFrameCap = "disable_frame_cap";
+	FPS_30 = "FPS 30";									//EVERYTHING IS A LIE. JUST SMOKE AND MIRRORS.
+	FPS_60 = "FPS 60";
+	FPS_120 = "FPS 120";
+
+	App->console->CreateCommand(enable_pause, (j1Module*)this, 1, 1);
+}
+
+void j1App::OnCommand(const char* command, const char* subCommand)
+{
+	if (*command == *enable_pause)
+	{
+		App->pause = true;
+	}
+	if (*command == *disable_pause)
+	{
+		App->pause = false;
+	}
+}

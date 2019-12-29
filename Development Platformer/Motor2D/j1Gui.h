@@ -75,6 +75,9 @@ public:
 
 	void Debug_UI();													//Shows on screen the different rects that compose the UI Display.
 
+	void CreateGuiCommands();
+	void OnCommand(const char* command, const char* subCommand = nullptr);
+
 public:
 	UI*					focusedElement;					//Change to list item
 	p2List_item<UI*>*	iteratedElement;

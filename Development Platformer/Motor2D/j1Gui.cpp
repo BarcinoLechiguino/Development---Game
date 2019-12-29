@@ -598,5 +598,29 @@ void j1Gui::Debug_UI()
 	}
 }
 
+
+
+void j1Gui::OnCommand(const char* command, const char* subCommand)
+{
+	const char* quitCommand = "quit";
+	const char* enable_ui_debug = "enable ui debug";
+	const char* disable_ui_debug = "disable ui debug";
+	
+	if (*command == *quitCommand)
+	{
+		escape = false;
+	}
+
+	if (*command == *enable_ui_debug)
+	{
+		ui_debug = true;
+	}
+
+	if (*command == *disable_ui_debug)
+	{
+		ui_debug = false;
+	}
+}
+
 // class Gui ---------------------------------------------------
 

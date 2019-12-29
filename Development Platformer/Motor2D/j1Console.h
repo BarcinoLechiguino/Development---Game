@@ -47,6 +47,7 @@ public:
 public:
 	void InitConsole();
 	void CreateConsoleElements();
+	void CreateConsoleCommands();
 	void DrawBackgroundElement();
 	bool ConsoleIsOpen();
 	Command* CreateCommand(const char* command, j1Module* callback, int min_arg, int max_arg);
@@ -104,7 +105,9 @@ public:
 
 
 	bool				runGame;
+	bool				commandWasFound;
 	p2List<Command*>	commands;
+	p2List<Command*>	commandHistory;
 
 private:
 	pugi::xml_document	config_file;
