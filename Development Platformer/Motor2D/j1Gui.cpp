@@ -82,6 +82,13 @@ bool j1Gui::PreUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)
 	{
 		SetElementsVisibility(App->console->console_background, !App->console->console_background->isVisible);
+		
+		App->input->ClearTextInput();
+
+		if (App->console->console_background->isVisible)
+		{
+			focusedElement = App->console->console_input;
+		}
 	}
 	
 	return true;

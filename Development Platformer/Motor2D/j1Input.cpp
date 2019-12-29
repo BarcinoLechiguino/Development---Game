@@ -275,9 +275,9 @@ void j1Input::EditTextInputs()															// --------------------------------
 
 	if (GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)										// -----------------------------------------------------------------------------
 	{
-		App->win->SetTitle(input_string);												// Sets the title with the current string.
-		cursorIndex = 0;																// The cursor's index is set to 0 (Origin of the string).
-		ClearTextInput();																// Deletes the whole string.
+		//App->win->SetTitle(input_string);												// Sets the title with the current string.
+		//cursorIndex = 0;																// The cursor's index is set to 0 (Origin of the string).
+		//ClearTextInput();																// Deletes the whole string.
 	}
 
 	if (GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)										// -----------------------------------------------------------------------------				
@@ -439,6 +439,7 @@ void j1Input::DeleteTextInput(int positionIndex)										// -------------------
 void j1Input::ClearTextInput()															// -----------------------------------------------------------------------------
 {
 	input_string[0] = '\0';																//Deletes all characters of input_string.
+	cursorIndex = 0;
 }
 
 void j1Input::Allocate(int required_memory)												// -----------------------------------------------------------------------------
