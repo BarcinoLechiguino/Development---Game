@@ -279,9 +279,10 @@ Command* j1Console::CreateCommand(const char* command, j1Module* callback, int m
 void j1Console::CreateConsoleCommands()
 {
 	//CreateCommand("quit", this, 1, 1);
-	CreateCommand("help", this, 1, 1);
-	//ShellExecuteA(NULL, "open", "https://gromeu2000.wixsite.com/mutualcooperation", NULL, NULL, SW_SHOWNORMAL);
 
+	// Console Commands
+	command_list		= "list";
+	
 	// App Commands
 	enable_pause		= "enable_pause";
 	disable_pause		= "disable_pause";
@@ -292,6 +293,9 @@ void j1Console::CreateConsoleCommands()
 	FPS_60				= "FPS 60";
 	FPS_120				= "FPS 120";
 
+	
+	CreateCommand(command_list, this, 1, 1);
+	
 	CreateCommand(enable_pause, this, 1, 1);
 	CreateCommand(disable_pause, this, 1, 1);
 	CreateCommand(enableFrameCap, this, 1, 1);
@@ -304,6 +308,12 @@ void j1Console::CreateConsoleCommands()
 
 void j1Console::OnCommand(const char* command, const char* subCommand)
 {
+	// --- CONSOLE COMMANDS
+	if (App->input->CmpStr(command, command_list))
+	{
+		ShellExecuteA(NULL, "open", "https://gromeu2000.wixsite.com/mutualcooperation", NULL, NULL, SW_SHOWNORMAL);
+	}
+	
 	// --- APP COMMANDS
 	if (App->input->CmpStr(command, enable_pause))						// -----------------------------------------------------------------------------------
 	{
