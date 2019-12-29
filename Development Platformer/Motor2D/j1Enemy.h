@@ -66,6 +66,7 @@ public:
 	Entity_State	state;									//State in which the entity is in any given moment.
 	SDL_Rect		enemy_HitBox;							//Rectangle that will represent the enemy in the world. Used to create colliders, 
 	int				detectionRadius;						//Threshold that the enemy will have to detect whether or not a player is inside its detection range. Distance in tiles, not pixels.
+	int				pointsOnKill;							//Amount of points awarded to the players on enemy kill.
 
 	bool grounded;											//
 	bool airborne;											//

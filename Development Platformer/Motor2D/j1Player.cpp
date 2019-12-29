@@ -197,7 +197,7 @@ bool j1Player::InitPlayer()
 	player.againstCeiling		= false;
 	player.checkpointReached	= false;
 	player.GodMode				= false;
-	player.switch_sprites		= false;
+	player.extraLife			= false;
 
 	return true;
 }

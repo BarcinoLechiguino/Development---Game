@@ -108,6 +108,21 @@ bool j1Player1::Update(float dt, bool doLogic)
 		player.atkCollider->Set_Position(position.x - sprite_width, position.y);
 	}
 	
+	if (player.coins % 10 == 0 && !player.extraLife && player.coins > 0)
+	{
+		player.lives++;
+		player.extraLife = true;
+		player.score += 100;
+		App->entityManager->player2->player.score += 100;
+
+		//EXTRA LIFE SFX HERE
+
+	}
+
+	if (player.coins % 10 != 0)
+	{
+		player.extraLife = false;
+	}
 
 	BlitEntity(position.x, position.y, player.HitBox, player.flip);							//Blits the player on screen with the data we have given the Blit() function.
 

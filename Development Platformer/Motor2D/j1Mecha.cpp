@@ -139,6 +139,9 @@ void j1Mecha::OnCollision(Collider* C1, Collider* C2)
 				int num = App->entityManager->entities.find(this);
 				RELEASE(App->entityManager->entities.At(num)->data);
 				App->entityManager->entities.del(App->entityManager->entities.At(num));
+
+				App->entityManager->player->player.score += pointsOnKill;
+				App->entityManager->player2->player.score += pointsOnKill;
 			}
 		}
 
@@ -220,6 +223,8 @@ void j1Mecha::LoadEntityProperties()
 	mecha_acceleration.x	= enemy_entity.child("acceleration").attribute("x").as_float();
 	mecha_acceleration.y	= enemy_entity.child("acceleration").attribute("y").as_float();
 	mecha_gravity			= enemy_entity.child("gravity").attribute("value").as_float();
+
+	pointsOnKill			= enemy_entity.child("points").attribute("value").as_int();
 
 	detectionRadius			= enemy_entity.child("detection_radius").attribute("radius").as_int();
 
