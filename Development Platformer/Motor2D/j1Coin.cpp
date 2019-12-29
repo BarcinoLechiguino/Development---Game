@@ -84,7 +84,7 @@ void j1Coin::OnCollision(Collider* C1, Collider* C2)
 				{
 					if (C1->collider.x < C2->collider.x - (C2->collider.w * 0.4f))
 					{
-						App->audio->PlayFx(11, 0);	    //Coin Acquisition sfx.
+						App->audio->PlayFx(10, 0);	    //Coin Acquisition sfx.
 
 						collider->to_delete = true;
 						int num = App->entityManager->entities.find(this);
@@ -99,7 +99,7 @@ void j1Coin::OnCollision(Collider* C1, Collider* C2)
 				{
 					if (C1->collider.x + C1->collider.w > C2->collider.x + C2->collider.w + (C2->collider.w * 0.4f))
 					{
-						App->audio->PlayFx(11, 0);	    //Coin Acquisition sfx.
+						App->audio->PlayFx(10, 0);	    //Coin Acquisition sfx.
 	
 						collider->to_delete = true;
 						int num = App->entityManager->entities.find(this);
@@ -117,7 +117,7 @@ void j1Coin::OnCollision(Collider* C1, Collider* C2)
 				{
 					if (C1->collider.x < C2->collider.x - (C2->collider.w * 0.4f))
 					{
-						App->audio->PlayFx(11, 0);	    //Coin Acquisition sfx.
+						App->audio->PlayFx(10, 0);	    //Coin Acquisition sfx.
 	
 						collider->to_delete = true;
 						int num = App->entityManager->entities.find(this);
@@ -132,7 +132,7 @@ void j1Coin::OnCollision(Collider* C1, Collider* C2)
 				{
 					if (C1->collider.x + C1->collider.w > C2->collider.x + C2->collider.w + (C2->collider.w * 0.4f))
 					{
-						App->audio->PlayFx(11, 0);	    //Coin Acquisition sfx.
+						App->audio->PlayFx(10, 0);	    //Coin Acquisition sfx.
 	
 						collider->to_delete = true;
 						int num = App->entityManager->entities.find(this);

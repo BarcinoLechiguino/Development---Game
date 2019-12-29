@@ -304,7 +304,7 @@ void j1Player::SkillCooldown(bool& inCd, float& cdCounter, float& cdTime)			//Ar
 	{
 		inCd = false;						//Resets the bool so tp can be used again.
 		cdCounter = 0;						//Resets the count so it can be used the next time tp is in cd.
-		App->audio->PlayFx(13, 0);
+		App->audio->PlayFx(12, 0);
 	}
 }
 
