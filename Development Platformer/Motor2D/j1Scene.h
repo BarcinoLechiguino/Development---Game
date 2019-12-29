@@ -136,6 +136,8 @@ public:
 	UI_Text*			names;
 	UI_Text*			title;
 	UI_Image*			hearts[6] = { nullptr,nullptr,nullptr };
+	UI_Text*			score_player;
+	UI_Text*			timer;
 
 	// In-game menu
 	UI_Image*			main_in_menu;
