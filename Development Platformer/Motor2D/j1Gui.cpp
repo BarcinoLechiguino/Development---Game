@@ -91,11 +91,13 @@ bool j1Gui::PreUpdate()
 	{
 		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		{
+			Mix_HaltMusic();
 			SetElementsVisibility(App->scene->main_in_menu, !App->scene->main_in_menu->isVisible);
-
+			App->audio->PlayMusic(App->scene->music_path3.GetString());
 			if (!App->scene->main_in_menu->isVisible)
 			{
 				App->pause = false;
+				
 			}
 		}
 	}
@@ -290,6 +292,7 @@ void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 	// Main Menu
 	if (element == App->scene->main_button_play && ui_event == UI_Event::UNCLICKED)
 	{
+		Mix_HaltMusic();
 		SetElementsVisibility(App->scene->main_window, !App->scene->main_window->isVisible);
 		SetElementsVisibility(App->scene->background_image, !App->scene->background_image->isVisible);
 		SetElementsVisibility(App->scene->upper_bar, !App->scene->upper_bar->isVisible);
@@ -301,16 +304,19 @@ void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 
 		game_started = true;
 		App->audio->PlayFx(play_fx, 0);
+		App->audio->PlayMusic(App->scene->music_path.GetString());
 	}
 
 	if (element == App->scene->main_button_continue && ui_event == UI_Event::UNCLICKED)
 	{
+		Mix_HaltMusic();
 		App->LoadGame("save_game.xml");
 		SetElementsVisibility(App->scene->main_window, !App->scene->main_window->isVisible);
 		SetElementsVisibility(App->scene->background_image, !App->scene->background_image->isVisible);
 		SetElementsVisibility(App->scene->upper_bar, !App->scene->upper_bar->isVisible);
 		game_started = true;
 		App->audio->PlayFx(play_fx, 0);
+		App->audio->PlayMusic(App->scene->music_path.GetString());
 	}
 
 	if (element == App->scene->main_button_settings && ui_event == UI_Event::UNCLICKED)
@@ -387,6 +393,7 @@ void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 	// In-game menu
 	if (element == App->scene->in_buttons_resume && ui_event == UI_Event::UNCLICKED)
 	{
+		Mix_HaltMusic();
 		SetElementsVisibility(App->scene->main_in_menu, !App->scene->main_in_menu->isVisible);
 
 		if (!App->scene->main_in_menu->isVisible)
@@ -395,6 +402,7 @@ void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 		}
 
 		App->audio->PlayFx(play_fx, 0);
+		App->audio->PlayMusic(App->scene->music_path.GetString());
 	}
 
 	if (element == App->scene->in_buttons_save && ui_event == UI_Event::UNCLICKED)
@@ -405,6 +413,7 @@ void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 
 	if (element == App->scene->in_buttons_load && ui_event == UI_Event::UNCLICKED)
 	{
+		Mix_HaltMusic();
 		SetElementsVisibility(App->scene->main_in_menu, !App->scene->main_in_menu->isVisible);
 		
 		if (!App->scene->main_in_menu->isVisible)
@@ -414,10 +423,12 @@ void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 		
 		App->LoadGame("save_game.xml");
 		App->audio->PlayFx(play_fx, 0);
+		App->audio->PlayMusic(App->scene->music_path.GetString());
 	}
 
 	if (element == App->scene->in_buttons_exit && ui_event == UI_Event::UNCLICKED)
 	{
+		Mix_HaltMusic();
 		SetElementsVisibility(App->scene->main_in_menu, !App->scene->main_in_menu->isVisible);
 		SetElementsVisibility(App->scene->main_window, !App->scene->main_window->isVisible);
 		SetElementsVisibility(App->scene->background_image, !App->scene->background_image->isVisible);
@@ -430,6 +441,7 @@ void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 		}
 		
 		App->audio->PlayFx(exit_fx, 0);
+		App->audio->PlayMusic(App->scene->music_path2.GetString());
 	}
 
 	if (element == App->scene->unmute_in && ui_event == UI_Event::UNCLICKED)

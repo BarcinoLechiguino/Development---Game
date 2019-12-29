@@ -118,6 +118,7 @@
     <map_name name="Test_map_2.tmx"></map_name>
     <audio path="Combat Heavy.ogg"/>
     <audio2 path="Background music.ogg"/>
+    <audio3 path="menu_music.ogg"/>
     <fade_time value="1"/>
   </scene>
 
