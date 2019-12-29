@@ -111,6 +111,8 @@ bool j1Gui::PreUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)
 	{
 		SetElementsVisibility(App->console->console_background, !App->console->console_background->isVisible);
+		SetElementsVisibility(App->scene->upper_bar, !App->scene->upper_bar->isVisible);
+
 		
 		App->input->ClearTextInput();
 
