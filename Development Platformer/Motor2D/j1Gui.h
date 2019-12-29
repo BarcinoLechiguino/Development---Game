@@ -87,6 +87,9 @@ private:
 	p2SString atlas_file_name;							//Name of the atlas in the xml file.
 
 	p2List<UI*> elements;								//List where all the UI elements in a scene will be stored at.
+
+public:
+	bool			game_started = false;				// To know if the user has enter the game
 };
 
 #endif // __j1GUI_H__
