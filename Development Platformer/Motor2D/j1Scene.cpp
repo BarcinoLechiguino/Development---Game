@@ -9,6 +9,7 @@
 #include "j1Map.h"
 #include "j1FadeScene.h"
 #include "j1Scene.h"
+#include "j1Console.h"
 #include "j1SceneMenu.h"
 #include "j1Collisions.h"
 #include "j1Gui.h"
@@ -258,7 +259,7 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 	App->win->SetTitle(title.GetString());*/
 
 	// UI
-	if (App->gui->game_started)
+	if (App->gui->game_started && App->console->console_background->isVisible == false)
 	{
 		if (App->entityManager->player->player.lives == 3 || App->entityManager->player2->player.lives == 3)
 		{
