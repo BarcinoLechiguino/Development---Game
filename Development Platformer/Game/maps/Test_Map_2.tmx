@@ -56934,7 +56934,7 @@
   <object id="163" name="Mecha" type="mecha" x="3392" y="224" width="64" height="96"/>
  </objectgroup>
  <objectgroup color="#555500" id="21" name="Alien">
-  <object id="156" name="Alien" type="alien" x="576" y="960" width="64" height="64"/>
+  <object id="156" name="Alien" type="alien" x="736" y="960" width="64" height="64"/>
   <object id="157" name="Alien" type="alien" x="608" y="192" width="64" height="64"/>
   <object id="158" name="Alien" type="alien" x="1440" y="320" width="64" height="64"/>
   <object id="165" name="Alien" type="alien" x="3616" y="608" width="64" height="64"/>
