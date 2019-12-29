@@ -45,6 +45,12 @@ bool j1Gui::Start()
 	ui_debug = false;
 	escape = true;
 
+	tab_fx = App->audio->LoadFx("audio/fx/tab_ui.wav");
+	play_fx = App->audio->LoadFx("audio/fx/play_ui.wav");
+	save_fx = App->audio->LoadFx("audio/fx/save_fx.wav");
+	exit_fx = App->audio->LoadFx("audio/fx/exit_ui.wav");
+	nav_fx = App->audio->LoadFx("audio/fx/navegate_ui.wav");
+
 	return true;
 }
 
@@ -54,6 +60,7 @@ bool j1Gui::PreUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN)
 	{
 		PassFocus();
+		App->audio->PlayFx(tab_fx, 0);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
@@ -65,21 +72,6 @@ bool j1Gui::PreUpdate()
 		}
 	}
 
-	
-	
-		//ShowElement(App->scene->draggableButton2);
-
-		//SetElementsVisibility(App->scene->window, !App->scene->window->isVisible);
-		/*SetElementsVisibility(App->scene->scrollWindow, !App->scene->scrollWindow->isVisible);
-
-		if (App->scene->scrollWindow->isVisible)
-		{
-			App->pause = true;
-		}
-		else
-		{
-			App->pause = false;
-		}*/
 
 	if (App->scene->background_image->isVisible)
 	{
@@ -293,6 +285,7 @@ void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 		SetElementsVisibility(App->scene->background_image, !App->scene->background_image->isVisible);
 		SetElementsVisibility(App->scene->upper_bar, !App->scene->upper_bar->isVisible);
 		game_started = true;
+		App->audio->PlayFx(play_fx, 0);
 	}
 
 	if (element == App->scene->main_button_continue && ui_event == UI_Event::UNCLICKED)
@@ -302,17 +295,20 @@ void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 		SetElementsVisibility(App->scene->background_image, !App->scene->background_image->isVisible);
 		SetElementsVisibility(App->scene->upper_bar, !App->scene->upper_bar->isVisible);
 		game_started = true;
+		App->audio->PlayFx(play_fx, 0);
 	}
 
 	if (element == App->scene->main_button_settings && ui_event == UI_Event::UNCLICKED)
 	{
 		SetElementsVisibility(App->scene->main_settings_menu, !App->scene->main_settings_menu->isVisible);
 		SetElementsVisibility(App->scene->main_window, !App->scene->main_window->isVisible);
+		App->audio->PlayFx(nav_fx, 0);
 	}
 
 	if (element == App->scene->main_button_exit && ui_event == UI_Event::UNCLICKED)
 	{
 		escape = false;
+		App->audio->PlayFx(exit_fx, 0);
 	}
 	//-------------------------------------------------------------------------------------------------------------
 
@@ -321,16 +317,19 @@ void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 	{
 		SetElementsVisibility(App->scene->main_settings_menu, !App->scene->main_settings_menu->isVisible);
 		SetElementsVisibility(App->scene->main_window, !App->scene->main_window->isVisible);
+		App->audio->PlayFx(nav_fx, 0);
 	}
 
 	if (element == App->scene->unmute && ui_event == UI_Event::UNCLICKED)
 	{
 		App->audio->volume = 100;
+		App->audio->PlayFx(nav_fx, 0);
 	}
 
 	if (element == App->scene->mute && ui_event == UI_Event::UNCLICKED)
 	{
 		App->audio->volume = 0;
+		App->audio->PlayFx(nav_fx, 0);
 	}
 
 	if (element == App->scene->check && ui_event == UI_Event::UNCLICKED)
@@ -343,17 +342,21 @@ void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 		{
 			App->framesAreCapped = true;
 		}
+
+		App->audio->PlayFx(nav_fx, 0);
 	}
 
 	if (element == App->scene->credits && ui_event == UI_Event::UNCLICKED)
 	{
 		SetElementsVisibility(App->scene->main_settings_menu, !App->scene->main_settings_menu->isVisible);
 		SetElementsVisibility(App->scene->main_credits_menu, !App->scene->main_credits_menu->isVisible);
+		App->audio->PlayFx(nav_fx, 0);
 	}
 
 	if (element == App->scene->github && ui_event == UI_Event::UNCLICKED)
 	{
 		ShellExecuteA(NULL, "open", "https://gromeu2000.wixsite.com/mutualcooperation", NULL, NULL, SW_SHOWNORMAL);
+		App->audio->PlayFx(nav_fx, 0);
 	}
 	//---------------------------------------------------------------------------------------------------------------------
 
@@ -362,6 +365,7 @@ void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 	{
 		SetElementsVisibility(App->scene->main_settings_menu, !App->scene->main_settings_menu->isVisible);
 		SetElementsVisibility(App->scene->main_credits_menu, !App->scene->main_credits_menu->isVisible);
+		App->audio->PlayFx(nav_fx, 0);
 	}
 	//----------------------------------------------------------------------------------------------------------------------
 
@@ -369,17 +373,20 @@ void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 	if (element == App->scene->in_buttons_resume && ui_event == UI_Event::UNCLICKED)
 	{
 		SetElementsVisibility(App->scene->main_in_menu, !App->scene->main_in_menu->isVisible);
+		App->audio->PlayFx(play_fx, 0);
 	}
 
 	if (element == App->scene->in_buttons_save && ui_event == UI_Event::UNCLICKED)
 	{
 		App->SaveGame("save_game.xml");
+		App->audio->PlayFx(save_fx, 0);
 	}
 
 	if (element == App->scene->in_buttons_load && ui_event == UI_Event::UNCLICKED)
 	{
 		SetElementsVisibility(App->scene->main_in_menu, !App->scene->main_in_menu->isVisible);
 		App->LoadGame("save_game.xml");
+		App->audio->PlayFx(play_fx, 0);
 	}
 
 	if (element == App->scene->in_buttons_exit && ui_event == UI_Event::UNCLICKED)
@@ -389,16 +396,19 @@ void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 		SetElementsVisibility(App->scene->background_image, !App->scene->background_image->isVisible);
 		SetElementsVisibility(App->scene->upper_bar, !App->scene->upper_bar->isVisible);
 		game_started = false;
+		App->audio->PlayFx(exit_fx, 0);
 	}
 
 	if (element == App->scene->unmute_in && ui_event == UI_Event::UNCLICKED)
 	{
 		App->audio->volume = 100;
+		App->audio->PlayFx(nav_fx, 0);
 	}
 
 	if (element == App->scene->mute_in && ui_event == UI_Event::UNCLICKED)
 	{
 		App->audio->volume = 0;
+		App->audio->PlayFx(nav_fx, 0);
 	}
 	//----------------------------------------------------------------------------------------------------------------------
 } 
