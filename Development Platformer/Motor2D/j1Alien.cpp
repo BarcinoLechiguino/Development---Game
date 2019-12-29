@@ -63,7 +63,7 @@ bool j1Alien::Update(float dt, bool doLogic)
 
 		if (doLogic == true || hasTarget == true)
 		{
-			if (App->entityManager->player->player.GodMode == false || App->entityManager->player2->player.GodMode == false)
+			if ((App->entityManager->player->player.GodMode == false || App->entityManager->player2->player.GodMode == false) && !App->pause)
 			{
 				PathfindingLogic();
 			}

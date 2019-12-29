@@ -345,7 +345,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 //----------------------------------------------- PLAYER 1 INPUTS -----------------------------------------------
 void j1Player1::SetPlayerState(Player_State& player_state)
 {
-	if (player.GodMode == false)
+	if (player.GodMode == false && !App->pause)
 	{
 		player_state = Player_State::Idle;
 

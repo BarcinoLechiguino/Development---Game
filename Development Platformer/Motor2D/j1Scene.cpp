@@ -165,6 +165,12 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 		App->entityManager->player->Restart();
 		App->entityManager->player2->Restart();
 	}
+
+	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
+	{
+		App->pause = !App->pause;
+		App->gui->ui_debug = !App->gui->ui_debug;
+	}
 	
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)			//Save Game Key
 	{
@@ -178,38 +184,17 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 	
 	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)			//Enable / Diable free camera movement Key
 	{
-		if (App->render->cam.camera_debug == true)
-		{
-			App->render->cam.camera_debug = false;
-		}
-		else
-		{
-			App->render->cam.camera_debug = true;
-		}
+		App->render->cam.camera_debug = !App->render->cam.camera_debug;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)			//PathfindingCollisions meta layer Debug Key
 	{
-		if (App->map->pathfindingMetaDebug == true)
-		{
-			App->map->pathfindingMetaDebug = false;
-		}
-		else
-		{
-			App->map->pathfindingMetaDebug = true;
-		}
+		App->map->pathfindingMetaDebug = !App->map->pathfindingMetaDebug;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)			//Collider Debug Key
 	{
-		if (App->collisions->collider_debug == true)
-		{
-			App->collisions->collider_debug = false;
-		}
-		else
-		{
-			App->collisions->collider_debug = true;
-		}
+		App->collisions->collider_debug = !App->collisions->collider_debug;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)		//God Mode Key
@@ -230,15 +215,9 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 
 	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)		//Enabling / Disabling frame cap
 	{
-		if (App->framesAreCapped == true)
-		{
-			App->framesAreCapped = false;
-		}
-		else
-		{
-			App->framesAreCapped = true;
-		}
+		App->framesAreCapped = !App->framesAreCapped;
 	}
+	// --------------------------------------------------------------------------------------------
 
 	App->map->Draw();
 

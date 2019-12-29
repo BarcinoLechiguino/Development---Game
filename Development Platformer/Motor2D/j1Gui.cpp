@@ -66,6 +66,15 @@ bool j1Gui::PreUpdate()
 		//ShowElement(App->scene->draggableButton2);
 		SetElementsVisibility(App->scene->window, !App->scene->window->isVisible);
 		SetElementsVisibility(App->scene->scrollWindow, !App->scene->scrollWindow->isVisible);
+
+		if (App->scene->scrollWindow->isVisible)
+		{
+			App->pause = true;
+		}
+		else
+		{
+			App->pause = false;
+		}
 	}
 	
 	return true;

@@ -61,9 +61,10 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entityManager);				//entityManager is called after the module scene (where the player is created) is called.
 	AddModule(collisions);
 	AddModule(fadescene);
-
 	// render last to swap buffer
 	AddModule(render);
+
+	pause = false;
 
 	PERF_PEEK(perf_timer);
 }
@@ -308,7 +309,14 @@ bool j1App::DoUpdate()
 			continue;
 		}
 
-		ret = item->data->Update(dt);			//Passes the calculated dt as an argument to all modules. This will make every update run in the same timestep.
+		if (!pause)
+		{
+			ret = item->data->Update(dt);			//Passes the calculated dt as an argument to all modules. This will make every update run in the same timestep.
+		}
+		else
+		{
+			ret = item->data->Update(0.0f);
+		}
 	}
 
 	return ret;
@@ -382,7 +390,14 @@ const char* j1App::GetOrganization() const
 float j1App::GetDt()
 {
 	//LOG("dt is: %f", dt);
-	return dt;
+	if (!pause)
+	{
+		return dt;
+	}
+	else
+	{
+		return 0.0f;
+	}
 }
 
 // Load / Save
