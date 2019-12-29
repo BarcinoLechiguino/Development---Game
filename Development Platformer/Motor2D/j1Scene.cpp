@@ -301,27 +301,16 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 	
 	
 	// --- Coins, Score and Timer
-	p2SString players_score = ("%d", App->entityManager->player->player.score);
+	p2SString players_score = { "%d", App->entityManager->player->player.score };
 	score_player->RefreshTextInput(players_score.GetString());
 	
-	p2SString game_time = ("%.2f", App->seconds_since_startup);
+	p2SString game_time = { "%.2f", App->seconds_since_startup };
 	timer->RefreshTextInput(game_time.GetString());
 
-	/*p2SString coin_count = ("%d", App->entityManager->player->player.coins);
-	count_coins->RefreshTextInput(coin_count.GetString());*/
+	p2SString coin_count = { "%d", App->entityManager->player->player.coins };
+	count_coins->RefreshTextInput(coin_count.GetString());
 
-	/*score = { "%i", App->entity->player->points };
-	if (coins_label != nullptr)
-	{
-		App->tex->UnLoad(coins_label->sprites);
-		coins_label->sprites = App->font->Print(score.GetString(), coins_label->color, coins_label->font);
-		if (coins_label->sprites != nullptr)
-			coins_label->Draw(1.0f, 0, 0, false);
-
-		if (App->gui->debug)
-			App->render->DrawQuad({ 80, 700, 64, 64 }, 255, 0, 0, 255, false, false);
-	}*/
-
+	// --- Audio Scrollbars
 	if (scrollbar_settings->isVisible)
 	{
 		iPoint currentThumbPos = { scrollbar_settings->GetThumbHitbox().x, scrollbar_settings->GetThumbHitbox().y };
