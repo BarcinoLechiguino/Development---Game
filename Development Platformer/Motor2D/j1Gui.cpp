@@ -2,9 +2,12 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Render.h"
+#include "j1App.h"
 #include "j1Textures.h"
 #include "j1Fonts.h"
 #include "j1Input.h"
+#include "j1Audio.h"
+#include "j1FadeScene.h"
 #include "j1Scene.h"
 #include "j1Console.h"
 #include "j1Gui.h"
@@ -62,8 +65,8 @@ bool j1Gui::PreUpdate()
 		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
-	{
+	
+	
 		//ShowElement(App->scene->draggableButton2);
 
 		//SetElementsVisibility(App->scene->window, !App->scene->window->isVisible);
@@ -77,7 +80,33 @@ bool j1Gui::PreUpdate()
 		{
 			App->pause = false;
 		}*/
+
+	if (App->scene->background_image->isVisible)
+	{
+		App->pause = true;
 	}
+	else
+	{
+		App->pause = false;
+	}
+	
+	if(App->scene->main_in_menu->isVisible)
+	{
+		App->pause = true;
+	}
+	else
+	{
+		App->pause = false;
+	}
+
+	if (game_started) 
+	{
+		if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+		{
+			SetElementsVisibility(App->scene->main_in_menu, !App->scene->main_in_menu->isVisible);
+		}
+	}
+	
 
 	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)
 	{
@@ -254,25 +283,122 @@ UI* j1Gui::CreateScrollbar(UI_Element element, int x, int y, SDL_Rect hitbox, SD
 //--------------------------------- INPUT PROCESSING METHODS ---------------------------------
 void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 {
-	if (element == App->scene->button && ui_event == UI_Event::UNCLICKED)				//If the pointer received is the UI_Button* button pointer of Scene.h and event = clicked. 
+
+	// Main Menu
+	if (element == App->scene->main_button_play && ui_event == UI_Event::UNCLICKED)
 	{
-		App->gui->ui_debug = !App->gui->ui_debug;										//Enables / Disables UI Debug Mode.
+		SetElementsVisibility(App->scene->main_window, !App->scene->main_window->isVisible);
+		SetElementsVisibility(App->scene->background_image, !App->scene->background_image->isVisible);
+		SetElementsVisibility(App->scene->upper_bar, !App->scene->upper_bar->isVisible);
+		game_started = true;
 	}
 
-	//if (element == App->scene->escButton && ui_event == UI_Event::UNCLICKED)			//If the pointer received is the UI_Button* escbutton pointer of Scene.h and event = clicked.
-	//{
-	//	escape = false;
-	//}
-
-	if (element == App->scene->draggableButton && ui_event == UI_Event::UNCLICKED)
+	if (element == App->scene->main_button_continue && ui_event == UI_Event::UNCLICKED)
 	{
-		App->gui->ui_debug = !App->gui->ui_debug;
+		App->LoadGame("save_game.xml");
+		SetElementsVisibility(App->scene->main_window, !App->scene->main_window->isVisible);
+		SetElementsVisibility(App->scene->background_image, !App->scene->background_image->isVisible);
+		SetElementsVisibility(App->scene->upper_bar, !App->scene->upper_bar->isVisible);
+		game_started = true;
 	}
 
-	if (element == App->scene->interactibleText && ui_event == UI_Event::UNCLICKED)
+	if (element == App->scene->main_button_settings && ui_event == UI_Event::UNCLICKED)
 	{
-		App->gui->ui_debug = !App->gui->ui_debug;
+		SetElementsVisibility(App->scene->main_settings_menu, !App->scene->main_settings_menu->isVisible);
+		SetElementsVisibility(App->scene->main_window, !App->scene->main_window->isVisible);
 	}
+
+	if (element == App->scene->main_button_exit && ui_event == UI_Event::UNCLICKED)
+	{
+		escape = false;
+	}
+	//-------------------------------------------------------------------------------------------------------------
+
+	// Settings menu
+	if (element == App->scene->back && ui_event == UI_Event::UNCLICKED)
+	{
+		SetElementsVisibility(App->scene->main_settings_menu, !App->scene->main_settings_menu->isVisible);
+		SetElementsVisibility(App->scene->main_window, !App->scene->main_window->isVisible);
+	}
+
+	if (element == App->scene->unmute && ui_event == UI_Event::UNCLICKED)
+	{
+		App->audio->volume = 100;
+	}
+
+	if (element == App->scene->mute && ui_event == UI_Event::UNCLICKED)
+	{
+		App->audio->volume = 0;
+	}
+
+	if (element == App->scene->check && ui_event == UI_Event::UNCLICKED)
+	{
+		if (App->framesAreCapped == true)
+		{
+			App->framesAreCapped = false;
+		}
+		else
+		{
+			App->framesAreCapped = true;
+		}
+	}
+
+	if (element == App->scene->credits && ui_event == UI_Event::UNCLICKED)
+	{
+		SetElementsVisibility(App->scene->main_settings_menu, !App->scene->main_settings_menu->isVisible);
+		SetElementsVisibility(App->scene->main_credits_menu, !App->scene->main_credits_menu->isVisible);
+	}
+
+	if (element == App->scene->github && ui_event == UI_Event::UNCLICKED)
+	{
+		ShellExecuteA(NULL, "open", "https://gromeu2000.wixsite.com/mutualcooperation", NULL, NULL, SW_SHOWNORMAL);
+	}
+	//---------------------------------------------------------------------------------------------------------------------
+
+	// Credits menu
+	if (element == App->scene->back_credits && ui_event == UI_Event::UNCLICKED)
+	{
+		SetElementsVisibility(App->scene->main_settings_menu, !App->scene->main_settings_menu->isVisible);
+		SetElementsVisibility(App->scene->main_credits_menu, !App->scene->main_credits_menu->isVisible);
+	}
+	//----------------------------------------------------------------------------------------------------------------------
+
+	// In-game menu
+	if (element == App->scene->in_buttons_resume && ui_event == UI_Event::UNCLICKED)
+	{
+		SetElementsVisibility(App->scene->main_in_menu, !App->scene->main_in_menu->isVisible);
+	}
+
+	if (element == App->scene->in_buttons_save && ui_event == UI_Event::UNCLICKED)
+	{
+		App->SaveGame("save_game.xml");
+	}
+
+	if (element == App->scene->in_buttons_load && ui_event == UI_Event::UNCLICKED)
+	{
+		SetElementsVisibility(App->scene->main_in_menu, !App->scene->main_in_menu->isVisible);
+		App->LoadGame("save_game.xml");
+	}
+
+	if (element == App->scene->in_buttons_exit && ui_event == UI_Event::UNCLICKED)
+	{
+		SetElementsVisibility(App->scene->main_in_menu, !App->scene->main_in_menu->isVisible);
+		SetElementsVisibility(App->scene->main_window, !App->scene->main_window->isVisible);
+		SetElementsVisibility(App->scene->background_image, !App->scene->background_image->isVisible);
+		SetElementsVisibility(App->scene->upper_bar, !App->scene->upper_bar->isVisible);
+		game_started = false;
+	}
+
+	if (element == App->scene->unmute_in && ui_event == UI_Event::UNCLICKED)
+	{
+		App->audio->volume = 100;
+	}
+
+	if (element == App->scene->mute_in && ui_event == UI_Event::UNCLICKED)
+	{
+		App->audio->volume = 0;
+	}
+	//----------------------------------------------------------------------------------------------------------------------
 } 
 
 // --- Method to return the foremost element of the UI. (First in inverse order of draw)

@@ -101,7 +101,10 @@ public:
 	UI_Image*			side_bars;
 	UI_Image*			label_1;
 	UI_Image*			label_2;
-	UI_Button*			main_button;
+	UI_Button*			main_button_play;
+	UI_Button*			main_button_continue;
+	UI_Button*			main_button_settings;
+	UI_Button*			main_button_exit;
 	UI_Text*			title_text;
 	UI_Text*			button_text;
 
@@ -138,7 +141,10 @@ public:
 	UI_Image*			label_1_in;
 	UI_Text*			in_text;
 	UI_Text*			button_in_text;
-	UI_Button*			in_buttons;
+	UI_Button*			in_buttons_resume;
+	UI_Button*			in_buttons_save;
+	UI_Button*			in_buttons_load;
+	UI_Button*			in_buttons_exit;
 	UI_Button*			unmute_in;
 	UI_Button*			mute_in;
 	UI_Scrollbar*		scrollbar_in;
