@@ -113,7 +113,7 @@ bool j1Player2::Update(float dt, bool doLogic)
 		player.score += 100;
 		App->entityManager->player->player.score += 100;
 
-		//EXTRA LIFE SFX HERE
+		App->audio->PlayFx(20, 0);
 
 	}
 
