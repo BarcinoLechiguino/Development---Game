@@ -108,6 +108,7 @@ public:
 
 	uint				frame_cap;				//Stores the frames per second cap to be applied.
 	uint				original_frame_cap;		//Stores the original frame cap at application start.
+	float				seconds_since_startup;	//Secons that have elapsed since app start.
 
 	bool				framesAreCapped;		//Keeps track whether the frame cap is on or off.
 	bool				vsyncIsActive;			//Keeps track whether Vsync is on or off.

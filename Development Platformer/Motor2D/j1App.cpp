@@ -242,7 +242,7 @@ void j1App::FinishUpdate()
 	}
 	
 	float avg_fps = frame_count / startup_timer.ReadSec();			//Equals seconds to the returning value of the ReadSec() method, which returns the amount of time passed in seconds. Use timer->ReadSec() to have no decimals (as its a low resolution timer)
-	float seconds_since_startup = startup_timer.ReadSec();			//Gets the average frames per second by dividing the actual number of frames with the amount of seconds that have passed.
+	seconds_since_startup = startup_timer.ReadSec();				//Gets the average frames per second by dividing the actual number of frames with the amount of seconds that have passed.
 	uint32 last_frame_ms = frame_timer.Read();						//As it is the end of the update, the frame's ms can be calculated.
 	uint32 frames_on_last_update = prev_sec_frames;					//Keeps track of how many frames were processed the last second.
 

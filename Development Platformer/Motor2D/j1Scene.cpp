@@ -299,6 +299,12 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 		}
 	}
 	
+	p2SString players_score = ("%d", App->entityManager->player->player.score);
+	score_player->RefreshTextInput(players_score.GetString());
+	
+	p2SString game_time = ("%.2f", App->seconds_since_startup);
+	timer->RefreshTextInput(game_time.GetString());
+	
 	return true;
 }
 
@@ -405,7 +411,7 @@ void j1Scene::LoadGuiElements()
 	SDL_Rect textHitbox{ 432, 75, 65, 20 };
 	_TTF_Font* font = App->font->Load("fonts/Minecraftia-Regular.ttf", 20);
 	_TTF_Font* font_sub = App->font->Load("fonts/Minecraftia-Regular.ttf");
-	SDL_Color fontRgb = { 0, 0, 0, 0 };
+	SDL_Color fontRgb = { 0, 0, 0, 255 };
 	p2SString string_title = "MUTUAL COOPERATION";
 	p2SString string_subtitle = "Can you trust your friend?";
 	title_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 388, 114, textHitbox, font, fontRgb, true, false, false, main_window, &string_title);
@@ -589,7 +595,7 @@ void j1Scene::LoadGuiElements()
 	
 	SDL_Rect coin_rect{ 1267,139,36,36 };
 	coin = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 50, 730, coin_rect, false, false, false, upper_bar);
-
+	
 	SDL_Color fontRgbWhite = { 255, 255, 255, 255 };
 	_TTF_Font* font_count = App->font->Load("fonts/Future Now.ttf", 40);
 	p2SString string_coin_count = "0";
@@ -639,4 +645,4 @@ void j1Scene::LoadGuiElements()
 	
 	scrollbar_in = (UI_Scrollbar*)App->gui->CreateScrollbar(UI_Element::SCROLLBAR, 430, 559, scrollbarBar, scrollbarThumb, thumbOffset, dragArea, dragFactor, true, false, true,
 		false, false, false, main_in_menu, &scrollMask, maskOffset);
-}
+	}
