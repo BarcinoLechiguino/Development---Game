@@ -212,7 +212,7 @@ Download the game file in which you will find the executable.
 
 * **Console Relevant Commands:**
 
-  * **"list"**: Opens the games web, where the commands can be found.
+  * **"list"**: Opens the games web, where the commands can be found in one of the sections.
 
     
 
