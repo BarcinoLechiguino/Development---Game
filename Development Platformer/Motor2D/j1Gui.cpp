@@ -17,6 +17,7 @@
 j1Gui::j1Gui() : j1Module()
 {
 	name.create("gui");
+	audioAlreadyLoaded = false;
 }
 
 // Destructor
@@ -47,11 +48,17 @@ bool j1Gui::Start()
 	ui_debug = false;
 	escape = true;
 
-	tab_fx = App->audio->LoadFx("audio/fx/tab_ui.wav");
-	play_fx = App->audio->LoadFx("audio/fx/play_ui.wav");
-	save_fx = App->audio->LoadFx("audio/fx/save_fx.wav");
-	exit_fx = App->audio->LoadFx("audio/fx/exit_ui.wav");
-	nav_fx = App->audio->LoadFx("audio/fx/navegate_ui.wav");
+	
+	if (!audioAlreadyLoaded)
+	{
+		tab_fx = App->audio->LoadFx("audio/fx/tab_ui.wav");
+		play_fx = App->audio->LoadFx("audio/fx/play_ui.wav");
+		save_fx = App->audio->LoadFx("audio/fx/save_fx.wav");
+		exit_fx = App->audio->LoadFx("audio/fx/exit_ui.wav");
+		nav_fx = App->audio->LoadFx("audio/fx/navegate_ui.wav");
+
+		audioAlreadyLoaded = true;
+	}
 
 	CreateGuiCommands();
 
@@ -315,6 +322,12 @@ void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 		SetElementsVisibility(App->scene->background_image, !App->scene->background_image->isVisible);
 		SetElementsVisibility(App->scene->upper_bar, !App->scene->upper_bar->isVisible);
 		game_started = true;
+
+		if (!App->scene->background_image->isVisible)
+		{
+			App->pause = false;
+		}
+
 		App->audio->PlayFx(play_fx, 0);
 		App->audio->PlayMusic(App->scene->music_path.GetString());
 	}
@@ -542,7 +555,7 @@ bool j1Gui::ElementCanBeFocused(UI* focusElement) const
 
 	if (focusElement->isVisible
 		/*&& focusElement->isInteractible */
-		&& (focusElement->element == UI_Element::BUTTON
+			&& (focusElement->element == UI_Element::BUTTON
 			|| focusElement->element == UI_Element::SCROLLBAR
 			|| focusElement->element == UI_Element::INPUTBOX))
 	{

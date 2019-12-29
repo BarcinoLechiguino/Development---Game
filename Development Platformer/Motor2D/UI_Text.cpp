@@ -76,10 +76,9 @@ bool UI_Text::Draw()
 	{
 		SDL_QueryTexture(currentTex, NULL, NULL, &textRect.w, &textRect.h);			//REVISE  THIS  LATER
 
-		//SetScreenRect({ 0, 0, textRect.w, textRect.h });
 		SetHitbox({ GetHitbox().x, GetHitbox().y, textRect.w, textRect.h });
 
-		BlitElement(currentTex, GetScreenPos().x, GetScreenPos().y, /*&textRect*//*&GetScreenRect()*/ NULL);
+		BlitElement(currentTex, GetScreenPos().x, GetScreenPos().y, NULL);
 	}
 
 	return true;

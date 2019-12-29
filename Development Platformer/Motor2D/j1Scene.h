@@ -155,6 +155,12 @@ public:
 	UI_Button*			unmute_in;
 	UI_Button*			mute_in;
 	UI_Scrollbar*		scrollbar_in;
+
+	
+	iPoint				firstOriginalPos;
+	iPoint				secondOrigianlPos;
+	bool				firstScrollPosCalc;
+	bool				secondScrollPosCalc;
 };
 
 #endif // __j1SCENE_H__

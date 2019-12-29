@@ -204,6 +204,8 @@ Download the game file in which you will find the executable.
 
 - **F11**: Enable/Disable frame cap at 30 FPS.
 
+- **º\ Key (Grave Key)**: Open/Close the In-Game console.
+
 
 
 # Console Commands

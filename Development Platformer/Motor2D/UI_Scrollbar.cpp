@@ -286,6 +286,16 @@ bool UI_Scrollbar::GetDragYAxis() const
 	return dragYAxis;
 }
 
+iPoint UI_Scrollbar::GetThumbLocalPos()
+{
+	return thumb->GetLocalPos();
+}
+
+SDL_Rect UI_Scrollbar::GetThumbHitbox()
+{
+	return thumb->GetHitbox();
+}
+
 void UI_Scrollbar::PlaceThumbOnMousePos()
 {
 	if (dragXAxis)
