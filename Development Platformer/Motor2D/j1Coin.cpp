@@ -91,8 +91,10 @@ void j1Coin::OnCollision(Collider* C1, Collider* C2)
 						RELEASE(App->entityManager->entities.At(num)->data);
 						App->entityManager->entities.del(App->entityManager->entities.At(num));
 	
-						App->entityManager->player->player.coins += points;
-						App->entityManager->player2->player.coins += points;
+						App->entityManager->player->player.coins += 1;
+						App->entityManager->player2->player.coins += 1;
+						App->entityManager->player->player.score += points;
+						App->entityManager->player2->player.score += points;
 						LOG("Player1 points %d", App->entityManager->player->player.coins);
 					}
 				}
@@ -107,8 +109,10 @@ void j1Coin::OnCollision(Collider* C1, Collider* C2)
 						RELEASE(App->entityManager->entities.At(num)->data);
 						App->entityManager->entities.del(App->entityManager->entities.At(num));
 
-						App->entityManager->player->player.coins += points;
-						App->entityManager->player2->player.coins += points;
+						App->entityManager->player->player.coins += 1;
+						App->entityManager->player2->player.coins += 1;
+						App->entityManager->player->player.score += points;
+						App->entityManager->player2->player.score += points;
 					}
 				}
 			}
@@ -126,8 +130,10 @@ void j1Coin::OnCollision(Collider* C1, Collider* C2)
 						RELEASE(App->entityManager->entities.At(num)->data);
 						App->entityManager->entities.del(App->entityManager->entities.At(num));
 
-						App->entityManager->player2->player.coins += points;
-						App->entityManager->player->player.coins += points;
+						App->entityManager->player->player.coins += 1;
+						App->entityManager->player2->player.coins += 1;
+						App->entityManager->player->player.score += points;
+						App->entityManager->player2->player.score += points;
 						LOG("Player2 points %d", App->entityManager->player2->player.coins);
 					}
 				}
@@ -142,8 +148,10 @@ void j1Coin::OnCollision(Collider* C1, Collider* C2)
 						RELEASE(App->entityManager->entities.At(num)->data);
 						App->entityManager->entities.del(App->entityManager->entities.At(num));
 
-						App->entityManager->player2->player.coins += points;
-						App->entityManager->player->player.coins += points;
+						App->entityManager->player->player.coins += 1;
+						App->entityManager->player2->player.coins += 1;
+						App->entityManager->player->player.score += points;
+						App->entityManager->player2->player.score += points;
 					}
 				}
 			}

@@ -298,6 +298,12 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 			hearts[5]->isVisible = true;
 		}
 	}
+
+	p2SString players_score = ("%d", App->entityManager->player->player.score);
+	score_player->RefreshTextInput(players_score.GetString());
+	
+	p2SString game_time = ("%.2f", App->seconds_since_startup);
+	timer->RefreshTextInput(game_time.GetString());
 	
 	return true;
 }
@@ -403,7 +409,7 @@ void j1Scene::LoadGuiElements()
 	SDL_Rect textHitbox{ 432, 75, 65, 20 };
 	_TTF_Font* font = App->font->Load("fonts/Minecraftia-Regular.ttf", 20);
 	_TTF_Font* font_sub = App->font->Load("fonts/Minecraftia-Regular.ttf");
-	SDL_Color fontRgb = { 0, 0, 0, 0 };
+	SDL_Color fontRgb = { 0, 0, 0, 255 };
 	p2SString string_title = "MUTUAL COOPERATION";
 	p2SString string_subtitle = "Can you trust your friend?";
 	title_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 388, 114, textHitbox, font, fontRgb, true, false, false, main_window, &string_title);
@@ -627,8 +633,5 @@ void j1Scene::LoadGuiElements()
 	
 	scrollbar_in = (UI_Scrollbar*)App->gui->CreateScrollbar(UI_Element::SCROLLBAR, 430, 559, scrollbarBar, scrollbarThumb, thumbOffset, dragArea, dragFactor, true, false, true,
 		false, false, false, main_in_menu, &scrollMask, maskOffset);
-
-
-​	
 }
 

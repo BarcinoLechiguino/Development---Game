@@ -98,7 +98,7 @@
       <coin>
         <position x ="0" y ="0"/>
         <sprite_size w="32" h="32"/>
-        <points value ="1"/>
+        <points value ="10"/>
       </coin>
     </items>
   </entities>
