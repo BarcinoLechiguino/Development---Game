@@ -35,11 +35,15 @@ bool j1Console::Start()
 
 bool j1Console::PreUpdate()
 {	
+	const char* quitCommand = "quit";
+	
 	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
-		if (App->input->GetInputText() == "quit")
+		if (*App->input->GetInputText() == *quitCommand)
 		{
 			//runGame = false;
+			CreateCommand(quitCommand, this, 1, 1);
+			
 			App->gui->escape = false;
 		}
 
