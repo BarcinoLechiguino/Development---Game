@@ -79,6 +79,26 @@ Mutual Cooperation is a 2D Platformer developed by Gerard Romeu and √Ångel Gonz√
   - Brofiler has been implemented as profiling tool. Graphics, pathfinding and other logic code have been visually differentiated.
 
     
+  
+- **v0.9**
+
+  - Now all movement is independent from framerate.
+
+  - A coin entity has been implemented.
+
+  - Pause Mode has been implemented (F4 Key).
+
+  - Implemented the UI System (Code).
+
+  - UI Debug Mode has been implemented (F4 Key).
+
+  - In-Game UI Implementation. 
+
+  - When a UI menu opens, the  game enters pause mode.
+
+  - In-Game Console Implementation.
+
+    
 
 # Instructions:
 Download the game file in which you will find the executable. 
@@ -139,7 +159,20 @@ Download the game file in which you will find the executable.
 * **Checkpoint Autosave:**
 
   * The game will be automatically saved for the player who reaches the checkpoint.
+  
   * The respawn point of the player who reaches the checkpoint will be set to the checkpoint's position.
+  
+    
+  
+* **UI Innovations:**
+
+  * **Input Box:**
+  * **Scrollbar:**
+    * The thumb can be moved with the mouse wheel when it is focused.
+    * If the thumb is not on the click position of the bar, the thumb will move there.
+    * The thumb can be moved with the arrow keys when it is focused.
+    * The thumb can be sent to the beginning of the scrollbar with the HOME key.
+    * The thumb can be sent to the end of the scrollbar with the END key.
 
 
 
@@ -149,6 +182,8 @@ Download the game file in which you will find the executable.
 - **F2**: Loads the second level. 
 
 - **F3**: Resets the players' position to the map's starting point. 
+
+- **F4**: Enables/Disables Pause Mode and the UI Debug Mode.
 
 - **F5**: Load the saved game. 
 
@@ -194,9 +229,17 @@ Download the game file in which you will find the executable.
 
   - Player Attack and Enemy Destruction implementation. 
 
-  - Pathfinding module and entity behavior implementation.
+  - Pathfinding module and enemy entity behavior implementation.
 
-  - F7, F8, F9, F10 and F11 debug keys implementation.
+  - F4, F7, F8, F9, F10 and F11 debug keys implementation.
+
+  - Pause Mode Implementation.
+
+  - UI Debug Mode Implementation.
+
+  - UI System Implementation.
+
+  - In-Game Console Implementation.
 
   - ReadMe.
 
@@ -205,23 +248,15 @@ Download the game file in which you will find the executable.
 - **Gerard Romeu:** 
 
   - Audio & FX 
-
-  - Level design.
-
+- Level design.
   - Map Transtion implementation.
-
-  - Player Animations & enemy sprites and fx implementation.
-
+- Player Animations & enemy sprites and fx implementation.
   - j1Entity and j1EntityManager implementation. 
-
-  - UML of the Entity System.
-
+- UML of the Entity System.
   - Checkpoint Autosave implementation.
-
-  - Load & Save Implementation
-
+- Load & Save Implementation
   - F1, F2, F3, F5 and F6 debug keys implementation.
-
+- UI Design & In-Game Implementation.
   - ReadMe.
 
   
