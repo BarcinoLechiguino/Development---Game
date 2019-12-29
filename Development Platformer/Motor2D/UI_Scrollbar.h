@@ -27,6 +27,8 @@ public:
 
 	bool GetDragXAxis() const;
 	bool GetDragYAxis() const;
+	iPoint GetThumbLocalPos();
+	SDL_Rect GetThumbHitbox();
 	void PlaceThumbOnMousePos();
 	void CheckKeyboardInputs();
 	void DragThumbWithMousewheel();

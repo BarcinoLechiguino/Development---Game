@@ -105,6 +105,7 @@ private:
 
 public:
 	bool			game_started = false;				// To know if the user has enter the game
+	bool			audioAlreadyLoaded;
 };
 
 #endif // __j1GUI_H__
