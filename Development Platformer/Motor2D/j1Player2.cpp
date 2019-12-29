@@ -527,23 +527,26 @@ void j1Player2::PlayerMovement(Player_State player_state, float dt)
 
 void j1Player2::GodModeInput()
 {
-	player.airborne = false;
+	if (!App->pause)
+	{
+		player.airborne = false;
 
-	if (App->input->GetKey(SDL_SCANCODE_KP_6) == KEY_REPEAT)		//THIS HERE
-	{
-		position.x += player.godModeSpeed * App->GetDt();
-	}
-	if (App->input->GetKey(SDL_SCANCODE_KP_4) == KEY_REPEAT)
-	{
-		position.x -= player.godModeSpeed * App->GetDt();
-	}
-	if (App->input->GetKey(SDL_SCANCODE_KP_8) == KEY_REPEAT)
-	{
-		position.y -= player.godModeSpeed * App->GetDt();
-	}
-	if (App->input->GetKey(SDL_SCANCODE_KP_5) == KEY_REPEAT)
-	{
-		position.y += player.godModeSpeed * App->GetDt();
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)		//THIS HERE
+		{
+			position.x += player.godModeSpeed * App->GetDt();
+		}
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		{
+			position.x -= player.godModeSpeed * App->GetDt();
+		}
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+		{
+			position.y -= player.godModeSpeed * App->GetDt();
+		}
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		{
+			position.y += player.godModeSpeed * App->GetDt();
+		}
 	}
 }
 
