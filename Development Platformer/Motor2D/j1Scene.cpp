@@ -293,6 +293,7 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 			hearts[5]->isVisible = true;
 		}
 	}
+
 	return true;
 }
 
@@ -572,6 +573,11 @@ void j1Scene::LoadGuiElements()
 	hearts[3] = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 880, 30, hearts_rect, false, false, false, upper_bar);
 	hearts[4] = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 855, 30, hearts_rect, false, false, false, upper_bar);
 	hearts[5] = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 830, 30, hearts_rect, false, false, false, upper_bar);
+
+	p2SString string_score_player = "0";
+	score_player = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 310, 30, textHitbox, font_in, fontRgb, false, false, false, upper_bar, &string_score_player);
+	p2SString string_timer_player = "0";
+	timer = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 770, 30, textHitbox, font_in, fontRgb, false, false, false, upper_bar, &string_timer_player);
 
 	// In-game menu
 	SDL_Rect main_in_rect{ 0, 388, 466, 447 };
