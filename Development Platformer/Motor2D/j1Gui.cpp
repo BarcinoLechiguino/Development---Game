@@ -93,7 +93,7 @@ bool j1Gui::PreUpdate()
 
 	if (game_started) 
 	{
-		if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		{
 			SetElementsVisibility(App->scene->main_in_menu, !App->scene->main_in_menu->isVisible);
 		}

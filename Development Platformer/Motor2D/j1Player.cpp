@@ -151,6 +151,7 @@ void j1Player::LoadEntityAudio()
 		ready_tp = App->audio->LoadFx("audio/fx/microwave-oven-bell-1.wav");
 		alien_walking = App->audio->LoadFx("audio/fx/Alien_Walking.wav");
 		attack = App->audio->LoadFx("audio/fx/Attack.wav");
+		one_up_fx = App->audio->LoadFx("audio/fx/1_up.wav");
 		audioIsLoaded = true;
 	}
 }
@@ -304,7 +305,7 @@ void j1Player::SkillCooldown(bool& inCd, float& cdCounter, float& cdTime)			//Ar
 	{
 		inCd = false;						//Resets the bool so tp can be used again.
 		cdCounter = 0;						//Resets the count so it can be used the next time tp is in cd.
-		App->audio->PlayFx(12, 0);
+		App->audio->PlayFx(17, 0);
 	}
 }
 
