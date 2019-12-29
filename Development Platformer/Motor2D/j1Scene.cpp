@@ -254,6 +254,45 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 	App->win->SetTitle(title.GetString());*/
 
 	// UI
+	if (App->gui->game_started)
+	{
+		if (App->entityManager->player->player.lives == 3 || App->entityManager->player2->player.lives == 3)
+		{
+			hearts[0]->isVisible = true;
+			hearts[1]->isVisible = true;
+			hearts[2]->isVisible = true;
+			hearts[3]->isVisible = true;
+			hearts[4]->isVisible = true;
+			hearts[5]->isVisible = true;
+		}
+		if (App->entityManager->player->player.lives == 2 || App->entityManager->player2->player.lives == 2)
+		{
+			hearts[0]->isVisible = true;
+			hearts[1]->isVisible = true;
+			hearts[2]->isVisible = false;
+			hearts[3]->isVisible = true;
+			hearts[4]->isVisible = true;
+			hearts[5]->isVisible = false;
+		}
+		if (App->entityManager->player->player.lives == 1 || App->entityManager->player2->player.lives == 1)
+		{
+			hearts[0]->isVisible = true;
+			hearts[1]->isVisible = false;
+			hearts[2]->isVisible = false;
+			hearts[3]->isVisible = true;
+			hearts[4]->isVisible = false;
+			hearts[5]->isVisible = false;
+		}
+		if (App->entityManager->player->player.lives == 0 || App->entityManager->player2->player.lives == 0)
+		{
+			hearts[0]->isVisible = true;
+			hearts[1]->isVisible = true;
+			hearts[2]->isVisible = true;
+			hearts[3]->isVisible = true;
+			hearts[4]->isVisible = true;
+			hearts[5]->isVisible = true;
+		}
+	}
 	return true;
 }
 

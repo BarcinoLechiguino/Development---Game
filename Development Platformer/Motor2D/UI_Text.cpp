@@ -4,6 +4,8 @@
 #include "UI.h"
 #include "UI_Text.h"
 
+#include "Brofiler\Brofiler.h"
+
 //UI_Text can be interactible and draggable. Can potentially have all events.
 //This element can receive up to 5 different strings (one for each possible event).
 UI_Text::UI_Text(UI_Element element, int x, int y, SDL_Rect hitbox, _TTF_Font* font, SDL_Color fontColour, bool isVisible, bool isInteractible, bool isDraggable, UI* parent, p2SString* string,
@@ -86,6 +88,8 @@ bool UI_Text::Draw()
 // --- This Method checks for any inputs that the UI_Text element might have received and "returns" an event.
 void UI_Text::CheckInput()
 {	
+	BROFILER_CATEGORY("Text_CheckInput", Profiler::Color::Indigo);
+
 	if (!isVisible)
 	{
 		currentTex = NULL;

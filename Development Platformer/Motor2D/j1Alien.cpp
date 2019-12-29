@@ -111,7 +111,7 @@ void j1Alien::OnCollision(Collider* C1, Collider* C2)
 		{
 			if (App->entityManager->player->player.isAttacking == true || App->entityManager->player2->player.isAttacking == true)
 			{
-				App->audio->PlayFx(8, 1);
+				App->audio->PlayFx(13, 1);
 
 				isDying = true;
 				collider->to_delete = true;
@@ -284,7 +284,7 @@ void j1Alien::PathfindingMovement(Entity_State state, float dt)
 
 		position.y -= speed.y * dt;
 		animation = &running;
-		App->audio->PlayFx(13, 0);
+		App->audio->PlayFx(18, 0);
 
 		break;
 
@@ -292,7 +292,7 @@ void j1Alien::PathfindingMovement(Entity_State state, float dt)
 
 		position.y += speed.y * dt;
 		animation = &running;
-		App->audio->PlayFx(13, 0);
+		App->audio->PlayFx(18, 0);
 
 		break;
 
@@ -301,7 +301,7 @@ void j1Alien::PathfindingMovement(Entity_State state, float dt)
 		position.x += speed.x * dt;
 		flip = true;						//Change the alien's orientation in the spritesheet so this can be false.
 		animation = &running;
-		App->audio->PlayFx(13, 0);
+		App->audio->PlayFx(18, 0);
 
 		break;
 
@@ -310,7 +310,7 @@ void j1Alien::PathfindingMovement(Entity_State state, float dt)
 		position.x -= speed.x * dt;
 		flip = false;
 		animation = &running;
-		App->audio->PlayFx(13, 0);
+		App->audio->PlayFx(18, 0);
 
 		break;
 
@@ -320,7 +320,7 @@ void j1Alien::PathfindingMovement(Entity_State state, float dt)
 		position.y -= speed.y * dt;
 		flip = true;
 		animation = &running;
-		App->audio->PlayFx(13, 0);
+		App->audio->PlayFx(18, 0);
 
 		break;
 
@@ -330,7 +330,7 @@ void j1Alien::PathfindingMovement(Entity_State state, float dt)
 		position.y -= speed.y * dt;
 		flip = false;
 		animation = &running;
-		App->audio->PlayFx(13, 0);
+		App->audio->PlayFx(18, 0);
 
 		break;
 
@@ -340,7 +340,7 @@ void j1Alien::PathfindingMovement(Entity_State state, float dt)
 		position.y += speed.y * dt;
 		flip = true;
 		animation = &running;
-		App->audio->PlayFx(13, 0);
+		App->audio->PlayFx(18, 0);
 
 		break;
 
@@ -350,7 +350,7 @@ void j1Alien::PathfindingMovement(Entity_State state, float dt)
 		position.y += speed.y * dt;
 		flip = false;
 		animation = &running;
-		App->audio->PlayFx(13, 0);
+		App->audio->PlayFx(18, 0);
 
 		break;
 	}

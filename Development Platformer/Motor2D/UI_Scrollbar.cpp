@@ -4,6 +4,8 @@
 #include "UI_Image.h"
 #include "UI_Scrollbar.h"
 
+#include "Brofiler\Brofiler.h"
+
 UI_Scrollbar::UI_Scrollbar(UI_Element element, int x, int y, SDL_Rect hitbox, SDL_Rect thumbSize, iPoint thumbOffset, SDL_Rect dragArea, float dragFactor, bool dragXAxis, bool dragYAxis,
 				bool invertedScrolling, bool isVisible, bool isInteractible, bool isDraggable, UI* parent , SDL_Rect* scrollMask, iPoint maskOffset,
 				bool emptyElements) : UI(element, x, y, hitbox, parent)
@@ -91,6 +93,8 @@ bool UI_Scrollbar::Draw()
 
 void UI_Scrollbar::CheckInput()
 {
+	BROFILER_CATEGORY("Scrollbar_CheckInput", Profiler::Color::LightGoldenRodYellow);
+
 	if (isVisible)																				//If the image element is visible
 	{
 		GetMousePos();																			//Gets the mouse's position on the screen.
@@ -182,6 +186,8 @@ void UI_Scrollbar::LinkScroll(UI* element)
 
 void UI_Scrollbar::UpdateLinkedElements()
 {
+	BROFILER_CATEGORY("Scrollbar_UpdateLinkedElements", Profiler::Color::LightGoldenRodYellow);
+
 	for (p2List_item<UI*>* element = linkedElements.start; element != NULL; element = element->next)
 	{
 		UI* elem = element->data;

@@ -3,6 +3,8 @@
 #include "j1Gui.h"
 #include "UI_Button.h"
 
+#include "Brofiler\Brofiler.h"
+
 //UI_Button can be interactible (will almost always be) and draggable. Can potentially receive all events.
 //This element can receive up to 3 rects containing the coordinates of the sprites for each event (IDLE, HOVER & CLICKED).
 UI_Button::UI_Button(UI_Element element, int x, int y, bool isVisible, bool isInteractible, bool isDraggable, UI* parent,
@@ -66,6 +68,8 @@ bool UI_Button::Draw()
 // --- This Method checks for any inputs that the UI_Text element might have received and "returns" an event.
 void UI_Button::CheckInput()
 {
+	BROFILER_CATEGORY("Button_CheckInput", Profiler::Color::GhostWhite);
+
 	if (isVisible)																				//If the Button element is visible.
 	{
 		GetMousePos();																			//Gets the mouse's position on the screen.
