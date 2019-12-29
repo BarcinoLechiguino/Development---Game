@@ -528,10 +528,10 @@ bool j1Gui::ElementCanBeFocused(UI* focusElement) const
 {
 	bool ret = false;
 
-	if (focusElement->isVisible 
+	if (focusElement->isVisible
 		/*&& focusElement->isInteractible */
-		&& (focusElement->element == UI_Element::BUTTON 
-			|| focusElement->element == UI_Element::SCROLLBAR 
+		&& (focusElement->element == UI_Element::BUTTON
+			|| focusElement->element == UI_Element::SCROLLBAR
 			|| focusElement->element == UI_Element::INPUTBOX))
 	{
 		ret = true;

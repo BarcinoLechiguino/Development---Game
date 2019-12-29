@@ -6,7 +6,6 @@
 #include "j1Scene.h"
 #include "j1Window.h"
 #include "j1Player1.h"
-#include "j1SceneMenu.h"
 #include "j1Player2.h"
 #include "j1Audio.h"
 #include "j1Map.h"

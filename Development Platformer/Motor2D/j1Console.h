@@ -122,8 +122,16 @@ private:
 	const char*			disableFrameCap;
 	const char*			resetFrameCap;
 	const char*			FPS_30;
+	const char*			FPS_45;
 	const char*			FPS_60;
+	const char*			FPS_90;
 	const char*			FPS_120;
+
+	const char*			enable_god_mode;
+	const char*			disable_god_mode;
+
+	const char*			first_map;
+	const char*			second_map;
 };
 
 #endif // !__j1CONSOLE_H__

@@ -3,6 +3,9 @@
 #include "j1Input.h"
 #include "j1Render.h"
 #include "j1Fonts.h"
+#include "j1Map.h"
+#include "j1EntityManager.h"
+#include "j1Player.h"
 #include "j1Gui.h"
 #include "UI_Image.h"
 #include "UI_InputBox.h"
@@ -66,11 +69,11 @@ bool j1Console::PreUpdate()
 		App->input->ClearTextInput();
 	}
 
-	if (console_background->isVisible)
+	if (ConsoleIsOpen())
 	{
 		if (App->gui->focusedElement != console_input)
 		{
-
+			App->gui->focusedElement = console_input;
 		}
 	}
 	
@@ -222,16 +225,17 @@ void j1Console::CreateConsoleElements()
 
 	p2SString defaultString = "DefaultString";
 
-	console_background = (UI_Image*)App->gui->CreateImage(UI_Element::EMPTY, 0, 0, bg_rect, bg_isVisible, bg_isInteractible, bg_isDraggable, NULL);
+	console_background = (UI_Image*)App->gui->CreateImage(UI_Element::EMPTY, bg_position.x, bg_position.y, bg_rect, bg_isVisible, bg_isInteractible, bg_isDraggable, NULL);
 	
-	console_output = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 0, 0, output_rect, output_font, output_font_colour, output_isVisible, output_isInteractible, output_isDraggable,
-													console_background, NULL);
+	console_output = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, output_position.x, output_position.y, output_rect, output_font, output_font_colour,
+												output_isVisible, output_isInteractible, output_isDraggable, console_background, NULL);
 
-	console_input = (UI_InputBox*)App->gui->CreateInputBox(UI_Element::INPUTBOX, 10, (console_background->GetHitbox().h - input_rect.h), input_rect, input_font, input_font_colour,
+	console_input = (UI_InputBox*)App->gui->CreateInputBox(UI_Element::INPUTBOX, input_position.x, (console_background->GetHitbox().h - input_rect.h), input_rect, input_font, input_font_colour,
 		cursor_rect, cursor_colour, input_text_offset, cursor_blinkFrequency, input_isVisible, input_isInteractible, input_isDraggable, console_background, &defaultString, true);
 
-	console_scroll = (UI_Scrollbar*)App->gui->CreateScrollbar(UI_Element::SCROLLBAR, 0, 0, scrollbar_rect, thumb_rect, thumb_offset, drag_area, drag_factor, drag_x_axis, drag_y_axis,
-													inverted_scrolling, scroll_isVisible, scroll_isDraggable, scroll_isInteractible, console_background, NULL, iPoint(0, 0), true);
+	console_scroll = (UI_Scrollbar*)App->gui->CreateScrollbar(UI_Element::SCROLLBAR, scroll_position.x, scroll_position.y, scrollbar_rect, thumb_rect, thumb_offset, drag_area, drag_factor,
+												drag_x_axis, drag_y_axis, inverted_scrolling, scroll_isVisible, scroll_isDraggable, scroll_isInteractible, console_background,
+												NULL, iPoint(0, 0), true);
 
 	console_scroll->LinkScroll(console_output);
 
@@ -293,6 +297,13 @@ void j1Console::CreateConsoleCommands()
 	FPS_60				= "FPS 60";
 	FPS_120				= "FPS 120";
 
+	// Debug Commands
+	enable_god_mode		= "enable_god_mode";
+	disable_god_mode	= "disable_god_mode";
+	
+	// Map Commands
+	first_map			= "map Test_map.tmx";						//(Again) EVERYTHING IS A LIE. JUST SMOKE AND MIRRORS.
+	second_map			= "map Test_map_2.tmx";
 	
 	CreateCommand(command_list, this, 1, 1);
 	
@@ -304,6 +315,12 @@ void j1Console::CreateConsoleCommands()
 	CreateCommand(FPS_30, this, 1, 1);
 	CreateCommand(FPS_60, this, 1, 1);
 	CreateCommand(FPS_120, this, 1, 1);
+
+	CreateCommand(enable_god_mode, this, 1, 1);
+	CreateCommand(disable_god_mode, this, 1, 1);
+
+	CreateCommand(first_map, this, 1, 1);
+	CreateCommand(second_map, this, 1, 1);
 }
 
 void j1Console::OnCommand(const char* command, const char* subCommand)
@@ -347,4 +364,30 @@ void j1Console::OnCommand(const char* command, const char* subCommand)
 	{
 		App->frame_cap = CAP_AT_120;									// Cap Frames at 120
 	}
-}																		// -----------------------------------------------------------------------------------		
+																		// -----------------------------------------------------------------------------------
+	// --- DEBUG COMMANDS
+	if (App->input->CmpStr(command, enable_god_mode))					// -----------------------------------------------------------------------------------
+	{
+		App->entityManager->player->player.GodMode = true;				// Enable Player 1's God Mode.
+		App->entityManager->player2->player.GodMode = true;				// Enable Player 2's God Mode.
+		App->entityManager->player->player.airborne = false;				// Sets Player 1's Airborne.
+		App->entityManager->player2->player.airborne = false;			// Sets Player 2's Airborne.
+	}
+	if (App->input->CmpStr(command, disable_god_mode))					// -----------------------------------------------------------------------------------
+	{
+		App->entityManager->player->player.GodMode = false;				// Disable Player 1's God Mode.
+		App->entityManager->player2->player.GodMode = false;			// Disable Player 2's God Mode
+		App->entityManager->player->player.airborne = true;				// Sets Player 1's Airborne.
+		App->entityManager->player2->player.airborne = true;			// Sets Player 2's Airborne.
+	}
+																		// -----------------------------------------------------------------------------------
+	// --- MAP COMMANDS
+	if (App->input->CmpStr(command, first_map))							// -----------------------------------------------------------------------------------
+	{
+		App->map->ChangeMap("Test_map.tmx");							// Load the First Map
+	}
+	if (App->input->CmpStr(command, second_map))						// -----------------------------------------------------------------------------------
+	{
+		App->map->ChangeMap("Test_map_2.tmx");							// Load the Second Map
+	}
+}

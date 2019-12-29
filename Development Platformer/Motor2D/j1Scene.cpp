@@ -9,7 +9,6 @@
 #include "j1Map.h"
 #include "j1FadeScene.h"
 #include "j1Scene.h"
-#include "j1SceneMenu.h"
 #include "j1Collisions.h"
 #include "j1Gui.h"
 #include "j1EntityManager.h"

@@ -90,7 +90,7 @@ Mutual Cooperation is a 2D Platformer developed by Gerard Romeu and √Ångel Gonz√
 
   - Implemented the UI System (Code).
 
-  - UI Debug Mode has been implemented (F4 Key).
+  - UI Debug Mode has been implemented (F8 Key).
 
   - In-Game UI Implementation. 
 
@@ -208,19 +208,54 @@ Download the game file in which you will find the executable.
 
 # Console Commands
 
-* a
-* a
-* a
-* a
-* a
-* aa
-* a
-* a
-* a
-* a
-* a
-* a
-* 
+* **Console Relevant Commands:**
+
+  * **"list"**: Opens the games web, where the commands can be found.
+
+    
+
+* **Application Relevant Commands:**
+
+  * **"enable_frame_cap" **: Enables the Frame Cap.
+
+  * **"disable_frame_cap" **: Disables the Frame Cap.
+
+  * **"reset_frame_cap" **: Resets the Frame Cap back to the starting one (In this case 60).
+
+  * **"FPS 30"**: Sets the Frame Cap to 30.
+
+  * **"FPS 60"**: Sets the Frame Cap to 60.
+
+  * **"FPS 120"**: Sets the Frame Cap to 120.
+
+  * **"enable_pause"**:  Enables Pause Mode.
+
+  * **"disable_pause"**:  Disables Pause Mode.
+
+  * **"quit"**: Closes the Application.
+
+    
+
+* **Debug Relevant Commands:**
+
+  * **"enable_god_mode"**:  Enables God Mode.
+
+  * **"disable_god_mode"**:  Disables God Mode.
+
+    
+
+* **Map Relevant Commands:**
+
+  * **"map Test_map.tmx"**: Loads the First Map.
+
+  * **"map Test_map_2.tmx"**: Loads the Second Map.
+
+    
+
+* **Gui Relevant Commands:**
+
+  * **"enable_ui_debug"**: Enables UI Debug Mode.
+  * **"disable_ui_debug"**: Disables UI Debug Mode.
 
 
 
