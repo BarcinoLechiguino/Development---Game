@@ -8,6 +8,8 @@
 #include "UI_Scrollbar.h"
 #include "j1Console.h"
 
+#include "Brofiler\Brofiler.h"
+
 j1Console::j1Console() : j1Module(), commandWasFound(false)
 {
 	name.create("console");
@@ -36,6 +38,8 @@ bool j1Console::Start()
 
 bool j1Console::PreUpdate()
 {	
+	BROFILER_CATEGORY("Console_PreUpdate", Profiler::Color::PowderBlue);
+
 	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
 		commandWasFound = false;

@@ -4,6 +4,8 @@
 #include "UI.h"
 #include "UI_Image.h"
 
+#include "Brofiler\Brofiler.h"
+
 //UI_Image will always be uninteractible and will have 2 events: IDLE & CLICKED (CLICKED when the image is clicked and can be dragged).
 //UI_Image can be draggable and can have a parent element.
 //hitbox argument serves the purpose of both setting the UI_Image's "input collider" and locating the right sprite in the Atlas(tex).
@@ -60,6 +62,8 @@ bool UI_Image::Draw()
 // --- This Method checks for any inputs that the UI_Image element might have received and "returns" an event.
 void UI_Image::CheckInput()
 {
+	BROFILER_CATEGORY("Image_CheckInput", Profiler::Color::Gold);
+
 	if (isVisible)																				//If the image element is visible
 	{
 		GetMousePos();																			//Gets the mouse's position on the screen.

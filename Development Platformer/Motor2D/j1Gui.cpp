@@ -12,6 +12,8 @@
 #include "j1Console.h"
 #include "j1Gui.h"
 
+#include "Brofiler\Brofiler.h"
+
 j1Gui::j1Gui() : j1Module()
 {
 	name.create("gui");
@@ -120,6 +122,8 @@ bool j1Gui::PreUpdate()
 // Called after all Updates
 bool j1Gui::PostUpdate()
 {	
+
+	BROFILER_CATEGORY("GUI_Update", Profiler::Color::NavajoWhite);
 	//escape = true;
 	App->console->DrawBackgroundElement();		//THIS HERE
 
@@ -201,6 +205,8 @@ bool j1Gui::CleanUp()
 //----------------------------------- UI ELEMENT CREATION METHODS -----------------------------------
 UI* j1Gui::CreateImage(UI_Element element, int x, int y, SDL_Rect hitbox, bool isVisible, bool isInteractible, bool isDraggable, UI* parent)
 {
+
+	BROFILER_CATEGORY("GUI_Image", Profiler::Color::NavajoWhite);
 	UI* elem = nullptr;
 
 	elem = new UI_Image(element, x, y, hitbox, isVisible, isInteractible, isDraggable, parent);
@@ -216,6 +222,7 @@ UI* j1Gui::CreateImage(UI_Element element, int x, int y, SDL_Rect hitbox, bool i
 UI* j1Gui::CreateText(UI_Element element, int x, int y, SDL_Rect hitbox, _TTF_Font* font, SDL_Color fontColour, bool isVisible, bool isInteractible, bool isDraggable,
 					UI* parent, p2SString* string, p2SString* hoverString, p2SString* leftClickString, p2SString* rightClickString)
 {
+	BROFILER_CATEGORY("GUI_Text", Profiler::Color::NavajoWhite);
 	UI* elem = nullptr;
 
 	elem = new UI_Text(element, x, y, hitbox, font, fontColour, isVisible, isInteractible, isDraggable, parent, string, hoverString, leftClickString, rightClickString);
@@ -230,6 +237,7 @@ UI* j1Gui::CreateText(UI_Element element, int x, int y, SDL_Rect hitbox, _TTF_Fo
 
 UI* j1Gui::CreateButton(UI_Element element, int x, int y, bool isVisible, bool isInteractible, bool isDraggable, UI* parent, SDL_Rect* idle, SDL_Rect* hover, SDL_Rect* clicked)
 {
+	BROFILER_CATEGORY("GUI_Button", Profiler::Color::NavajoWhite);
 	UI* elem = nullptr;
 
 	elem = new UI_Button(element, x, y, isVisible, isInteractible, isDraggable, parent, idle, hover, clicked);
@@ -245,6 +253,7 @@ UI* j1Gui::CreateButton(UI_Element element, int x, int y, bool isVisible, bool i
 UI* j1Gui::CreateInputBox(UI_Element element, int x, int y, SDL_Rect hitbox, _TTF_Font* font, SDL_Color fontColour, SDL_Rect cursor, SDL_Color cursorColour, iPoint textOffset, 
 					float blinkFrequency, bool isVisible, bool isInteractible, bool isDraggable, UI* parent, p2SString* defaultString, bool emptyElements)
 {
+	BROFILER_CATEGORY("GUI_InputBox", Profiler::Color::NavajoWhite);
 	UI* elem = nullptr;
 
 	elem = new UI_InputBox(element, x, y, hitbox, font, fontColour, cursor, cursorColour, textOffset, blinkFrequency, isVisible, isInteractible, isDraggable, parent,
@@ -261,6 +270,7 @@ UI* j1Gui::CreateInputBox(UI_Element element, int x, int y, SDL_Rect hitbox, _TT
 UI* j1Gui::CreateScrollbar(UI_Element element, int x, int y, SDL_Rect hitbox, SDL_Rect thumbSize, iPoint thumbOffset, SDL_Rect dragArea, float dragFactor, bool dragXAxis, bool dragYAxis,
 					bool invertedScrolling, bool isVisible, bool isInteractible, bool isDraggable, UI* parent, SDL_Rect* scrollMask, iPoint maskOffset, bool emptyElements)
 {
+	BROFILER_CATEGORY("GUI_ScrollBar", Profiler::Color::NavajoWhite);
 	UI* elem = nullptr;
 
 	elem = new UI_Scrollbar(element, x, y, hitbox, thumbSize, thumbOffset, dragArea, dragFactor, dragXAxis, dragYAxis, invertedScrolling,
@@ -277,7 +287,7 @@ UI* j1Gui::CreateScrollbar(UI_Element element, int x, int y, SDL_Rect hitbox, SD
 //--------------------------------- INPUT PROCESSING METHODS ---------------------------------
 void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 {
-
+	BROFILER_CATEGORY("GUI_OnEventCall", Profiler::Color::NavajoWhite);
 	// Main Menu
 	if (element == App->scene->main_button_play && ui_event == UI_Event::UNCLICKED)
 	{
