@@ -107,7 +107,7 @@ public:
 
 	bool				framesAreCapped;		//Keeps track whether the frame cap is on or off.
 	bool				vsyncIsActive;			//Keeps track whether Vsync is on or off.
-	bool				paused = false;
+	bool				pause;
 
 private:
 

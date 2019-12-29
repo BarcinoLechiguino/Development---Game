@@ -64,8 +64,18 @@ bool j1Gui::PreUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
 	{
 		//ShowElement(App->scene->draggableButton2);
-		SetElementsVisibility(App->scene->main_window, !App->scene->main_window->isVisible);
-		SetElementsVisibility(App->scene->main_settings_menu, !App->scene->main_settings_menu->isVisible);
+
+		SetElementsVisibility(App->scene->window, !App->scene->window->isVisible);
+		SetElementsVisibility(App->scene->scrollWindow, !App->scene->scrollWindow->isVisible);
+
+		if (App->scene->scrollWindow->isVisible)
+		{
+			App->pause = true;
+		}
+		else
+		{
+			App->pause = false;
+		}
 	}
 	
 	return true;
