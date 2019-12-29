@@ -24,6 +24,7 @@ class j1Player1;
 class j1Player2;
 class j1Fonts;
 class j1Gui;
+class j1Console;
 
 class j1App
 {
@@ -104,6 +105,7 @@ public:
 	j1Player2*			player2;
 	j1Fade_Scene*		fadescene;
 	j1Gui*				gui;
+	j1Console*			console;
 
 	bool				framesAreCapped;		//Keeps track whether the frame cap is on or off.
 	bool				vsyncIsActive;			//Keeps track whether Vsync is on or off.

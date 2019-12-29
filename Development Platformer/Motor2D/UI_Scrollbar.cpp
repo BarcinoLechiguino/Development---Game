@@ -369,7 +369,7 @@ void UI_Scrollbar::DragThumbWithMousewheel()																							// ----------
 		{
 			if (ThumbIsWithinHorizontalScrollbarBounds())
 			{
-				newThumbPos = { thumb->GetScreenPos().x - mouseWheelScroll.x, thumb->GetScreenPos().y };									// Done for readability.
+				newThumbPos = { thumb->GetScreenPos().x - mouseWheelScroll.y, thumb->GetScreenPos().y };									// Done for readability.
 
 				thumb->SetScreenPos(newThumbPos);
 				thumb->SetHitbox({ thumb->GetScreenPos().x, thumb->GetScreenPos().y, thumb->GetHitbox().w, thumb->GetHitbox().h });
@@ -379,7 +379,7 @@ void UI_Scrollbar::DragThumbWithMousewheel()																							// ----------
 		{
 			if (ThumbIsWithinHorizontalScrollbarBounds())
 			{
-				newThumbPos = { thumb->GetScreenPos().x + mouseWheelScroll.x, thumb->GetScreenPos().y };
+				newThumbPos = { thumb->GetScreenPos().x + mouseWheelScroll.y, thumb->GetScreenPos().y };
 
 				thumb->SetScreenPos(newThumbPos);
 				thumb->SetHitbox({ thumb->GetScreenPos().x, thumb->GetScreenPos().y, thumb->GetHitbox().w, thumb->GetHitbox().h });

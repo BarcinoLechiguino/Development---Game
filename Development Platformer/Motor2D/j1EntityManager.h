@@ -54,7 +54,7 @@ public:
 	bool Save(pugi::xml_node&) const;
 
 public:
-	pugi::xml_node	config;
+	pugi::xml_node			config;
 	
 	p2List<j1Entity*>		entities;			//List of entities. Each created entity will be added to this list and then iterated in the class methods (Update()...)
 	j1Player*				player;				//Pointer to the j1Player class. Will represent P1. The pointer will be from the mother class and later it will be setted to player 1 (CreateEntity())

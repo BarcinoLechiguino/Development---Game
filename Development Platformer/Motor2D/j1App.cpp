@@ -2,7 +2,7 @@
 
 #include "p2Defs.h"
 #include "p2Log.h"
-#include "j1Gui.h"
+#include "j1App.h"
 #include "j1Window.h"
 #include "j1Input.h"
 #include "j1Render.h"
@@ -17,7 +17,8 @@
 #include "j1Collisions.h"
 #include "j1Player1.h"
 #include "j1Player2.h"
-#include "j1App.h"
+#include "j1Gui.h"
+#include "j1Console.h"
 #include "j1FadeScene.h"
 #include "Brofiler\Brofiler.h"
 
@@ -30,20 +31,21 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 
 	want_to_save = want_to_load = false;
 
-	input = new j1Input();
-	win = new j1Window();
-	render = new j1Render();
-	tex = new j1Textures();
-	audio = new j1Audio();
-	//scene_menu = new j1SceneMenu();
-	scene = new j1Scene();
-	map = new j1Map();
-	pathfinding = new j1PathFinding();
-	collisions = new j1Collisions();
-	entityManager = new j1EntityManager();
-	fadescene = new j1Fade_Scene();
-	font = new j1Fonts();
-	gui = new j1Gui();
+	input			= new j1Input();
+	win				= new j1Window();
+	render			= new j1Render();
+	tex				= new j1Textures();
+	audio			= new j1Audio();
+	//scene_menu	= new j1SceneMenu();
+	scene			= new j1Scene();
+	map				= new j1Map();
+	pathfinding		= new j1PathFinding();
+	collisions		= new j1Collisions();
+	entityManager	= new j1EntityManager();
+	fadescene		= new j1Fade_Scene();
+	font			= new j1Fonts();
+	gui				= new j1Gui();
+	console			= new j1Console();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -56,11 +58,13 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(font);
 	//AddModule(scene_menu);
 	AddModule(gui);
+	AddModule(console);
 	AddModule(scene);
 	//AddModule(scene_ui);
-	AddModule(entityManager);				//entityManager is called after the module scene (where the player is created) is called.
+	AddModule(entityManager);				//entityManager is called after module scene (where the player is created) is called.
 	AddModule(collisions);
 	AddModule(fadescene);
+	
 	// render last to swap buffer
 	AddModule(render);
 

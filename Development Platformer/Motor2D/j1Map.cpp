@@ -14,6 +14,7 @@
 #include "j1Scene.h"
 #include "j1EntityManager.h"
 #include "j1Player.h"
+#include "j1Console.h"
 #include "Brofiler\Brofiler.h"
 #include <math.h>
 
@@ -810,6 +811,7 @@ bool j1Map::ChangeMap(const char* newMap)
 	App->entityManager->player2->Start();		//Load / Reset P2
 
 	App->gui->Start();
+	//App->console->Start();
 	App->scene->LoadGuiElements();
 	//App->scene->Start();
 
