@@ -156,6 +156,7 @@ public:
 	uint			ready_tp;
 	uint			alien_walking;
 	uint			attack;
+	uint			tab_fx;
 
 	bool			audioIsLoaded;	//Keeps track whether the audio has already been loaded.
 };

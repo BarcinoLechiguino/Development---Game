@@ -85,6 +85,13 @@ public:
 	bool escape;										//When this bool is true the game is exited.
 	bool ui_debug;										//When this bool is true, debug mode is activated.
 
+public:
+	uint				tab_fx;
+	uint				play_fx;
+	uint				save_fx;
+	uint				exit_fx;
+	uint				nav_fx;
+
 private:
 	SDL_Texture* atlas;									//Texture of the atlas (UI Spritesheet)
 	p2SString atlas_file_name;							//Name of the atlas in the xml file.

@@ -195,7 +195,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 							player.airborne = true;
 							player.grounded = false;
 							player.platformDrop = false;
-							App->audio->PlayFx(3, 0);
+							App->audio->PlayFx(15, 0);
 						}
 					}
 					//LOG("P1 IS COLLIDING WITH P2 FROM THE LEFT");
