@@ -584,6 +584,15 @@ void j1Scene::LoadGuiElements()
 	p2SString string_timer_player = "0";
 	timer = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 770, 30, textHitbox, font_in, fontRgb, false, false, false, upper_bar, &string_timer_player);
 	
+	SDL_Rect coin_rect{ 1267,139,36,36 };
+	coin = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 50, 730, coin_rect, false, false, false, upper_bar);
+
+	SDL_Color fontRgbWhite = { 255, 255, 255, 255 };
+	_TTF_Font* font_count = App->font->Load("fonts/Future Now.ttf", 40);
+	p2SString string_coin_count = "0";
+	count_coins = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 20, 735, textHitbox, font_count, fontRgbWhite, false, false, false, upper_bar, &string_coin_count);
+
+
 	// In-game menu
 	SDL_Rect main_in_rect{ 0, 388, 466, 447 };
 	main_in_menu = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 280, 180, main_in_rect, false, false, false, NULL);
@@ -627,8 +636,4 @@ void j1Scene::LoadGuiElements()
 	
 	scrollbar_in = (UI_Scrollbar*)App->gui->CreateScrollbar(UI_Element::SCROLLBAR, 430, 559, scrollbarBar, scrollbarThumb, thumbOffset, dragArea, dragFactor, true, false, true,
 		false, false, false, main_in_menu, &scrollMask, maskOffset);
-
-
-​	
 }
-
