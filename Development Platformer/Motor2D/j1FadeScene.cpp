@@ -3,6 +3,8 @@
 #include "j1App.h"
 #include "j1FadeScene.h"
 #include "j1Render.h"
+#include "j1FadeScene.h"
+#include "j1Gui.h"
 #include "j1Scene.h"
 #include "j1Window.h"
 #include "j1Player1.h"
@@ -112,7 +114,7 @@ bool j1Fade_Scene ::FadeToBlack(const char* mapname, float time)
 		total_time = (Uint32)(time * 0.5f * 1000.0f);
 		ret = true;
 	}
-	
+
 	//App->audio->PlayMusic(App->map->data.music_File.GetString());
 
 	return ret;

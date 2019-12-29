@@ -411,9 +411,11 @@ void j1Scene::LoadGuiElements()
 {
 	// Main Menu
 	//--------------------------------------------------------------------------------------------
+
+
 	SDL_Rect image_rect{ 1654,56,915,768 };
 	background_image = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 45, 0, image_rect, true, false, false, NULL);
-	
+
 	SDL_Rect bars_rect{ 1601, 347, 45, 486 };
 	side_bars = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 0, 0, bars_rect, true, false, false, background_image);
 	side_bars = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 0, 486, bars_rect, true, false, false, background_image);
@@ -421,16 +423,16 @@ void j1Scene::LoadGuiElements()
 	side_bars = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 1005, 0, bars_rect, true, false, false, background_image);
 	side_bars = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 960, 486, bars_rect, true, false, false, background_image);
 	side_bars = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 1005, 486, bars_rect, true, false, false, background_image);
-	
+
 	SDL_Rect main_rect{ 0, 388, 466, 447 };
 	main_window = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 280, 180, main_rect, true, false, false, NULL);
-	
+
 	SDL_Rect label1_rect{ 1078,242,382,61 };
 	label_1 = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 323, 100, label1_rect, true, false, false, main_window);
-	
+
 	SDL_Rect label2_rect{ 973,342,237,39 };
 	label_2 = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 393, 145, label2_rect, true, false, false, main_window);
-	
+
 	SDL_Rect button_main_menu = { 1166,418,423,107 };
 	SDL_Rect idle = { 1166,418,423,107 };
 	SDL_Rect hover = { 1166,556,423,107 };
@@ -439,7 +441,7 @@ void j1Scene::LoadGuiElements()
 	main_button_continue = (UI_Button*)App->gui->CreateButton(UI_Element::BUTTON, 305, 294, true, true, false, main_window, &idle, &hover, &clicked);
 	main_button_settings = (UI_Button*)App->gui->CreateButton(UI_Element::BUTTON, 305, 399, true, true, false, main_window, &idle, &hover, &clicked);
 	main_button_exit = (UI_Button*)App->gui->CreateButton(UI_Element::BUTTON, 305, 506, true, true, false, main_window, &idle, &hover, &clicked);
-	
+
 	SDL_Rect textHitbox{ 432, 75, 65, 20 };
 	_TTF_Font* font = App->font->Load("fonts/Minecraftia-Regular.ttf", 20);
 	_TTF_Font* font_sub = App->font->Load("fonts/Minecraftia-Regular.ttf");
@@ -448,7 +450,7 @@ void j1Scene::LoadGuiElements()
 	p2SString string_subtitle = "Can you trust your friend?";
 	title_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 388, 114, textHitbox, font, fontRgb, true, false, false, main_window, &string_title);
 	title_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 415, 155, textHitbox, font_sub, fontRgb, true, false, false, main_window, &string_subtitle);
-	
+
 	_TTF_Font* font_button = App->font->Load("fonts/Future Now.ttf", 40);
 	p2SString string_play = "PLAY";
 	p2SString string_continue = "CONTINUE";
@@ -458,6 +460,7 @@ void j1Scene::LoadGuiElements()
 	title_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 440, 320, textHitbox, font_button, fontRgb, true, false, false, main_window, &string_continue);
 	title_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 440, 429, textHitbox, font_button, fontRgb, true, false, false, main_window, &string_settings);
 	title_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 480, 535, textHitbox, font_button, fontRgb, true, false, false, main_window, &string_exit);
+
 	//-----------------------------------------------------------------------------------------------------------------------
 	
 	// Settings menu
