@@ -493,11 +493,11 @@ void j1Scene::LoadGuiElements()
 	// HUD
 	SDL_Rect hud_bars_rect{ 973,305,677,36 };
 	upper_bar = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 0, 0, hud_bars_rect, false, false, false, NULL);
-	upper_bar = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 0, 36, hud_bars_rect, false, false, false, NULL);
-	upper_bar = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 676, 0, hud_bars_rect, false, false, false, NULL);
-	upper_bar = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 676, 36, hud_bars_rect, false, false, false, NULL);
-	upper_bar = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 1352, 0, hud_bars_rect, false, false, false, NULL);
-	upper_bar = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 1352, 36, hud_bars_rect, false, false, false, NULL);
+	upper_bar1 = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 0, 36, hud_bars_rect, false, false, false, upper_bar);
+	upper_bar1 = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 676, 0, hud_bars_rect, false, false, false, upper_bar);
+	upper_bar1 = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 676, 36, hud_bars_rect, false, false, false, upper_bar);
+	upper_bar1 = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 1352, 0, hud_bars_rect, false, false, false, upper_bar);
+	upper_bar1 = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 1352, 36, hud_bars_rect, false, false, false, upper_bar);
 
 	SDL_Rect p1_rect{ 1270,210,25,21 };
 	p1 = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 80, 30, p1_rect, false, false, false, upper_bar);

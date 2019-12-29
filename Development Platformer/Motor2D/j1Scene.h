@@ -130,6 +130,7 @@ public:
 
 	// HUD
 	UI_Image*			upper_bar;
+	UI_Image*			upper_bar1;
 	UI_Image*			p1;
 	UI_Image*			p2;
 	UI_Text*			names;
