@@ -135,11 +135,13 @@ public:
 	UI_Image*			upper_bar1;
 	UI_Image*			p1;
 	UI_Image*			p2;
+	UI_Image*			coin;
 	UI_Text*			names;
 	UI_Text*			title;
 	UI_Image*			hearts[6] = { nullptr,nullptr,nullptr };
 	UI_Text*			score_player;
 	UI_Text*			timer;
+	UI_Text*			count_coins;
 
 	// In-game menu
 	UI_Image*			main_in_menu;
