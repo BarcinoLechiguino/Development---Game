@@ -1,5 +1,6 @@
 #include "p2Log.h"
 #include "j1App.h"
+#include "j1Input.h"
 #include "j1Render.h"
 #include "j1Fonts.h"
 #include "j1Gui.h"
@@ -48,7 +49,7 @@ bool j1Console::PreUpdate()
 		{
 			Command* comm = command->data;
 
-			if (*App->input->GetInputText() == *comm->command.GetString())
+			if (App->input->CmpStr(App->input->GetInputText(), comm->command.GetString()))
 			{
 				comm->callback->OnCommand(comm->command.GetString());
 				commandHistory.add(comm);
@@ -278,9 +279,10 @@ Command* j1Console::CreateCommand(const char* command, j1Module* callback, int m
 void j1Console::CreateConsoleCommands()
 {
 	//CreateCommand("quit", this, 1, 1);
-	CreateCommand("help", this, 1, 1);
-	//ShellExecuteA(NULL, "open", "https://gromeu2000.wixsite.com/mutualcooperation", NULL, NULL, SW_SHOWNORMAL);
 
+	// Console Commands
+	command_list		= "list";
+	
 	// App Commands
 	enable_pause		= "enable_pause";
 	disable_pause		= "disable_pause";
@@ -291,6 +293,9 @@ void j1Console::CreateConsoleCommands()
 	FPS_60				= "FPS 60";
 	FPS_120				= "FPS 120";
 
+	
+	CreateCommand(command_list, this, 1, 1);
+	
 	CreateCommand(enable_pause, this, 1, 1);
 	CreateCommand(disable_pause, this, 1, 1);
 	CreateCommand(enableFrameCap, this, 1, 1);
@@ -303,36 +308,42 @@ void j1Console::CreateConsoleCommands()
 
 void j1Console::OnCommand(const char* command, const char* subCommand)
 {
+	// --- CONSOLE COMMANDS
+	if (App->input->CmpStr(command, command_list))
+	{
+		ShellExecuteA(NULL, "open", "https://gromeu2000.wixsite.com/mutualcooperation", NULL, NULL, SW_SHOWNORMAL);
+	}
+	
 	// --- APP COMMANDS
-	if (*command == *enable_pause)										// -----------------------------------------------------------------------------------
+	if (App->input->CmpStr(command, enable_pause))						// -----------------------------------------------------------------------------------
 	{
 		App->pause = true;												// Enable Pause Mode
 	}
-	if (*command == *disable_pause)										// -----------------------------------------------------------------------------------
+	if (App->input->CmpStr(command, disable_pause))						// -----------------------------------------------------------------------------------
 	{
 		App->pause = false;												// Disable Pause Mode
 	}
-	if (*command == *enableFrameCap)									// -----------------------------------------------------------------------------------
+	if (App->input->CmpStr(command, enableFrameCap))					// -----------------------------------------------------------------------------------
 	{
 		App->framesAreCapped = true;									// Enable Frame Cap
 	}
-	if (*command == *disableFrameCap)									// -----------------------------------------------------------------------------------
+	if (App->input->CmpStr(command, disableFrameCap))					// -----------------------------------------------------------------------------------
 	{
 		App->framesAreCapped = false;									// Disable Frame Cap
 	}
-	if (*command == *resetFrameCap)										// -----------------------------------------------------------------------------------
+	if (App->input->CmpStr(command, resetFrameCap))						// -----------------------------------------------------------------------------------
 	{
 		App->frame_cap = App->original_frame_cap;						// Reset Frame Cap
 	}
-	if (*command == *FPS_30)											// -----------------------------------------------------------------------------------
+	if (App->input->CmpStr(command, FPS_30))							// -----------------------------------------------------------------------------------
 	{
 		App->frame_cap = CAP_AT_30;										// Cap Frames at 30
 	}
-	if (*command == *FPS_60)											// -----------------------------------------------------------------------------------
+	if (App->input->CmpStr(command, FPS_60))							// -----------------------------------------------------------------------------------
 	{
 		App->frame_cap = CAP_AT_60;										// Cap Frames at 60
 	}
-	if (*command == *FPS_120)											// -----------------------------------------------------------------------------------
+	if (App->input->CmpStr(command, FPS_120))							// -----------------------------------------------------------------------------------
 	{
 		App->frame_cap = CAP_AT_120;									// Cap Frames at 120
 	}

@@ -166,7 +166,6 @@ Download the game file in which you will find the executable.
   
 * **UI Innovations:**
 
-  * **Input Box:**
   * **Scrollbar:**
     * The thumb can be moved with the mouse wheel when it is focused.
     * If the thumb is not on the click position of the bar, the thumb will move there.
@@ -183,7 +182,7 @@ Download the game file in which you will find the executable.
 
 - **F3**: Resets the players' position to the map's starting point. 
 
-- **F4**: Enables/Disables Pause Mode and the UI Debug Mode.
+- **F4**: Enables/Disables Pause Mode.
 
 - **F5**: Load the saved game. 
 
@@ -191,17 +190,42 @@ Download the game file in which you will find the executable.
 
 - **F7**: Camera Debug Mode (Camera can be moved around with the arrow keys).
 
-- **F8**: Pathfinding Debug Mode (Paths are visible and can be created with 2 right clicks).
+- **F8**: Enables/Disables UI Debug Mode.
 
-- **F9**: Collider Debug Mode (Makes all colliders visible). 
+- **F9**: 
+
+  - Collider Debug Mode (Makes all colliders visible). 
+
+  - Pathfinding Debug Mode (Paths are visible and can be created with 2 right clicks).
+
+    
 
 - **F10**: God Mode (Players are invincible, can go through walls and have free movement). 
 
-- **F11**: Enable/Disable frame cap.
+- **F11**: Enable/Disable frame cap at 30 FPS.
 
-  
+
+
+# Console Commands
+
+* a
+* a
+* a
+* a
+* a
+* aa
+* a
+* a
+* a
+* a
+* a
+* a
+* 
+
+
 
 # Team Members
+
 - **Gerard Romeu:** https://github.com/Gromeu2000
 
 - **Ángel González:** https://github.com/BarcinoLechiguino

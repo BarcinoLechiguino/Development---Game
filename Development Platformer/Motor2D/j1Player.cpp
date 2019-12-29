@@ -123,7 +123,7 @@ void j1Player::LoadEntityProperties()
 	player.lives			= player_entity.child("lives").attribute("lives").as_int();
 	player.max_lives		= player_entity.child("lives").attribute("lives").as_int();
 
-	player.points			= player_entity.child("points").attribute("points").as_int();
+	player.coins			= player_entity.child("points").attribute("points").as_int();
 
 	player.tpCdCount		= player_entity.child("tpCooldown").attribute("timer").as_float();
 	player.tpCdTime			= player_entity.child("tpCooldown").attribute("cd").as_float();

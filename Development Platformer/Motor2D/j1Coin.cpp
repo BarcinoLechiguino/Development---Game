@@ -91,9 +91,9 @@ void j1Coin::OnCollision(Collider* C1, Collider* C2)
 						RELEASE(App->entityManager->entities.At(num)->data);
 						App->entityManager->entities.del(App->entityManager->entities.At(num));
 	
-						App->entityManager->player->player.points += points;
-						App->entityManager->player2->player.points += points;
-						LOG("Player1 points %d", App->entityManager->player->player.points);
+						App->entityManager->player->player.coins += points;
+						App->entityManager->player2->player.coins += points;
+						LOG("Player1 points %d", App->entityManager->player->player.coins);
 					}
 				}
 				else
@@ -107,8 +107,8 @@ void j1Coin::OnCollision(Collider* C1, Collider* C2)
 						RELEASE(App->entityManager->entities.At(num)->data);
 						App->entityManager->entities.del(App->entityManager->entities.At(num));
 
-						App->entityManager->player->player.points += points;
-						App->entityManager->player2->player.points += points;
+						App->entityManager->player->player.coins += points;
+						App->entityManager->player2->player.coins += points;
 					}
 				}
 			}
@@ -126,9 +126,9 @@ void j1Coin::OnCollision(Collider* C1, Collider* C2)
 						RELEASE(App->entityManager->entities.At(num)->data);
 						App->entityManager->entities.del(App->entityManager->entities.At(num));
 
-						App->entityManager->player2->player.points += points;
-						App->entityManager->player->player.points += points;
-						LOG("Player2 points %d", App->entityManager->player2->player.points);
+						App->entityManager->player2->player.coins += points;
+						App->entityManager->player->player.coins += points;
+						LOG("Player2 points %d", App->entityManager->player2->player.coins);
 					}
 				}
 				else
@@ -142,8 +142,8 @@ void j1Coin::OnCollision(Collider* C1, Collider* C2)
 						RELEASE(App->entityManager->entities.At(num)->data);
 						App->entityManager->entities.del(App->entityManager->entities.At(num));
 
-						App->entityManager->player2->player.points += points;
-						App->entityManager->player->player.points += points;
+						App->entityManager->player2->player.coins += points;
+						App->entityManager->player->player.coins += points;
 					}
 				}
 			}

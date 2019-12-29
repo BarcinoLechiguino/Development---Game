@@ -115,6 +115,7 @@ private:
 	pugi::xml_node		console;
 
 	// Console Strings
+	const char*			command_list;
 	const char*			enable_pause;
 	const char*			disable_pause;
 	const char*			enableFrameCap;
