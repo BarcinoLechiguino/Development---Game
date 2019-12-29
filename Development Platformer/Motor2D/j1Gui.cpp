@@ -64,6 +64,7 @@ bool j1Gui::PreUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
 	{
 		//ShowElement(App->scene->draggableButton2);
+
 		SetElementsVisibility(App->scene->window, !App->scene->window->isVisible);
 		SetElementsVisibility(App->scene->scrollWindow, !App->scene->scrollWindow->isVisible);
 
