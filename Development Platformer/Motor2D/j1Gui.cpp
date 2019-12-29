@@ -81,18 +81,10 @@ bool j1Gui::PreUpdate()
 	{
 		App->pause = true;
 	}
-	else
-	{
-		App->pause = false;
-	}
 	
 	if(App->scene->main_in_menu->isVisible)
 	{
 		App->pause = true;
-	}
-	else
-	{
-		App->pause = false;
 	}
 
 	if (game_started) 
@@ -100,6 +92,11 @@ bool j1Gui::PreUpdate()
 		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		{
 			SetElementsVisibility(App->scene->main_in_menu, !App->scene->main_in_menu->isVisible);
+
+			if (!App->scene->main_in_menu->isVisible)
+			{
+				App->pause = false;
+			}
 		}
 	}
 	
@@ -296,6 +293,12 @@ void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 		SetElementsVisibility(App->scene->main_window, !App->scene->main_window->isVisible);
 		SetElementsVisibility(App->scene->background_image, !App->scene->background_image->isVisible);
 		SetElementsVisibility(App->scene->upper_bar, !App->scene->upper_bar->isVisible);
+
+		if (!App->scene->background_image->isVisible)
+		{
+			App->pause = false;
+		}
+
 		game_started = true;
 		App->audio->PlayFx(play_fx, 0);
 	}
@@ -385,6 +388,12 @@ void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 	if (element == App->scene->in_buttons_resume && ui_event == UI_Event::UNCLICKED)
 	{
 		SetElementsVisibility(App->scene->main_in_menu, !App->scene->main_in_menu->isVisible);
+
+		if (!App->scene->main_in_menu->isVisible)
+		{
+			App->pause = false;
+		}
+
 		App->audio->PlayFx(play_fx, 0);
 	}
 
@@ -397,6 +406,12 @@ void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 	if (element == App->scene->in_buttons_load && ui_event == UI_Event::UNCLICKED)
 	{
 		SetElementsVisibility(App->scene->main_in_menu, !App->scene->main_in_menu->isVisible);
+		
+		if (!App->scene->main_in_menu->isVisible)
+		{
+			App->pause = false;
+		}
+		
 		App->LoadGame("save_game.xml");
 		App->audio->PlayFx(play_fx, 0);
 	}
@@ -408,6 +423,12 @@ void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 		SetElementsVisibility(App->scene->background_image, !App->scene->background_image->isVisible);
 		SetElementsVisibility(App->scene->upper_bar, !App->scene->upper_bar->isVisible);
 		game_started = false;
+		
+		if (!App->scene->main_in_menu->isVisible)
+		{
+			App->pause = false;
+		}
+		
 		App->audio->PlayFx(exit_fx, 0);
 	}
 
@@ -633,17 +654,17 @@ void j1Gui::CreateGuiCommands()
 
 void j1Gui::OnCommand(const char* command, const char* subCommand)
 {	
-	if (*command == *quitCommand)
+	if (App->input->CmpStr(command, quitCommand))
 	{
 		escape = false;
 	}
 
-	if (*command == *enable_ui_debug)
+	if (App->input->CmpStr(command, enable_ui_debug))
 	{
 		ui_debug = true;
 	}
 
-	if (*command == *disable_ui_debug)
+	if (App->input->CmpStr(command, disable_ui_debug))
 	{
 		ui_debug = false;
 	}

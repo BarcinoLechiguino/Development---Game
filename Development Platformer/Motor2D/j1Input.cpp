@@ -431,7 +431,7 @@ char* j1Input::GetCutText(unsigned int begin, unsigned int end, bool returnFirst
 	return input_string;																//If no bool-relying condition is met, then the method returns input_string.
 }
 
-bool CompareStrings(const char* str1, const char* str2)
+bool j1Input::CmpStr(const char* str1, const char* str2)
 {
 	if (strcmp(str1, str2) == 0)
 	{

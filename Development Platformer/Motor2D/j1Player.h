@@ -42,7 +42,8 @@ struct Player
 	float			frontflipEnd;			//At which point of the boost jump the frontflip animation should end.
 	int				lives;					//Number of lives a player has. It just defines how many times a player can get impaled with spikes before having to restart the whole level over.
 	int				max_lives;				//Maximum number of lives a player can have.
-	int				points;					//Amount of points that a player currently has.
+	int				coins;					//Amount of coins that a player currently has.
+	int				score;
 
 	bool			grounded;				//Keeps track of whether a player is jumping, falling or is on the ground.
 	bool			airborne;				//Keeps track of whether a player is on the air ir not.
