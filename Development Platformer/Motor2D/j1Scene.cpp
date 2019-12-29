@@ -490,6 +490,44 @@ void j1Scene::LoadGuiElements()
 	//text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 298, 535, textHitbox, default, fontRgb, false, false, false, main_credits_menu, &seventeen);
 	////-----------------------------------------------------------------------------------------------------------------------
 
+	// HUD
+	SDL_Rect hud_bars_rect{ 973,305,677,36 };
+	upper_bar = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 0, 0, hud_bars_rect, true, false, false, NULL);
+	upper_bar = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 0, 36, hud_bars_rect, true, false, false, NULL);
+	upper_bar = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 676, 0, hud_bars_rect, true, false, false, NULL);
+	upper_bar = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 676, 36, hud_bars_rect, true, false, false, NULL);
+	upper_bar = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 1352, 0, hud_bars_rect, true, false, false, NULL);
+	upper_bar = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 1352, 36, hud_bars_rect, true, false, false, NULL);
+
+	SDL_Rect p1_rect{ 1270,210,25,21 };
+	p1 = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 80, 30, p1_rect, true, false, false, upper_bar);
+
+	SDL_Rect p2_rect{ 1301,210,26,21 };
+	p2 = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 920, 30, p2_rect, true, false, false, upper_bar);
+
+	SDL_Rect textHitbox{ 432, 75, 65, 20 }; // Delete when uncomented all
+	SDL_Color fontRgb = { 0, 0, 0, 0 }; // Delete when uncomented all
+	_TTF_Font* font_in = App->font->Load("fonts/Future Now.ttf", 25);
+	_TTF_Font* font_in_title = App->font->Load("fonts/Minecraftia-Regular.ttf", 21);
+	p2SString string_p1 = "JOE";
+	p2SString string_p2 = "TIMM";
+	p2SString string_score = "SCORE";
+	p2SString string_timer = "TIMER";
+	p2SString string_title = "MUTUAL COOPERATION";
+	names = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 17, 30, textHitbox, font_in, fontRgb, true, false, false, upper_bar, &string_p1);
+	names = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 970, 30, textHitbox, font_in, fontRgb, true, false, false, upper_bar, &string_p2);
+	names = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 210, 30, textHitbox, font_in, fontRgb, true, false, false, upper_bar, &string_score);
+	names = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 670, 30, textHitbox, font_in, fontRgb, true, false, false, upper_bar, &string_timer);
+	title = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 375, 25, textHitbox, font_in_title, fontRgb, true, false, false, upper_bar, &string_title);
+
+	SDL_Rect hearts_rect{ 1058,8,24,21 };
+	hearts[0] = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 113, 30, hearts_rect, true, false, false, upper_bar);
+	hearts[1] = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 138, 30, hearts_rect, true, false, false, upper_bar);
+	hearts[2] = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 163, 30, hearts_rect, true, false, false, upper_bar);
+	hearts[3] = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 880, 30, hearts_rect, true, false, false, upper_bar);
+	hearts[4] = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 855, 30, hearts_rect, true, false, false, upper_bar);
+	hearts[5] = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 830, 30, hearts_rect, true, false, false, upper_bar);
+
 	//// In-game menu
 	//SDL_Rect main_in_rect{ 0, 388, 466, 447 };
 	//main_in_menu = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 280, 180, main_in_rect, true, false, false, NULL);

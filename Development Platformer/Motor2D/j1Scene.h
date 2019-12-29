@@ -94,6 +94,7 @@ private:
 	SDL_Texture*		path_debug_tex;		//Texture that will appear at the path tiles when pathfinding is being debugged.
 
 public:
+
 	// Main menu
 	UI_Image*			main_window;
 	UI_Image*			background_image;
@@ -123,6 +124,14 @@ public:
 	UI_Text*			credits_text;
 	UI_Text*			text;
 	UI_Button*			back_credits;
+
+	// HUD
+	UI_Image*			upper_bar;
+	UI_Image*			p1;
+	UI_Image*			p2;
+	UI_Text*			names;
+	UI_Text*			title;
+	UI_Image*			hearts[6] = { nullptr,nullptr,nullptr };
 
 	// In-game menu
 	UI_Image*			main_in_menu;
