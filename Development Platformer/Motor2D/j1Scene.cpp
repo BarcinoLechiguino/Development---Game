@@ -339,13 +339,222 @@ void j1Scene::LoadGuiElements()
 	
 	// Main Menu
 	//--------------------------------------------------------------------------------------------
-	// Back window
+	SDL_Rect image_rect{ 1654,56,915,768 };
+	background_image = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 45, 0, image_rect, true, false, false, NULL);
+
+	SDL_Rect bars_rect{ 1601, 347, 45, 486 };
+	side_bars = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 0, 0, bars_rect, true, false, false, NULL);
+	side_bars = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 0, 486, bars_rect, true, false, false, NULL);
+	side_bars = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 960, 0, bars_rect, true, false, false, NULL);
+	side_bars = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 1005, 0, bars_rect, true, false, false, NULL);
+	side_bars = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 960, 486, bars_rect, true, false, false, NULL);
+	side_bars = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 1005, 486, bars_rect, true, false, false, NULL);
+
 	SDL_Rect main_rect{ 0, 388, 466, 447 };
 	main_window = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 280, 180, main_rect, true, false, false, NULL);
+
+	SDL_Rect label1_rect{ 1078,242,382,61 };
+	label_1 = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 323, 100, label1_rect, true, false, false, main_window);
+
+	SDL_Rect label2_rect{ 973,342,237,39 };
+	label_2 = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 393, 145, label2_rect, true, false, false, main_window);
+
+	SDL_Rect button_main_menu = { 1166,418,423,107 };
+	SDL_Rect idle = { 1166,418,423,107 };
+	SDL_Rect hover = { 1166,556,423,107 };
+	SDL_Rect clicked = { 1166,702,423,107 };
+	main_button = (UI_Button*)App->gui->CreateButton(UI_Element::BUTTON, 305, 189, true, true, false, main_window, &idle, &hover, &clicked);
+	main_button = (UI_Button*)App->gui->CreateButton(UI_Element::BUTTON, 305, 294, true, true, false, main_window, &idle, &hover, &clicked);
+	main_button = (UI_Button*)App->gui->CreateButton(UI_Element::BUTTON, 305, 399, true, true, false, main_window, &idle, &hover, &clicked);
+	main_button = (UI_Button*)App->gui->CreateButton(UI_Element::BUTTON, 305, 506, true, true, false, main_window, &idle, &hover, &clicked);
+
+	SDL_Rect textHitbox{ 432, 75, 65, 20 };
+	_TTF_Font* font = App->font->Load("fonts/Minecraftia-Regular.ttf", 20);
+	_TTF_Font* font_sub = App->font->Load("fonts/Minecraftia-Regular.ttf");
+	SDL_Color fontRgb = { 0, 0, 0, 0 };
+	p2SString string_title = "MUTUAL COOPERATION";
+	p2SString string_subtitle = "Can you trust your friend?";
+	title_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 388, 114, textHitbox, font, fontRgb, true, false, false, main_window, &string_title);
+	title_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 415, 155, textHitbox, font_sub, fontRgb, true, false, false, main_window, &string_subtitle);
+
+	_TTF_Font* font_button = App->font->Load("fonts/Future Now.ttf", 40);
+	p2SString string_play = "PLAY";
+	p2SString string_continue = "CONTINUE";
+	p2SString string_settings = "SETTINGS";
+	p2SString string_exit = "EXIT";
+	title_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 480, 219, textHitbox, font_button, fontRgb, true, false, false, main_window, &string_play);
+	title_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 440, 320, textHitbox, font_button, fontRgb, true, false, false, main_window, &string_continue);
+	title_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 440, 429, textHitbox, font_button, fontRgb, true, false, false, main_window, &string_settings);
+	title_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 480, 535, textHitbox, font_button, fontRgb, true, false, false, main_window, &string_exit);
+	//-----------------------------------------------------------------------------------------------------------------------
+
+	// Settings menu
+	SDL_Rect main_settings_rect{ 0, 388, 466, 447 };
+	main_settings_menu = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 280, 180, main_settings_rect, true, false, false, NULL);
+
+	SDL_Rect label1_rect_settings{ 1078,242,382,61 };
+	label_1_settings = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 323, 160, label1_rect_settings, true, false, false, main_settings_menu);
+
+	_TTF_Font* font_settings = App->font->Load("fonts/Minecraftia-Regular.ttf", 22);
+	p2SString string_title_settings = "SETTINGS MENU";
+	settings_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 420, 176, textHitbox, font_settings, fontRgb, true, false, false, main_settings_menu, &string_title_settings);
+
+	SDL_Rect unmute_rect = { 512,147,57,57 };
+	SDL_Rect idle_u = { 512,147,57,57 };
+	SDL_Rect hover_u = { 512,267,57,57 };
+	SDL_Rect clicked_u = { 1479,72,57,57 };
+	unmute = (UI_Button*)App->gui->CreateButton(UI_Element::BUTTON, 670, 300, true, true, false, main_settings_menu, &idle_u, &hover_u, &clicked_u);
+	SDL_Rect mute_rect = { 1479, 9, 57, 57 };
+	SDL_Rect idle_m = { 1479, 9, 57, 57 };
+	SDL_Rect hover_m = { 1544,9,57,57 };
+	SDL_Rect clicked_m = { 440,214,57,57 };
+	mute = (UI_Button*)App->gui->CreateButton(UI_Element::BUTTON, 300, 300, true, true, false, main_settings_menu, &idle_m, &hover_m, &clicked_m);
+
+	p2SString string_volume = "Sound Settings";
+	_TTF_Font* font_settings_sub = App->font->Load("fonts/Future Now.ttf", 25);
+	settings_button_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 428, 253, textHitbox, font_settings_sub, fontRgb, true, false, false, main_settings_menu, &string_volume);
+
+	p2SString string_cap = "Cap To 30 FPS";
+	settings_button_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 300, 433, textHitbox, font_settings_sub, fontRgb, true, false, false, main_settings_menu, &string_cap);
+
+	SDL_Rect check_rect = { 633,323,53,53 };
+	SDL_Rect idle_ch = { 633,323,53,53 };
+	SDL_Rect hover_ch = { 687,323,53,53 };
+	SDL_Rect clicked_ch = { 571,54,53,53 };
+	check = (UI_Button*)App->gui->CreateButton(UI_Element::BUTTON, 560, 419, true, true, false, main_settings_menu, &idle_ch, &hover_ch, &clicked_ch);
+	SDL_Rect back_rect = { 0,74,284,66 };
+	SDL_Rect idle_b = { 0,74,284,66 };
+	SDL_Rect hover_b = { 285,74,284,66 };
+	SDL_Rect clicked_b = { 0,142,284,66 };
+	back = (UI_Button*)App->gui->CreateButton(UI_Element::BUTTON, 370, 550, true, true, false, main_settings_menu, &idle_b, &hover_b, &clicked_b);
+	SDL_Rect credits_rect = { 744,320,58,58 };
+	SDL_Rect idle_c = { 744,320,58,58 };
+	SDL_Rect hover_c = { 880,319,58,58 };
+	SDL_Rect clicked_c = { 810, 319, 58, 58 };
+	credits = (UI_Button*)App->gui->CreateButton(UI_Element::BUTTON, 300, 555, true, true, false, main_settings_menu, &idle_c, &hover_c, &clicked_c);
+	SDL_Rect git_rect = { 1066,178,58,58 };
+	SDL_Rect idle_g = { 1066,178,58,58 };
+	SDL_Rect hover_g = { 1202,178,58,58 };
+	SDL_Rect clicked_g = { 1132, 178, 58, 58 };
+	github = (UI_Button*)App->gui->CreateButton(UI_Element::BUTTON, 670, 555, true, true, false, main_settings_menu, &idle_g, &hover_g, &clicked_g);
+
+	_TTF_Font* font_settings_sub_back = App->font->Load("fonts/Future Now.ttf", 40);
+	p2SString string_back = "BACK";
+	settings_button_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 470, 570, textHitbox, font_settings_sub_back, fontRgb, true, false, false, main_settings_menu, &string_back);
 	
-	
-	
-	
+	SDL_Rect scrollbarBar = { 674,273,200,38 };
+	SDL_Rect scrollbarThumb = { 928,272,37,34 };
+	iPoint thumbOffset = { -2, 0 };
+	SDL_Rect scrollMask = { 0, 0, 350, 158 };
+	iPoint maskOffset = { -360, 0 };
+	SDL_Rect dragArea = { 0, 0, 11, 158 };
+	float dragFactor = 0.2f;
+	scrollbar_settings = (UI_Scrollbar*)App->gui->CreateScrollbar(UI_Element::SCROLLBAR, 420, 309, scrollbarBar, scrollbarThumb, thumbOffset, dragArea, dragFactor, true, false, true,
+	true, false, false, scrollWindow, &scrollMask, maskOffset);
+	//-----------------------------------------------------------------------------------------------------------------------
+
+	// Credits menu
+	SDL_Rect main_credits_rect{ 0, 388, 466, 447 };
+	main_credits_menu = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 280, 180, main_credits_rect, true, false, false, NULL);
+
+	SDL_Rect label1_rect_credits{ 1078,242,382,61 };
+	label_1_credits = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 323, 160, label1_rect_credits, true, false, false, main_credits_menu);
+
+	_TTF_Font* font_credits = App->font->Load("fonts/Minecraftia-Regular.ttf", 22);
+	p2SString string_title_credits = "CREDITS";
+	credits_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 460, 173, textHitbox, font_credits, fontRgb, true, false, false, main_credits_menu, &string_title_credits);
+
+	SDL_Rect back_c_rect = { 1057,30,173,45 };
+	SDL_Rect idle_b_c = { 1057,30,173,45 };
+	SDL_Rect hover_b_c = { 1057,76,173,45 };
+	SDL_Rect clicked_b_c = { 1057,126,173,45 };
+	back_credits = (UI_Button*)App->gui->CreateButton(UI_Element::BUTTON, 430, 570, true, true, false, main_credits_menu, &idle_b_c, &hover_b_c, &clicked_b_c);
+
+	_TTF_Font* font_credits_sub_back = App->font->Load("fonts/Future Now.ttf", 31);
+	credits_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 485, 580, textHitbox, font_credits_sub_back, fontRgb, true, false, false, main_credits_menu, &string_back);
+
+	_TTF_Font* default = App->font->Load("fonts/arial.ttf", 12);
+	_TTF_Font* default_bigger = App->font->Load("fonts/arial.ttf", 15);
+	p2SString one = "MIT License Copyright(c)[2019][Gerard Romeu, Ángel González]";
+	p2SString two = "Permission is hereby granted, free of charge, to any person obtaining a copy";
+	p2SString three = "of this software and associated documentation files(the Software), to deal in";
+	p2SString four = "the Software without restriction, including without limitation the rights to use,";
+	p2SString five = "copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the ";
+	p2SString six = "Software, and to permit persons to whom the Software is furnished to do so, ";
+	p2SString seven = "subject to the following conditions : ";
+	p2SString eight = "The above copyright notice and this permission notice shall be included in all  ";
+	p2SString nine = "copies or substantial portions of the Software. ";
+	p2SString ten = "THE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, ";
+	p2SString eleven = "EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES ";
+	p2SString twelve = "OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON";
+	p2SString thirteen = "INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT  ";
+	p2SString fourteen = "HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, ";
+	p2SString fifteen = "WHETHER IN AN  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING ";
+	p2SString sixteen = "FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR ";
+	p2SString seventeen = "OTHER DEALINGS IN THE SOFTWARE. ";
+	text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 300, 250, textHitbox, default_bigger, fontRgb, true, false, false, main_credits_menu, &one);
+	text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 298, 300, textHitbox, default, fontRgb, true, false, false, main_credits_menu, &two);
+	text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 298, 315, textHitbox, default, fontRgb, true, false, false, main_credits_menu, &three);
+	text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 298, 330, textHitbox, default, fontRgb, true, false, false, main_credits_menu, &four);
+	text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 298, 345, textHitbox, default, fontRgb, true, false, false, main_credits_menu, &five);
+	text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 298, 360, textHitbox, default, fontRgb, true, false, false, main_credits_menu, &six);
+	text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 298, 375, textHitbox, default, fontRgb, true, false, false, main_credits_menu, &seven);
+	text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 298, 390, textHitbox, default, fontRgb, true, false, false, main_credits_menu, &eight);
+	text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 298, 405, textHitbox, default, fontRgb, true, false, false, main_credits_menu, &nine);
+	text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 298, 430, textHitbox, default, fontRgb, true, false, false, main_credits_menu, &ten);
+	text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 298, 445, textHitbox, default, fontRgb, true, false, false, main_credits_menu, &eleven);
+	text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 298, 460, textHitbox, default, fontRgb, true, false, false, main_credits_menu, &twelve);
+	text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 298, 475, textHitbox, default, fontRgb, true, false, false, main_credits_menu, &thirteen);
+	text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 298, 490, textHitbox, default, fontRgb, true, false, false, main_credits_menu, &fourteen);
+	text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 298, 505, textHitbox, default, fontRgb, true, false, false, main_credits_menu, &fifteen);
+	text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 298, 520, textHitbox, default, fontRgb, true, false, false, main_credits_menu, &sixteen);
+	text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 298, 535, textHitbox, default, fontRgb, true, false, false, main_credits_menu, &seventeen);
+	//-----------------------------------------------------------------------------------------------------------------------
+
+	// In-game menu
+	SDL_Rect main_in_rect{ 0, 388, 466, 447 };
+	main_in_menu = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 280, 180, main_in_rect, true, false, false, NULL);
+
+	SDL_Rect label1_rect_in{ 1078,242,382,61 };
+	label_1_in = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, 323, 160, label1_rect_in, true, false, false, main_in_menu);
+
+	_TTF_Font* font_in = App->font->Load("fonts/Minecraftia-Regular.ttf", 32);
+	p2SString string_title_in = "PAUSE MENU";
+	in_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 410, 166, textHitbox, font_in, fontRgb, true, false, false, main_in_menu, &string_title_in);
+
+	SDL_Rect in_rect = { 1057,30,173,45 };
+	SDL_Rect idle_in = { 1057,30,173,45 };
+	SDL_Rect hover_in = { 1057,76,173,45 };
+	SDL_Rect clicked_in = { 1057,126,173,45 };
+	in_buttons = (UI_Button*)App->gui->CreateButton(UI_Element::BUTTON, 430, 247, true, true, false, main_in_menu, &idle_in, &hover_in, &clicked_in);
+	in_buttons = (UI_Button*)App->gui->CreateButton(UI_Element::BUTTON, 430, 317, true, true, false, main_in_menu, &idle_in, &hover_in, &clicked_in);
+	in_buttons = (UI_Button*)App->gui->CreateButton(UI_Element::BUTTON, 430, 387, true, true, false, main_in_menu, &idle_in, &hover_in, &clicked_in);
+	in_buttons = (UI_Button*)App->gui->CreateButton(UI_Element::BUTTON, 430, 457, true, true, false, main_in_menu, &idle_in, &hover_in, &clicked_in);
+
+	SDL_Rect unmute_rect_in = { 512,147,57,57 };
+	SDL_Rect idle_u_in = { 512,147,57,57 };
+	SDL_Rect hover_u_in = { 512,267,57,57 };
+	SDL_Rect clicked_u_in = { 1479,72,57,57 };
+	unmute_in = (UI_Button*)App->gui->CreateButton(UI_Element::BUTTON, 670, 550, true, true, false, main_in_menu, &idle_u_in, &hover_u_in, &clicked_u_in);
+	SDL_Rect mute_rect_in = { 1479, 9, 57, 57 };
+	SDL_Rect idle_m_in = { 1479, 9, 57, 57 };
+	SDL_Rect hover_m_in = { 1544,9,57,57 };
+	SDL_Rect clicked_m_in = { 440,214,57,57 };
+	mute_in = (UI_Button*)App->gui->CreateButton(UI_Element::BUTTON, 300, 550, true, true, false, main_in_menu, &idle_m_in, &hover_m_in, &clicked_m_in);
+
+	_TTF_Font* font_in_button = App->font->Load("fonts/Future Now.ttf", 30);
+	p2SString string_play_in_button = "RESUME";
+	p2SString string_save_in_button = "SAVE";
+	p2SString string_load_in_button = "LOAD";
+	p2SString string_exit_in_button = "EXIT";
+	button_in_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 470, 257, textHitbox, font_in_button, fontRgb, true, false, false, main_in_menu, &string_play_in_button);
+	button_in_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 485, 327, textHitbox, font_in_button, fontRgb, true, false, false, main_in_menu, &string_save_in_button);
+	button_in_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 485, 397, textHitbox, font_in_button, fontRgb, true, false, false, main_in_menu, &string_load_in_button);
+	button_in_text = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 495, 467, textHitbox, font_in_button, fontRgb, true, false, false, main_in_menu, &string_exit_in_button);
+
+	scrollbar_in = (UI_Scrollbar*)App->gui->CreateScrollbar(UI_Element::SCROLLBAR, 430, 559, scrollbarBar, scrollbarThumb, thumbOffset, dragArea, dragFactor, true, false, true,
+		true, false, false, scrollWindow, &scrollMask, maskOffset);
+
 	//// ------------------------------------------- UI TEST -------------------------------------------
 	//// TODO 3: Create the banner (rect {485, 829, 328, 103}) as a UI element
 	//SDL_Rect rect{ 485, 829, 328, 103 };
@@ -402,7 +611,7 @@ void j1Scene::LoadGuiElements()
 
 	////Creating a Scrollbar:
 	//SDL_Rect scrollbarBar = { 973, 786, 11, 158 };
-	////SDL_Rect scrollbarThumb		= { 843, 330, 15, 10 };
+	//SDL_Rect scrollbarThumb		= { 843, 330, 15, 10 };
 	//SDL_Rect scrollbarThumb = { 1004, 439, 15, 10 };
 	//iPoint thumbOffset = { -2, 0 };
 	//SDL_Rect scrollMask = { 0, 0, 350, 158 };

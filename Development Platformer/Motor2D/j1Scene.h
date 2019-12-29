@@ -72,9 +72,7 @@ public:
 
 	// Testing the UI
 	UI_Image* banner;
-	UI_Text* text;
 	
-	UI_Image*		window;
 	UI_Text*		interactibleText;
 	UI_Text*		buttonLabel;
 	UI_Button*		button;
@@ -96,7 +94,45 @@ private:
 	SDL_Texture*		path_debug_tex;		//Texture that will appear at the path tiles when pathfinding is being debugged.
 
 public:
+	// Main menu
 	UI_Image*			main_window;
+	UI_Image*			background_image;
+	UI_Image*			side_bars;
+	UI_Image*			label_1;
+	UI_Image*			label_2;
+	UI_Button*			main_button;
+	UI_Text*			title_text;
+	UI_Text*			button_text;
+
+	// Settings menu
+	UI_Image*			main_settings_menu;
+	UI_Image*			label_1_settings;
+	UI_Text*			settings_text;
+	UI_Text*			settings_button_text;
+	UI_Button*			unmute;
+	UI_Button*			mute;
+	UI_Button*			check;
+	UI_Button*			back;
+	UI_Button*			github;
+	UI_Button*			credits;
+	UI_Scrollbar*		scrollbar_settings;
+
+	// Credits menu
+	UI_Image*			main_credits_menu;
+	UI_Image*			label_1_credits;
+	UI_Text*			credits_text;
+	UI_Text*			text;
+	UI_Button*			back_credits;
+
+	// In-game menu
+	UI_Image*			main_in_menu;
+	UI_Image*			label_1_in;
+	UI_Text*			in_text;
+	UI_Text*			button_in_text;
+	UI_Button*			in_buttons;
+	UI_Button*			unmute_in;
+	UI_Button*			mute_in;
+	UI_Scrollbar*		scrollbar_in;
 };
 
 #endif // __j1SCENE_H__
