@@ -11,7 +11,7 @@ UI_Image::UI_Image(UI_Element element, int x, int y, SDL_Rect hitbox, bool isVis
 {
 	tex = App->gui->GetAtlas();													//The atlas already has the path to the atlas spritesheet. Check how to work around the const
 
-	if (App->gui->GetAtlas() == NULL)
+	if (tex == NULL)
 	{
 		LOG("Atlas could not be loaded");
 	}
@@ -22,6 +22,7 @@ UI_Image::UI_Image(UI_Element element, int x, int y, SDL_Rect hitbox, bool isVis
 	this->isDraggable = isDraggable;											//Sets the isDraggable flag to the one passed as argument.
 	this->dragXAxis = isDraggable;												//Sets the dragXaxis flag to the same as isDraggable. If it needs to be changed, it has to be done externally.
 	this->dragYAxis = isDraggable;												//Sets the dragYaxis flag to the same as isDraggable. If it needs to be changed, it has to be done externally.
+	this->isFilled = isFilled;
 	prevMousePos = iPoint(0, 0);												//Initializes prevMousePos for this UI Element. Safety measure to avoid weird dragging behaviour.
 	initialPosition = GetScreenPos();											//Records the initial position where the element is at at app execution start.
 
@@ -48,7 +49,10 @@ bool UI_Image::Draw()
 {
 	CheckInput();
 	
-	BlitElement(tex, GetScreenPos().x, GetScreenPos().y, &GetScreenRect());		//GetPosition() is used as the position variable in the UI parent class will be initialized with the values of the UI_Image instance at constructor call
+	if (this->element == UI_Element::IMAGE)
+	{
+		BlitElement(tex, GetScreenPos().x, GetScreenPos().y, &GetScreenRect());		//GetPosition() is used as the position variable in the UI parent class will be initialized with the values of the UI_Image instance at constructor call
+	}
 	
 	return true;
 }

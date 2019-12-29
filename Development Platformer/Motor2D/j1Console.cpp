@@ -1,5 +1,6 @@
 #include "p2Log.h"
 #include "j1App.h"
+#include "j1Render.h"
 #include "j1Fonts.h"
 #include "j1Gui.h"
 #include "UI_Image.h"
@@ -39,11 +40,14 @@ bool j1Console::PreUpdate()
 
 bool j1Console::Update(float dt)
 {
+
 	return true;
 }
 
 bool j1Console::PostUpdate()
 {
+	//DrawBackgroundElement();
+	
 	return true;
 }
 
@@ -115,44 +119,87 @@ void j1Console::InitConsole()
 	input_font_colour.b = console.child("input_font_colour").attribute("b").as_int();
 	input_font_colour.a = console.child("input_font_colour").attribute("a").as_int();
 
-	cursor_rect;
-	cursor_colour;
-	input_text_offset;
-	cursor_blinkFrequency;
-	input_isVisible;
-	input_isInteractible;
-	input_isDraggable;
+	cursor_rect.x = console.child("cursor_rect").attribute("x").as_int();
+	cursor_rect.y = console.child("cursor_rect").attribute("y").as_int();
+	cursor_rect.w = console.child("cursor_rect").attribute("w").as_int();
+	cursor_rect.h = console.child("cursor_rect").attribute("h").as_int();
+
+	cursor_colour.r = console.child("cursor_colour").attribute("r").as_int();
+	cursor_colour.g = console.child("cursor_colour").attribute("g").as_int();
+	cursor_colour.b = console.child("cursor_colour").attribute("b").as_int();
+	cursor_colour.a = console.child("cursor_colour").attribute("a").as_int();
+
+	input_text_offset.x = console.child("input_text_offset").attribute("x").as_int();
+	input_text_offset.y = console.child("input_text_offset").attribute("y").as_int();
+
+	cursor_blinkFrequency = console.child("cursor_blinkFrequency").attribute("frequency").as_float();
+	input_isVisible = console.child("input_isVisible").attribute("value").as_bool();
+	input_isInteractible = console.child("input_isInteractible").attribute("value").as_bool();
+	input_isDraggable = console.child("input_isDraggable").attribute("value").as_bool();
 
 	// --- SCROLLBAR
-	scroll_position;
-	scrollbar_rect;
-	thumb_rect;
-	thumbOffset;
-	dragArea;
-	dragFactor;
-	dragXAxis;
-	dragYAxis;
-	invertedScrolling;
-	scroll_isVisible;
-	scroll_isInteractible;
-	scroll_isDraggable;
+	scroll_position.x = console.child("scroll_position").attribute("x").as_int();
+	scroll_position.y = console.child("scroll_position").attribute("y").as_int();
+
+	scrollbar_rect.x = console.child("scrollbar_rect").attribute("x").as_int();
+	scrollbar_rect.y = console.child("scrollbar_rect").attribute("y").as_int();
+	scrollbar_rect.w = console.child("scrollbar_rect").attribute("w").as_int();
+	scrollbar_rect.h = console.child("scrollbar_rect").attribute("h").as_int();
+
+	thumb_rect.x = console.child("thumb_rect").attribute("x").as_int();
+	thumb_rect.y = console.child("thumb_rect").attribute("y").as_int();
+	thumb_rect.w = console.child("thumb_rect").attribute("w").as_int();
+	thumb_rect.h = console.child("thumb_rect").attribute("h").as_int();
+
+	thumb_offset.x = console.child("thumb_offset").attribute("x").as_int();
+	thumb_offset.y = console.child("thumb_offset").attribute("y").as_int();
+
+	drag_area.x = console.child("drag_area").attribute("x").as_int();
+	drag_area.y = console.child("drag_area").attribute("y").as_int();
+	drag_area.w = console.child("drag_area").attribute("w").as_int();
+	drag_area.h = console.child("drag_area").attribute("h").as_int();
+
+	drag_factor = console.child("drag_factor").attribute("factor").as_float();
+	drag_x_axis = console.child("drag_x_axis").attribute("value").as_bool();
+	drag_y_axis = console.child("drag_y_axis").attribute("value").as_bool();
+	inverted_scrolling = console.child("inverted_scrolling").attribute("value").as_bool();
+	scroll_isVisible = console.child("scroll_isVisible").attribute("value").as_bool();
+	scroll_isInteractible = console.child("scroll_isInteractible").attribute("value").as_bool();
+	scroll_isDraggable = console.child("scroll_isDraggable").attribute("value").as_bool();
 }
 
 void j1Console::CreateConsoleElements()
 {
-	output_font = App->font->Load(output_font_path.GetString());
-	input_font = App->font->Load(input_font_path.GetString());
-	
-	console_background = (UI_Image*)App->gui->CreateImage(UI_Element::EMPTY, 0, 0, bg_rect, bg_isVisible, bg_isInteractible, bg_isDraggable, NULL);
+	output_font = App->font->Load(output_font_path.GetString(), output_font_size);
+	input_font = App->font->Load(input_font_path.GetString(), input_font_size);
 
+	p2SString defaultString = "DefaultString";
+
+	console_background = (UI_Image*)App->gui->CreateImage(UI_Element::EMPTY, 0, 0, bg_rect, bg_isVisible, bg_isInteractible, bg_isDraggable, NULL);
+	
 	console_output = (UI_Text*)App->gui->CreateText(UI_Element::TEXT, 0, 0, output_rect, output_font, output_font_colour, output_isVisible, output_isInteractible, output_isDraggable,
 													console_background, NULL);
 
-	console_input = (UI_InputBox*)App->gui->CreateInputBox(UI_Element::INPUTBOX, 10, (console_background->GetHitbox().h - input_rect.h), input_rect, input_font, input_font_colour, cursor_rect, cursor_colour, input_text_offset,
-													cursor_blinkFrequency, input_isVisible, input_isInteractible, input_isDraggable, console_background, NULL);
+	console_input = (UI_InputBox*)App->gui->CreateInputBox(UI_Element::INPUTBOX, 10, (console_background->GetHitbox().h - input_rect.h), input_rect, input_font, input_font_colour,
+		cursor_rect, cursor_colour, input_text_offset, cursor_blinkFrequency, input_isVisible, input_isInteractible, input_isDraggable, console_background, &defaultString, true);
 
-	console_scroll = (UI_Scrollbar*)App->gui->CreateScrollbar(UI_Element::SCROLLBAR, 0, 0, scrollbar_rect, thumb_rect, thumbOffset, dragArea, dragFactor, dragXAxis, dragYAxis,
-													invertedScrolling, scroll_isVisible, scroll_isDraggable, scroll_isInteractible, console_background, NULL, iPoint(0, 0));
+	console_scroll = (UI_Scrollbar*)App->gui->CreateScrollbar(UI_Element::SCROLLBAR, 0, 0, scrollbar_rect, thumb_rect, thumb_offset, drag_area, drag_factor, drag_x_axis, drag_y_axis,
+													inverted_scrolling, scroll_isVisible, scroll_isDraggable, scroll_isInteractible, console_background, NULL, iPoint(0, 0), true);
+
+	console_scroll->LinkScroll(console_output);
+}
+
+void j1Console::DrawBackgroundElement()
+{
+	if (console_background->isVisible)
+	{
+		App->render->DrawQuad(console_background->GetHitbox(), bg_colour.r, bg_colour.g, bg_colour.b, bg_colour.a, true, false);
+	}
+}
+
+bool j1Console::ConsoleIsOpen()
+{
+	return console_background->isVisible;
 }
 
 Command::Command(const char* command, j1Module* callback, int min_arg, int max_arg)

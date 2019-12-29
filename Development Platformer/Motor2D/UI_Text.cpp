@@ -234,4 +234,9 @@ void UI_Text::RefreshTextInput(const char* newString)
 	}
 
 	currentTex = inputTextTex;
+
+	if (currentTex != NULL)
+	{
+		LOG("CurrentTex is %s", newString);
+	}
 }

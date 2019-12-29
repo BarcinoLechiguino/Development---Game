@@ -101,6 +101,8 @@ public:
 	UI*			parent;								//Keeps track of the dependencies between UI elements.
 
 	iPoint		initialPosition;					//Keeps track of the initial position of a UI Element. Create Get/Set Methods?
+	
+	bool		isFilled;							//Determines if an empty UI Element will have its rect drawn or not.
 
 private:
 	iPoint		position;							//Position of the UI element in the world.

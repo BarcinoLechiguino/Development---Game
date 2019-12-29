@@ -10,7 +10,7 @@
 //UI_InputBox will always be interactible (although it can be set to not be), and can be draggable. Can potentially receive all events.
 //The element receives as arguments all the requiered elements to create a UI_Image (Background), a UI_Text (input text) and another UI_Image (cursor).
 UI_InputBox::UI_InputBox(UI_Element element, int x, int y, SDL_Rect hitbox, _TTF_Font* font, SDL_Color fontColour, SDL_Rect cursorSize, SDL_Color cursorColour, iPoint textOffset,
-		float blinkFrequency, bool isVisible, bool isInteractible, bool isDraggable, UI* parent, p2SString* defaultString) : UI(element, x, y, hitbox, parent)
+				float blinkFrequency, bool isVisible, bool isInteractible, bool isDraggable, UI* parent, p2SString* defaultString, bool emptyElements) : UI(element, x, y, hitbox, parent)
 {
 	//tex = App->gui->GetAtlas();
 	
@@ -40,9 +40,18 @@ UI_InputBox::UI_InputBox(UI_Element element, int x, int y, SDL_Rect hitbox, _TTF
 	initialPosition = GetScreenPos();												//Records the initial position where the input box is at app execution start.
 
 	// --- Input Box Elements
-	this->background = UI_Image(UI_Element::IMAGE, x, y, hitbox, isVisible, false, false, this);
+	if (!emptyElements)
+	{
+		this->background = UI_Image(UI_Element::IMAGE, x, y, hitbox, isVisible, false, false, this);
+		//this->cursor = UI_Image(UI_Element::IMAGE, x + textOffset.x, y + textOffset.y, cursorSize, isVisible, false, false, this);
+	}
+	else
+	{
+		this->background = UI_Image(UI_Element::EMPTY, x, y, hitbox, isVisible, false, false, this);
+	}
+
+	this->cursor = UI_Image(UI_Element::EMPTY, x + textOffset.x, y + textOffset.y, cursorSize, isVisible, false, false, this);
 	this->text = UI_Text(UI_Element::TEXT, x + textOffset.x, y + textOffset.y, hitbox, font, fontColour, isVisible, false, false, this, defaultString);
-	this->cursor = UI_Image(UI_Element::IMAGE, x + textOffset.x, y + textOffset.y, cursorSize, isVisible, false, false, this);
 	
 	// --- Text Variables
 	this->font = font;																//Sets the UI input box font to the one being passed as argument.
@@ -214,6 +223,16 @@ void UI_InputBox::CheckInputBoxState()														// -------------------------
 {
 	UpdateInputBoxElementsPos();															//Calls UpdateInputBoxE...() If input box has changed positions, all its elements will be actualized.
 	CheckFocus();																			//Calls CheckFocus(). If the input box has the focus and is visible, text input will be received and sent to Print().
+
+	if (background.isVisible != this->isVisible)
+	{
+		background.isVisible = this->isVisible;
+	}
+
+	if (text.isVisible != this->isVisible)
+	{
+		text.isVisible = this->isVisible;
+	}
 }
 
 void UI_InputBox::UpdateInputBoxElementsPos()												// --------------------------------------------------------------------------

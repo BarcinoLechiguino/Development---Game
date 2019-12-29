@@ -14,6 +14,7 @@
 #include "j1Audio.h"
 #include "j1Module.h"
 #include "j1EntityManager.h"
+#include "j1Console.h"
 
 j1Player1::j1Player1(int x, int y, ENTITY_TYPE type) : j1Player(x, y, type) //THIS HERE //Constructor. Called at the first frame.
 {
@@ -345,7 +346,7 @@ void j1Player1::OnCollision(Collider* C1, Collider* C2)
 //----------------------------------------------- PLAYER 1 INPUTS -----------------------------------------------
 void j1Player1::SetPlayerState(Player_State& player_state)
 {
-	if (player.GodMode == false && !App->pause)
+	if (player.GodMode == false && !App->pause && !App->console->ConsoleIsOpen())
 	{
 		player_state = Player_State::Idle;
 
@@ -518,7 +519,7 @@ void j1Player1::PlayerMovement(Player_State player_state, float dt)
 
 void j1Player1::GodModeInput()
 {
-	if (!App->pause)
+	if (!App->pause && !App->console->ConsoleIsOpen())
 	{
 		player.airborne = false;
 

@@ -5,8 +5,9 @@
 #include "j1Textures.h"
 #include "j1Fonts.h"
 #include "j1Input.h"
-#include "j1Gui.h"
 #include "j1Scene.h"
+#include "j1Console.h"
+#include "j1Gui.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -65,8 +66,8 @@ bool j1Gui::PreUpdate()
 	{
 		//ShowElement(App->scene->draggableButton2);
 
-		SetElementsVisibility(App->scene->window, !App->scene->window->isVisible);
-		SetElementsVisibility(App->scene->scrollWindow, !App->scene->scrollWindow->isVisible);
+		//SetElementsVisibility(App->scene->window, !App->scene->window->isVisible);
+		/*SetElementsVisibility(App->scene->scrollWindow, !App->scene->scrollWindow->isVisible);
 
 		if (App->scene->scrollWindow->isVisible)
 		{
@@ -75,7 +76,12 @@ bool j1Gui::PreUpdate()
 		else
 		{
 			App->pause = false;
-		}
+		}*/
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_GRAVE) == KEY_DOWN)
+	{
+		SetElementsVisibility(App->console->console_background, !App->console->console_background->isVisible);
 	}
 	
 	return true;
@@ -85,7 +91,9 @@ bool j1Gui::PreUpdate()
 bool j1Gui::PostUpdate()
 {	
 	//escape = true;
-	
+	App->console->DrawBackgroundElement();		//THIS HERE
+
+
 	for (p2List_item<UI*>* element_iterator = elements.start; element_iterator != NULL; element_iterator = element_iterator->next)
 	{
 		switch (element_iterator->data->element)
@@ -205,11 +213,12 @@ UI* j1Gui::CreateButton(UI_Element element, int x, int y, bool isVisible, bool i
 }
 
 UI* j1Gui::CreateInputBox(UI_Element element, int x, int y, SDL_Rect hitbox, _TTF_Font* font, SDL_Color fontColour, SDL_Rect cursor, SDL_Color cursorColour, iPoint textOffset, 
-					float blinkFrequency, bool isVisible, bool isInteractible, bool isDraggable, UI* parent, p2SString* defaultString)
+					float blinkFrequency, bool isVisible, bool isInteractible, bool isDraggable, UI* parent, p2SString* defaultString, bool emptyElements)
 {
 	UI* elem = nullptr;
 
-	elem = new UI_InputBox(element, x, y, hitbox, font, fontColour, cursor, cursorColour, textOffset, blinkFrequency, isVisible, isInteractible, isDraggable, parent, defaultString);
+	elem = new UI_InputBox(element, x, y, hitbox, font, fontColour, cursor, cursorColour, textOffset, blinkFrequency, isVisible, isInteractible, isDraggable, parent,
+					defaultString, emptyElements);
 
 	if (elem != nullptr)
 	{
@@ -220,12 +229,12 @@ UI* j1Gui::CreateInputBox(UI_Element element, int x, int y, SDL_Rect hitbox, _TT
 }
 
 UI* j1Gui::CreateScrollbar(UI_Element element, int x, int y, SDL_Rect hitbox, SDL_Rect thumbSize, iPoint thumbOffset, SDL_Rect dragArea, float dragFactor, bool dragXAxis, bool dragYAxis,
-					bool invertedScrolling, bool isVisible, bool isInteractible, bool isDraggable, UI* parent, SDL_Rect* scrollMask, iPoint maskOffset)
+					bool invertedScrolling, bool isVisible, bool isInteractible, bool isDraggable, UI* parent, SDL_Rect* scrollMask, iPoint maskOffset, bool emptyElements)
 {
 	UI* elem = nullptr;
 
 	elem = new UI_Scrollbar(element, x, y, hitbox, thumbSize, thumbOffset, dragArea, dragFactor, dragXAxis, dragYAxis, invertedScrolling,
-					isVisible, isInteractible, isDraggable, parent, scrollMask, maskOffset);
+					isVisible, isInteractible, isDraggable, parent, scrollMask, maskOffset, emptyElements);
 
 	if (elem != nullptr)
 	{

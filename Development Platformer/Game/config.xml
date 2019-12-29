@@ -123,15 +123,15 @@
   <console>
     <!--Console Background Variables-->
     <bg_position x="0" y="0"/>
-    <bg_rect x="0" y="0" w="1024" h="192"/>     <!--256-->
+    <bg_rect x="0" y="0" w="1024" h="256"/>     <!--256-->
     <bg_isVisible value="false"/>
     <bg_isInteractible value="false"/>
     <bg_isDraggable value="false"/>
-    <bg_colour r="0" g="0" b="0" a="80"/>
+    <bg_colour r="0" g="0" b="0" a="180"/>
     
     <!--Console Output Variables-->
     <output_position x="20" y="20"/>
-    <output_rect x="0" y="0" w="1024" h="192"/>
+    <output_rect x="0" y="0" w="1024" h="216"/>
     <output_font_path path="fonts/Minecraftia-Regular.ttf"/>
     <output_font_size size="18"/>
     <output_font_colour r="255" g="255" b="255" a="255"/>
@@ -141,28 +141,28 @@
 
     <!--Console Input Variables-->
     <input_position x="0" y="152"/>
-    <input_rect x="0" y="0" w="1024" h="20"/>
+    <input_rect x="0" y="0" w="1024" h="40"/>
     <input_font_path path="fonts/Minecraftia-Regular.ttf"/>
-    <input_font_size size="18"/>
+    <input_font_size size="20"/>
     <input_font_colour r="255" g="255" b="255" a="255"/>
-    <cursor_rect x="0" y="0" w="2" h="15"/>
+    <cursor_rect x="0" y="0" w="3" h="30"/>
     <cursor_colour r="255" g="255" b="255" a="255"/>
-    <input_text_offset x="10" y="5"/>
+    <input_text_offset x="20" y="8"/>
     <cursor_blinkFrequency frequency="0.5f"/>
     <input_isVisible value="false"/>
-    <input_isInteractible value="false"/>
+    <input_isInteractible value="true"/>
     <input_isDraggable value="false"/>
 
     <!--Console Scrollbar Variables-->
     <scroll_position x="0" y="0"/>
-    <scrollbar_rect x="0" y="0" w="20" h="192"/>
+    <scrollbar_rect x="0" y="0" w="20" h="256"/>
     <thumb_rect x="0" y="0" w="20" h="20"/>
-    <thumbOffset x="0" y="0"/>
-    <dragArea x="0" y="0" w="20" h="192"/>
-    <dragFactor factor="0.2f"/>
-    <dragXAxis value="false"/>
-    <dragYAxis value="true"/>
-    <invertedScrolling value="false"/>
+    <thumb_offset x="0" y="0"/>
+    <drag_area x="0" y="0" w="20" h="256"/>
+    <drag_factor factor="0.2f"/>
+    <drag_x_axis value="false"/>
+    <drag_y_axis value="true"/>
+    <inverted_scrolling value="false"/>
     <scroll_isVisible value="false"/>
     <scroll_isInteractible value="false"/>
     <scroll_isDraggable value="false"/>

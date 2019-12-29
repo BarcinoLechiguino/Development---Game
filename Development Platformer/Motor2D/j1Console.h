@@ -47,8 +47,10 @@ public:
 public:
 	void InitConsole();
 	void CreateConsoleElements();
+	void DrawBackgroundElement();
+	bool ConsoleIsOpen();
 	Command* CreateCommand(const char* command, j1Module* callback, int min_arg, int max_arg);
-	void DrawConsoleElements();
+	//void DrawConsoleElements();
 
 public:
 	UI_Image*			console_background;
@@ -90,12 +92,12 @@ public:
 	iPoint				scroll_position;
 	SDL_Rect			scrollbar_rect;
 	SDL_Rect			thumb_rect;
-	iPoint				thumbOffset;
-	SDL_Rect			dragArea;
-	float				dragFactor;
-	bool				dragXAxis;
-	bool				dragYAxis;
-	bool				invertedScrolling;
+	iPoint				thumb_offset;
+	SDL_Rect			drag_area;
+	float				drag_factor;
+	bool				drag_x_axis;
+	bool				drag_y_axis;
+	bool				inverted_scrolling;
 	bool				scroll_isVisible;
 	bool				scroll_isInteractible;
 	bool				scroll_isDraggable;

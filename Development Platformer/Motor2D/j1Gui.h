@@ -54,11 +54,12 @@ public:
 	UI* CreateUI_Window(UI_Element element, int x, int y, SDL_Rect hitbox, bool isVisible = true, bool isInteractible = false, bool isDraggable = false, UI* parent = nullptr);
 
 	UI* CreateInputBox(UI_Element element, int x, int y, SDL_Rect hitbox, _TTF_Font* font, SDL_Color fontColour, SDL_Rect cursor, SDL_Color cursorColour, iPoint textOffset,
-		float blinkFrequency = 0.0f, bool isVisible = true, bool isInteractible = true, bool isDraggable = false, UI* parent = nullptr, p2SString* defaultString = nullptr);
+		float blinkFrequency = 0.0f, bool isVisible = true, bool isInteractible = true, bool isDraggable = false, UI* parent = nullptr,
+		p2SString* defaultString = nullptr, bool emptyElements = false);
 
 	UI* CreateScrollbar(UI_Element element, int x, int y, SDL_Rect hitbox, SDL_Rect thumbSize, iPoint thumbOffset, SDL_Rect dragArea, float dragFactor, bool dragXAxis = false,
-		bool dragYAxis = true, bool invertedScrolling = false, bool isVisible = true, bool isInteractible = true, bool isDraggable = false,
-		UI* parent = nullptr, SDL_Rect* scrollMask = nullptr, iPoint maskOffset = iPoint(0, 0));
+		bool dragYAxis = true, bool invertedScrolling = false, bool isVisible = true, bool isInteractible = true, bool isDraggable = false, UI* parent = nullptr,
+		SDL_Rect* scrollMask = nullptr, iPoint maskOffset = iPoint(0, 0), bool emptyElements = false);
 
 
 	void OnEventCall(UI* element, UI_Event ui_event);					//This function is called whenever an new event happens, it receives the pointer of the element that caused the event and the kind of event it is.

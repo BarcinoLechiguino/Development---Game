@@ -811,7 +811,7 @@ bool j1Map::ChangeMap(const char* newMap)
 	App->entityManager->player2->Start();		//Load / Reset P2
 
 	App->gui->Start();
-	//App->console->Start();
+	App->console->Start();
 	App->scene->LoadGuiElements();
 	//App->scene->Start();
 

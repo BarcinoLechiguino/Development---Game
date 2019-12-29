@@ -13,6 +13,7 @@
 #include "j1FadeScene.h"
 #include "j1Audio.h"
 #include "j1EntityManager.h"
+#include "j1Console.h"
 
 j1Player2::j1Player2(int x, int y, ENTITY_TYPE type) : j1Player(x, y, type) //Constructor. Called at the first frame.
 {
@@ -339,7 +340,7 @@ void j1Player2::OnCollision(Collider* C1, Collider* C2)
 //----------------------------------------------- PLAYER 2 INPUTS -----------------------------------------------
 void j1Player2::SetPlayerState(Player_State& player_state)
 {
-	if (player.GodMode == false && !App->pause)
+	if (player.GodMode == false && !App->pause && !App->console->ConsoleIsOpen())
 	{
 		player.state = Player_State::Idle;
 
@@ -527,7 +528,7 @@ void j1Player2::PlayerMovement(Player_State player_state, float dt)
 
 void j1Player2::GodModeInput()
 {
-	if (!App->pause)
+	if (!App->pause && !App->console->ConsoleIsOpen())
 	{
 		player.airborne = false;
 

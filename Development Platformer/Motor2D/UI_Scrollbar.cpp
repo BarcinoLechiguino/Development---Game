@@ -5,7 +5,8 @@
 #include "UI_Scrollbar.h"
 
 UI_Scrollbar::UI_Scrollbar(UI_Element element, int x, int y, SDL_Rect hitbox, SDL_Rect thumbSize, iPoint thumbOffset, SDL_Rect dragArea, float dragFactor, bool dragXAxis, bool dragYAxis,
-				bool invertedScrolling, bool isVisible, bool isInteractible, bool isDraggable, UI* parent, SDL_Rect* scrollMask, iPoint maskOffset) : UI(element, x, y, hitbox, parent)
+				bool invertedScrolling, bool isVisible, bool isInteractible, bool isDraggable, UI* parent , SDL_Rect* scrollMask, iPoint maskOffset,
+				bool emptyElements) : UI(element, x, y, hitbox, parent)
 {
 	//tex = App->gui->GetAtlas();
 
@@ -39,14 +40,20 @@ UI_Scrollbar::UI_Scrollbar(UI_Element element, int x, int y, SDL_Rect hitbox, SD
 	/*bar = UI_Image(UI_Element::IMAGE, x, y, hitbox, true, false, false, this);
 	thumb = UI_Image(UI_Element::IMAGE, x + thumbOffset.x, y + thumbOffset.y, thumbSize, true, true, true, this);*/
 
-	bar = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, x, y, hitbox, isVisible, false, false, this);
-	thumb = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, x + thumbOffset.x, y + thumbOffset.y, thumbSize, isVisible, true, true, this);
+	if (!emptyElements)
+	{
+		bar = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, x, y, hitbox, isVisible, false, false, this);
+		thumb = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, x + thumbOffset.x, y + thumbOffset.y, thumbSize, isVisible, true, true, this);
+	}
+	else
+	{
+		bar = (UI_Image*)App->gui->CreateImage(UI_Element::EMPTY, x, y, hitbox, isVisible, false, false, this);
+		thumb = (UI_Image*)App->gui->CreateImage(UI_Element::IMAGE, x + thumbOffset.x, y + thumbOffset.y, thumbSize, isVisible, true, true, this);
+	}
 
 	if (scrollMask != nullptr)
 	{
 		this->scrollMask = (UI_Image*)App->gui->CreateImage(UI_Element::EMPTY, x + maskOffset.x, y + maskOffset.y, *scrollMask, false, false, false, this);
-		//this->scrollMask.
-		//this->scrollMask = UI_Image(UI_Element::IMAGE, x + maskOffset.x, y + maskOffset.y, *scrollMask, false, false, false, this);
 	}
 
 	// --- Other Scrollbar Variables
