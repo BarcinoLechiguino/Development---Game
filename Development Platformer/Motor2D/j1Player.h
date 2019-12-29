@@ -65,7 +65,7 @@ struct Player
 	bool			checkpointReached;		//Keeps track whether a player has reacked a checkpoint or not.
 	bool			fading;					//Fade character when changing scenes.
 	bool			GodMode;				//Defines whether GodMode is active or not.
-	bool			switch_sprites;			//Defines which sprite will a player have.
+	bool			extraLife;				//Bool that keep track of whether or not a player has been awarded an extra life.
 
 	int				boostThreshold;			//Threshold from within which the boost jump is activated. Temporal
 	p2SString		mapTag;					//Depending on the mapTag, the initial position loaded from the xml file of the player will be one or another. mapTag = "factoryMap" --> Origin Pos in the factory map.

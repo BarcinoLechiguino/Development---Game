@@ -80,6 +80,7 @@
         <acceleration x="60.0f" y="450.0f"/>
         <gravity value="40.0f"/>
         <sprite_size w="56" h="78"/>
+        <points value ="100"/>
         <lives lives="1"/>
         <detection_radius radius="125"/>
       </mecha>
@@ -88,6 +89,7 @@
         <position x="212" y="400"/>
         <speed x="200.0f" y="125.0f"/>
         <sprite_size w="38" h="52"/>
+        <points value ="75"/>
         <lives lives="1"/>
         <detection_radius radius="125"/>
         <update_cycle_length length="0.1f"/>

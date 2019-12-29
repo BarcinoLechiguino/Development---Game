@@ -118,6 +118,9 @@ void j1Alien::OnCollision(Collider* C1, Collider* C2)
 				int num = App->entityManager->entities.find(this);
 				RELEASE(App->entityManager->entities.At(num)->data);
 				App->entityManager->entities.del(App->entityManager->entities.At(num));
+
+				App->entityManager->player->player.score += pointsOnKill;
+				App->entityManager->player2->player.score += pointsOnKill;
 			}
 		}
 
@@ -179,6 +182,8 @@ void j1Alien::LoadEntityProperties()
 
 	speed.x			= enemy_entity.child("speed").attribute("x").as_float();
 	speed.y			= enemy_entity.child("speed").attribute("y").as_float();
+
+	pointsOnKill	= enemy_entity.child("points").attribute("value").as_int();
 
 	detectionRadius = enemy_entity.child("detection_radius").attribute("radius").as_int();
 

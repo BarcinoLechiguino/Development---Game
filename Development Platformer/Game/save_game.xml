@@ -4,7 +4,7 @@
 	<window />
 	<textures />
 	<audio>
-		<volume value="0" />
+		<volume value="70" />
 	</audio>
 	<map />
 	<pathfinding />
@@ -16,10 +16,10 @@
 	</scene>
 	<entities>
 		<player>
-			<position x="201" y="455" />
+			<position x="2425.49902" y="463.746185" />
 		</player>
 		<player2>
-			<position x="182" y="455" />
+			<position x="2463.49902" y="338.978149" />
 		</player2>
 		<mecha />
 		<alien />
@@ -27,6 +27,6 @@
 	<collisions />
 	<:anonymous />
 	<renderer>
-		<camera x="0" y="-100" />
+		<camera x="-1970" y="-46" />
 	</renderer>
 </game_state>
