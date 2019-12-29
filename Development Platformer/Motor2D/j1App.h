@@ -62,10 +62,6 @@ public:
 	void SaveGame(const char* file) const;
 	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
 
-	// Console Commands
-	void CreateAppCommands();
-	void OnCommand(const char* command, const char* subCommand = nullptr);
-
 private:
 
 	// Load config file
@@ -111,6 +107,9 @@ public:
 	j1Gui*				gui;
 	j1Console*			console;
 
+	uint				frame_cap;				//Stores the frames per second cap to be applied.
+	uint				original_frame_cap;		//Stores the original frame cap at application start.
+
 	bool				framesAreCapped;		//Keeps track whether the frame cap is on or off.
 	bool				vsyncIsActive;			//Keeps track whether Vsync is on or off.
 	bool				pause;
@@ -140,20 +139,10 @@ private:
 	uint32				prev_sec_frames;		//Stores the number of frames processed last second.
 
 	j1PerfTimer			true_delay_timer;		//Timer that will be used to see the actual amount of delay that was applied to cap the framerate.
-	uint				frame_cap;				//Stores the frames per second cap to be applied.
 	float				dt;						//Keeps track of the amount of time in milliseconds that has passed in a frame. Will be used to make everything (update()) be in the same timestep.
 
 	char*				frameCapOnOff;			//String that is set to 'On' when the frame cap is on and  'Off' when it is off.
 	char*				vsyncOnOff;				//String that is set to 'On' when Vsync is on and 'Off' when it is off.
-
-	// Console Strings
-	const char*			enable_pause;
-	const char*			disable_pause;
-	const char*			enableFrameCap;
-	const char*			disableFrameCap;
-	const char*			FPS_30;
-	const char*			FPS_60;
-	const char*			FPS_120;
 };
 
 extern j1App* App; // No student is asking me about that ... odd :-S

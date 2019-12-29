@@ -169,7 +169,6 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 	{
 		App->pause = !App->pause;
-		App->gui->ui_debug = !App->gui->ui_debug;
 	}
 	
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)			//Save Game Key
@@ -189,12 +188,13 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)			//PathfindingCollisions meta layer Debug Key
 	{
-		App->map->pathfindingMetaDebug = !App->map->pathfindingMetaDebug;
+		App->gui->ui_debug = !App->gui->ui_debug;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)			//Collider Debug Key
 	{
 		App->collisions->collider_debug = !App->collisions->collider_debug;
+		App->map->pathfindingMetaDebug = !App->map->pathfindingMetaDebug;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)		//God Mode Key
@@ -215,7 +215,15 @@ bool j1Scene::Update(float dt)														//Receives dt as an argument.
 
 	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)		//Enabling / Disabling frame cap
 	{
-		App->framesAreCapped = !App->framesAreCapped;
+		//App->framesAreCapped = !App->framesAreCapped;
+		if (App->frame_cap == CAP_AT_60)
+		{
+			App->frame_cap = CAP_AT_30;
+		}
+		else
+		{
+			App->frame_cap = CAP_AT_60;
+		}
 	}
 	// --------------------------------------------------------------------------------------------
 

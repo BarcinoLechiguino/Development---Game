@@ -236,20 +236,6 @@ void j1Console::CreateConsoleElements()
 	}
 }
 
-void j1Console::CreateConsoleCommands()
-{
-	//CreateCommand("quit", this, 1, 1);
-	CreateCommand("quit", App->gui, 1, 1);
-
-		//if (*App->input->GetInputText() == *quitCommand)
-	//{
-	//	//runGame = false;
-	//	CreateCommand(quitCommand, this, 1, 1);
-	//	
-	//	App->gui->escape = false;
-	//}
-}
-
 void j1Console::DrawBackgroundElement()
 {
 	if (console_background->isVisible)
@@ -284,3 +270,66 @@ Command* j1Console::CreateCommand(const char* command, j1Module* callback, int m
 
 	return comm;
 }
+
+void j1Console::CreateConsoleCommands()
+{
+	//CreateCommand("quit", this, 1, 1);
+	CreateCommand("help", this, 1, 1);
+	//ShellExecuteA(NULL, "open", "https://gromeu2000.wixsite.com/mutualcooperation", NULL, NULL, SW_SHOWNORMAL);
+
+	// App Commands
+	enable_pause		= "enable_pause";
+	disable_pause		= "disable_pause";
+	enableFrameCap		= "enable_frame_cap";
+	disableFrameCap		= "disable_frame_cap";
+	resetFrameCap		= "reset_frame_cap";
+	FPS_30				= "FPS 30";									//EVERYTHING IS A LIE. JUST SMOKE AND MIRRORS.
+	FPS_60				= "FPS 60";
+	FPS_120				= "FPS 120";
+
+	CreateCommand(enable_pause, this, 1, 1);
+	CreateCommand(disable_pause, this, 1, 1);
+	CreateCommand(enableFrameCap, this, 1, 1);
+	CreateCommand(disableFrameCap, this, 1, 1);
+	CreateCommand(resetFrameCap, this, 1, 1);
+	CreateCommand(FPS_30, this, 1, 1);
+	CreateCommand(FPS_60, this, 1, 1);
+	CreateCommand(FPS_120, this, 1, 1);
+}
+
+void j1Console::OnCommand(const char* command, const char* subCommand)
+{
+	// --- APP COMMANDS
+	if (*command == *enable_pause)										// -----------------------------------------------------------------------------------
+	{
+		App->pause = true;												// Enable Pause Mode
+	}
+	if (*command == *disable_pause)										// -----------------------------------------------------------------------------------
+	{
+		App->pause = false;												// Disable Pause Mode
+	}
+	if (*command == *enableFrameCap)									// -----------------------------------------------------------------------------------
+	{
+		App->framesAreCapped = true;									// Enable Frame Cap
+	}
+	if (*command == *disableFrameCap)									// -----------------------------------------------------------------------------------
+	{
+		App->framesAreCapped = false;									// Disable Frame Cap
+	}
+	if (*command == *resetFrameCap)										// -----------------------------------------------------------------------------------
+	{
+		App->frame_cap = App->original_frame_cap;						// Reset Frame Cap
+	}
+	if (*command == *FPS_30)											// -----------------------------------------------------------------------------------
+	{
+		App->frame_cap = CAP_AT_30;										// Cap Frames at 30
+	}
+	if (*command == *FPS_60)											// -----------------------------------------------------------------------------------
+	{
+		App->frame_cap = CAP_AT_60;										// Cap Frames at 60
+	}
+	if (*command == *FPS_120)											// -----------------------------------------------------------------------------------
+	{
+		App->frame_cap = CAP_AT_120;									// Cap Frames at 120
+	}
+}																		// -----------------------------------------------------------------------------------		

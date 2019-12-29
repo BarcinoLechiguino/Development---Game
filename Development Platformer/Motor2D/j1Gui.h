@@ -84,6 +84,11 @@ public:
 
 	bool escape;										//When this bool is true the game is exited.
 	bool ui_debug;										//When this bool is true, debug mode is activated.
+	
+	//Command Strings
+	const char* quitCommand;
+	const char* enable_ui_debug;
+	const char* disable_ui_debug;
 
 public:
 	uint				tab_fx;

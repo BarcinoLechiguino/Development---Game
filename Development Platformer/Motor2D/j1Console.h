@@ -51,6 +51,7 @@ public:
 	void DrawBackgroundElement();
 	bool ConsoleIsOpen();
 	Command* CreateCommand(const char* command, j1Module* callback, int min_arg, int max_arg);
+	void OnCommand(const char* command, const char* subCommand = nullptr);
 	//void DrawConsoleElements();
 
 public:
@@ -112,6 +113,16 @@ public:
 private:
 	pugi::xml_document	config_file;
 	pugi::xml_node		console;
+
+	// Console Strings
+	const char*			enable_pause;
+	const char*			disable_pause;
+	const char*			enableFrameCap;
+	const char*			disableFrameCap;
+	const char*			resetFrameCap;
+	const char*			FPS_30;
+	const char*			FPS_60;
+	const char*			FPS_120;
 };
 
 #endif // !__j1CONSOLE_H__

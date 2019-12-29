@@ -85,6 +85,8 @@ public:
 	bool CutInputText(unsigned int begin, unsigned int end = 0);
 	char* GetCutText(unsigned int begin, unsigned int end = -1, bool returnFirstPart = false, bool returnLastPart = false);
 
+	bool CmpStr(const char* str1, const char* str2);
+
 	void ClearTextInput();
 	void DeleteTextInput(int positionIndex);
 

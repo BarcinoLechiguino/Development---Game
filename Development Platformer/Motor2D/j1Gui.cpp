@@ -51,6 +51,8 @@ bool j1Gui::Start()
 	exit_fx = App->audio->LoadFx("audio/fx/exit_ui.wav");
 	nav_fx = App->audio->LoadFx("audio/fx/navegate_ui.wav");
 
+	CreateGuiCommands();
+
 	return true;
 }
 
@@ -93,7 +95,7 @@ bool j1Gui::PreUpdate()
 
 	if (game_started) 
 	{
-		if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		{
 			SetElementsVisibility(App->scene->main_in_menu, !App->scene->main_in_menu->isVisible);
 		}
@@ -608,14 +610,19 @@ void j1Gui::Debug_UI()
 	}
 }
 
+void j1Gui::CreateGuiCommands()
+{
+	quitCommand			= "quit";
+	enable_ui_debug		= "enable_ui_debug";
+	disable_ui_debug	= "disable_ui_debug";
 
+	App->console->CreateCommand(quitCommand, this, 1, 1);
+	App->console->CreateCommand(enable_ui_debug, this, 1, 1);
+	App->console->CreateCommand(disable_ui_debug, this, 1, 1);
+}
 
 void j1Gui::OnCommand(const char* command, const char* subCommand)
-{
-	const char* quitCommand = "quit";
-	const char* enable_ui_debug = "enable ui debug";
-	const char* disable_ui_debug = "disable ui debug";
-	
+{	
 	if (*command == *quitCommand)
 	{
 		escape = false;

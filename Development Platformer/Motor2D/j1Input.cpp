@@ -431,6 +431,18 @@ char* j1Input::GetCutText(unsigned int begin, unsigned int end, bool returnFirst
 	return input_string;																//If no bool-relying condition is met, then the method returns input_string.
 }
 
+bool CompareStrings(const char* str1, const char* str2)
+{
+	if (strcmp(str1, str2) == 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 void j1Input::DeleteTextInput(int positionIndex)										// -----------------------------------------------------------------------------
 {
 	input_string[positionIndex - 1] = '\0';												//Deletes the character to the left of the cursor (at the given index position).

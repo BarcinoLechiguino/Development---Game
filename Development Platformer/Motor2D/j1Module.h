@@ -105,7 +105,7 @@ public:
 
 	virtual void OnCommand(const char* command, const char* subCommand = nullptr)
 	{
-
+		return;
 	}
 
 public:

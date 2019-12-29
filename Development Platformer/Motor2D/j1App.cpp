@@ -107,7 +107,7 @@ bool j1App::Awake()
 		
 	config = LoadConfig(config_file);
 
-	frame_cap = 60;						//In case the frame cap is not specified the game will be capped at 60.
+	frame_cap = CAP_AT_60;						//In case the frame cap is not specified the game will be capped at 60.
 	
 	if(config.empty() == false)
 	{
@@ -118,6 +118,8 @@ bool j1App::Awake()
 		organization.create(app_config.child("organization").child_value());
 		frame_cap = config.child("app").attribute("framerate_cap").as_uint();
 		framesAreCapped = config.child("app").attribute("frame_cap_on").as_bool();
+
+		original_frame_cap = frame_cap;
 	}
 
 	if(ret == true)
@@ -500,29 +502,4 @@ bool j1App::SavegameNow() const
 	data.reset();
 	want_to_save = false;
 	return ret;
-}
-
-void j1App::CreateAppCommands()
-{
-	enable_pause = "enable_pause";
-	disable_pause = "disable_pause";
-	enableFrameCap = "enable_frame_cap";
-	disableFrameCap = "disable_frame_cap";
-	FPS_30 = "FPS 30";									//EVERYTHING IS A LIE. JUST SMOKE AND MIRRORS.
-	FPS_60 = "FPS 60";
-	FPS_120 = "FPS 120";
-
-	App->console->CreateCommand(enable_pause, (j1Module*)this, 1, 1);
-}
-
-void j1App::OnCommand(const char* command, const char* subCommand)
-{
-	if (*command == *enable_pause)
-	{
-		App->pause = true;
-	}
-	if (*command == *disable_pause)
-	{
-		App->pause = false;
-	}
-}
+}														
