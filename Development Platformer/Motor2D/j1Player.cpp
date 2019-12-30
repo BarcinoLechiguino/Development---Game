@@ -199,6 +199,9 @@ bool j1Player::InitPlayer()
 	player.GodMode				= false;
 	player.extraLife			= false;
 
+	player.coins				= 0;
+	player.score				= 0;
+
 	return true;
 }
 
