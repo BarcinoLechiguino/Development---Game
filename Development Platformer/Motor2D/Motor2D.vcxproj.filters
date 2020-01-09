@@ -76,9 +76,6 @@
     <ClCompile Include="mmgr\mmgr.cpp">
       <Filter>Desenvolupament  ========\Sources</Filter>
     </ClCompile>
-    <ClCompile Include="j1Fonts.cpp">
-      <Filter>Desenvolupament  ========\Core</Filter>
-    </ClCompile>
     <ClCompile Include="j1Coin.cpp">
       <Filter>Desenvolupament  ========\Modules\Entities\Items</Filter>
     </ClCompile>
@@ -105,6 +102,9 @@
     </ClCompile>
     <ClCompile Include="UI_Text.cpp">
       <Filter>Desenvolupament  ========\Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Fonts.cpp">
+      <Filter>Desenvolupament  ========\Modules\Multimedia</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -201,9 +201,6 @@
     <ClInclude Include="j1Alien.h">
       <Filter>Desenvolupament  ========\Modules\Entities\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="j1Fonts.h">
-      <Filter>Desenvolupament  ========\Core</Filter>
-    </ClInclude>
     <ClInclude Include="j1Coin.h">
       <Filter>Desenvolupament  ========\Modules\Entities\Items</Filter>
     </ClInclude>
@@ -230,6 +227,9 @@
     </ClInclude>
     <ClInclude Include="UI_Text.h">
       <Filter>Desenvolupament  ========\Modules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Fonts.h">
+      <Filter>Desenvolupament  ========\Modules\Multimedia</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
