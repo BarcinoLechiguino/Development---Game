@@ -140,10 +140,10 @@ iPoint j1Map::MapToWorld(int x, int y) const
 		ret.x = x * data.tile_width;												//Position in the X axis of the tile on the world in pixels. For tile_width = 32 --> Tile 1: x = 0, Tile 2: x = 32.
 		ret.y = y * data.tile_height;												//Position in the Y axis of the tile on the world in pixels. For tile_height = 32 --> Tile 1: y = 0, Tile 2: y = 32.
 	}
-	else if (data.type == MAPTYPE_ISOMETRIC)												//Position calculus for isometric maps
+	else if (data.type == MAPTYPE_ISOMETRIC)										//Position calculus for isometric maps
 	{
-		ret.x = (x / (data.tile_width / 2) + y / (data.tile_height / 2)) / 2;
-		ret.y = (y / (data.tile_height / 2) - x / (data.tile_width / 2)) / 2;
+		ret.x = (x - y) * (data.tile_width * 0.5);
+		ret.y = (x + y) * (data.tile_height * 0.5);
 	}
 	else
 	{
