@@ -73,7 +73,7 @@ public:
 	bool CheckMousePos() const;						//Checks the position of the mouse.
 
 	bool IsHovered() const;
-	bool IsFocused() const;							//Centralize common functionalities.
+	bool IsFocused() const;							//Centralizing common functionalities.
 
 	bool IsForemostElement() const;					//Returns true if its the first element in inverse order of draw and has the mouse on it.
 	bool ElementCanBeDragged() const;				//Returns true if all dragging conditions are met.

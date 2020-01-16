@@ -62,21 +62,21 @@ public:
 		SDL_Rect* scrollMask = nullptr, iPoint maskOffset = iPoint(0, 0), bool emptyElements = false);
 
 
-	void OnEventCall(UI* element, UI_Event ui_event);					//This function is called whenever an new event happens, it receives the pointer of the element that caused the event and the kind of event it is.
-	void PassFocus();													//Method that passes the focus from an interactible and able to focused element to another with the same conditions.
-	bool ElementCanBeFocused(UI* focusElement) const;					//If an element fulfills all requirements (is a button or a scrollbar), then this method returns true. Used to filter which UI elements can or cannot have focus.
+	void OnEventCall(UI* element, UI_Event ui_event);						//This function is called whenever an new event happens, it receives the pointer of the element that caused the event and the kind of event it is.
+	void PassFocus();														//Method that passes the focus from an interactible and able to focused element to another with the same conditions.
+	bool ElementCanBeFocused(UI* focusElement) const;						//If an element fulfills all requirements (is a button or a scrollbar), then this method returns true. Used to filter which UI elements can or cannot have focus.
 	
-	UI* FirstElementUnderMouse() const;									//Returs the first element under the mouse.
+	UI* FirstElementUnderMouse() const;										//Returs the first element under the mouse.
 	bool ElementCanBeClicked(UI* clickedElement) const;
 
-	bool ElementHasChilds(UI* parentElement) const;						//Returns true if the element passed as argument has at least one child.
-	void UpdateChilds(UI* parentElement);								//Updates all UI Elements that have the element passed as argument as a parent.
-	void SetElementsVisibility(UI* parentElement, bool state);			//Enables/Disables the isVisible bool of a UI Element and its childs according to the passed arguments.
+	bool ElementHasChilds(UI* parentElement) const;							//Returns true if the element passed as argument has at least one child.
+	void UpdateChilds(UI* parentElement);									//Updates all UI Elements that have the element passed as argument as a parent.
+	void SetElementsVisibility(UI* parentElement, bool state);				//Enables/Disables the isVisible bool of a UI Element and its childs according to the passed arguments.
 
-	void Debug_UI();													//Shows on screen the different rects that compose the UI Display.
+	void Debug_UI();														//Shows on screen the different rects that compose the UI Display.
 
-	void CreateGuiCommands();
-	void OnCommand(const char* command, const char* subCommand = nullptr);
+	void CreateGuiCommands();												//Creates all j1Gui relevant commands.
+	void OnCommand(const char* command, const char* subCommand = nullptr);	//j1Gui OnCommand() method overload.
 
 public:
 	UI*					focusedElement;					//Change to list item
