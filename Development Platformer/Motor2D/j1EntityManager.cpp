@@ -84,8 +84,8 @@ bool j1EntityManager::Update(float dt)
 
 	if (doLogic == true)				//Resets the doLogic timer.
 	{
-		doLogic = false;
-		accumulated_time = 0;
+		doLogic				= false;
+		accumulated_time	= 0.0f;
 	}
 
 	return true;

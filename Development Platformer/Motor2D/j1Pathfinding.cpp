@@ -225,6 +225,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 			{
 				last_path.PushBack(path_node->pos);										//Adds to last_path dynArray the current path_node tile (position data members).
 				//LOG("Path_node at: (%d, %d)", path_node->pos.x, path_node->pos.y);
+
 				path_node = path_node->parent;											//Sets the data members of the current path_node as the data members of the parent node. (Backtracks one node/tile)
 			}
 
