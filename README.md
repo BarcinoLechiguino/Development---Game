@@ -308,31 +308,31 @@ Download the game file in which you will find the executable.
 
 - **Gerard Romeu:** 
 
-- Audio & FX 
-
-- Level design.
-
-- Map Transtion implementation.
-
-- Player Animations & enemy sprites and fx implementation.
-
-- j1Entity and j1EntityManager implementation. 
-
-- UML of the Entity System.
-
-- Checkpoint Autosave implementation.
-
-- Load & Save Implementation
-
-- F1, F2, F3, F5 and F6 debug keys implementation.
-
-- UI Design & In-Game Implementation.
-
-- HUD implementation
-
-- UI FX implementation
-
-- ReadMe.
+  - Audio & FX 
+  
+  - Level design.
+  
+  - Map Transtion implementation.
+  
+  - Player Animations & enemy sprites and fx implementation.
+  
+  - j1Entity and j1EntityManager implementation. 
+  
+  - UML of the Entity System.
+  
+  - Checkpoint Autosave implementation.
+  
+  - Load & Save Implementation
+  
+  - F1, F2, F3, F5 and F6 debug keys implementation.
+  
+  - UI Design & In-Game Implementation.
+  
+  - HUD implementation
+  
+  - UI FX implementation
+  
+  - ReadMe.
 
   
 
@@ -354,7 +354,7 @@ Download the game file in which you will find the executable.
   
 
 # Link to Repository
-https://github.com/BarcinoLechiguino/Development---Game
+https://github.com/BarcinoLechiguino/Mutual_Cooperation
 
 
 
