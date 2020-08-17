@@ -60,6 +60,9 @@ bool j1Gui::Start()
 		audioAlreadyLoaded = true;
 	}
 
+	iteratedElement = nullptr;
+	focusedElement = nullptr;
+
 	CreateGuiCommands();
 
 	return true;
@@ -472,7 +475,7 @@ void j1Gui::OnEventCall(UI* element, UI_Event ui_event)
 } 
 
 // --- Method to return the foremost element of the UI. (First in inverse order of draw)
-UI* j1Gui::FirstElementUnderMouse() const
+UI* j1Gui::FirstElementUnderMouse() const															// THIS HERE All calls need to take into account that this function can return nullptr.
 {
 	UI* firstElement = nullptr;
 
@@ -488,6 +491,8 @@ UI* j1Gui::FirstElementUnderMouse() const
 	{
 		return firstElement;																		//The last element that was checked to have the mouse on it will be returned.
 	}
+
+	//return firstElement;
 }
 
 bool j1Gui::ElementCanBeClicked(UI* clickedElement) const

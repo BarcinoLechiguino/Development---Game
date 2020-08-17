@@ -227,6 +227,7 @@ void j1Collisions::LoadColliderFromMap()																			// Remember to call i
 	}
 }
 
+// --- COLLIDER METHODS ---
 //Generates a new collider with the given arguments and allocates it in memory.
 Collider* j1Collisions::AddCollider(SDL_Rect collider, Object_Type type, j1Module* callback)
 {
@@ -250,11 +251,29 @@ bool Collider::Check_Collision(const SDL_Rect& r) const //Main collider calls th
 		(r.y < collider.y + collider.h));				// Collision going down up. Jumping collision (With player, ground, platform...).
 }
 
+Collider::Collider(SDL_Rect collider, Object_Type type, j1Module* callback)
+{
+	this->collider	= collider;
+	this->type		= type;
+	this->callback	= callback;
+	to_delete		= false;
+}
+
 //Method that sets a collider's data members with the values of the data members of a given object. 
 Collider::Collider(ObjectData object)
 {
-	collider = *object.collider;
-	type = object.type;
+	collider	= *object.collider;
+	type		= object.type;
+	callback	= NULL;
+	to_delete	= false;
+}
+
+Collider::Collider()
+{
+	collider	= { 0, 0, 0, 0 };
+	type		= Object_Type::NONE;
+	callback	= NULL;
+	to_delete	= false;
 }
 
 

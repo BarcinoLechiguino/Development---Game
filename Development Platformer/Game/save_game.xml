@@ -16,10 +16,10 @@
 	</scene>
 	<entities>
 		<player>
-			<position x="2283.24854" y="295" />
+			<position x="2434.35107" y="466.078186" />
 		</player>
 		<player2>
-			<position x="2321.24854" y="235.307205" />
+			<position x="2257.79834" y="519" />
 		</player2>
 		<mecha />
 		<alien />
@@ -27,6 +27,6 @@
 	<collisions />
 	<:anonymous />
 	<renderer>
-		<camera x="-1828" y="0" />
+		<camera x="-1872" y="-137" />
 	</renderer>
 </game_state>

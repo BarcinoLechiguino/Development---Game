@@ -50,7 +50,8 @@
       <frontflip start="-75.0f" end="75.0f"/>
       <sprite_size w="38" h="58"/>
       <lives lives="3"/>
-      <points points="0"/>
+      <coins coins="0"/>
+      <score score="0"/>
       <tpCooldown timer="0.0f" cd="1.0f"/>
       <godspeed gspeed ="450.0f"/>
       <jumpFX name ="Jump.wav"/>

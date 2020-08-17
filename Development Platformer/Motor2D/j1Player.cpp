@@ -123,7 +123,8 @@ void j1Player::LoadEntityProperties()
 	player.lives			= player_entity.child("lives").attribute("lives").as_int();
 	player.max_lives		= player_entity.child("lives").attribute("lives").as_int();
 
-	player.coins			= player_entity.child("points").attribute("points").as_int();
+	player.coins			= player_entity.child("coins").attribute("coins").as_int();
+	player.score			= player_entity.child("score").attribute("score").as_int();
 
 	player.tpCdCount		= player_entity.child("tpCooldown").attribute("timer").as_float();
 	player.tpCdTime			= player_entity.child("tpCooldown").attribute("cd").as_float();
@@ -137,22 +138,23 @@ void j1Player::LoadEntityAudio()
 {
 	if (audioIsLoaded == false)
 	{
-		jumpFX = App->audio->LoadFx("audio/fx/Jump.wav");
-		deathFX = App->audio->LoadFx("audio/fx/Death.wav");
-		duoFX = App->audio->LoadFx("audio/fx/Jump_Duo.wav");
-		activateFX = App->audio->LoadFx("audio/fx/Activate.wav");
-		tpFX = App->audio->LoadFx("audio/fx/TP.wav");
-		goalFX = App->audio->LoadFx("audio/fx/Pass.wav");
-		mecha_die = App->audio->LoadFx("audio/fx/Mecha die.wav");
-		alien_die = App->audio->LoadFx("audio/fx/Alien_Flap.wav");
-		mecha_walking = App->audio->LoadFx("audio/fx/Mecha_Walking.wav");
-		saver = App->audio->LoadFx("audio/fx/Saver.wav");
-		no_teleport = App->audio->LoadFx("audio/fx/Nope.wav");
-		ready_tp = App->audio->LoadFx("audio/fx/microwave-oven-bell-1.wav");
-		alien_walking = App->audio->LoadFx("audio/fx/Alien_Walking.wav");
-		attack = App->audio->LoadFx("audio/fx/Attack.wav");
-		one_up_fx = App->audio->LoadFx("audio/fx/1_up.wav");
-		audioIsLoaded = true;
+		jumpFX			= App->audio->LoadFx("audio/fx/Jump.wav");
+		deathFX			= App->audio->LoadFx("audio/fx/Death.wav");
+		duoFX			= App->audio->LoadFx("audio/fx/Jump_Duo.wav");
+		activateFX		= App->audio->LoadFx("audio/fx/Activate.wav");
+		tpFX			= App->audio->LoadFx("audio/fx/TP.wav");
+		goalFX			= App->audio->LoadFx("audio/fx/Pass.wav");
+		mecha_die		= App->audio->LoadFx("audio/fx/Mecha die.wav");
+		alien_die		= App->audio->LoadFx("audio/fx/Alien_Flap.wav");
+		mecha_walking	= App->audio->LoadFx("audio/fx/Mecha_Walking.wav");
+		saver			= App->audio->LoadFx("audio/fx/Saver.wav");
+		no_teleport		= App->audio->LoadFx("audio/fx/Nope.wav");
+		ready_tp		= App->audio->LoadFx("audio/fx/microwave-oven-bell-1.wav");
+		alien_walking	= App->audio->LoadFx("audio/fx/Alien_Walking.wav");
+		attack			= App->audio->LoadFx("audio/fx/Attack.wav");
+		one_up_fx		= App->audio->LoadFx("audio/fx/1_up.wav");
+
+		audioIsLoaded	= true;
 	}
 }
 
@@ -176,6 +178,10 @@ bool j1Player::InitPlayer()
 
 	player.atkCollider = App->collisions->AddCollider(player./*atk*/HitBox, Object_Type::ATTACK, App->entityManager);
 
+	//Resetting player state
+	player.state = Player_State::Idle;
+	animation = &idle;
+	
 	//Boolean resetting
 	player.grounded				= false;
 	player.airborne				= false;

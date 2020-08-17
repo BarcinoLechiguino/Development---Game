@@ -14,11 +14,11 @@ struct Collider
 	j1Module*		callback = NULL;			//Pointer that, when Check_Collision retuns true, it calls the OnCollision() method in the player1.cpp and player2.cpp and passes them 2 colliders as arguments.
 	bool			to_delete;					//Used to delete colliders that are not needed anymore or
 
-	Collider(SDL_Rect collider, Object_Type type, j1Module* callback = NULL) {};
+	Collider(SDL_Rect collider, Object_Type type, j1Module* callback = NULL);
 
 	Collider(ObjectData object);
 
-	Collider() {};
+	Collider();
 
 	void Set_Position(int x, int y)
 	{

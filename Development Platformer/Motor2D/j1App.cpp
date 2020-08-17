@@ -151,6 +151,7 @@ bool j1App::Start()
 	}
 
 	startup_timer.Start();
+	seconds_since_startup = 0.0f;
 
 	PERF_PEEK(perf_timer);
 
